@@ -1,6 +1,6 @@
 import { RoutePaths, UserRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
-import { HomePage, MessagesPage, FriendsPage, UserPage, UserFriendsPage } from '@/pages';
+import { HomePage, MessagesPage, FriendsPage, UserPage, UserFriendsPage, MessagesAllPage } from '@/pages';
 import { MainLayout, RightSidebar, UserRightSidebar } from '@/app/layouts';
 
 export const router = createBrowserRouter([
@@ -13,7 +13,11 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path: RoutePaths.messages,
+        path: RoutePaths.messages_all,
+        element: <MessagesAllPage />
+      },
+      {
+        path: RoutePaths.messages_with,
         element: <MessagesPage />
       },
       {
