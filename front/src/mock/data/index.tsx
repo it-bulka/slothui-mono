@@ -1,0 +1,1 @@
+export { mockFriendsTabs } from './friends';

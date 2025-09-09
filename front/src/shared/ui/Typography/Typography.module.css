@@ -11,3 +11,11 @@
 .secondary {
     @apply text-gray-g1;
 }
+
+.center {
+    @apply text-center;
+}
+
+.bold {
+    @apply font-bold;
+}

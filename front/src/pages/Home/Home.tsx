@@ -1,7 +1,7 @@
-import { Feed } from '@/widgets';
+import { Feed, PostsToolbar } from '@/widgets';
 
 const Home = () => {
-  return <Feed />
+  return <Feed header={<PostsToolbar />}/>
 }
 
 export default Home

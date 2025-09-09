@@ -3,13 +3,16 @@ import * as React from 'react';
 import { memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-export const List = memo(({ children }:PropsWithChildren) => {
+interface ListProps {
+  topBorder?: boolean;
+}
+export const List = memo(({ children, topBorder = true }:PropsWithChildren<ListProps>) => {
   return (
-    <ul className="border-style-t">
+    <ul className={topBorder ? "border-style-t" : ""}>
       {children}
     </ul>
   )
-}) as React.MemoExoticComponent<({ children }: PropsWithChildren) => React.ReactElement> & {
+}) as React.MemoExoticComponent<({ children }: PropsWithChildren<ListProps>) => React.ReactElement> & {
   Item: typeof ListItem;
 };
 

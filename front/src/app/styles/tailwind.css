@@ -85,5 +85,12 @@
     .cursor-children * {
         cursor: inherit;
     }
+
+    .px-sidebar {
+        @apply px-4;
+    }
+    .py-sidebar {
+        @apply py-8;
+    }
 }
 

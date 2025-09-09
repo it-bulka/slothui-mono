@@ -3,3 +3,7 @@ export { ProfileActivity } from './ProfileActitvity/ProfileActitvity.tsx';
 export { UpcomingEvents } from './UpcomingEvents/UpcomingEvents.tsx';
 export { PostTextarea } from './PostTextarea/PostTextarea.tsx';
 export { MessageInput } from './MessageInput/MessageInput.tsx';
+export { BlockTitle } from './BlockTitle/BlockTitle.tsx';
+export { PostsToolbar } from './PostsToolbar/PostsToolbar.tsx';
+export { ContactUserToolbar } from './ContactUserToolbar/ContactUserToolbar.tsx';
+export { TabWithFriends } from './TabWithFriends/TabWithFriends.tsx';

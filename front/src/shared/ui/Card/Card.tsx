@@ -24,7 +24,7 @@ export const Card = ({ children }: PropsWithChildren) => {
 
   Children.forEach(children, (child) => {
     if (
-      isValidElement(child) && child.type === "CardBody"
+      isValidElement(child) && child.type === CardBody
     ) {
       hasBody = true;
     }

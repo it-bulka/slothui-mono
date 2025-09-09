@@ -1,12 +1,12 @@
-import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { RoutePaths, UserRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
-import { RootRouter } from '@/app/config/router/RootRouter.tsx'
-import { HomePage, MessagesPage, FriendsPage } from '@/pages';
+import { HomePage, MessagesPage, FriendsPage, UserPage, UserFriendsPage } from '@/pages';
+import { MainLayout, RightSidebar, UserRightSidebar } from '@/app/layouts';
 
 export const router = createBrowserRouter([
   {
     path: RoutePaths.home,
-    element: <RootRouter />,
+    element: <MainLayout rightSidebar={<RightSidebar />} />,
     children: [
       {
         index: true,
@@ -20,6 +20,20 @@ export const router = createBrowserRouter([
         path: RoutePaths.friends,
         element: <FriendsPage />
       }
+    ]
+  },
+  {
+    path: RoutePaths.user,
+    element: <MainLayout rightSidebar={<UserRightSidebar />} />,
+    children: [
+      {
+        index: true,
+        element: <UserPage />
+      },
+      {
+        path: UserRelativePaths.friends,
+        element: <UserFriendsPage />
+      },
     ]
   }
 ])
