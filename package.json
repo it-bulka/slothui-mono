@@ -1,0 +1,25 @@
+{
+  "name": "Slothui monorepo",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "lint:front": "npm --workspace front run lint",
+    "lint:back": "npm --workspace back run lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6"
+  },
+  "lint-staged": {
+    "front/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint:front"
+    ],
+    "back/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint:back"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+@reference "../../../app/styles/tailwind.css";
+
+.content {
+    @apply relative px-6 py-4 w-full col-start-1 row-start-1 -translate-x-full transition-[translate];
+}
+
+.content.active {
+    @apply data-[active=true]:translate-x-0 data-[active=true]:duration-800 data-[active=true]:z-30;
+}
+
+.content.inactive {
+   @apply data-[active=false]:delay-800 data-[active=false]:z-10;
+}

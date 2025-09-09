@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@layer basis {
+    @font-face {
+        font-family: 'PlusJakartaSan';
+        src: url('../../shared/assets/fonts/PlusJakartaSan.ttf') format('truetype');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+
+    body {
+        font-family: theme('fontFamily.sans'), 'sans-serif';
+        color: theme('color.dark');
+        font-size: theme('fontSize.base');
+        background-color: theme('color.white');
+    }
+
+    svg {
+        @apply fill-current stroke-current;
+    }
+}
+
+@theme {
+    /* === COLORS === */
+    --color-gray-g1: #475569;
+    --color-gray-g2: #94A3B8;
+    --color-gray-g3: #E2E8F0;
+    --color-gray-g4: #CBD5E1;
+
+    --color-white: #FFFFFF;
+    --color-light-l1: #EEF2FF;
+    --color-light-l2: #F1F5F9;
+    --color-light-l3: #F8FAFC;
+
+    --color-blue-b1: #4F46E5;
+    --color-blue-b2: #A5B4FC;
+    --color-blue-b3: #C7D2FE;
+    --color-blue-b4: #E0E7FF;
+
+    --color-dark: #1E293B;
+    --color-green-g1: #22C55E;
+    --color-green-g2: #15803D;
+
+    --color-svg-primary: var(--color-gray-g2);
+    --color-svg-secondary: var(--color-gray-g1);
+    --color-svg-third: var(--color-blue-b1);
+
+    --color-underground-primary: var(--color-white);
+    --color-underground-secondary: var(--color-light-l3);
+
+    /* === FONTS === */
+    --font-sans: "PlusJakartaSan", sans-serif;
+}
+
+
+@layer utilities {
+    .px-main {
+        @apply px-8;
+    }
+
+    .border-style-t {
+        @apply border-t border-gray-g3;
+    }
+
+    .border-style-r {
+        @apply border-r border-gray-g3;
+    }
+
+    .border-style-b {
+        @apply border-b border-gray-g3;
+    }
+
+    .border-style-l {
+        @apply border-l border-gray-g3;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;  /* IE, Edge */
+        scrollbar-width: none;     /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;             /* Chrome, Safari, Opera */
+    }
+
+    .cursor-children * {
+        cursor: inherit;
+    }
+}
+

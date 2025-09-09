@@ -1,0 +1,13 @@
+@reference "../../../app/styles/tailwind.css";
+
+.block_title {
+    @apply text-lg font-bold;
+}
+
+.paragraph_small {
+    @apply text-sm;
+}
+
+.secondary {
+    @apply text-gray-g1;
+}

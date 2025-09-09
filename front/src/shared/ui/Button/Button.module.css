@@ -1,0 +1,9 @@
+@reference "../../../app/styles/tailwind.css";
+
+.primary {
+  @apply bg-blue-b1 py-3 px-5 text-white;
+}
+
+.md {
+  @apply font-bold;
+}

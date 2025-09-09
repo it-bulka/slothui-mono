@@ -1,0 +1,21 @@
+@reference "../../../app/styles/tailwind.css";
+
+.btn.primary {
+  @apply inline-flex items-center gap-2;
+}
+
+.btn.secondary {
+  @apply w-[40px] h-[40px] rounded-full border border-gray-g4 inline-flex items-center justify-center
+  text-shadow-svg-secondary transition-colors duration-400;
+}
+
+.btn.secondary:hover {
+  @apply text-svg-third border-svg-third;
+}
+
+.icon.primary {
+  @apply w-[20px] h-[20px] fill-svg-primary stroke-svg-primary;
+}
+.icon.secondary {
+  @apply w-[24px] h-[24px];
+}

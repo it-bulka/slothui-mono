@@ -1,0 +1,9 @@
+@reference "../../../app/styles/tailwind.css";
+
+.md {
+  @apply w-[40px];
+}
+
+.lg {
+  @apply w-[48px];
+}
