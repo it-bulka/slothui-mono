@@ -1,8 +1,9 @@
-import { AvatarWithStatus, TypographyTypes, Typography, List, AvatarWithInfo } from '@/shared/ui';
+import { AvatarWithStatus, TypographyTypes, Typography, List, AvatarWithInfo, Statistics } from '@/shared/ui';
 import { StoryAvatar } from '@/entities';
 import { BlockTitle } from '@/widgets';
 import ArrowUpRightSvg from "@/shared/assets/images/general/arrow-up-right.svg?react"
 import MockAvatar from '@/mock/images/avatar.png'
+import { statistics } from '@/mock/data';
 
 
 export const UserRightSidebar = () => {
@@ -13,12 +14,6 @@ export const UserRightSidebar = () => {
     name: 'User Name',
     nickname: "nickname",
   }
-  const statics = { posts: 546, following: 789, followers: 232 };
-  const statistics = [
-    { name: "Posts", amount: statics.posts },
-    { name: "Followers", amount: statics.followers },
-    { name: "Following", amount: statics.following },
-  ]
 
   const stories = [
     {
@@ -40,14 +35,7 @@ export const UserRightSidebar = () => {
         <Typography className="text-center" type={TypographyTypes.P_SM}>{userData.nickname}</Typography>
       </div>
 
-      <div className="flex w-fit mx-auto my-4">
-        {statistics.map((item) => (
-          <div className="p-2 border-style-r last:border-0">
-            <Typography center bold>{item.amount}</Typography>
-            <Typography center>{item.name}</Typography>
-          </div>
-        ))}
-      </div>
+      <Statistics data={statistics} />
 
       <div>
         <BlockTitle

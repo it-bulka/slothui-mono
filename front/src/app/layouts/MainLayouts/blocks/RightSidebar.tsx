@@ -1,8 +1,9 @@
-import { AvatarWithStatus } from '@/shared/ui';
+import { AvatarWithStatus, Statistics } from '@/shared/ui';
 import { NotificationAction, MessageAction, SettingAction } from '@/features';
 import AvatarImg from '@/mock/images/avatar.png'
 import { FriendSuggestions } from '@/entities';
 import { ProfileActivity, UpcomingEvents } from '@/widgets';
+import { statistics } from '@/mock/data';
 
 export const RightSidebar = () => {
   return (
@@ -14,6 +15,9 @@ export const RightSidebar = () => {
         <MessageAction />
         <SettingAction />
       </div>
+
+      <Statistics data={statistics} />
+
       <div className={"p-6 flex flex-col gap-8"}>
         <FriendSuggestions />
         <ProfileActivity />

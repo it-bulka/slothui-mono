@@ -14,3 +14,4 @@ export { TypographyTypes } from './Typography/typography.types.ts';
 export { List } from './List/List.tsx';
 export { Message } from '@/shared/ui/Message/Message.tsx';
 export { Tab } from '@/shared/ui/Tab/Tab.tsx';
+export { Statistics } from './Statistics/Statistics.tsx';
