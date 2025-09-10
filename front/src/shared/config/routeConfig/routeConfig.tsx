@@ -5,6 +5,12 @@ export enum AppRoutes {
   FRIENDS = 'friends',
   USER = 'user',
   USER_FRIENDS = 'user_friends',
+  ME = 'me',
+  STORED_POSTS = 'stored_posts',
+  SETTINGS = 'settings',
+  SETTINGS_PROFILE = 'settings_profile',
+  SETTINGS_ACCOUNT = 'settings_account',
+  SETTINGS_PRIVACY = 'settings_privacy',
 }
 
 export const UserRelativePaths = {
@@ -18,11 +24,25 @@ export const getFriendsPage = () => '/friends'
 export const getUserPage = (id: string) => `/users/${id}`
 export const getUserFriendsPage = (id: string) => `/users/${id}/${UserRelativePaths.friends}`
 
+export const getMePage = () => `/me`
+export const getStoredPostsPage = () => `/me/stored`
+
+export const getSettingsPage = () => `/settings`
+export const getSettingsProfilePage = () => `/settings/profile`
+export const getSettingsAccountPage = () => `/settings/account`
+export const getSettingsPrivacyPage = () => `/settings/privacy`
+
 export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: getHomePage(),
   [AppRoutes.MESSAGES_ALL]: getAllMessagesPage(),
   [AppRoutes.MESSAGES_WITH]: getMessagesWithUserPage(":id"),
   [AppRoutes.FRIENDS]: getFriendsPage(),
   [AppRoutes.USER]: getUserPage(":id"),
-  [AppRoutes.USER_FRIENDS]: getUserFriendsPage(":id"), //relative to user
+  [AppRoutes.USER_FRIENDS]: getUserFriendsPage(":id"),
+  [AppRoutes.ME]: getMePage(),
+  [AppRoutes.STORED_POSTS]: getStoredPostsPage(),
+  [AppRoutes.SETTINGS]: getSettingsPage(),
+  [AppRoutes.SETTINGS_PROFILE]: getSettingsProfilePage(),
+  [AppRoutes.SETTINGS_ACCOUNT]: getSettingsAccountPage(),
+  [AppRoutes.SETTINGS_PRIVACY]: getSettingsPrivacyPage(),
 }

@@ -72,7 +72,7 @@ export function Input<T extends FieldValues | undefined = undefined>({
   return (
     <div
       className={twMerge(
-        classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input`, [className], {
+        classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input bg-white`, [className], {
           'flex-row-reverse': addendumLeft,
           'input-padding': !addendumFull,
         })
@@ -82,8 +82,8 @@ export function Input<T extends FieldValues | undefined = undefined>({
         <label
           htmlFor={id + name}
           className={twMerge(
-            classnames('absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-500 pl-5 text-white/60', {
-              'top-0 translate-0 pl-2 text-sm  text-white/40': !!value || isFieldFocused,
+            classnames('absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-500 pl-5 text-blue-b1', {
+              'top-0 pl-0 text-sm -translate-y-1/2 bg-underground-secondary rounded-3xl backdrop-blur-sm': !!value || isFieldFocused,
             })
           )}
         >

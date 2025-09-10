@@ -15,14 +15,14 @@ const posts: PostCardProps[] = [
   }
 ]
 
-export const Feed = ({ header }: { header?: ReactNode }) => {
+export const Feed = ({ header, withOutAuthor = false }: { header?: ReactNode, withOutAuthor?: boolean }) => {
   return (
     <div className="flex flex-col h-full">
       {header}
       <div className="bg-light-l3 px-main py-6 grow flex flex-col gap-4">
         <Stories />
 
-        {posts.map((post) => <PostCard {...post} />)}
+        {posts.map((post) => <PostCard {...post} withOutAuthor={withOutAuthor}/>)}
       </div>
     </div>
   )

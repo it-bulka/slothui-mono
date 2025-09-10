@@ -15,3 +15,5 @@ export { List } from './List/List.tsx';
 export { Message } from '@/shared/ui/Message/Message.tsx';
 export { Tab } from '@/shared/ui/Tab/Tab.tsx';
 export { Statistics } from './Statistics/Statistics.tsx';
+export { DropSelect } from './DropSelect/DropSelect.tsx';
+export { FileInput } from './FileIput/FileInput.tsx';

@@ -3,12 +3,13 @@ import { Typography, TypographyTypes } from '@/shared/ui';
 import MoreSvg from '@/shared/assets/images/general/more.svg?react'
 
 type BlockTitleProps = {
-  title: string
-  withMargin?: boolean
+  title: string,
+  withMargin?: boolean,
+  onBtnClick?: () => void | Promise<void>
 } &
-  ( { onBtnClick?: () => void, CustomBtnIcon?: FunctionComponent<SVGProps<SVGSVGElement>> }
-  | { customBtn: ReactNode }
-  | { withoutBtn: boolean })
+  ({ onBtnClick?: () => void, CustomBtnIcon?: FunctionComponent<SVGProps<SVGSVGElement>> }
+    | { customBtn: ReactNode }
+    | { withoutBtn: boolean })
 
 export const BlockTitle = (props: BlockTitleProps) => {
 

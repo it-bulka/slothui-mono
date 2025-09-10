@@ -18,6 +18,12 @@
     svg {
         @apply fill-current stroke-current;
     }
+
+    /* === react-select START === */
+    .rs__control {
+        @apply !rounded-3xl;
+    }
+    /* === react-select END === */
 }
 
 @theme {
@@ -58,6 +64,10 @@
         @apply px-8;
     }
 
+    .py-main {
+        @apply py-4;
+    }
+
     .border-style-t {
         @apply border-t border-gray-g3;
     }
@@ -91,6 +101,10 @@
     }
     .py-sidebar {
         @apply py-8;
+    }
+
+    .toolbar {
+        @apply border-b border-gray-g3 px-8 py-5 flex flex-wrap justify-between bg-underground-primary;
     }
 }
 

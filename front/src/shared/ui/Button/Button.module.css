@@ -4,6 +4,10 @@
   @apply bg-blue-b1 py-3 px-5 text-white;
 }
 
+.secondary {
+  @apply bg-gray-g2 py-3 px-5 border border-gray-g1 rounded-3xl;
+}
+
 .md {
   @apply font-bold;
 }

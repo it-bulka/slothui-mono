@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 import cls from './Button.module.css'
 import { twMerge } from 'tailwind-merge'
 
-type BtnVariant = 'icon' | 'primary' | 'transparent'
+type BtnVariant = 'icon' | 'primary' | 'secondary' | 'transparent'
 type BtnSizes = 'normal' | 'md'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: () => void

@@ -2,6 +2,7 @@ import  { type PropsWithChildren } from 'react';
 import * as React from 'react';
 import { memo } from 'react';
 import { twMerge } from 'tailwind-merge';
+import classnames from 'classnames';
 
 interface ListProps {
   topBorder?: boolean;
@@ -28,7 +29,7 @@ const ListItem = memo((props: PropsWithChildren<ListItemProps>) => {
   return (
     <li className="flex justify-between items-center py-[0.9375rem] border-style-b gap-3">
       {props.children}
-      <button className="text-gray-g2 text-l w-[20px]">
+      <button className={classnames("text-gray-g2 text-l", { ["w-[20px]"]: !!Icon})}>
         {Icon ? <Icon className={twMerge("w-5 h-5", props.iconClassName)} /> : text}
       </button>
     </li>
