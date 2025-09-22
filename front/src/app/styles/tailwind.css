@@ -54,8 +54,13 @@
     --color-underground-primary: var(--color-white);
     --color-underground-secondary: var(--color-light-l3);
 
+    --color-overlay: var(--color-gray-g2);
+
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;
+
+    /* === Z-INDEX === */
+    --z-index-overlay: 99999;
 }
 
 

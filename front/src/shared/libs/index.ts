@@ -1,1 +1,2 @@
-export { withSuspense } from '@/shared/libs/withSuspense/withSuspense.tsx';
+export { withSuspense } from './withSuspense/withSuspense.tsx';
+export { disableBodyScroll, enableBodyScroll } from './bodyScrollHelpers/bodyScrollHelpers.tsx';
