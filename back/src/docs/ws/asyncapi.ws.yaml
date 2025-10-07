@@ -1,0 +1,357 @@
+asyncapi: '2.6.0'
+info:
+  title: WebSocket Chat API
+  version: 1.0.0
+  description: >
+    Documentation of Slothui WebSocket events.
+
+servers:
+  dev:
+    url: ws://localhost:3000
+    protocol: ws
+    description: Local server
+
+channels:
+  # Client events
+  'chat:create':
+    subscribe:
+      summary: Create a chat
+      description: >
+        Clients create chat.
+        As a positive response will have event -['chat:created'](#channel-chat:created).
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        $ref: '#/components/messages/CreatChat'
+
+  'chat:delete':
+    subscribe:
+      summary: Delete a chat
+      description: >
+        Clients informs server that it wants to delete a chat. Only owner can delete a chat.
+        As a positive response will have event -['chat:deleted'](#channel-chat:deleted).
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+
+  'chat:join':
+    subscribe:
+      summary: Join a chat
+      description: >
+        Clients informs server that it wants to join a chat.
+        As a positive response will have event -['chat:newMember'](#channel-chat:newMember).
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+
+  'chat:leave':
+    subscribe:
+      summary: Leave a chat
+      description: >
+        Clients informs server that it wants to leave a chat.
+        As a positive response will have event -['chat:left'](#channel-chat:left).
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+
+  'chat:removeMemberRequest':
+    subscribe:
+      summary: Chat owner delete other member of the chat
+      description: >
+        Clients informs server that chat owner delete other member of the chat.
+        As a positive response will have event - ['chat:memberRemoved'](#channel-chat:memberRemoved) for chat members,
+        and ['chat:removedFromChat'](#channel-chat:removedFromChat) for deleted client-member.
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            memberId:
+              $ref: '#/components/schemas/MemberId'
+
+
+  'msg:send':
+    subscribe:
+      summary: Send message
+      description: >
+        Clients sends message into a chat .
+        As a positive response will have event - ['msg:new'](#channel-msg:new).
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        $ref: '#/components/messages/ChatMessage'
+
+  'msg:isTyping:client':
+    subscribe:
+      summary: Chat member is typing
+      description: >
+        Clients sends info that a chat member is typing.
+        As a negative response will have an acknowledge -['ErrorAcknowledge'](#message-ErrorAcknowledge).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            isTyping:
+              type: boolean
+              example: true
+
+  # Server events
+  'chat:created':
+    publish:
+      summary: Inform about a created Chat
+      description: >
+        Server informs clients about created chat. 
+        As a positive response to a clients event -['chat:create'](#channel-chat:create).
+      message:
+        $ref: '#/components/messages/Chat'
+
+  'chat:deleted':
+    publish:
+      summary: Info about a deleted chat
+      description: >
+        Server informs clients-members of chat about about a deleted chat. 
+        As a positive response to a clients event -['chat:delete'](#channel-chat:delete).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+
+  'chat:newMember':
+    publish:
+      summary: Info about a new member at the chat
+      description: >
+        Server informs clients about a new member at the chat. 
+        As a positive response to a clients event -['chat:join'](#channel-chat:join).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            newUser:
+              $ref: '#/components/schemas/User'
+
+  'chat:left':
+    publish:
+      summary: member left a chat by its own
+      description: >
+        Server informs clients that a member left a chat by its own. 
+        As a positive response to a clients event -['chat:leave'](#channel-chat:leave).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+
+  'chat:removedFromChat':
+    publish:
+      summary: member is deleted from chat
+      description: >
+        Server informs client that it is deleted from the chat. 
+        As a positive response to a clients event -['chat:removeMemberRequest'](#channel-chat:removeMemberRequest).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            memberId:
+              $ref: '#/components/schemas/MemberId'
+
+  'chat:memberRemoved':
+    publish:
+      summary: member is deleted from chat
+      description: >
+        Server informs clients (member of chat) that a member is deleted from the chat. 
+        As a positive response to a clients event -['chat:removeMemberRequest'](#channel-chat:removeMemberRequest).
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            memberId:
+              $ref: '#/components/schemas/MemberId'
+
+  msg:new:
+    publish:
+      summary: A New Message
+      description: >
+        Server sends a new created message to chat.
+      message:
+        $ref: '#/components/messages/ChatMessage'
+
+  'msg:isTyping':
+    subscribe:
+      summary: Chat member is typing
+      description: Server sends info that a chat member is typing.
+      message:
+        payload:
+          type: object
+          properties:
+            chatId:
+              $ref: '#/components/schemas/ChatId'
+            isTyping:
+              type: boolean
+              example: true
+            user:
+              $ref: '#/components/schemas/User'
+
+components:
+  messages:
+    ErrorAcknowledge:
+      name: ErrorAcknowledge
+      contentType: application/json
+      summary: Error acknowledge message
+      payload:
+        type: object
+        properties:
+          ok:
+            type: boolean
+            description: Is set to false to inform about error status
+            example: false
+          message:
+            type: string
+            description: Error message
+            example: Error
+
+    Chat:
+      name: Chat
+      title: Chat
+      contentType: application/json
+      summary: Create chat
+      payload:
+        $ref: '#/components/schemas/Chat'
+
+    CreatChat:
+      name: CreatChat
+      contentType: application/json
+      summary: Create chat
+      payload:
+        $ref: '#/components/schemas/Chat'
+
+    ChatMessage:
+      name: ChatMessage
+      title: Message in Chat
+      contentType: application/json
+      summary: Chat message
+      payload:
+        $ref: '#/components/schemas/Message'
+
+  schemas:
+    Chat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique chat ID
+          example: "c123e456-78ab-90cd-ef01-234567890abc"
+        type:
+          type: string
+          enum: [ "private", "group" ]  # depends on ChatType
+          description: Chat type
+          example: "private"
+        visibility:
+          type: string
+          enum: [ "private", "public" ]  # depends on ChatVisibility
+          description: Visibility of chat
+          example: "private"
+        name:
+          type: string
+          nullable: true
+          description: Chat name (can be null for chat with type "private")
+          example: "Team chat"
+        createdAt:
+          type: string
+          format: date-time
+          description: Data of chat creation
+          example: "2025-10-06T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data of last updated
+          example: "2025-10-06T12:30:00Z"
+        memberIds:
+          type: array
+          description: Array of user IDs (chat members)
+          items:
+            type: string
+            format: uuid
+          example: [ "u123", "u456", "u789" ]
+        ownerId:
+          type: string
+          format: uuid
+          description: Chat owner ID
+          example: "u123"
+        members:
+          type: array
+          description: Full user objects (optionally)
+          items:
+            $ref: '#/components/schemas/User'
+        owner:
+          $ref: '#/components/schemas/User'
+          nullable: true
+      required:
+        - id
+        - type
+        - visibility
+        - createdAt
+        - updatedAt
+        - memberIds
+        - ownerId
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user ID
+          example: "u123"
+        username:
+          type: string
+          description: Username
+          example: "Alice"
+      required:
+        - id
+        - username
+    Message:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: some-user-id
+        text:
+          type: string
+          example: Hello world!
+        authorId:
+          type: string
+          example: some-author-id
+
+    ChatId:
+      type: string
+      format: uuid
+      example: 'ch123'
+
+    MemberId:
+      type: string
+      format: uuid
+      example: 'ch123'
