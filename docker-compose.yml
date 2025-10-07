@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: db-slothui
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - "./back/.env"
+
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+volumes:
+  pgdata:
+
