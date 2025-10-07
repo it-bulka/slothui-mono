@@ -8,7 +8,8 @@
   "scripts": {
     "prepare": "husky",
     "lint:front": "npm --workspace front run lint",
-    "lint:back": "npm --workspace back run lint"
+    "lint:back": "npm --workspace back run lint",
+    "docker:up": "docker compose --env-file ./back/.env up"
   },
   "devDependencies": {
     "husky": "^9.1.7",
