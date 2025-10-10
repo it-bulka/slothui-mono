@@ -1,14 +1,21 @@
 import {  createContext, type ReactNode, useMemo, useEffect } from 'react';
 import { ChatService } from '../chatService/chat.service.ts';
-import { HttpService } from '@/shared/libs/services/httpService/http.service.ts';
-import { SocketService } from '@/shared/libs/services/socketService/socket.service.ts';
+import { HttpService } from '../httpService/http.service.ts';
+import { SocketService } from '../socketService/socket.service.ts';
+import { AuthService } from '../authService/auth.service.ts';
+import { UserService } from '../userService/user.service.ts';
+
+interface CtxProps {
+  chatService:  ChatService
+  authService:  AuthService
+  userService:  UserService
+}
+const Ctx = createContext<CtxProps | null>(null);
 
 interface Props {
   token: string,
   children: ReactNode
 }
-const Ctx = createContext<{ chatService: ChatService } | null>(null);
-
 export const ServiceProvider = ({ children, token }: Props) => {
   const { socketService, httpService } = useMemo(() => ({
     socketService: new SocketService(token),
@@ -16,8 +23,10 @@ export const ServiceProvider = ({ children, token }: Props) => {
   }), [token])
 
   const value = useMemo(() => {
+    const authService = new AuthService(httpService)
+    const userService = new UserService(httpService)
     const chatService = new ChatService(httpService, socketService)
-    return { chatService }
+    return { chatService, authService, userService }
   }, [httpService, socketService])
 
   useEffect(() => {

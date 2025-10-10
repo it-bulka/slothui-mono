@@ -31,6 +31,7 @@ export class HttpService {
       headers?: HeadersInit;
       /** Supply a custom AbortController for timeouts etc. */
       signal?: AbortSignal;
+      credentials?: 'include' | 'same-origin' | 'omit' ;
     } = {},
   ): Promise<T> {
     return HttpService.request<T>(this.token, path, opts);
@@ -51,6 +52,7 @@ export class HttpService {
       headers?: HeadersInit;
       /** Supply a custom AbortController for timeouts etc. */
       signal?: AbortSignal;
+      credentials?: 'include' | 'same-origin' | 'omit';
     } = {},
   ): Promise<T> {
     const url = new URL(`${API_BASE}${path}`, location.origin);
