@@ -9,12 +9,14 @@ export interface RequestOptions {
 }
 
 export class HttpService {
+  private token: string = ''
   private static instance: HttpService | null = null;
-  constructor(private readonly token: string) {
+  constructor(token: string) {
     if(HttpService.instance) {
       return HttpService.instance;
     }
 
+    this.token = token;
     HttpService.instance = this;
   }
   /* ------------------------------------------------------------------ */
@@ -84,8 +86,7 @@ export class HttpService {
     const res = await fetch(url.toString(), init);
 
     if (!res.ok) {
-      const text = await res.text().catch(() => '');
-      throw new Error(`[${res.status}] ${res.statusText} – ${text}`);
+     await this.throwErrorResponse(res)
     }
 
     if (res.status === 204) return undefined as unknown as T;
@@ -96,5 +97,20 @@ export class HttpService {
     }
 
     return res.json() as Promise<T>;
+  }
+
+  static async throwErrorResponse(res: Response) {
+    const ct = res.headers.get('Content-Type') ?? '';
+    if (ct.includes('application/json')) {
+      const errData = await res.json();
+      throw new Error(errData.message || 'Error');
+    } else {
+      const text = await res.text().catch(() => '');
+      throw new Error(text || res.statusText || 'Error');
+    }
+  }
+
+  updateToken(newToken: string) {
+    this.token = newToken;
   }
 }

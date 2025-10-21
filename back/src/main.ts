@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { buildAsyncApiDocs } from './docs/ws/config';
+import { RequestMethod } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +21,13 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.setGlobalPrefix('api', {
+    exclude: [
+      { path: 'docs', method: RequestMethod.ALL },
+      { path: 'static', method: RequestMethod.GET },
+    ],
+  });
 
   await buildAsyncApiDocs();
   await app.listen(process.env.PORT ?? 3000);

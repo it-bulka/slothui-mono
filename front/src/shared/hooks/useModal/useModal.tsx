@@ -34,9 +34,7 @@ const ANIMATION_DELAY = 300
  */
 
 export const useModal = ({
-  onClose,
-  animationDelay = ANIMATION_DELAY,
-  isOpen = false
+  onClose, animationDelay = ANIMATION_DELAY, isOpen = false
 }: UseModalProps) => {
   const [isClosing, setIsClosing] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -50,7 +48,7 @@ export const useModal = ({
         setIsClosing(false)
       }, animationDelay)
     }
-  }, [onClose])
+  }, [onClose, animationDelay])
 
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {

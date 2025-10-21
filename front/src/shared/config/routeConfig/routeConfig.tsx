@@ -3,7 +3,6 @@ export enum AppRoutes {
   MESSAGES_ALL = 'messages_all',
   MESSAGES_WITH = 'messages_with',
   FRIENDS = 'friends',
-  USER = 'user',
   USER_FRIENDS = 'user_friends',
   ME = 'me',
   STORED_POSTS = 'stored_posts',
@@ -11,10 +10,18 @@ export enum AppRoutes {
   SETTINGS_PROFILE = 'settings_profile',
   SETTINGS_ACCOUNT = 'settings_account',
   SETTINGS_PRIVACY = 'settings_privacy',
+  // for separate layouts
+  USER = 'user',
+  AUTH = 'auth'
 }
 
 export const UserRelativePaths = {
   friends: 'friends',
+}
+
+export const AuthRelativePaths = {
+  login: 'login',
+  register: 'register',
 }
 
 export const getHomePage = () => '/'
@@ -32,6 +39,11 @@ export const getSettingsProfilePage = () => `/settings/profile`
 export const getSettingsAccountPage = () => `/settings/account`
 export const getSettingsPrivacyPage = () => `/settings/privacy`
 
+// auth
+export const getAuthLayout = () => `/auth`
+export const getLoginPage = () => `/auth/login`
+export const getRegisterPage = () => `/auth/register`
+
 export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: getHomePage(),
   [AppRoutes.MESSAGES_ALL]: getAllMessagesPage(),
@@ -45,4 +57,6 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.SETTINGS_PROFILE]: getSettingsProfilePage(),
   [AppRoutes.SETTINGS_ACCOUNT]: getSettingsAccountPage(),
   [AppRoutes.SETTINGS_PRIVACY]: getSettingsPrivacyPage(),
+  //auth
+  [AppRoutes.AUTH]: getAuthLayout()
 }

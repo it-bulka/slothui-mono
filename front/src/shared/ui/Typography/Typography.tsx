@@ -9,7 +9,7 @@ export type TypographyProps = (HeadingType | ParagraphType | SpanType) & {
   variant?: TagType
   children: ReactNode | ReactElement
   type?: TypographyTypes
-  color?: 'primary' | 'secondary'
+  color?: 'primary' | 'secondary' | 'error'
   center?: boolean
   bold?: boolean
 }

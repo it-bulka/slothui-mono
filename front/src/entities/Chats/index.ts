@@ -1,0 +1,1 @@
+export { chatsReducer } from './model/slice.ts';

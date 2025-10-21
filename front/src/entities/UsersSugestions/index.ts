@@ -1,0 +1,1 @@
+export { usersSuggestionsReducer } from './model/slice.ts';

@@ -9,6 +9,7 @@ interface FileInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'onChang
   maxFileSizeMB?: number
   defaultPreview?: string
   title?: string
+  name: string
 }
 
 const Previews = ({ previews }: { previews: string[]}) => {
@@ -34,6 +35,7 @@ export function FileInput({
   maxFileSizeMB,
   defaultPreview,
   title,
+  name,
   ...props
 }: FileInputProps) {
   const [fileNames, setFileNames] = useState<string>('')
@@ -98,6 +100,7 @@ export function FileInput({
           multiple
           className="absolute w-full h-full opacity-0 cursor-pointer z-10"
           {...props}
+          name={name}
         />
 
         <Button

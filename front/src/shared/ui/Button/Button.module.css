@@ -1,5 +1,10 @@
 @reference "../../../app/styles/tailwind.css";
 
+.btn {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  @apply relative rounded-3xl w-max block transition-all duration-2000;
+}
+
 .primary {
   @apply bg-blue-b1 py-3 px-5 text-white;
 }
@@ -10,4 +15,16 @@
 
 .md {
   @apply font-bold;
+}
+
+.disabled {
+  @apply text-gray-g3 bg-gray-g2 cursor-not-allowed;
+}
+
+.active {
+  @apply active:top-1 active:left-1;
+}
+
+.active:active {
+  box-shadow: inset 0 6px 0 rgba(0, 0, 0, 0.5);
 }

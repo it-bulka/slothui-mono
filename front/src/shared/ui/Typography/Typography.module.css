@@ -12,6 +12,10 @@
     @apply text-gray-g1;
 }
 
+.error {
+    @apply text-red-500;
+}
+
 .center {
     @apply text-center;
 }

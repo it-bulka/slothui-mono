@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 import cls from './Button.module.css'
 import { twMerge } from 'tailwind-merge'
+import classNames from 'classnames'
 
 type BtnVariant = 'icon' | 'primary' | 'secondary' | 'transparent'
 type BtnSizes = 'normal' | 'md'
@@ -19,6 +20,7 @@ export const Button = ({
   size = 'normal',
   className,
   type = 'button',
+  disabled = false,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   return (
@@ -26,7 +28,8 @@ export const Button = ({
       onClick={onClick}
       type={type}
       {...rest}
-      className={twMerge(`rounded-3xl w-max block ${cls[variant]} ${cls[size]} ${className}`)}
+      disabled={disabled}
+      className={twMerge(classNames(`${cls[variant]} ${cls[size]} ${cls.active} ${cls.btn} ${className} `, { [cls.disabled]: disabled}))}
     >
       {children}
     </button>

@@ -3,6 +3,7 @@ import { type IRegister } from '@/api/types/forms'
 import classnames from 'classnames'
 import {type FieldValues } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
+import { forwardRef } from 'react';
 
 type InputVal = string | undefined
 type InputSetter = <T>(a: T) => void
@@ -13,6 +14,7 @@ interface InputProps<T extends FieldValues | undefined = undefined>
   className?: string
   type?: string
   label?: string
+  labelClass?: string
   placeholder?: string
   defaultValue?: string
   value?: string
@@ -25,10 +27,12 @@ interface InputProps<T extends FieldValues | undefined = undefined>
   accept?: string
 }
 
-export function Input<T extends FieldValues | undefined = undefined>({
+// <T extends FieldValues | undefined = undefined>
+export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   className,
   type = 'text',
   label,
+  labelClass = '',
   placeholder,
   defaultValue,
   value: inputValue,
@@ -42,8 +46,8 @@ export function Input<T extends FieldValues | undefined = undefined>({
   error,
   register,
   ...props
-}: InputProps<T>) {
-  const [value, setValue] = useState<InputVal>(inputValue || defaultValue)
+}, ref) => {
+  const [value, setValue] = useState<InputVal>(inputValue ?? defaultValue ?? '')
   const [isFieldFocused, setFieldFocused] = useState(false)
   const id = useId()
 
@@ -66,54 +70,59 @@ export function Input<T extends FieldValues | undefined = undefined>({
   }
 
   useEffect(() => {
-    setValue(inputValue)
+    setValue(inputValue || '')
   }, [inputValue])
 
   return (
-    <div
-      className={twMerge(
-        classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input bg-white`, [className], {
-          'flex-row-reverse': addendumLeft,
-          'input-padding': !addendumFull,
-        })
-      )}
-    >
-      {label && (
-        <label
-          htmlFor={id + name}
-          className={twMerge(
-            classnames('absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-500 pl-5 text-blue-b1', {
-              'top-0 pl-0 text-sm -translate-y-1/2 bg-underground-secondary rounded-3xl backdrop-blur-sm': !!value || isFieldFocused,
-            })
-          )}
-        >
-          {label}
-        </label>
-      )}
-      <input
-        type={type}
-        {...props}
-        id={id + name}
-        {...(register ? register(name) : { value, name })}
-        onChange={changeHandler}
-        onBlur={() => setFieldFocused(false)}
-        onFocus={() => setFieldFocused(true)}
-        placeholder={placeholder}
-        autoComplete="new-password"
-        aria-invalid={!!error}
-        accept={accept}
+    <div>
+      <div
         className={twMerge(
-          classnames(`w-full outline-0 rounded-10 bg-transparent text-s text-medium focus:outline-none placeholder:text-gray-g1`, {
-            'input-padding': addendumFull,
+          classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input bg-white`, [className], {
+            'flex-row-reverse': addendumLeft,
+            'input-padding': !addendumFull,
+            'mt-2': !!label
           })
         )}
-      />
-      {addendum && <button onClick={addendumClickHandler}>{addendum}</button>}
+      >
+        {label && (
+          <label
+            htmlFor={id + name}
+            className={twMerge(
+              classnames('absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-500 pl-5 text-blue-b1', {
+                'top-0 px-2 text-sm -translate-y-1/2 bg-white rounded-3xl backdrop-blur-sm': !!value || isFieldFocused || !!placeholder,
+              }, [labelClass])
+            )}
+          >
+            {label}
+          </label>
+        )}
+        <input
+          type={type}
+          {...props}
+          id={id + name}
+          {...(register ? register(name) : { value, name })}
+          onChange={changeHandler}
+          onBlur={() => setFieldFocused(false)}
+          onFocus={() => setFieldFocused(true)}
+          placeholder={placeholder}
+          autoComplete="new-password"
+          aria-invalid={!!error}
+          accept={accept}
+          className={twMerge(
+            classnames(`w-full outline-0 rounded-10 bg-transparent text-s text-medium focus:outline-none placeholder:text-gray-g1`, {
+              'input-padding': addendumFull,
+            })
+          )}
+          ref={ref}
+        />
+        {addendum && <button onClick={addendumClickHandler}>{addendum}</button>}
+      </div>
       {error && !isFieldFocused && (
-        <p role="alert" className={'cls.error text-red-500 absolute bottom-0 left-0 pl-2 translate-y-1/2 text-[0.7em]'}>
+        <p role="alert" className={'px-3 text-red-500 text-[0.7em]'}>
           {error}
         </p>
       )}
     </div>
   )
 }
+)

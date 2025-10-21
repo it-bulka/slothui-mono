@@ -9,3 +9,5 @@ export { SettingsPage } from './Settings/Settings.async.tsx';
 export { ProfileSettingsPage } from './ProfileSettings/ProfileSettings.async.tsx';
 export { AccountSettingsPage } from './AccountSettings/AccountSettings.async.tsx';
 export { PrivacySettingsPage } from './PrivacySettings/PrivacySettings.async.tsx';
+export { LoginPage } from './Login';
+export { RegisterPage } from './Register';

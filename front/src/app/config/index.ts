@@ -1,0 +1,1 @@
+export { useAppDispatch, type RootState } from './store/config.ts';

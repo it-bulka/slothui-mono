@@ -3,16 +3,19 @@ import { ReplaySubject, take } from 'rxjs';
 
 const CONNECTION_TIMEOUT = 1000 * 60; // 1m
 export class SocketService {
+  private token: string = '';
   socket?: Socket;
   private isConnecting: boolean = false;  // if multiple reconnection attempt from other services that use this one
   private static instance: SocketService | null = null;
   public readonly $connected = new ReplaySubject<boolean>(1);
   public readonly $reconnected = new ReplaySubject<boolean>(1);
 
-  constructor(private readonly token: string) {
+  constructor(token: string) {
     if(SocketService.instance) {
       return SocketService.instance;
     }
+
+    this.token = token;
     SocketService.instance = this;
   }
 
@@ -88,6 +91,19 @@ export class SocketService {
         clearTimeout(timer);
       }
     });
+  }
+
+  private updateAuthHandshake() {
+    if (this.socket?.connected) {
+      this.socket.off()
+      this.socket.disconnect();
+      this.connect().catch((err) => console.log(err));
+    }
+  }
+
+  updateToken(newToken: string) {
+    this.token = newToken;
+    this.updateAuthHandshake()
   }
 
   onConnected(callback: () => void) {

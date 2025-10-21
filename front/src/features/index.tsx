@@ -13,3 +13,4 @@ export { SettingAction } from './SettingAction/SettingAction.tsx';
 export { MessageAction } from './MessageAction/MessageAction.tsx';
 export { PostAuthorMoreAction } from './PostAuthorMoreAction/PostAutorMoreAction.tsx';
 export { AudioAction } from './AudioAction/AudioAction.tsx';
+export { LoginForm, SocialBtnsOauth, AuthForm, RegisterForm } from './authUser';

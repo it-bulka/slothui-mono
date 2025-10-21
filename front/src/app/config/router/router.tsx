@@ -1,4 +1,4 @@
-import { RoutePaths, UserRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { RoutePaths, UserRelativePaths, AuthRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
 import {
   HomePage,
@@ -11,9 +11,11 @@ import {
   SettingsPage,
   ProfileSettingsPage,
   AccountSettingsPage,
-  PrivacySettingsPage
+  PrivacySettingsPage,
+  LoginPage,
+  RegisterPage
 } from '@/pages';
-import { MainLayout, RightSidebar, UserRightSidebar } from '@/app/layouts';
+import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +57,7 @@ export const router = createBrowserRouter([
       {
         path: RoutePaths.settings_privacy,
         element: <PrivacySettingsPage />
-      },
+      }
     ]
   },
   {
@@ -69,6 +71,20 @@ export const router = createBrowserRouter([
       {
         path: UserRelativePaths.friends,
         element: <UserFriendsPage />
+      },
+    ]
+  },
+  {
+    path: RoutePaths.auth,
+    element: <AuthLayout />,
+    children: [
+      {
+        path: AuthRelativePaths.login,
+        element: <LoginPage />
+      },
+      {
+        path: AuthRelativePaths.register,
+        element: <RegisterPage />
       },
     ]
   }

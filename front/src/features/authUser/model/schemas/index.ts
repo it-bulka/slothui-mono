@@ -1,0 +1,1 @@
+export { nicknameSchema } from './nickname-schema.ts';
