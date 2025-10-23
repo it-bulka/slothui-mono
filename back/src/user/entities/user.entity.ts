@@ -11,6 +11,8 @@ import * as bcrypt from 'bcrypt';
 import { RolesEnum } from '../../common/types/roles.types';
 import { Message } from '../../messages/entities/message.entity';
 import { Chat } from '../../chats/entities/chat.entity';
+import { FollowersSnapshotEntity } from '../../followers-snapshot/entities/followers-snapshot.entity';
+import { Follower } from '../../follower/entity/follower.entity';
 
 @Entity()
 export class User {
@@ -49,6 +51,15 @@ export class User {
 
   @OneToMany(() => Chat, (chat) => chat.owner)
   ownedChats: Chat[];
+
+  @OneToMany(() => FollowersSnapshotEntity, (snapshot) => snapshot.user)
+  followersSnapshots!: FollowersSnapshotEntity[];
+
+  @OneToMany(() => Follower, (f) => f.user)
+  followers: Follower[];
+
+  @OneToMany(() => Follower, (f) => f.follower)
+  following: Follower[];
 
   @BeforeInsert()
   async hashPassword() {

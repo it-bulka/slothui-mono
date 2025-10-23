@@ -10,6 +10,9 @@ import { WsModule } from './ws/ws.module';
 import { MessagesModule } from './messages/messages.module';
 import { ChatsModule } from './chats/chats.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { FollowersSnapshotModule } from './followers-snapshot/followers-snapshot.module';
+import { FollowerModule } from './follower/follower.module';
+import { StatsModule } from './stats/stats.module';
 import * as path from 'node:path';
 
 @Module({
@@ -42,6 +45,9 @@ import * as path from 'node:path';
     WsModule,
     MessagesModule,
     ChatsModule,
+    FollowersSnapshotModule,
+    FollowerModule,
+    StatsModule,
   ],
   controllers: [],
   providers: [AppService],

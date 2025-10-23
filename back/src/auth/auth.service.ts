@@ -5,7 +5,7 @@ import { AuthJwtPayload, AuthJwtUser } from './types/jwt.types';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { CookieOptions } from 'express';
-import * as ms from 'ms';
+import ms, { type StringValue } from 'ms';
 import { Inject } from '@nestjs/common';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigType } from '@nestjs/config';
@@ -111,8 +111,7 @@ export class AuthService {
             signed: false,
           };
     const expiresIn =
-      (this.refreshJwtConfiguration.expiresIn as Parameters<typeof ms>[0]) ||
-      '7d';
+      (this.refreshJwtConfiguration.expiresIn as StringValue) || '7d';
 
     res.cookie('refresh_token', token, {
       ...options,
