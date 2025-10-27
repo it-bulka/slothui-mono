@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/user.dto';
 import { AuthJwtUser } from '../auth/types/jwt.types';
-import { In } from 'typeorm';
+import { In, type FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -34,9 +34,57 @@ export class UserService {
     return await this.userRepo.save(user);
   }
 
+  async createWithProviderId(
+    createUserDto: Pick<CreateUserDto, 'nickname' | 'name'> & {
+      avatarUrl?: string;
+      providerId: string;
+      providerName: 'instagram' | 'twitter' | 'github' | 'telegram';
+      email?: string;
+    },
+  ) {
+    const { providerName, providerId, nickname, avatarUrl, name, email } =
+      createUserDto;
+    const existingUser = await this.userRepo.findOne({
+      where: { [`${providerName}Id`]: providerId },
+    });
+
+    if (existingUser) throw new ConflictException(`User already exists`);
+
+    const user = this.userRepo.create({
+      [`${providerName}Id`]: providerId,
+      avatarUrl,
+      nickname,
+      name,
+      email,
+    });
+    return await this.userRepo.save(user);
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return await this.userRepo.findOne({
       where: { email },
+    });
+  }
+
+  async findByInstagramId(id: string): Promise<User | null> {
+    return await this.userRepo.findOne({
+      where: { instagramId: id },
+    });
+  }
+
+  async findByGithub(id: string, email?: string): Promise<User | null> {
+    const query: FindOptionsWhere<User>[] = [{ githubId: id }];
+    if (email) {
+      query.push({ email });
+    }
+    return await this.userRepo.findOne({
+      where: query,
+    });
+  }
+
+  async findByTelegramId(id: string): Promise<User | null> {
+    return await this.userRepo.findOne({
+      where: { telegramId: id },
     });
   }
 

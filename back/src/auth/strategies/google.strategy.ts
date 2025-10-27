@@ -3,7 +3,7 @@ import { Strategy, Profile } from 'passport-google-oauth20';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { Injectable } from '@nestjs/common';
-import { GoogleConfig } from '../config/google.config';
+import { GoogleConfig } from '../config';
 import { AuthJwtUser } from '../types/jwt.types';
 
 @Injectable()

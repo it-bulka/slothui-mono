@@ -1,17 +1,16 @@
 import { AuthGuard } from '@nestjs/passport';
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { GoogleConfig } from '../config';
+import { TelepassConfig } from '../config';
 
-@Injectable()
-export class GoogleAuthGuard extends AuthGuard('google') {
-  constructor(private readonly googleConfig: GoogleConfig) {
+export class TelepassAuthGuard extends AuthGuard('telegram') {
+  constructor(private readonly config: TelepassConfig) {
     super();
   }
   getAuthenticateOptions(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<Request>();
     return {
-      ...this.googleConfig.options,
+      ...this.config.options,
       state: request.query.returnUrl,
     };
   }

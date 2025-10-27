@@ -28,8 +28,20 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   nickname: string;
 
-  @Column({ type: 'varchar', unique: true })
-  email: string;
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  email?: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  instagramId?: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  twitterId?: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  githubId?: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  telegramId?: string;
 
   @Column({ type: 'enum', enum: RolesEnum, default: RolesEnum.USER })
   role: RolesEnum;

@@ -124,12 +124,12 @@ export class AuthService {
     await this.userService.deleteRefreshToken(userId);
   }
 
-  async validateGoogleUser({
+  async validateOAuthUser({
     email,
     nickname,
     name,
     avatarUrl,
-  }: Pick<User, 'email' | 'name' | 'nickname' | 'avatarUrl'>) {
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { email: string }) {
     let user = await this.userService.findByEmail(email);
     if (!user) {
       user = await this.userService.create({
@@ -138,6 +138,118 @@ export class AuthService {
         name,
         avatarUrl,
         password: null,
+      });
+    }
+
+    return user;
+  }
+
+  async validateGoogleUser({
+    email,
+    nickname,
+    name,
+    avatarUrl,
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { email: string }) {
+    let user = await this.userService.findByEmail(email);
+    if (!user) {
+      user = await this.userService.create({
+        email,
+        nickname,
+        name,
+        avatarUrl,
+        password: null,
+      });
+    }
+
+    return user;
+  }
+
+  async validateInstagramUser({
+    instagramId,
+    nickname,
+    name,
+    avatarUrl,
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { instagramId: string }) {
+    let user = await this.userService.findByInstagramId(instagramId);
+    if (!user) {
+      user = await this.userService.createWithProviderId({
+        providerName: 'instagram',
+        providerId: instagramId,
+        nickname,
+        name,
+        avatarUrl,
+      });
+    }
+
+    return user;
+  }
+
+  async validateTwitterUser({
+    twitterId,
+    nickname,
+    name,
+    avatarUrl,
+    email,
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+    twitterId: string;
+    email?: string;
+  }) {
+    let user = await this.userService.findByInstagramId(twitterId);
+    if (!user) {
+      user = await this.userService.createWithProviderId({
+        providerName: 'twitter',
+        providerId: twitterId,
+        nickname,
+        name,
+        avatarUrl,
+        email,
+      });
+    }
+
+    return user;
+  }
+
+  async validateGithubUser({
+    githubId,
+    nickname,
+    name,
+    avatarUrl,
+    email,
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+    githubId: string;
+    email?: string;
+  }) {
+    let user = await this.userService.findByGithub(githubId, email);
+    if (!user) {
+      user = await this.userService.createWithProviderId({
+        providerName: 'github',
+        providerId: githubId,
+        nickname,
+        name,
+        avatarUrl,
+        email,
+      });
+    }
+
+    return user;
+  }
+
+  async validateTelegramUser({
+    telegramId,
+    nickname,
+    name,
+    avatarUrl,
+  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+    telegramId: string;
+  }) {
+    let user = await this.userService.findByTelegramId(telegramId);
+    if (!user) {
+      user = await this.userService.createWithProviderId({
+        providerName: 'telegram',
+        providerId: telegramId,
+        nickname,
+        name,
+        avatarUrl,
       });
     }
 

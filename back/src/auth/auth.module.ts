@@ -2,19 +2,35 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 import jwtConfig from './config/jwt.config';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
-import { GoogleStrategy } from './strategies/google.strategy';
-import { GoogleConfig } from './config/google.config';
+import {
+  FacebookConfig,
+  GoogleConfig,
+  InstagramConfig,
+  TwitterConfig,
+  LinkedInConfig,
+  GithubConfig,
+  TelepassConfig,
+} from './config';
+import {
+  FacebookStrategy,
+  JwtStrategy,
+  GoogleStrategy,
+  RefreshJwtStrategy,
+  LocalStrategy,
+  InstagramStrategy,
+  TwitterStrategy,
+  LinkedInStrategy,
+  GithubStrategy,
+  TelegramStrategy,
+} from './strategies';
 
 @Module({
   imports: [
@@ -29,11 +45,25 @@ import { GoogleConfig } from './config/google.config';
   providers: [
     AuthService,
     UserService,
+    // OAUTH CONFIGS
+    GoogleConfig,
+    FacebookConfig,
+    InstagramConfig,
+    TwitterConfig,
+    LinkedInConfig,
+    GithubConfig,
+    TelepassConfig,
+    // OAUTH STRATEGIES
     LocalStrategy,
     JwtStrategy,
     GoogleStrategy,
-    GoogleConfig,
+    FacebookStrategy,
     RefreshJwtStrategy,
+    InstagramStrategy,
+    TwitterStrategy,
+    LinkedInStrategy,
+    GithubStrategy,
+    TelegramStrategy,
   ],
   exports: [AuthService],
 })

@@ -1,17 +1,16 @@
 import { AuthGuard } from '@nestjs/passport';
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { InstagramConfig } from '../config';
+import { ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { GoogleConfig } from '../config';
 
-@Injectable()
-export class GoogleAuthGuard extends AuthGuard('google') {
-  constructor(private readonly googleConfig: GoogleConfig) {
+export class InstagramAuthGuard extends AuthGuard('instagram') {
+  constructor(private readonly instaConfig: InstagramConfig) {
     super();
   }
   getAuthenticateOptions(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<Request>();
     return {
-      ...this.googleConfig.options,
+      ...this.instaConfig.options,
       state: request.query.returnUrl,
     };
   }

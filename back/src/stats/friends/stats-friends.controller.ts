@@ -1,11 +1,11 @@
 import { Controller, Get, Req } from '@nestjs/common';
 import { StatsFriendsService } from './stats-friends.service';
 import { AuthRequest } from '../../common/types/user.types';
-import { AuthGuard } from '@nestjs/passport';
 import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/guards';
 
 @Controller('stats/friends')
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 export class StatsFriendsController {
   constructor(private readonly friendsService: StatsFriendsService) {}
 

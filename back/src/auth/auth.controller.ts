@@ -13,12 +13,20 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { UserService } from '../user/user.service';
 import { HttpStatus } from '@nestjs/common';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthRequest } from '../common/types/user.types';
 import { UserMapper } from '../user/user-mapper';
 import { Response as ExpressResponse } from 'express';
-import { RefreshJwtAuthGuard } from './guards/refresh-jwt-auth.guard';
-import { GoogleAuthGuard } from './guards/google-auth.guard';
+import {
+  FacebookAuthGuard,
+  LocalAuthGuard,
+  RefreshJwtAuthGuard,
+  GoogleAuthGuard,
+  InstagramAuthGuard,
+  TwitterAuthGuard,
+  LinkedInAuthGuard,
+  GithubAuthGuard,
+  TelepassAuthGuard,
+} from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -89,6 +97,103 @@ export class AuthController {
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('facebook/login')
+  facebookLogin() {}
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('facebook/callback')
+  async facebookCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(InstagramAuthGuard)
+  @Get('instagram/login')
+  instagramLogin() {}
+
+  @UseGuards(InstagramAuthGuard)
+  @Get('instagram/callback')
+  async instagramCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(TwitterAuthGuard)
+  @Get('twitter/login')
+  twitterLogin() {}
+
+  @UseGuards(TwitterAuthGuard)
+  @Get('twitter/callback')
+  async twitterCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(LinkedInAuthGuard)
+  @Get('linkedin/login')
+  linkedInLogin() {}
+
+  @UseGuards(LinkedInAuthGuard)
+  @Get('linkedin/callback')
+  async linkedInCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(GithubAuthGuard)
+  @Get('github/login')
+  githubLogin() {}
+
+  @UseGuards(GithubAuthGuard)
+  @Get('github/callback')
+  async githubCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  @UseGuards(TelepassAuthGuard)
+  @Get('telegram/login')
+  // TELEGRAM via TELEPASS
+  telegramLogin() {}
+
+  @UseGuards(TelepassAuthGuard)
+  @Get('telegram/callback')
+  async telegramCallback(
+    @Query('state') state: string,
+    @Request() req: AuthRequest,
+    @Response() res: ExpressResponse,
+  ) {
+    await this._handleOAuthRedirect({ req, res, state });
+  }
+
+  async _handleOAuthRedirect({
+    req,
+    res,
+    state,
+  }: {
+    req: AuthRequest;
+    res: ExpressResponse;
+    state: string;
+  }) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user,
     );

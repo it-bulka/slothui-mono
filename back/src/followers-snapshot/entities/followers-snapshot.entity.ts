@@ -10,7 +10,7 @@ import {
 import { User } from '../../user/entities/user.entity';
 
 @Entity('followers_snapshot')
-@Unique('idx_account_date', ['accountId', 'snapshotDate'])
+@Unique('idx_account_date', ['user', 'snapshotDate'])
 export class FollowersSnapshotEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
