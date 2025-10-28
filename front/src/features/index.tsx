@@ -5,7 +5,7 @@ export { LikePost } from './LikePost/LikePost.tsx';
 export { CommentPost } from './CommentPost/CommentPost.tsx';
 export { SharePost } from './SharePost/SharePost.tsx';
 export { SavePost } from './SavePost/SavePost.tsx';
-export { AttachAction } from './AttachAction/AttachAction.tsx';
+export { AttachAction } from './AttachAction/ui/AttachAction.tsx';
 export { EmojiAction } from './EmojiAction/EmojiAction.tsx';
 export { SendAction } from './SendAction/SendAction.tsx';
 export { NotificationAction } from './NotificationAction/NotificationAction.tsx';

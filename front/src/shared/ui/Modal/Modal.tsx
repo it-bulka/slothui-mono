@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useModal } from '../../hooks/useModal/useModal.tsx';
 import { Portal } from '../Portal/Portal.tsx';
-import { Overlay } from './Overlay/Overlay.tsx';
+import { Overlay } from '../Overlay/Overlay.tsx';
 import classnames from 'classnames';
 import cls from './Modal.module.css'
 

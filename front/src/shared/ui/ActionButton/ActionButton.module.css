@@ -9,6 +9,7 @@
   text-shadow-svg-secondary transition-colors duration-400;
 }
 
+.btn.primary:hover,
 .btn.secondary:hover {
   @apply text-svg-third border-svg-third;
 }
@@ -16,6 +17,11 @@
 .icon.primary {
   @apply w-[20px] h-[20px] fill-svg-primary stroke-svg-primary;
 }
+
+.btn.primary:hover > .icon.primary {
+  @apply fill-svg-third stroke-svg-third ;
+}
+
 .icon.secondary {
   @apply w-[24px] h-[24px];
 }
