@@ -2,40 +2,24 @@ import { ActionButton } from '@/shared/ui';
 import SmileSvg from '@/shared/assets/images/message/smile.svg?react'
 import EmojiPicker from 'emoji-picker-react';
 import type { EmojiClickData } from 'emoji-picker-react';
-import { useState, memo, useLayoutEffect } from 'react';
-import { useFloating, useInteractions, useDismiss, offset, flip, shift, useClick } from '@floating-ui/react';
+import { memo, useLayoutEffect } from 'react';
 import { useRef } from 'react';
+import { useBtnPopup } from '@/shared/hooks';
 
 export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
-  const [isOpen, setIsOpen] = useState(isEmojiShown);
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-
-  const { x, y, refs, strategy, context } = useFloating({
-    placement: 'bottom',
-    middleware: [offset(10), flip(), shift()],
-    strategy: 'fixed',
-    open: isOpen,
-    onOpenChange: setIsOpen,
-  });
-
-  const click = useClick(context);
-  const dismiss = useDismiss(context, {
-    outsidePressEvent: 'pointerdown', // listen to pointerdown instead of click
-    bubbles: false,                   // not to duplicate click after closing popup
-  });
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([click, dismiss]);
-
-  useLayoutEffect(() => {
-    if(btnRef.current)  refs.setReference(btnRef.current);
-    if(wrapperRef.current)  refs.setFloating(wrapperRef.current);
-  }, [refs])
+  const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context } = useBtnPopup({ defaultState: isEmojiShown })
 
   const setWrapperRef = (node: HTMLDivElement | null) => {
     wrapperRef.current = node;
     if (node) refs.setFloating(node);
   };
+
+  useLayoutEffect(() => {
+    if(btnRef.current)  refs.setReference(btnRef.current);
+    if(wrapperRef.current)  refs.setFloating(wrapperRef.current);
+  }, [refs])
 
   return  (
     <>
