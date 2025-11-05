@@ -1,0 +1,33 @@
+.toggler {
+    position: relative;
+    display: inline-block;
+    height: 1em;
+    width: 4em;
+    border-radius: 1em;
+    border: 1px solid var(--color-gray-g1);
+    background-color:  var(--color-gray-g4);
+}
+
+.inner {
+    --inner-width: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--inner-width);
+    border-radius: 1em;
+
+    will-change: left, background-color;
+    transition: all 200ms ease-in-out;
+    background-color:  var(--color-gray-g2);
+}
+
+.toggler.on {
+    border-color: var(--color-blue-b2);
+}
+
+.toggler.on .inner {
+    --inner-width: 50%;
+    background-color: var(--color-blue-b1);
+    left: calc(100% - var(--inner-width));
+}
