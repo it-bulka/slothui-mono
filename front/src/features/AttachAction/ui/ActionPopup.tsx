@@ -6,6 +6,7 @@ import ContactsSvg from '@/shared/assets/images/actions/contacts.svg?react'
 import GeoSvg from '@/shared/assets/images/actions/geo.svg?react'
 import CameraSvg from '@/shared/assets/images/actions/camera.svg?react'
 import PicturesSvg from '@/shared/assets/images/actions/picture.svg?react'
+import { PollAction } from '@/features/PollAction';
 
 import { ActionButton } from '@/shared/ui';
 
@@ -19,6 +20,7 @@ export const AttachActionsPopup  = () => {
       <ActionButton Icon={DocumentSvg} column>Document</ActionButton>
       <ActionButton Icon={AudioSvg} column>Audio</ActionButton>
       <ActionButton Icon={PollSvg} column>Poll</ActionButton>
+      <PollAction />
       <ActionButton Icon={EventSvg} column>Event</ActionButton>
     </div>
   )

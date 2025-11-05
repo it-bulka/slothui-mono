@@ -4,7 +4,7 @@ export const ensurePortalRoot = () => {
   if (!rootPortal) {
     rootPortal = document.createElement('div');
     rootPortal.id = portalId;
-    document.appendChild(rootPortal);
+    document.body.appendChild(rootPortal);
   }
 
   return rootPortal;

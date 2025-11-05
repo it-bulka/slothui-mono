@@ -7,6 +7,7 @@ import {
   useContext
 } from 'react';
 import { twMerge } from 'tailwind-merge';
+import classnames from 'classnames';
 
 interface CardBodyContextProps {
   hasFooter: boolean,
@@ -19,7 +20,7 @@ const CardContext = createContext<CardBodyContextProps>({
 });
 
 
-export const Card = ({ children }: PropsWithChildren) => {
+export const Card = ({ children, className, max = false }: PropsWithChildren<{ className?: string, max?: boolean}>) => {
   let hasBody = false;
 
   Children.forEach(children, (child) => {
@@ -42,7 +43,7 @@ export const Card = ({ children }: PropsWithChildren) => {
   }
   return (
     <CardContext.Provider value={{ hasHeader, hasFooter }}>
-      <div className={'rounded-2xl shadow-md shadow-gray-g2 bg-white'}>
+      <div className={twMerge(classnames('rounded-2xl shadow-md shadow-gray-g2 bg-white', {'w-full': max}, className))}>
         {children}
       </div>
     </CardContext.Provider>

@@ -54,7 +54,7 @@
     --color-underground-primary: var(--color-white);
     --color-underground-secondary: var(--color-light-l3);
 
-    --color-overlay: var(--color-gray-g2);
+    --color-overlay: var(--color-gray-g4);
 
     --color-auth-form: var(--color-gray-g3);
 
@@ -63,6 +63,12 @@
 
     /* === Z-INDEX === */
     --z-index-overlay: 99999;
+    --z-index-modal: 999999;
+    --z-index-modal-content: 9999999;
+
+    /* === MODAL === */
+    --modal-y-shift: -75.2%;
+    --modal-scale: 0.2;
 }
 
 

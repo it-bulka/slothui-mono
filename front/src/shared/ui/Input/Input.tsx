@@ -115,9 +115,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
           )}
           ref={ref}
         />
-        {addendum && <button onClick={addendumClickHandler}>{addendum}</button>}
+        {addendum && <button onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
       </div>
-      {error && !isFieldFocused && (
+      {error && (
         <p role="alert" className={'px-3 text-red-500 text-[0.7em]'}>
           {error}
         </p>

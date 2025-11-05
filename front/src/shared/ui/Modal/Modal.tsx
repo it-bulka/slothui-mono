@@ -4,6 +4,7 @@ import { Portal } from '../Portal/Portal.tsx';
 import { Overlay } from '../Overlay/Overlay.tsx';
 import classnames from 'classnames';
 import cls from './Modal.module.css'
+import { twMerge } from 'tailwind-merge';
 
 type ModalPosition = 'top left' | 'center'
 export interface ModalProps {
@@ -11,6 +12,8 @@ export interface ModalProps {
   isOpen?: boolean
   onClose?: () => void
   position?: ModalPosition
+  fit?: boolean
+  transparent?: boolean
 }
 
 type WithChildren = {
@@ -28,6 +31,8 @@ export const Modal = ({
   onClose,
   children,
   position = 'center',
+  fit = false,
+  transparent = false,
 }: ModalProps & WithChildren) => {
   const { isClosing, closeHandler } = useModal({
     onClose,
@@ -42,7 +47,13 @@ export const Modal = ({
         [className])}
       >
         <Overlay onClick={closeHandler} />
-        <div className={classnames(cls.content, {}, [positionToMap[position]])}>
+        <div
+          className={twMerge(classnames(
+            cls.content,
+            "min-w-[400px] w-[70%] max-w-[1000px]",
+            { "w-fit": fit, "bg-transparent": transparent },
+            [positionToMap[position]]))}
+        >
           {typeof children === 'function' ? children(closeHandler) : children}
         </div>
       </div>
