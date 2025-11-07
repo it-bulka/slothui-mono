@@ -1,4 +1,4 @@
-import { Modal } from '@/shared/ui/Modal/Modal.tsx';
+import { Modal } from '@/shared/ui/Modal/ui/Modal.tsx';
 import { Button, Typography, Card, Input } from '@/shared/ui';
 import { useState, memo } from 'react';
 import DeleteSvg from '@/shared/assets/images/actions/delete.svg?react'

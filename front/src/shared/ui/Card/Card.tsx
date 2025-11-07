@@ -60,8 +60,8 @@ const CardBody = ({children, className }: PropsWithChildren<{ className?: string
   return <div className={twMerge(className, cls.body({hasHeader, hasFooter}))}>{ children }</div>
 }
 
-const CardHeader = ({children}: PropsWithChildren) => {
-  return <div className={cls.header}>{ children }</div>
+const CardHeader = ({children, className}: PropsWithChildren<{ className?: string }>) => {
+  return <div className={twMerge(classnames(cls.header, [className]))}>{ children }</div>
 }
 
 const CardFooter = ({children}: PropsWithChildren) => {

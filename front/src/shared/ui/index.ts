@@ -22,3 +22,5 @@ export { CheckboxInput } from './CheckboxInput/CheckboxInput.tsx';
 export { RadioInput } from './RadioInput/RadioInput.tsx';
 export { LineRange } from './LineRange';
 export { Error } from './Error';
+export { ImageWithFallback } from './ImageWithFallback';
+export { Modal } from './Modal';

@@ -1,6 +1,24 @@
 @reference "../../../app/styles/tailwind.css";
 
 .btn {
-    @apply block w-[24px] h-[24px] rounded-md border border-b-gray-g2
-    transition duration-100 ;
+    @apply block w-[24px] h-[24px] rounded-md border border-gray-300 transition duration-100 relative;
+}
+
+.btn.active {
+    @apply text-svg-third;
+}
+
+.icon :global(polyline) {
+    stroke-dasharray: 108;
+    stroke-dashoffset: 108;
+    will-change: stroke-dashoffset;
+}
+
+@keyframes draw {
+    from { stroke-dashoffset: 108; }
+    to { stroke-dashoffset: 0; }
+}
+
+.active .icon :global(polyline) {
+    animation: draw 1.2s ease-out forwards;
 }

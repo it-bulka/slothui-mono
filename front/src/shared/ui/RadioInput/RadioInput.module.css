@@ -1,6 +1,10 @@
 @reference "../../../app/styles/tailwind.css";
 
 .btn {
-    @apply block w-[24px] h-[24px] rounded border border-b-gray-g2
-    transition duration-100 ;
+    @apply block w-[24px] h-[24px] rounded-full border border-b-gray-g2
+    transition duration-100;
+}
+
+.btn.active {
+    @apply bg-svg-third border-svg-third;
 }
