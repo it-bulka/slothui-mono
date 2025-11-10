@@ -1,5 +1,6 @@
 import { Input, Avatar } from '@/shared/ui';
-import { AttachAction, SendAction, EmojiAction } from '@/features';
+import { SendAction, EmojiAction } from '@/features';
+import { AttachAction } from '../AttachAction';
 import { useState, useCallback } from 'react';
 import type { EmojiClickData } from 'emoji-picker-react';
 

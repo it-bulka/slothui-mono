@@ -1,5 +1,6 @@
 import { Input } from '@/shared/ui';
-import { AttachAction, EmojiAction, SendAction } from '@/features';
+import { EmojiAction, SendAction } from '@/features';
+import { AttachAction } from '../AttachAction';
 import { twMerge } from 'tailwind-merge';
 
 interface MessageInputProps {
