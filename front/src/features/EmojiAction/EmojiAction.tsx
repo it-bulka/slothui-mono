@@ -6,7 +6,7 @@ import { memo, useLayoutEffect } from 'react';
 import { useRef } from 'react';
 import { useBtnPopup } from '@/shared/hooks';
 
-export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
+export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick?: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context } = useBtnPopup({ defaultState: isEmojiShown })
