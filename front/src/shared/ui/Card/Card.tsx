@@ -20,7 +20,7 @@ const CardContext = createContext<CardBodyContextProps>({
 });
 
 
-export const Card = ({ children, className, max = false }: PropsWithChildren<{ className?: string, max?: boolean}>) => {
+export const Card = ({ children, className, max = false, onClick }: PropsWithChildren<{ className?: string, max?: boolean, onClick?: () => void }>) => {
   let hasBody = false;
 
   Children.forEach(children, (child) => {
@@ -43,7 +43,10 @@ export const Card = ({ children, className, max = false }: PropsWithChildren<{ c
   }
   return (
     <CardContext.Provider value={{ hasHeader, hasFooter }}>
-      <div className={twMerge(classnames('rounded-2xl shadow-md shadow-gray-g2 bg-white', {'w-full': max}, className))}>
+      <div
+        onClick={onClick}
+        className={twMerge(classnames('rounded-2xl shadow-md shadow-gray-g2 bg-white', {'w-full': max}, className))}
+      >
         {children}
       </div>
     </CardContext.Provider>
@@ -64,8 +67,8 @@ const CardHeader = ({children, className}: PropsWithChildren<{ className?: strin
   return <div className={twMerge(classnames(cls.header, [className]))}>{ children }</div>
 }
 
-const CardFooter = ({children}: PropsWithChildren) => {
-  return <div className={cls.footer}>{ children }</div>
+const CardFooter = ({children, className}: PropsWithChildren<{ className?: string }>) => {
+  return <div className={twMerge(classnames(cls.footer, [className]))}>{ children }</div>
 }
 
 Card.displayName = "Card";
