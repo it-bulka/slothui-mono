@@ -119,5 +119,28 @@
     .toolbar {
         @apply border-b border-gray-g3 px-8 py-5 flex flex-wrap justify-between bg-underground-primary;
     }
+
+    /* FORM */
+    .form-default {
+        @apply flex flex-col gap-2;
+    }
+
+    .form-btn {
+        @apply min-w-[50%] inline-block ml-auto;
+    }
+
+    .input {
+        @apply 'w-full border-b border-gray-300 py-2 px-3 text-sm focus:outline-none resize-y max-h-60';
+    }
+
+    .textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        resize: vertical;
+        max-height: 300px;
+        min-height: 100px;
+    }
 }
 
