@@ -7,7 +7,7 @@ export interface AvatarProps {
   src: string
   name?: string
   className?: string
-  size?: 'md' | 'lg'
+  size?: 'md' | 'lg' | 'sm'
 }
 
 export const Avatar = memo(({ src, name, size = 'md', className }: AvatarProps) => {

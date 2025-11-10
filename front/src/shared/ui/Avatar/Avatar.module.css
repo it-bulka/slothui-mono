@@ -7,3 +7,7 @@
 .lg {
   @apply w-[48px];
 }
+
+.sm {
+  @apply w-[24px];
+}
