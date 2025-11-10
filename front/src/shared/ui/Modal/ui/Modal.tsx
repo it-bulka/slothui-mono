@@ -32,7 +32,6 @@ export const Modal = ({
   children,
   position = 'center',
   fit = false,
-  transparent = false,
 }: ModalProps & WithChildren) => {
   const { isClosing, closeHandler } = useModal({
     onClose,
@@ -51,7 +50,7 @@ export const Modal = ({
           className={twMerge(classnames(
             cls.content,
             "min-w-[400px] w-[70%] max-w-[1000px]",
-            { "w-fit": fit, "bg-transparent": transparent },
+            { "w-fit": fit },
             [positionToMap[position]]))}
         >
           {typeof children === 'function' ? children(closeHandler) : children}
