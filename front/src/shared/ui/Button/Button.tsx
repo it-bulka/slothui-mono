@@ -6,7 +6,6 @@ import classNames from 'classnames'
 type BtnVariant = 'icon' | 'primary' | 'secondary' | 'transparent' | 'link'
 type BtnSizes = 'normal' | 'md'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onClick?: () => void
   variant?: BtnVariant
   size?: BtnSizes
   className?: string

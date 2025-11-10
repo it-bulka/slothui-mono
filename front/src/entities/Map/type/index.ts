@@ -1,0 +1,1 @@
+export type { NominatimPlace } from './map.ts';
