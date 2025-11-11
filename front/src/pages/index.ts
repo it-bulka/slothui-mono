@@ -11,3 +11,5 @@ export { AccountSettingsPage } from './AccountSettings/AccountSettings.async.tsx
 export { PrivacySettingsPage } from './PrivacySettings/PrivacySettings.async.tsx';
 export { LoginPage } from './Login';
 export { RegisterPage } from './Register';
+export { EventDetailsPage } from './EventDetails';
+export { NotFound } from './NotFound/NotFound.tsx';

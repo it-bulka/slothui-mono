@@ -13,7 +13,9 @@ import {
   AccountSettingsPage,
   PrivacySettingsPage,
   LoginPage,
-  RegisterPage
+  RegisterPage,
+  EventDetailsPage,
+  NotFound
 } from '@/pages';
 import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
 
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: RoutePaths.settings_privacy,
         element: <PrivacySettingsPage />
+      },
+      {
+        path: RoutePaths.event_details,
+        element: <EventDetailsPage />
+      },
+      {
+        path: RoutePaths.not_found,
+        element: <NotFound />
       }
     ]
   },

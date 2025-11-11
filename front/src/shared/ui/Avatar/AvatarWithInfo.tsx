@@ -10,11 +10,11 @@ export interface AvatarWithInfoProps extends AvatarProps {
 }
 
 export const AvatarWithInfo = ({
-  src, name, position, className, titleClass , textClass, avatarClass
+  src, name, position, className, titleClass , textClass, avatarClass, size = 'lg'
 }: AvatarWithInfoProps) => {
   return (
     <div className={twMerge("flex items-center gap-3", className)}>
-      <Avatar src={src} name={name} size="lg" className={avatarClass} />
+      <Avatar src={src} name={name} size={size} className={avatarClass} />
       <div>
         <p className={twMerge('font-bold', titleClass)}>{name}</p>
         <p className={twMerge('font-medium text-sm text-gray-g1', textClass)}>{position}</p>
