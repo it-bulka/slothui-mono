@@ -1,0 +1,1 @@
+export { UploadPhotosButton } from './ui/UploadPhotosButton/UploadPhotosButton.tsx';
