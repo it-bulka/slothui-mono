@@ -10,9 +10,13 @@ export enum AppRoutes {
   SETTINGS_PROFILE = 'settings_profile',
   SETTINGS_ACCOUNT = 'settings_account',
   SETTINGS_PRIVACY = 'settings_privacy',
+  // EVENTS
+  EVENT_DETAILS = 'event_details',
   // for separate layouts
   USER = 'user',
-  AUTH = 'auth'
+  AUTH = 'auth',
+
+  NOT_FOUND = 'not_found'
 }
 
 export const UserRelativePaths = {
@@ -39,10 +43,14 @@ export const getSettingsProfilePage = () => `/settings/profile`
 export const getSettingsAccountPage = () => `/settings/account`
 export const getSettingsPrivacyPage = () => `/settings/privacy`
 
+export const getEventsDetailsPage = (id: string) => `/events/${id}`
+
 // auth
 export const getAuthLayout = () => `/auth`
 export const getLoginPage = () => `/auth/login`
 export const getRegisterPage = () => `/auth/register`
+
+export const getNotFoundPage = () => `/not-found`
 
 export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: getHomePage(),
@@ -57,6 +65,8 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.SETTINGS_PROFILE]: getSettingsProfilePage(),
   [AppRoutes.SETTINGS_ACCOUNT]: getSettingsAccountPage(),
   [AppRoutes.SETTINGS_PRIVACY]: getSettingsPrivacyPage(),
+  [AppRoutes.EVENT_DETAILS]: getEventsDetailsPage(":id"),
   //auth
-  [AppRoutes.AUTH]: getAuthLayout()
+  [AppRoutes.AUTH]: getAuthLayout(),
+  [AppRoutes.NOT_FOUND]: getNotFoundPage()
 }

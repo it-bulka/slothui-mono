@@ -1,0 +1,1 @@
+export { getEventsDetailsPage } from './routeConfig/routeConfig.tsx';

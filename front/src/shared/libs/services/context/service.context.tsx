@@ -2,6 +2,7 @@ import {  createContext } from 'react';
 import { ChatService } from '../chatService/chat.service.ts';
 import { AuthService } from '../authService/auth.service.ts';
 import { UserService } from '../userService/user.service.ts';
+import { EventsService } from '../eventsService/events.service.tsx';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
 
@@ -11,6 +12,7 @@ interface IServices {
   chat:  ChatService
   auth:  AuthService
   user:  UserService
+  events: EventsService
 }
 export interface CtxProps {
   services:  IServices;
