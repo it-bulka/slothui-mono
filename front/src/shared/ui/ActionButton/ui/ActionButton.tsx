@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import cls from './ActionButton.module.css'
 import classnames from 'classnames';
 
-interface ActionButtonProps {
+export interface ActionButtonProps {
   Icon: FunctionComponent<SVGProps<SVGSVGElement>>
   className?: string
   variant?: 'primary' | 'secondary'

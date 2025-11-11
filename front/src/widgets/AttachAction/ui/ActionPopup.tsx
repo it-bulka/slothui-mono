@@ -1,9 +1,8 @@
 import AudioSvg from '@/shared/assets/images/actions/audio.svg?react'
-import DocumentSvg from '@/shared/assets/images/actions/document.svg?react'
 import ContactsSvg from '@/shared/assets/images/actions/contacts.svg?react'
 import CameraSvg from '@/shared/assets/images/actions/camera.svg?react'
 import PicturesSvg from '@/shared/assets/images/actions/picture.svg?react'
-import { CreateEventButton, CreateGeoButton, CreatePollButton } from '@/features';
+import { CreateEventButton, CreateGeoButton, CreatePollButton, UploadDocumentButton } from '@/features';
 
 import { ActionButton } from '@/shared/ui';
 
@@ -15,7 +14,7 @@ export const AttachActionsPopup  = () => {
       <ActionButton Icon={CameraSvg} column>Camera</ActionButton>
       <CreateGeoButton />
       <ActionButton Icon={ContactsSvg} column>Contacts</ActionButton>
-      <ActionButton Icon={DocumentSvg} column>Document</ActionButton>
+      <UploadDocumentButton />
       <ActionButton Icon={AudioSvg} column>Audio</ActionButton>
       <CreatePollButton />
       <CreateEventButton />

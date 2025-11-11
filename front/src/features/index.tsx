@@ -17,3 +17,4 @@ export { CreateEventButton } from './CreateEvent';
 export { CreateGeoButton } from './CreateGeolocation';
 export { CreatePollButton } from './CreatePoll';
 export { SubscribeEventButton } from './subscribeToEvent';
+export { UploadDocumentButton } from './UploadDocument';

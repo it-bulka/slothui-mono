@@ -1,4 +1,4 @@
-@reference "../../../app/styles/tailwind.css";
+@reference "../../../../app/styles/tailwind.css";
 
 .btn.primary {
   @apply inline-flex items-center gap-2;
