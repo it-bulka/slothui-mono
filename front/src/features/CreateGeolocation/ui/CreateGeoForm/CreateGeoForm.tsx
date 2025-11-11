@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui';
 import { useMyGeo } from '../../model/useMyGeo.tsx';
 import { MyGeoBtn } from '../MyGeoBtn/MyGeoBtn.tsx';
 
-export const CreateGeoForm = () => {
+const CreateGeoForm = () => {
   const { isLoading, handleGetLocation, position, locationName } = useMyGeo();
 
   const handleSendLocation = () => {
@@ -21,3 +21,5 @@ export const CreateGeoForm = () => {
     </div>
   )
 }
+
+export default CreateGeoForm

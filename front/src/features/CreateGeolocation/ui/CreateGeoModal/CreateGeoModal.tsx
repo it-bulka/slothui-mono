@@ -1,5 +1,5 @@
 import { Modal, ModalCard } from '@/shared/ui';
-import { CreateGeoForm } from '../CreateGeoForm/CreateGeoForm.tsx';
+import { CreateGeoFormLazy } from '../CreateGeoForm/CreateGeoForm.async.tsx';
 
 interface GeoModalProps {
   isOpen: boolean
@@ -9,7 +9,7 @@ export const CreateGeoModal = ({ isOpen, onClose }: GeoModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalCard onClose={onClose}>
-        <CreateGeoForm />
+        {isOpen && <CreateGeoFormLazy />}
       </ModalCard>
     </Modal>
   )
