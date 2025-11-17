@@ -27,3 +27,6 @@ export { Modal, ModalCard } from './Modal';
 export { FormField } from './FormField';
 export { Textarea } from './Textarea';
 export { UploadButton } from './UploadButton';
+export { ProgressBar } from './ProgressBar';
+export { CloseButton } from './CloseButton';
+export { useProgressBarControl } from '@/shared/ui/ProgressBar/model';

@@ -6,3 +6,4 @@ export { usersSuggestionsReducer } from './UsersSugestions';
 export { userReducer, type IAuthResponse } from './User';
 export { EventCard } from './Event';
 export { MapView } from './Map';
+export { Story } from './Story';

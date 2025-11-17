@@ -33,16 +33,17 @@ export const Modal = ({
   position = 'center',
   fit = false,
 }: ModalProps & WithChildren) => {
-  const { isClosing, closeHandler } = useModal({
+  const { isClosing, closeHandler, isMounted, isShown } = useModal({
     onClose,
     isOpen
   })
 
+  if(!isMounted) return null;
   return (
     <Portal>
       <div className={classnames(
         cls.modal,
-        { [cls.opened]: isOpen, [cls.isClosing]: isClosing },
+        { [cls.opened]: isShown, [cls.isClosing]: isClosing },
         [className])}
       >
         <Overlay onClick={closeHandler} />
@@ -53,7 +54,7 @@ export const Modal = ({
             { "w-fit": fit },
             [positionToMap[position]]))}
         >
-          {typeof children === 'function' ? children(closeHandler) : children}
+          { typeof children === 'function' ? children(closeHandler) : children }
         </div>
       </div>
     </Portal>

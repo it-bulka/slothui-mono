@@ -1,11 +1,11 @@
 export { UserAuth } from './UserAuth/UserAuth.tsx';
 export { AddPostBtn } from './AddPostBtn/AddPostBtn.tsx';
-export { Stories } from './Stories/Stories.tsx';
+export { Stories } from '@/features/ShowStories/ui/Stories/Stories.tsx';
 export { LikePost } from './LikePost/LikePost.tsx';
 export { CommentPost } from './CommentPost/CommentPost.tsx';
 export { SharePost } from './SharePost/SharePost.tsx';
 export { SavePost } from './SavePost/SavePost.tsx';
-export { EmojiAction } from './EmojiAction/EmojiAction.tsx';
+export { EmojiAction } from './EmojiAction';
 export { SendAction } from './SendAction/SendAction.tsx';
 export { NotificationAction } from './NotificationAction/NotificationAction.tsx';
 export { SettingAction } from './SettingAction/SettingAction.tsx';
@@ -20,3 +20,4 @@ export { SubscribeEventButton } from './subscribeToEvent';
 export { UploadDocumentButton } from './UploadDocument';
 export { UploadPhotosButton } from './UploadPhotos';
 export { UploadAudioButton } from './UploadAudio';
+export { UploadStoryButton } from './UploadStory';

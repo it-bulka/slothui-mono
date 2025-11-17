@@ -28,7 +28,7 @@ export const Button = ({
       type={type}
       {...rest}
       disabled={disabled}
-      className={twMerge(classNames(`${cls[variant]} ${cls[size]} ${cls.active} ${cls.btn} ${className} `, { [cls.disabled]: disabled}))}
+      className={twMerge(classNames(`${cls[variant]} ${cls[size]} ${cls.active} ${cls.btn} relative`, { [cls.disabled]: disabled}, [className]))}
     >
       {children}
     </button>

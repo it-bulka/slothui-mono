@@ -3,6 +3,7 @@ import { ChatService } from '../chatService/chat.service.ts';
 import { AuthService } from '../authService/auth.service.ts';
 import { UserService } from '../userService/user.service.ts';
 import { EventsService } from '../eventsService/events.service.tsx';
+import { StoriesService } from '../storiesService/stories.service.ts';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
 
@@ -13,6 +14,7 @@ interface IServices {
   auth:  AuthService
   user:  UserService
   events: EventsService
+  stories: StoriesService
 }
 export interface CtxProps {
   services:  IServices;

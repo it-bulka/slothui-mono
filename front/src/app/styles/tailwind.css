@@ -58,6 +58,8 @@
 
     --color-auth-form: var(--color-gray-g3);
 
+    --color-gradient: conic-gradient(#ff0057, #ff7b00, #ff00c3, #ff0057);
+
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;
 
@@ -141,6 +143,65 @@
         resize: vertical;
         max-height: 300px;
         min-height: 100px;
+    }
+
+    .story-border {
+        position: relative;
+        border-radius: 50%;
+        padding: 3px; /* товщина рамки */
+        background: linear-gradient(45deg, #ff0057, #ff7b00, #ff00c3, #ff0057);
+        background-size: 300% 300%;
+        animation: gradient-rotate 4s linear infinite;
+    }
+
+    .story-border::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        padding: 3px;
+        background: inherit;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+    }
+    @keyframes gradient-rotate {
+        0% {
+            background-position: 0 50%;
+        }
+        100% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .gradient-border {
+        position: relative;
+        display: inline-block;
+        border-radius: 50%;
+        padding: 3px;
+        background: white;
+    }
+
+    .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        z-index: 1;
+        display: block;
+
+        background: conic-gradient(#ff0057, #ff7b00, #ff00c3, #ff0057);
+        animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(1turn);
+        }
+    }
+
+    .bg-progress-gradient {
+        background: conic-gradient(#ff0057, #ff7b00, #ff00c3, #ff0057);
     }
 }
 

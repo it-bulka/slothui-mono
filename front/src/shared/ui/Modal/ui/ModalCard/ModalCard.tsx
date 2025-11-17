@@ -1,5 +1,5 @@
 import { Card } from '../../../Card/Card.tsx';
-import { Button, Typography, TypographyTypes } from '@/shared/ui';
+import { CloseButton, Typography, TypographyTypes } from '@/shared/ui';
 import type { PropsWithChildren } from 'react';
 
 interface ModalCardProps {
@@ -11,7 +11,7 @@ export const ModalCard = ({ children, title, onClose }: PropsWithChildren<ModalC
     <Card max>
       <Card.Header className="flex">
         <Typography className="grow" bold type={TypographyTypes.BLOCK_TITLE}>{title}</Typography>
-        <Button variant="icon" onClick={onClose} className="py-2 px-4 font-bold block">x</Button>
+        <CloseButton onClick={onClose} />
       </Card.Header>
       <Card.Body>
         {children}

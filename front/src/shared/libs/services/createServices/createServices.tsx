@@ -4,6 +4,7 @@ import { ChatService } from '../chatService/chat.service.ts';
 import { UserService } from '../userService/user.service.ts';
 import { AuthService } from '../authService/auth.service';
 import { EventsService } from '../eventsService/events.service.tsx';
+import { StoriesService } from '../storiesService/stories.service.ts';
 
 export const createServices = (token = '') => {
   const httpService = new HttpService(token)
@@ -16,5 +17,6 @@ export const createServices = (token = '') => {
     user: new UserService(httpService),
     chat: new ChatService(httpService, socketService),
     events: new EventsService(httpService),
+    stories: new StoriesService(httpService),
   }
 }

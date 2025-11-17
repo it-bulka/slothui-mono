@@ -15,6 +15,7 @@ interface InputProps<T extends FieldValues | undefined = undefined>
   type?: string
   label?: string
   labelClass?: string
+  wrapperClass?: string
   placeholder?: string
   defaultValue?: string
   value?: string
@@ -33,6 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   type = 'text',
   label,
   labelClass = '',
+  wrapperClass = '',
   placeholder,
   defaultValue,
   value: inputValue,
@@ -74,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   }, [inputValue])
 
   return (
-    <div>
+    <div className={wrapperClass}>
       <div
         className={twMerge(
           classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input bg-white`, [className], {

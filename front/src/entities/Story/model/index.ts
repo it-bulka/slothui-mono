@@ -1,0 +1,1 @@
+export type { StoryWrapperProps, StoryProps } from './types/types.tsx';

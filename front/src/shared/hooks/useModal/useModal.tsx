@@ -36,19 +36,24 @@ const ANIMATION_DELAY = 300
 export const useModal = ({
   onClose, animationDelay = ANIMATION_DELAY, isOpen = false
 }: UseModalProps) => {
+  const [isMounted, setIsMounted] = useState(false)
+  const [isShown, setIsShown] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const timerRefShown = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const timerRefClosing = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const closeHandler = useCallback(() => {
     if(onClose) {
       enableBodyScroll()
       setIsClosing(true)
-      timerRef.current = setTimeout(() => {
+      timerRefClosing.current = setTimeout(() => {
         onClose()
         setIsClosing(false)
+        setIsMounted(false)
+        setIsShown(false)
       }, animationDelay)
     }
-  }, [onClose, animationDelay])
+  }, [onClose, animationDelay, setIsMounted, setIsShown])
 
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -58,15 +63,21 @@ export const useModal = ({
 
   useEffect(() => {
     if(isOpen) {
-      disableBodyScroll()
+      setIsMounted(true)
+      timerRefShown.current = setTimeout(() => {
+        disableBodyScroll()
+        setIsShown(true)
+      }, 1)
+
       window.addEventListener('keydown', onKeyDown)
     }
 
     return () => {
-      clearTimeout(timerRef.current)
+      clearTimeout(timerRefClosing.current)
+      clearTimeout(timerRefShown.current)
       window.removeEventListener('keydown', onKeyDown)
     }
-  }, [onKeyDown, isOpen])
+  }, [onKeyDown, isOpen, setIsMounted, setIsShown])
 
-  return { isClosing, closeHandler }
+  return { isClosing, closeHandler, isMounted, isShown }
 }
