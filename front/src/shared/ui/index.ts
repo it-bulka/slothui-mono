@@ -33,3 +33,4 @@ export { useProgressBarControl } from './ProgressBar/model';
 export { CustomToastContainer } from './CustomToastContainer';
 export { CopyButton } from './CopyButton';
 export { VStack, HStack } from './Stack';
+export { ShareButton } from './ShareButton';
