@@ -31,3 +31,4 @@ export { ProgressBar } from './ProgressBar';
 export { CloseButton } from './CloseButton';
 export { useProgressBarControl } from './ProgressBar/model';
 export { CustomToastContainer } from './CustomToastContainer';
+export { CopyButton } from './CopyButton';
