@@ -29,4 +29,5 @@ export { Textarea } from './Textarea';
 export { UploadButton } from './UploadButton';
 export { ProgressBar } from './ProgressBar';
 export { CloseButton } from './CloseButton';
-export { useProgressBarControl } from '@/shared/ui/ProgressBar/model';
+export { useProgressBarControl } from './ProgressBar/model';
+export { CustomToastContainer } from './CustomToastContainer';
