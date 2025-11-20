@@ -30,7 +30,7 @@ export const PostCard = ({
 
       <Card.Body className="flex flex-col gap-y-4">
         <PostContent paragraphs={paragraphs} images={images} />
-        <PostActions />
+        <PostActions postId={'1'}/>
       </Card.Body>
       <Card.Footer>
         <CommentActions />

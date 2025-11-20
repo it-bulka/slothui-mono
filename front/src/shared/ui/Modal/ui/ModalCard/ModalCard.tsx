@@ -5,10 +5,16 @@ import type { PropsWithChildren } from 'react';
 interface ModalCardProps {
   title?: string
   onClose: () => void
+  max?: boolean
 }
-export const ModalCard = ({ children, title, onClose }: PropsWithChildren<ModalCardProps>) => {
+export const ModalCard = ({
+  children,
+  title,
+  onClose,
+  max = true
+}: PropsWithChildren<ModalCardProps>) => {
   return (
-    <Card max>
+    <Card max={max}>
       <Card.Header className="flex">
         <Typography className="grow" bold type={TypographyTypes.BLOCK_TITLE}>{title}</Typography>
         <CloseButton onClick={onClose} />

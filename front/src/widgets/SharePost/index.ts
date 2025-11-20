@@ -1,0 +1,1 @@
+export { SharePost } from './ui/SharePost/SharePost.tsx';

@@ -1,0 +1,1 @@
+export { ShareOnSocialMediaModal } from './ui/ShareOnSocialMedia/ShareSocialMedia.tsx';

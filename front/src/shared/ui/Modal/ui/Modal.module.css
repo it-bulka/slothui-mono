@@ -28,6 +28,7 @@
     /*transform: translateY(var(--modal-y-shift)) scale(var(--modal-scale));*/
     display: flex;
     align-items: flex-start;
+    justify-content: center;
 }
 
 .content.top.left {

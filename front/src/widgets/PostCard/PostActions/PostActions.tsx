@@ -1,12 +1,13 @@
 import { memo } from 'react';
-import { LikePost, CommentPost, SharePost, SavePost } from '@/features';
+import { LikePost, CommentPost, SavePost } from '@/features';
+import { SharePost } from '../../SharePost';
 
-export const PostActions = memo(() => {
+export const PostActions = memo(({ postId }: { postId: string}) => {
   return (
     <div className="flex items-center text-sm font-medium gap-[2%]">
       <LikePost />
       <CommentPost />
-      <SharePost />
+      <SharePost postId={postId} />
       <SavePost className="ml-auto"/>
     </div>
   )
