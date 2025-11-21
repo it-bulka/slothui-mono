@@ -13,6 +13,8 @@ import { Message } from '../../messages/entities/message.entity';
 import { Chat } from '../../chats/entities/chat.entity';
 import { FollowersSnapshotEntity } from '../../followers-snapshot/entities/followers-snapshot.entity';
 import { Follower } from '../../follower/entity/follower.entity';
+import { Story } from '../../stories/entities/story.entity';
+import { StoryView } from '../../stories/entities/storyView.entitty';
 
 @Entity()
 export class User {
@@ -72,6 +74,12 @@ export class User {
 
   @OneToMany(() => Follower, (f) => f.follower)
   following: Follower[];
+
+  @OneToMany(() => Story, (story) => story.user)
+  stories: Story[];
+
+  @OneToMany(() => StoryView, (view) => view.viewer)
+  viewedStories: StoryView[];
 
   @BeforeInsert()
   async hashPassword() {

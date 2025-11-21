@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="<%= data.title %>" />
+    <meta property="og:description" content="<%= data.description %>" />
+    <meta property="og:image" content="<%= data.image %>" />
+    <meta property="og:url" content="<%= data.url %>" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= data.title %>">
+    <meta name="twitter:description" content="<%= data.description %>">
+    <meta name="twitter:image" content="<%= data.image %>">
+
+    <title><%= data.title %></title>
+</head>
+<body>
+<script>
+  window.location.href = "<%= data.url %>"
+</script>
+
+</body>
+</html>

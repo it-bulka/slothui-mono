@@ -5,10 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { buildAsyncApiDocs } from './docs/ws/config';
 import { RequestMethod } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import * as path from 'node:path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
+  app.set('trust proxy', true);
   app.enableCors({
     origin: config.getOrThrow<string>('FRONT_ORIGIN'),
     credentials: true,
@@ -28,6 +31,9 @@ async function bootstrap() {
       { path: 'static', method: RequestMethod.GET },
     ],
   });
+
+  app.setViewEngine('ejs');
+  app.setBaseViewsDir(path.join(__dirname, 'templates'));
 
   await buildAsyncApiDocs();
   await app.listen(process.env.PORT ?? 3000);

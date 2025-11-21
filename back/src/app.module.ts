@@ -13,13 +13,22 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { FollowersSnapshotModule } from './followers-snapshot/followers-snapshot.module';
 import { FollowerModule } from './follower/follower.module';
 import { StatsModule } from './stats/stats.module';
+import { StoriesModule } from './stories/stories.module';
 import * as path from 'node:path';
+import { ConfigService } from '@nestjs/config';
+import { MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { StaticGuardMiddleware } from './common/guards/static/static.guard';
+import { ShareModule } from './share/share.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, 'public', 'docs'),
       serveRoot: '/docs',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, 'public', 'social'),
+      serveRoot: '/public/social',
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -48,8 +57,18 @@ import * as path from 'node:path';
     FollowersSnapshotModule,
     FollowerModule,
     StatsModule,
+    StoriesModule,
+    ShareModule,
   ],
   controllers: [],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly configService: ConfigService) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(StaticGuardMiddleware)
+      .forRoutes({ path: '/public/social/*', method: RequestMethod.ALL });
+  }
+}
