@@ -37,6 +37,7 @@ export class AttachmentsService {
       const dto: AttachmentDto = {
         url: att.url,
         metadata: att.metadata,
+        publicId: att.publicId,
       };
 
       if (!grouped.has(att.parentId)) {
@@ -67,6 +68,7 @@ export class AttachmentsService {
       grouped[att.type].push({
         url: att.url,
         metadata: att.metadata,
+        publicId: att.publicId,
       });
     }
 
@@ -80,7 +82,7 @@ export class AttachmentsService {
   ) {
     const attachmentsToSave: Pick<
       Attachment,
-      'parentType' | 'parentId' | 'type' | 'url'
+      'parentType' | 'parentId' | 'type' | 'url' | 'publicId'
     >[] = [];
 
     const PROJECT_FOLDER: string =
@@ -100,6 +102,7 @@ export class AttachmentsService {
           parentId,
           type: 'image' as AttachmentType,
           url: f.secure_url,
+          publicId: f.public_id,
         });
       });
     }
@@ -118,6 +121,7 @@ export class AttachmentsService {
           parentId,
           type: 'audio' as AttachmentType,
           url: f.secure_url,
+          publicId: f.public_id,
         });
       });
     }
@@ -136,6 +140,7 @@ export class AttachmentsService {
           parentId,
           type: 'file' as AttachmentType,
           url: f.secure_url,
+          publicId: f.public_id,
         });
       });
     }
@@ -154,6 +159,7 @@ export class AttachmentsService {
           parentId,
           type: 'video' as AttachmentType,
           url: f.secure_url,
+          publicId: f.public_id,
         });
       });
     }
@@ -161,5 +167,31 @@ export class AttachmentsService {
     if (attachmentsToSave.length) {
       await this.attachmentRepo.save(attachmentsToSave);
     }
+  }
+
+  async deleteMany(attachments: Attachment[]) {
+    const tries = await this.cloudinaryService.deleteMany(attachments);
+    const result = await this.attachmentRepo.delete({
+      publicId: In(tries.fulfilledPublicIds),
+    });
+
+    if (tries.rejectedPublicIds.length) {
+      await this.attachmentRepo.update(
+        { publicId: In(tries.rejectedPublicIds) },
+        { deleteFailed: true },
+      );
+    }
+
+    return result.affected;
+  }
+
+  async findFailedToDelete() {
+    const failed = await this.attachmentRepo.find({
+      where: [{ deleteFailed: true }, { publicId: undefined }],
+    });
+    const tries = await this.cloudinaryService.deleteMany(failed);
+    await this.attachmentRepo.delete({
+      publicId: In(tries.fulfilledPublicIds),
+    });
   }
 }

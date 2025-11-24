@@ -40,4 +40,35 @@ export class CloudinaryService implements OnModuleInit {
 
     return await Promise.all(uploadPromises);
   }
+
+  async deleteFile(publicId: string) {
+    await cloudinary.uploader.destroy(publicId, { resource_type: 'auto' });
+  }
+
+  async deleteMany(publicIds: { publicId: string }[]) {
+    const arrToDel = publicIds.map((item) => this.deleteFile(item.publicId));
+
+    const results = await Promise.allSettled(arrToDel);
+
+    const accInitVal: {
+      fulfilledPublicIds: string[];
+      rejectedPublicIds: string[];
+      rejectedDetails: {
+        publicId: string;
+        reason: unknown;
+      }[];
+    } = { fulfilledPublicIds: [], rejectedPublicIds: [], rejectedDetails: [] };
+
+    return results.reduce((acc, item, index) => {
+      const publicId = publicIds[index].publicId;
+      if (item.status === 'fulfilled') {
+        acc.fulfilledPublicIds.push(publicId);
+      } else {
+        acc.rejectedPublicIds.push(publicId);
+        acc.rejectedDetails.push({ publicId, reason: item.reason });
+      }
+
+      return acc;
+    }, accInitVal);
+  }
 }

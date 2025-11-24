@@ -18,11 +18,11 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { Express } from 'express';
 
+@UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getMany(@Query() q: GetPostsQueryDto, @Request() req: AuthRequest) {
     return await this.postsService.getMany({
@@ -32,13 +32,11 @@ export class PostsController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getOne(@Param('id') id: string, @Request() req: AuthRequest) {
     return await this.postsService.getById({ postId: id, userId: req.user.id });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put(':id/likes')
   async setLike(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.setLike(id, req.user.id);
@@ -51,7 +49,6 @@ export class PostsController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id/likes')
   async deleteLike(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.deleteLike(id, req.user.id);
@@ -64,7 +61,6 @@ export class PostsController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put(':id/saves')
   async setSave(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.setSave(id, req.user.id);
@@ -77,7 +73,6 @@ export class PostsController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id/saves')
   async deleteSave(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.deleteSave(id, req.user.id);
@@ -115,5 +110,10 @@ export class PostsController {
       text,
       authorId: req.user.id,
     });
+  }
+
+  @Delete(':id')
+  deletePost(@Param('id') id: string, @Request() req: AuthRequest) {
+    return this.postsService.deletePost(id, req.user.id);
   }
 }

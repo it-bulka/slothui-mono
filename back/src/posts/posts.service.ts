@@ -88,10 +88,10 @@ export class PostsService {
     const post = await this.postRepo
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
-      .leftJoinAndSelect('post.likes', 'like', 'like.user = :userId', {
+      .leftJoinAndSelect('post.likes', 'like', 'like.userId = :userId', {
         userId,
       })
-      .leftJoinAndSelect('post.saves', 'save', 'save.user = :userId', {
+      .leftJoinAndSelect('post.saves', 'save', 'save.userId = :userId', {
         userId,
       })
       .where('post.id = :id', { id: postId })
@@ -179,5 +179,23 @@ export class PostsService {
     await this.attachmentService.saveAttachments(dto.files, 'post', post.id);
 
     return await this.getById({ postId: post.id, userId: dto.authorId });
+  }
+
+  async deletePost(postId: string, userId: string) {
+    const post = await this.postRepo.findOne({
+      where: { id: postId, author: { id: userId } },
+    });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${postId} not found`);
+    }
+
+    const deleted = await this.postRepo.remove(post);
+    const attachments = await this.attachmentService.getMany('post', [
+      deleted.id,
+    ]);
+    await this.attachmentService.deleteMany(attachments);
+
+    return deleted;
   }
 }

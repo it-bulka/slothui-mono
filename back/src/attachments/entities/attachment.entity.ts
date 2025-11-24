@@ -29,6 +29,12 @@ export class Attachment {
   @Column()
   parentId: string;
 
+  @Column({ default: false })
+  deleteFailed: boolean;
+
+  @Column({ unique: true })
+  publicId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }
