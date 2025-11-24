@@ -1,5 +1,5 @@
 import { User } from '../entities/user.entity';
 
 export type UserResponse = Partial<
-  Omit<User, 'password' | 'hashPassword' | 'hashedRefreshToken'>
+  Pick<User, 'id' | 'name' | 'nickname' | 'role' | 'avatarUrl' | 'email'>
 >;

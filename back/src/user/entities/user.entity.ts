@@ -15,6 +15,9 @@ import { FollowersSnapshotEntity } from '../../followers-snapshot/entities/follo
 import { Follower } from '../../follower/entity/follower.entity';
 import { Story } from '../../stories/entities/story.entity';
 import { StoryView } from '../../stories/entities/storyView.entitty';
+import { Post } from '../../posts/entities/post.entity';
+import { PostLike } from '../../posts/entities/postLike.entity';
+import { PostSave } from '../../posts/entities/postSave.entity';
 
 @Entity()
 export class User {
@@ -80,6 +83,16 @@ export class User {
 
   @OneToMany(() => StoryView, (view) => view.viewer)
   viewedStories: StoryView[];
+
+  // POST
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
+
+  @OneToMany(() => PostLike, (like) => like.id)
+  postLikes: PostLike[];
+
+  @OneToMany(() => PostSave, (save) => save.id)
+  postSaves: PostSave[];
 
   @BeforeInsert()
   async hashPassword() {

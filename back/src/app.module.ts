@@ -19,6 +19,8 @@ import { ConfigService } from '@nestjs/config';
 import { MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { StaticGuardMiddleware } from './common/guards/static/static.guard';
 import { ShareModule } from './share/share.module';
+import { PostsModule } from './posts/posts.module';
+import { AttachmentsModule } from './attachments/attachments.module';
 
 @Module({
   imports: [
@@ -59,6 +61,8 @@ import { ShareModule } from './share/share.module';
     StatsModule,
     StoriesModule,
     ShareModule,
+    PostsModule,
+    AttachmentsModule,
   ],
   controllers: [],
   providers: [AppService],
