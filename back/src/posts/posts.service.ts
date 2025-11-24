@@ -8,6 +8,7 @@ import { PostPaginatedRes } from './dto/post.dto';
 import { UserMapper } from '../user/user-mapper';
 import { PostLike } from './entities/postLike.entity';
 import { PostSave } from './entities/postSave.entity';
+import { CreatePostDto } from './dto/createPost.dto';
 
 @Injectable()
 export class PostsService {
@@ -164,5 +165,19 @@ export class PostsService {
     return await this.postSaveRepo.count({
       where: { post: { id: postId } },
     });
+  }
+
+  async createPost(
+    dto: CreatePostDto & { authorId: string },
+  ): Promise<PostDto> {
+    const post = this.postRepo.create({
+      content: dto.text,
+      author: { id: dto.authorId },
+    });
+
+    await this.postRepo.save(post);
+    await this.attachmentService.saveAttachments(dto.files, 'post', post.id);
+
+    return await this.getById({ postId: post.id, userId: dto.authorId });
   }
 }

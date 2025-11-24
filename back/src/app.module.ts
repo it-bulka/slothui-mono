@@ -21,6 +21,7 @@ import { StaticGuardMiddleware } from './common/guards/static/static.guard';
 import { ShareModule } from './share/share.module';
 import { PostsModule } from './posts/posts.module';
 import { AttachmentsModule } from './attachments/attachments.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { AttachmentsModule } from './attachments/attachments.module';
     ShareModule,
     PostsModule,
     AttachmentsModule,
+    CloudinaryModule,
   ],
   controllers: [],
   providers: [AppService],

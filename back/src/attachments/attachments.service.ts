@@ -1,18 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import {
   AttachmentParentType,
+  AttachmentType,
   GroupedAttachment,
 } from './types/attachments.type';
 import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Attachment } from './entities/attachment.entity';
 import { AttachmentDto } from './dto/attachment.dto';
+import { Files } from './types/attachments.type';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AttachmentsService {
   constructor(
     @InjectRepository(Attachment)
     private readonly attachmentRepo: Repository<Attachment>,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getMany(parentType: AttachmentParentType, parentIds: string[]) {
@@ -65,5 +71,95 @@ export class AttachmentsService {
     }
 
     return grouped;
+  }
+
+  async saveAttachments(
+    files: Partial<Files>,
+    parentType: AttachmentParentType,
+    parentId: string,
+  ) {
+    const attachmentsToSave: Pick<
+      Attachment,
+      'parentType' | 'parentId' | 'type' | 'url'
+    >[] = [];
+
+    const PROJECT_FOLDER: string =
+      this.configService.getOrThrow('CLOUDINARY_PROJECT');
+
+    if (files.image) {
+      const uploadedImgs = await this.cloudinaryService.uploadFiles(
+        files.image,
+        `${PROJECT_FOLDER}/posts/image`,
+      );
+
+      uploadedImgs.forEach((f) => {
+        if (!f) return;
+
+        attachmentsToSave.push({
+          parentType,
+          parentId,
+          type: 'image' as AttachmentType,
+          url: f.secure_url,
+        });
+      });
+    }
+
+    if (files.audio) {
+      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+        files.audio,
+        `${PROJECT_FOLDER}/posts/audio`,
+      );
+
+      uploadedAudio.forEach((f) => {
+        if (!f) return;
+
+        attachmentsToSave.push({
+          parentType,
+          parentId,
+          type: 'audio' as AttachmentType,
+          url: f.secure_url,
+        });
+      });
+    }
+
+    if (files.file) {
+      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+        files.file,
+        'posts/file',
+      );
+
+      uploadedAudio.forEach((f) => {
+        if (!f) return;
+
+        attachmentsToSave.push({
+          parentType,
+          parentId,
+          type: 'file' as AttachmentType,
+          url: f.secure_url,
+        });
+      });
+    }
+
+    if (files.video) {
+      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+        files.video,
+        `${PROJECT_FOLDER}/posts/video`,
+      );
+
+      uploadedAudio.forEach((f) => {
+        if (!f) return;
+
+        attachmentsToSave.push({
+          parentType,
+          parentId,
+          type: 'video' as AttachmentType,
+          url: f.secure_url,
+        });
+      });
+    }
+
+    if (attachmentsToSave.length) {
+      await this.attachmentRepo.save(attachmentsToSave);
+    }
   }
 }

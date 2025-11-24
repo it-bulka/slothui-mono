@@ -5,13 +5,18 @@ import {
   Request,
   Put,
   Delete,
+  Post,
   Param,
   UseGuards,
+  Body,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { GetPostsQueryDto } from './dto/getPostQuery.dto';
 import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Express } from 'express';
 
 @Controller('posts')
 export class PostsController {
@@ -83,5 +88,32 @@ export class PostsController {
       isSaved: false,
       saveCounts,
     };
+  }
+
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'images', maxCount: 10 },
+      { name: 'audio', maxCount: 5 },
+      { name: 'file', maxCount: 10 },
+      { name: 'video', maxCount: 5 },
+    ]),
+  )
+  @Post()
+  async createPost(
+    @UploadedFiles()
+    files: {
+      image?: Express.Multer.File[];
+      audio?: Express.Multer.File[];
+      file?: Express.Multer.File[];
+      video?: Express.Multer.File[];
+    },
+    @Body('text') text: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.postsService.createPost({
+      files,
+      text,
+      authorId: req.user.id,
+    });
   }
 }
