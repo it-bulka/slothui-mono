@@ -63,7 +63,7 @@ export class AuthController {
     );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
-    return { user: UserMapper.toResponse(req.user), token: accessToken };
+    return { user: UserMapper.toJwtUser(req.user), token: accessToken };
   }
 
   @UseGuards(RefreshJwtAuthGuard)

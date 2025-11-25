@@ -1,14 +1,22 @@
-import { User } from './entities/user.entity';
 import { UserResponse } from './dto/user-response.dto';
+import { AuthJwtUser } from '../auth/types/jwt.types';
 
 export class UserMapper {
-  static toResponse(user: Partial<User>): UserResponse {
-    const {
-      password: _pass,
-      hashPassword: _hashPass,
-      hashedRefreshToken: _token,
-      ...restUser
-    } = user;
-    return restUser;
+  static toResponse(user: UserResponse & Record<string, any>): UserResponse {
+    return {
+      id: user.id,
+      name: user.name,
+      nickname: user.nickname,
+      role: user.role,
+      email: user.email,
+      avatarUrl: user.avatarUrl,
+    };
+  }
+
+  static toJwtUser(user: AuthJwtUser & Record<string, any>): AuthJwtUser {
+    return {
+      id: user.id,
+      role: user.role,
+    };
   }
 }
