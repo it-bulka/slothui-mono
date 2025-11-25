@@ -8,12 +8,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Story } from '../stories/entities/story.entity';
 import { User } from '../user/entities/user.entity';
 import { Chat } from '../chats/entities/chat.entity';
+import { AttachmentsModule } from '../attachments/attachments.module';
+import { Attachment } from '../attachments/entities/attachment.entity';
+import { EventEmitterModule } from '../event-emitter/event-emitter.module';
 
 @Module({
   imports: [
     ChatsModule,
     UserModule,
-    TypeOrmModule.forFeature([Message, Story, User, Chat]),
+    TypeOrmModule.forFeature([Message, Story, User, Chat, Attachment]),
+    AttachmentsModule,
+    EventEmitterModule,
   ],
   controllers: [MessagesController],
   providers: [MessagesService],

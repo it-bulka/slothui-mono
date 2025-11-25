@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { ChatsService } from '../chats/chats.service';
 import { CreateMessageDto } from './dto/createMessage.dto';
 import { UserService } from '../user/user.service';
+import { AttachmentsService } from '../attachments/attachments.service';
+import { MessageMapper } from './message-mapper';
 
 @Injectable()
 export class MessagesService {
@@ -13,6 +15,7 @@ export class MessagesService {
     private readonly messageRepo: Repository<Message>,
     private readonly chatsService: ChatsService,
     private readonly userService: UserService,
+    private readonly attachmentService: AttachmentsService,
   ) {}
 
   async getList({
@@ -40,7 +43,7 @@ export class MessagesService {
     return await qb.getMany();
   }
 
-  async create({ chatId, text, authorId }: CreateMessageDto) {
+  async create({ chatId, text, authorId, files }: CreateMessageDto) {
     const chat = await this.chatsService.findOneById(chatId, {
       throwErrorIfNotExist: true,
     });
@@ -53,6 +56,16 @@ export class MessagesService {
       authorId: author.id,
     });
     await this.messageRepo.save(msg);
-    return msg;
+    const savedFiles = await this.attachmentService.saveAttachments(
+      files,
+      'message',
+      msg.id,
+    );
+    const groupedFiles = this.attachmentService.groupByType(savedFiles);
+
+    return MessageMapper.toResponce({
+      ...msg,
+      attachments: groupedFiles,
+    });
   }
 }

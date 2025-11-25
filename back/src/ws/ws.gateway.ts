@@ -18,9 +18,12 @@ import { MessagesService } from '../messages/messages.service';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { ChatsService } from '../chats/chats.service';
 import { CreateChatDto } from '../chats/dto/createChat.dto';
-import { UseFilters } from '@nestjs/common';
+import { UseFilters, OnModuleInit } from '@nestjs/common';
 import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
+import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
+import { Observable, filter } from 'rxjs';
+import { MsgEmitterType } from '../event-emitter/type/msgEmitter.type';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -31,14 +34,39 @@ import { ValidateDtoPipe } from './pipes/validateDto.pipe';
     methods: ['GET', 'POST'],
   },
 })
-export class WsGateway implements OnGatewayInit, OnGatewayConnection {
+export class WsGateway
+  implements OnGatewayInit, OnModuleInit, OnGatewayConnection
+{
   @WebSocketServer() server: Server;
+  private msgEvent$: Observable<MsgEmitterType>;
+
   constructor(
     private readonly wsService: WsService,
     private readonly messagesService: MessagesService,
     private readonly chatsService: ChatsService,
-  ) {}
+    private readonly msgEmitterService: EventEmitterMessageService,
+  ) {
+    this.msgEvent$ = msgEmitterService.getEvent();
+  }
 
+  onModuleInit() {
+    this.msgEvent$
+      .pipe(filter((event) => event.meta?.local))
+      .subscribe((event) => {
+        // TODO: add redis later
+        switch (event.ev) {
+          // MESSAGES SERVER
+          case MessageServerEvents.CREATED:
+            this.server
+              .to(event.data.chatId)
+              .except(event.data.authorId)
+              .emit(event.ev, event.data);
+            break;
+          default:
+            return;
+        }
+      });
+  }
   afterInit(server: Server) {
     this.wsService.authMiddleware(server);
   }
@@ -136,19 +164,6 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection {
       },
     );
     this.server.to(body.chatId).emit(ChatServerEvents.MEMBER_REMOVED, data);
-  }
-
-  @SubscribeMessage(MessageRequestEvents.SEND)
-  async onMessage(
-    @ConnectedSocket() client: SocketWithUser,
-    @MessageBody() body: { chatId: string; text: string },
-  ): Promise<void> {
-    const msg = await this.messagesService.create({
-      chatId: body.chatId,
-      text: body.text,
-      authorId: client.data.user.id,
-    });
-    this.server.to(body.chatId).emit(MessageServerEvents.NEW, msg);
   }
 
   @SubscribeMessage(MessageRequestEvents.TYPING)

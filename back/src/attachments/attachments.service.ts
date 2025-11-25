@@ -80,6 +80,7 @@ export class AttachmentsService {
     parentType: AttachmentParentType,
     parentId: string,
   ) {
+    let savedAttachments: Attachment[] = [];
     const attachmentsToSave: Pick<
       Attachment,
       'parentType' | 'parentId' | 'type' | 'url' | 'publicId'
@@ -165,8 +166,10 @@ export class AttachmentsService {
     }
 
     if (attachmentsToSave.length) {
-      await this.attachmentRepo.save(attachmentsToSave);
+      savedAttachments = await this.attachmentRepo.save(attachmentsToSave);
     }
+
+    return savedAttachments;
   }
 
   async deleteMany(attachments: Attachment[]) {

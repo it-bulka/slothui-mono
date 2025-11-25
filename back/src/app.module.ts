@@ -22,6 +22,7 @@ import { ShareModule } from './share/share.module';
 import { PostsModule } from './posts/posts.module';
 import { AttachmentsModule } from './attachments/attachments.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { EventEmitterModule } from './event-emitter/event-emitter.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     PostsModule,
     AttachmentsModule,
     CloudinaryModule,
+    EventEmitterModule,
   ],
   controllers: [],
   providers: [AppService],

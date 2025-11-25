@@ -1,4 +1,5 @@
 import { IsUUID, IsString } from 'class-validator';
+import { Files } from '../../attachments/types/attachments.type';
 
 export class CreateMessageDto {
   @IsUUID()
@@ -9,4 +10,6 @@ export class CreateMessageDto {
 
   @IsString()
   text: string;
+
+  files: Partial<Files>;
 }
