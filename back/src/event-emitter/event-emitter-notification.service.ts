@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { NotificationEmitterType } from './type/notification.type';
 import { UserResponse } from '../user/dto/user-response.dto';
 import { NotificationEvent } from './type/notification.type';
+import { MessageResponseDto } from '../messages/dto/message.dto';
 
 @Injectable()
 export class EventEmitterNotificationService {
@@ -25,6 +26,14 @@ export class EventEmitterNotificationService {
       ev: NotificationEvent.FRIEND_CONFIRMATION,
       data: followee,
       meta: { local: true, userId: followerId },
+    });
+  }
+
+  onNewMsg(msg: MessageResponseDto) {
+    this.event$.next({
+      ev: NotificationEvent.MSG_NEW,
+      data: msg,
+      meta: { local: true },
     });
   }
 }

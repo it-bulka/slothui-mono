@@ -14,6 +14,7 @@ import { AuthRequest } from '../common/types/user.types';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
+import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('chats/:chatId/messages')
@@ -21,6 +22,7 @@ export class MessagesController {
   constructor(
     private readonly messagesService: MessagesService,
     private readonly msgEmitterService: EventEmitterMessageService,
+    private readonly notificationEmitter: EventEmitterNotificationService,
   ) {}
 
   @UseInterceptors(
@@ -52,6 +54,7 @@ export class MessagesController {
     });
 
     this.msgEmitterService.onMsgCreated(msg);
+    this.notificationEmitter.onNewMsg(msg);
 
     return msg;
   }

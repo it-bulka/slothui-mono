@@ -22,7 +22,8 @@ import { UseFilters, OnModuleInit } from '@nestjs/common';
 import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
-import { Observable, filter } from 'rxjs';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { MsgEmitterType } from '../event-emitter/type/msgEmitter.type';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import {
@@ -80,9 +81,8 @@ export class WsGateway
       .subscribe((event) => {
         switch (event.ev) {
           case NotificationEvent.FRIEND_REQUEST:
-            this.server.to(event.meta.userId).emit(event.ev, event.data);
-            break;
           case NotificationEvent.FRIEND_CONFIRMATION:
+          case NotificationEvent.MSG_NEW:
             this.server.to(event.meta.userId).emit(event.ev, event.data);
             break;
           default:

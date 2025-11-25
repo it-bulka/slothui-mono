@@ -24,13 +24,13 @@ type FriendConfirmationNotification = {
 type MsgNewNotification = {
   ev: NotificationEvent.MSG_NEW;
   data: MessageResponseDto;
-  meta: Meta;
+  meta: Meta & { userId: string };
 };
 
 type EventCommingNotification = {
   ev: NotificationEvent.EVENT_COMMING;
   data: { id: string; name: string; data: string };
-  meta: Meta;
+  meta: Meta & { userId: string };
 };
 
 export type NotificationEmitterType =
