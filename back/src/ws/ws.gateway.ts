@@ -24,6 +24,11 @@ import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
 import { Observable, filter } from 'rxjs';
 import { MsgEmitterType } from '../event-emitter/type/msgEmitter.type';
+import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
+import {
+  NotificationEmitterType,
+  NotificationEvent,
+} from '../event-emitter/type/notification.type';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -39,14 +44,17 @@ export class WsGateway
 {
   @WebSocketServer() server: Server;
   private msgEvent$: Observable<MsgEmitterType>;
+  private notificationEvent$: Observable<NotificationEmitterType>;
 
   constructor(
     private readonly wsService: WsService,
     private readonly messagesService: MessagesService,
     private readonly chatsService: ChatsService,
     private readonly msgEmitterService: EventEmitterMessageService,
+    private readonly notificationEmitterService: EventEmitterNotificationService,
   ) {
     this.msgEvent$ = msgEmitterService.getEvent();
+    this.notificationEvent$ = notificationEmitterService.getEvent();
   }
 
   onModuleInit() {
@@ -61,6 +69,21 @@ export class WsGateway
               .to(event.data.chatId)
               .except(event.data.authorId)
               .emit(event.ev, event.data);
+            break;
+          default:
+            return;
+        }
+      });
+
+    this.notificationEvent$
+      .pipe(filter((event) => event.meta?.local))
+      .subscribe((event) => {
+        switch (event.ev) {
+          case NotificationEvent.FRIEND_REQUEST:
+            this.server.to(event.meta.userId).emit(event.ev, event.data);
+            break;
+          case NotificationEvent.FRIEND_CONFIRMATION:
+            this.server.to(event.meta.userId).emit(event.ev, event.data);
             break;
           default:
             return;

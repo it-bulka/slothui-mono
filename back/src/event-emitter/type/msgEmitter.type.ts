@@ -1,7 +1,6 @@
 import { MessageServerEvents } from '../../ws/types/message.events';
 import { MessageResponseDto } from '../../messages/dto/message.dto';
-
-type Meta = { local: boolean } & Record<string, any>;
+import { Meta } from './common.type';
 
 type MsgCreated = {
   ev: MessageServerEvents.CREATED;

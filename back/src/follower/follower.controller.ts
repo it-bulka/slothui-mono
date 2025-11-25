@@ -11,15 +11,27 @@ import {
 import { FollowerService } from './follower.service';
 import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 
 @Controller('followers')
 @UseGuards(JwtAuthGuard)
 export class FollowerController {
-  constructor(private readonly followerService: FollowerService) {}
+  constructor(
+    private readonly followerService: FollowerService,
+    private readonly notificationEmitter: EventEmitterNotificationService,
+  ) {}
 
   @Post()
   async follow(@Body() userId: string, @Request() req: AuthRequest) {
-    await this.followerService.followUser(req.user.id, userId);
+    const following = await this.followerService.followUser(
+      req.user.id,
+      userId,
+    );
+
+    this.notificationEmitter.onFriendRequest(
+      following.followee.id,
+      following.follower,
+    );
   }
 
   @Delete()
@@ -32,7 +44,15 @@ export class FollowerController {
     @Body() userId: string,
     @Request() req: AuthRequest,
   ) {
-    await this.followerService.confirmFollower(req.user.id, userId);
+    const following = await this.followerService.confirmFollower(
+      req.user.id,
+      userId,
+    );
+
+    this.notificationEmitter.onFriendConfirmed(
+      following.follower.id,
+      following.followee,
+    );
   }
 
   @Delete('/confirmation')

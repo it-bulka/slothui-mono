@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { FindManyOptions } from 'typeorm';
+import { UserMapper } from '../user/user-mapper';
 
 @Injectable()
 export class FollowerService {
@@ -16,47 +17,56 @@ export class FollowerService {
 
   async followUser(
     currentUserId: string,
-    followerId: string,
+    followeeId: string,
     needConfirmation: boolean = false,
   ) {
-    const followerAsUser = await this.userService.findOne(followerId, {
+    const follower = await this.userService.findOne(currentUserId, {
+      throwErrorIfNotExist: true,
+    });
+    const followee = await this.userService.findOne(followeeId, {
       throwErrorIfNotExist: true,
     });
 
-    const follower = this.followerRepo.create({
-      user: { id: currentUserId },
-      follower: followerAsUser,
+    const following = this.followerRepo.create({
+      followee,
+      follower,
       confirmed: !needConfirmation,
     });
-    await this.followerRepo.save(follower);
+    await this.followerRepo.save(following);
 
     // TODO: add ws notification
+
+    return {
+      ...following,
+      follower: UserMapper.toResponse(following.follower),
+      followee: UserMapper.toResponse(following.followee),
+    };
   }
 
   async deleteFollower(followerId: string, followedUserId: string) {
     await this.followerRepo.delete({
       follower: { id: followerId },
-      user: { id: followedUserId },
+      followee: { id: followedUserId },
     });
   }
 
   async confirmFollower(currentUserId: string, followerId: string) {
-    const follower = await this.followerRepo.findOne({
+    const following = await this.followerRepo.findOne({
       where: {
         follower: { id: followerId },
-        user: { id: currentUserId },
+        followee: { id: currentUserId },
       },
+      relations: ['follower', 'followee'],
     });
 
-    if (!follower) {
+    if (!following) {
       throw new NotFoundException(
         `Follower ${followerId} among followers of User ${currentUserId} not found`,
       );
     }
 
-    follower.confirmed = true;
-    await this.followerRepo.save(follower);
-    // TODO: add ws notification
+    following.confirmed = true;
+    return await this.followerRepo.save(following);
   }
 
   async getFollowers({
@@ -72,7 +82,7 @@ export class FollowerService {
   }) {
     const query: FindManyOptions<Follower> = {
       where: {
-        user: { id: userId },
+        followee: { id: userId },
       },
       order: {
         createdAt: 'DESC',

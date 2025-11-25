@@ -14,10 +14,10 @@ export class Follower {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
-  user: User; // subscribed on whom
+  @ManyToOne(() => User, (user) => user.followees, { onDelete: 'CASCADE' })
+  followee: User; // subscribed on whom
 
-  @ManyToOne(() => User, (user) => user.following, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
   follower: User; // who subscribe
 
   @Column({ type: 'boolean', default: true })

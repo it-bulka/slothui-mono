@@ -72,11 +72,11 @@ export class User {
   @OneToMany(() => FollowersSnapshotEntity, (snapshot) => snapshot.user)
   followersSnapshots!: FollowersSnapshotEntity[];
 
-  @OneToMany(() => Follower, (f) => f.user)
+  @OneToMany(() => Follower, (f) => f.follower)
   followers: Follower[];
 
-  @OneToMany(() => Follower, (f) => f.follower)
-  following: Follower[];
+  @OneToMany(() => Follower, (f) => f.followee)
+  followees: Follower[];
 
   @OneToMany(() => Story, (story) => story.user)
   stories: Story[];
