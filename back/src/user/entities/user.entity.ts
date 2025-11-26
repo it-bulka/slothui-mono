@@ -18,6 +18,7 @@ import { StoryView } from '../../stories/entities/storyView.entitty';
 import { Post } from '../../posts/entities/post.entity';
 import { PostLike } from '../../posts/entities/postLike.entity';
 import { PostSave } from '../../posts/entities/postSave.entity';
+import { Event } from '../../events/entity/event.entity';
 
 @Entity()
 export class User {
@@ -93,6 +94,12 @@ export class User {
 
   @OneToMany(() => PostSave, (save) => save.id)
   postSaves: PostSave[];
+
+  @OneToMany(() => Event, (event) => event.organizer)
+  organizedEvents: Event[];
+
+  @ManyToMany(() => Event, (event) => event.participants)
+  participatingEvents: Event[];
 
   @BeforeInsert()
   async hashPassword() {

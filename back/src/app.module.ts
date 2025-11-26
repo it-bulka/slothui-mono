@@ -23,6 +23,7 @@ import { PostsModule } from './posts/posts.module';
 import { AttachmentsModule } from './attachments/attachments.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EventEmitterModule } from './event-emitter/event-emitter.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { EventEmitterModule } from './event-emitter/event-emitter.module';
     AttachmentsModule,
     CloudinaryModule,
     EventEmitterModule,
+    EventsModule,
   ],
   controllers: [],
   providers: [AppService],
