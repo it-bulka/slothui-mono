@@ -33,7 +33,7 @@ export class EventEmitterNotificationService {
     this.event$.next({
       ev: NotificationEvent.MSG_NEW,
       data: msg,
-      meta: { local: true },
+      meta: { local: true, userId: msg.authorId },
     });
   }
 }
