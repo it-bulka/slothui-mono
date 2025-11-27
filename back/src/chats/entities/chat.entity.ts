@@ -34,7 +34,7 @@ export class Chat {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Message, (message) => message.chatId)
+  @OneToMany(() => Message, (message) => message.chat)
   messages: Message[];
 
   @ManyToMany(() => User, (user) => user.chats, { eager: false })
