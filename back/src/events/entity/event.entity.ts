@@ -8,6 +8,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
+import { Location } from '../dto/event.dto';
 
 @Entity()
 export class Event {
@@ -29,8 +30,8 @@ export class Event {
   })
   date: string;
 
-  @Column({ nullable: true })
-  location: string | null;
+  @Column('jsonb', { nullable: true })
+  location: Location;
 
   @CreateDateColumn({
     transformer: {

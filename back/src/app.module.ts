@@ -24,6 +24,7 @@ import { AttachmentsModule } from './attachments/attachments.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EventEmitterModule } from './event-emitter/event-emitter.module';
 import { EventsModule } from './events/events.module';
+import { PollsModule } from './polls/polls.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { EventsModule } from './events/events.module';
     CloudinaryModule,
     EventEmitterModule,
     EventsModule,
+    PollsModule,
   ],
   controllers: [],
   providers: [AppService],

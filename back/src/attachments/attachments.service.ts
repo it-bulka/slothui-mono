@@ -43,7 +43,7 @@ export class AttachmentsService {
       if (!grouped.has(att.parentId)) {
         grouped.set(att.parentId, {
           file: [],
-          image: [],
+          images: [],
           audio: [],
           video: [],
         });
@@ -57,22 +57,26 @@ export class AttachmentsService {
   }
 
   groupByType(attachments: Attachment[]) {
+    let noAttachments: boolean = true;
     const grouped: GroupedAttachment = {
       file: [],
-      image: [],
+      images: [],
       audio: [],
       video: [],
     };
 
     for (const att of attachments) {
-      grouped[att.type].push({
-        url: att.url,
-        metadata: att.metadata,
-        publicId: att.publicId,
-      });
+      if (grouped[att.type]) {
+        noAttachments = false;
+        grouped[att.type].push({
+          url: att.url,
+          metadata: att.metadata,
+          publicId: att.publicId,
+        });
+      }
     }
 
-    return grouped;
+    return noAttachments ? undefined : grouped;
   }
 
   async saveAttachments(
@@ -89,9 +93,9 @@ export class AttachmentsService {
     const PROJECT_FOLDER: string =
       this.configService.getOrThrow('CLOUDINARY_PROJECT');
 
-    if (files.image) {
-      const uploadedImgs = await this.cloudinaryService.uploadFiles(
-        files.image,
+    if (files.images) {
+      const uploadedImgs = await this.cloudinaryService.uploadFilesStream(
+        files.images,
         `${PROJECT_FOLDER}/posts/image`,
       );
 
@@ -101,7 +105,7 @@ export class AttachmentsService {
         attachmentsToSave.push({
           parentType,
           parentId,
-          type: 'image' as AttachmentType,
+          type: 'images' as AttachmentType,
           url: f.secure_url,
           publicId: f.public_id,
         });
@@ -109,7 +113,7 @@ export class AttachmentsService {
     }
 
     if (files.audio) {
-      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
         files.audio,
         `${PROJECT_FOLDER}/posts/audio`,
       );
@@ -128,7 +132,7 @@ export class AttachmentsService {
     }
 
     if (files.file) {
-      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
         files.file,
         'posts/file',
       );
@@ -147,7 +151,7 @@ export class AttachmentsService {
     }
 
     if (files.video) {
-      const uploadedAudio = await this.cloudinaryService.uploadFiles(
+      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
         files.video,
         `${PROJECT_FOLDER}/posts/video`,
       );
@@ -166,7 +170,8 @@ export class AttachmentsService {
     }
 
     if (attachmentsToSave.length) {
-      savedAttachments = await this.attachmentRepo.save(attachmentsToSave);
+      const created = this.attachmentRepo.create(attachmentsToSave);
+      savedAttachments = await this.attachmentRepo.save(created);
     }
 
     return savedAttachments;

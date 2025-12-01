@@ -10,12 +10,20 @@ export type EventParticipants = {
   participants?: EventParticipant[];
 };
 
+export type Location = {
+  address?: string;
+  latitude: number;
+  longitude: number;
+  city?: string;
+  country?: string;
+};
+
 export interface EventResponseDto {
   id: string;
   title: string;
   description: string;
   date: string;
-  location?: string | null;
+  location?: Location | null;
   organizer: {
     id: string;
     name: string;

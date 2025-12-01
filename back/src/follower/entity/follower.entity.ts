@@ -9,7 +9,7 @@ import {
 import { User } from '../../user/entities/user.entity';
 
 @Entity('user_followers')
-@Unique(['user', 'follower']) // щоб не було дублікатів
+@Unique(['followee', 'follower']) // щоб не було дублікатів
 export class Follower {
   @PrimaryGeneratedColumn('uuid')
   id: number;

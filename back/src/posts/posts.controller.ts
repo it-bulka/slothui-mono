@@ -16,7 +16,8 @@ import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { Express } from 'express';
+import { ParseCreatePostPollPipe } from './pipes/parseCreatePostPoll.pipe';
+import { CreatePollDto } from '../polls/dto/createPoll.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('posts')
@@ -97,17 +98,19 @@ export class PostsController {
   async createPost(
     @UploadedFiles()
     files: {
-      image?: Express.Multer.File[];
+      images?: Express.Multer.File[];
       audio?: Express.Multer.File[];
       file?: Express.Multer.File[];
       video?: Express.Multer.File[];
     },
-    @Body('text') text: string,
+    @Body(ParseCreatePostPollPipe)
+    body: { poll?: CreatePollDto; text: string },
     @Request() req: AuthRequest,
   ) {
-    return await this.postsService.createPost({
+    return await this.postsService.createPostWithExtras({
       files,
-      text,
+      text: body.text,
+      poll: body.poll,
       authorId: req.user.id,
     });
   }

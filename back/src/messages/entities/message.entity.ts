@@ -18,7 +18,7 @@ export class Message {
 
   @Index()
   @ManyToOne(() => Chat, (chat) => chat.id, { onDelete: 'CASCADE' })
-  chat: string;
+  chat: Chat;
 
   @ManyToOne(() => User, (user) => user.messages, {
     onDelete: 'SET NULL',

@@ -4,7 +4,31 @@ import {
   MaxLength,
   IsOptional,
   IsDateString,
+  IsNumber,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class LocationDto {
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsNumber()
+  latitude: number;
+
+  @IsNumber()
+  longitude: number;
+
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @IsOptional()
+  @IsString()
+  country?: string;
+}
+
 export class CreateEventDto {
   @IsString()
   @IsNotEmpty()
@@ -17,9 +41,9 @@ export class CreateEventDto {
   description: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(255)
-  location?: string;
+  @ValidateNested()
+  @Type(() => LocationDto)
+  location?: LocationDto;
 
   @IsDateString()
   @IsNotEmpty()

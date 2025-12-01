@@ -23,10 +23,10 @@ export class Post {
   @ManyToOne(() => User, (user) => user.id)
   author: User;
 
-  @OneToMany(() => PostLike, (like) => like.id)
+  @OneToMany(() => PostLike, (like) => like.post)
   likes: PostLike[];
 
-  @OneToMany(() => PostSave, (save) => save.id)
+  @OneToMany(() => PostSave, (save) => save.post)
   saves: PostSave[];
 
   @CreateDateColumn()

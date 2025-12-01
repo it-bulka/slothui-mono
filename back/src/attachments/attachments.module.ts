@@ -8,7 +8,7 @@ import { AttachmentsCronService } from './attachments-cron.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Attachment])],
   controllers: [AttachmentsController],
-  providers: [AttachmentsService],
-  exports: [AttachmentsService, AttachmentsCronService],
+  providers: [AttachmentsService, AttachmentsCronService],
+  exports: [AttachmentsService],
 })
 export class AttachmentsModule {}

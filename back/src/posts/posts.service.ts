@@ -8,7 +8,10 @@ import { PostPaginatedRes } from './dto/post.dto';
 import { UserMapper } from '../user/user-mapper';
 import { PostLike } from './entities/postLike.entity';
 import { PostSave } from './entities/postSave.entity';
-import { CreatePostDto } from './dto/createPost.dto';
+import { CreatePostDto, CreatePostDtoWithFiles } from './dto/createPost.dto';
+import { EntityManager } from 'typeorm';
+import { CreatePollDto } from '../polls/dto/createPoll.dto';
+import { PollsService } from '../polls/polls.service';
 
 @Injectable()
 export class PostsService {
@@ -20,6 +23,7 @@ export class PostsService {
     @InjectRepository(PostSave)
     private readonly postSaveRepo: Repository<PostSave>,
     private readonly attachmentService: AttachmentsService,
+    private readonly pollsService: PollsService,
   ) {}
 
   async getMany({
@@ -59,20 +63,24 @@ export class PostsService {
     const groupedAttachments =
       this.attachmentService.groupByTypeAndParentId(attachments);
 
-    const postWithAttachments: PostDto[] = posts.map((post) => ({
+    const polls = await this.pollsService.getMany('post', postIds);
+    const groupedPolls = this.pollsService.groupedByParentId(polls);
+
+    const postWithExtras: PostDto[] = posts.map((post) => ({
       id: post.id,
       author: UserMapper.toResponse(post.author),
       content: post.content,
       isLiked: post.likes?.length > 0,
       isSaved: post.saves?.length > 0,
       attachments: groupedAttachments.get(post.id),
+      poll: groupedPolls.get(post.id),
     }));
 
     const lastPost = posts[posts.length - 1];
     const nextCursor = lastPost ? lastPost.createdAt.toISOString() : undefined;
 
     return {
-      items: postWithAttachments,
+      items: postWithExtras,
       hasMore,
       nextCursor,
     };
@@ -87,7 +95,13 @@ export class PostsService {
   }): Promise<PostDto> {
     const post = await this.postRepo
       .createQueryBuilder('post')
-      .leftJoinAndSelect('post.author', 'author')
+      .leftJoin('post.author', 'author')
+      .addSelect([
+        'author.id',
+        'author.name',
+        'author.nickname',
+        'author.avatarUrl',
+      ])
       .leftJoinAndSelect('post.likes', 'like', 'like.userId = :userId', {
         userId,
       })
@@ -107,6 +121,9 @@ export class PostsService {
     const attachments = await this.attachmentService.getMany('post', [postId]);
     const groupedAttachments = this.attachmentService.groupByType(attachments);
 
+    const polls = await this.pollsService.getMany('post', [postId]);
+    const groupedPolls = this.pollsService.groupedByParentId(polls);
+
     return {
       id: post.id,
       author: UserMapper.toResponse(post.author),
@@ -114,6 +131,7 @@ export class PostsService {
       isLiked,
       isSaved,
       attachments: groupedAttachments,
+      poll: groupedPolls.get(post.id),
     };
   }
 
@@ -167,18 +185,51 @@ export class PostsService {
     });
   }
 
-  async createPost(
-    dto: CreatePostDto & { authorId: string },
-  ): Promise<PostDto> {
-    const post = this.postRepo.create({
+  async createPostContent(
+    dto: { text: string; authorId: string },
+    manager?: EntityManager,
+  ) {
+    const repo = manager ? manager.getRepository(Post) : this.postRepo;
+
+    const post = repo.create({
       content: dto.text,
       author: { id: dto.authorId },
     });
+    return await repo.save(post);
+  }
 
-    await this.postRepo.save(post);
+  async createPostWithAttachments(
+    dto: CreatePostDtoWithFiles & { authorId: string },
+  ): Promise<PostDto> {
+    const post = await this.createPostContent(dto);
     await this.attachmentService.saveAttachments(dto.files, 'post', post.id);
 
     return await this.getById({ postId: post.id, userId: dto.authorId });
+  }
+
+  async createPostWithPoll(dto: {
+    text: string;
+    authorId: string;
+    poll: CreatePollDto;
+  }): Promise<PostDto> {
+    //TODO: add poll
+    const post = await this.createPostContent(dto);
+    await this.pollsService.createPoll(dto.poll, 'post', post.id);
+    return await this.getById({ postId: post.id, userId: dto.authorId });
+  }
+
+  async createPostWithExtras(
+    dto: CreatePostDto & { authorId: string },
+  ): Promise<PostDto | undefined> {
+    if ('poll' in dto && dto.poll) {
+      return await this.createPostWithPoll({
+        poll: dto.poll,
+        authorId: dto.authorId,
+        text: dto.text,
+      });
+    } else if ('files' in dto) {
+      return await this.createPostWithAttachments(dto);
+    }
   }
 
   async deletePost(postId: string, userId: string) {

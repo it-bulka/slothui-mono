@@ -51,7 +51,7 @@ export class MessagesService {
       throwErrorIfNotExist: true,
     });
     const msg = this.messageRepo.create({
-      chatId: chat.id,
+      chat: { id: chat.id },
       text,
       authorId: author.id,
     });
@@ -65,6 +65,7 @@ export class MessagesService {
 
     return MessageMapper.toResponce({
       ...msg,
+      chatId: msg.chat.id,
       attachments: groupedFiles,
     });
   }

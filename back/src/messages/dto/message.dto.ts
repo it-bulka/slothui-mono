@@ -4,6 +4,6 @@ export type MessageResponseDto = {
   id: string;
   chatId: string;
   text: string;
-  attachments: GroupedAttachment;
+  attachments?: GroupedAttachment;
   authorId: string;
 };
