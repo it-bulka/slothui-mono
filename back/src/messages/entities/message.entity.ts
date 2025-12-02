@@ -10,6 +10,7 @@ import {
 import { Chat } from '../../chats/entities/chat.entity';
 import { User } from '../../user/entities/user.entity';
 import { Story } from '../../stories/entities/story.entity';
+import { Event } from '../../events/entity/event.entity';
 
 @Entity()
 export class Message {
@@ -27,7 +28,7 @@ export class Message {
   @JoinColumn({ name: 'authorId' })
   author: User;
 
-  @Column()
+  @Column({ nullable: true })
   deletedAuthorName?: string;
 
   @Column()
@@ -41,6 +42,18 @@ export class Message {
     onDelete: 'SET NULL',
   })
   story: Story | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  storyIdHistory: string | null;
+
+  @ManyToOne(() => Event, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  event: Event | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  eventIdHistory: string | null;
 
   @CreateDateColumn()
   sentAt: Date;

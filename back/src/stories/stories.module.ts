@@ -9,5 +9,6 @@ import { StoryView } from './entities/storyView.entitty';
   imports: [TypeOrmModule.forFeature([Story, StoryView])],
   controllers: [StoriesController],
   providers: [StoriesService],
+  exports: [StoriesService],
 })
 export class StoriesModule {}

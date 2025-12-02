@@ -134,4 +134,15 @@ export class ChatsService {
     await this.chatRepo.remove(chat);
     return chat;
   }
+
+  async checkChatExistings(dto: { chatId: string; authorId: string }) {
+    const chat = await this.findOneById(dto.chatId, {
+      throwErrorIfNotExist: true,
+    });
+    const author = await this.userService.findOne(dto.authorId, {
+      throwErrorIfNotExist: true,
+    });
+
+    return { chat, author };
+  }
 }

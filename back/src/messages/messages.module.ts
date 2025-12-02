@@ -11,6 +11,9 @@ import { Chat } from '../chats/entities/chat.entity';
 import { AttachmentsModule } from '../attachments/attachments.module';
 import { Attachment } from '../attachments/entities/attachment.entity';
 import { EventEmitterModule } from '../event-emitter/event-emitter.module';
+import { StoriesModule } from '../stories/stories.module';
+import { EventsModule } from '../events/events.module';
+import { PollsModule } from '../polls/polls.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { EventEmitterModule } from '../event-emitter/event-emitter.module';
     TypeOrmModule.forFeature([Message, Story, User, Chat, Attachment]),
     AttachmentsModule,
     EventEmitterModule,
+    StoriesModule,
+    EventsModule,
+    PollsModule,
   ],
   controllers: [MessagesController],
   providers: [MessagesService],

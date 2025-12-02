@@ -131,6 +131,10 @@ export class EventsService {
     };
   }
 
+  async findOne(id: string) {
+    return await this.eventsRepo.findOne({ where: { id } });
+  }
+
   async getOne(eventId: string, userId: string): Promise<EventResponseDto> {
     const { raw, entities } = await this.eventsRepo
       .createQueryBuilder('event')
