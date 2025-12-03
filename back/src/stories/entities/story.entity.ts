@@ -22,6 +22,9 @@ export class Story {
   @Column()
   url: string;
 
+  @Column()
+  publicId: string;
+
   @Column({ type: 'enum', enum: ['image', 'video'] })
   type: 'image' | 'video';
 

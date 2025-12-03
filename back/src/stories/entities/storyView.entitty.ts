@@ -18,21 +18,24 @@ export class StoryView {
   @ManyToOne(() => Story, (story) => story.views, { onDelete: 'CASCADE' })
   story: Story;
 
-  @ManyToOne(() => User, (user) => user.viewedStories, { onDelete: 'CASCADE' })
-  viewer: User;
-
-  @CreateDateColumn()
-  viewedAt: Date;
-
-  @Column({ type: 'float', nullable: true })
-  watchedPercentage?: number;
-
   @Column()
   storyId: string;
+
+  @ManyToOne(() => User, (user) => user.viewedStories, { onDelete: 'CASCADE' })
+  viewer: User;
 
   @Column()
   viewerId: string;
 
-  @ManyToOne(() => Story, { onDelete: 'CASCADE', nullable: true })
-  lastViewedStory?: Story;
+  @CreateDateColumn({
+    type: 'timestamp',
+    transformer: {
+      to: (value: Date) => value,
+      from: (value: Date) => value.toISOString(),
+    },
+  })
+  viewedAt: string;
+
+  @Column({ type: 'float', nullable: true })
+  watchedPercentage?: number;
 }

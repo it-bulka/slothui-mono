@@ -17,6 +17,7 @@ import { MessageMapper } from './message-mapper';
 import { StoriesService } from '../stories/stories.service';
 import { EventsService } from '../events/events.service';
 import { PollsService } from '../polls/polls.service';
+import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
 
 @Injectable()
 export class MessagesService {
@@ -101,7 +102,7 @@ export class MessagesService {
       chatId,
       authorId,
     });
-    const story = await this.storiesService.findStory(storyId);
+    const story = await this.storiesService.findById(storyId);
     if (!story) {
       throw new NotFoundException(`Story with id ${storyId} not found`);
     }
@@ -186,5 +187,28 @@ export class MessagesService {
       return await this.createWithPoll(dto);
     }
     return await this.create(dto);
+  }
+
+  async sendMessageOnStory({
+    storyId,
+    senderId,
+    receiverId,
+    text,
+  }: CreateStoryReactionMsgDto & { senderId: string; storyId: string }) {
+    const story = await this.storiesService.findById(storyId);
+    if (!story) {
+      throw new NotFoundException(`Story not found`);
+    }
+    const chat = await this.chatsService.findOrCreatePrivateChat([
+      senderId,
+      receiverId,
+    ]);
+
+    return await this.createWithStory({
+      chatId: chat.id,
+      text,
+      authorId: senderId,
+      storyId: story.id,
+    });
   }
 }

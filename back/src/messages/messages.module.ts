@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { ChatsModule } from '../chats/chats.module';
@@ -22,7 +22,7 @@ import { PollsModule } from '../polls/polls.module';
     TypeOrmModule.forFeature([Message, Story, User, Chat, Attachment]),
     AttachmentsModule,
     EventEmitterModule,
-    StoriesModule,
+    forwardRef(() => StoriesModule),
     EventsModule,
     PollsModule,
   ],

@@ -49,6 +49,35 @@ export class ChatsService {
     return chat;
   }
 
+  async findOrCreatePrivateChat(members: [string, string]) {
+    if (!members || members.length !== 2) {
+      throw new BadRequestException(
+        `Invalid members amount: ${members.length}`,
+      );
+    }
+    let chat = await this.chatRepo
+      .createQueryBuilder('chat')
+      .innerJoin('chat.members', 'member')
+      .where('chat.type = :type', { type: 'private' })
+      .andWhere('member.id IN (:...userIds)', { userIds: members })
+      .groupBy('chat.id')
+      .having('COUNT(member.id) = 2')
+      .getOne();
+
+    if (chat) return chat;
+
+    const users = await this.userService.findByIds(members, {
+      throwErrorIfNotExist: true,
+    });
+
+    chat = this.chatRepo.create({
+      type: 'private',
+      members: users,
+    });
+
+    return this.chatRepo.save(chat);
+  }
+
   async create(preDto: CreateChatDtoWithOwner) {
     const dto = this._preCreateChat(preDto);
     const owner = await this.userService.findOne(dto.ownerId, {
