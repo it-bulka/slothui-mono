@@ -1,6 +1,7 @@
 import type { MessageWithStoryDto } from '@/entities/Message/model/type/message.dto.ts';
 import { Message, type MessageProps } from '@/shared/ui/Message/Message.tsx';
 import { StoryMessagePreview } from './StoryMessagePreview.tsx';
+import { SharedInfo } from '../base/SharedInfo.tsx';
 
 export const MessageWithStory = ({
   story,
@@ -11,6 +12,7 @@ export const MessageWithStory = ({
 }: MessageWithStoryDto & MessageProps) => {
   return (
     <Message isAuthor={isAuthor} isFirst={isFirst} time={time}>
+      <SharedInfo />
       <StoryMessagePreview {...story} />
       {text}
     </Message>

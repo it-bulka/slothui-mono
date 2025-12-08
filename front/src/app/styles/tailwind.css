@@ -203,5 +203,14 @@
     .bg-progress-gradient {
         background: conic-gradient(#ff0057, #ff7b00, #ff00c3, #ff0057);
     }
+
+    .msg-extra {
+        border-left: 1px solid gray;
+        display: block;
+        padding-left: 6px;
+        background-color: #0000ff24;
+        box-shadow: 2px 2px 15px gray;
+        margin: 0 0 4px 4px;
+    }
 }
 

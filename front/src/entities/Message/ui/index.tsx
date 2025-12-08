@@ -1,1 +1,0 @@
-export { MessageWithStory } from './with-story/MessageWithStory.tsx';

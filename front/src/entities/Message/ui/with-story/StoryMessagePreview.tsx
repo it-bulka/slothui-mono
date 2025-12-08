@@ -11,7 +11,7 @@ export const StoryMessagePreview = ({
 }: StoryDTO) => {
   const { isOpen, close, open } = useModalControl(false)
   return (
-    <div className="relative h-200px">
+    <div className="relative h-200px msg-extra">
       {user && (
         <HStack className="absolute w-full top-2 right-0 px-2">
           <Avatar src={user.avatarUrl} name={user.nickname} size="sm" />
