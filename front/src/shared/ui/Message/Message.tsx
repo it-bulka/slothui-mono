@@ -3,7 +3,7 @@ import cls from './Message.module.css'
 import classnames from 'classnames';
 import { Typography, TypographyTypes } from '@/shared/ui';
 
-interface MessageProps {
+export interface MessageProps {
   isFirst?: boolean;
   isAuthor: boolean;
   time: string;
