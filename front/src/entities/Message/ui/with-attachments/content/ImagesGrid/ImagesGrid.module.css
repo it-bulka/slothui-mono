@@ -1,0 +1,45 @@
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem;
+}
+
+.item:first-child {
+    width: 100%;
+}
+
+.item {
+    width: 30%;
+    max-height: 150px;
+    position: relative
+}
+
+.item image {
+    width: 100%;
+    object-fit: cover;
+}
+.moreWrapper {
+    position: relative;
+}
+
+.moreOverlay {
+    position: absolute;
+    color: white;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playOverlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

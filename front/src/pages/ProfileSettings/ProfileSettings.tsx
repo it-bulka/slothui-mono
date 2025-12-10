@@ -6,7 +6,7 @@ const ProfileSettings = () => {
   return (
     <SubSettingsWrapper title="Profile Settings">
       <form className="flex flex-col gap-4">
-        <FileInput title="Upload New Avatar" maxFiles={1} defaultPreview={MockAvatar}/>
+        <FileInput name={"newAvatar"} title="Upload New Avatar" maxFiles={1} defaultPreview={MockAvatar}/>
         <Input name="name" label="Username" />
         <Input name="about" label="About Me" />
         <Input name="phone" label="Phone number" />

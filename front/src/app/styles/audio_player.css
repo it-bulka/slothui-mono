@@ -1,0 +1,8 @@
+/* for react-h5-audio-player */
+.rhap_progress-indicator {
+    scale: 0.5;
+}
+
+.rhap_controls-section {
+    flex: 0 0 auto !important;
+}
