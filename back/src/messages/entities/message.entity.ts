@@ -55,6 +55,12 @@ export class Message {
   @Column({ type: 'varchar', nullable: true })
   eventIdHistory: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  forwardSourceType: 'message' | 'post' | 'event' | 'story' | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  forwardSourceId: string | null;
+
   @CreateDateColumn()
   sentAt: Date;
 }

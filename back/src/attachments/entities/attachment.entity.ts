@@ -7,6 +7,7 @@ import {
 import {
   AttachmentParentType,
   AttachmentType,
+  AttachmentMetadata,
 } from '../types/attachments.type';
 
 @Entity()
@@ -17,11 +18,14 @@ export class Attachment {
   @Column()
   type: AttachmentType;
 
+  @Column({ type: 'varchar', length: 255 })
+  originalName: string;
+
   @Column({ nullable: true })
   url?: string;
 
   @Column({ type: 'jsonb', nullable: true })
-  metadata?: unknown;
+  metadata?: AttachmentMetadata;
 
   @Column()
   parentType: AttachmentParentType;

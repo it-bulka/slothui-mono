@@ -87,7 +87,13 @@ export class AttachmentsService {
     let savedAttachments: Attachment[] = [];
     const attachmentsToSave: Pick<
       Attachment,
-      'parentType' | 'parentId' | 'type' | 'url' | 'publicId'
+      | 'parentType'
+      | 'parentId'
+      | 'type'
+      | 'url'
+      | 'publicId'
+      | 'metadata'
+      | 'originalName'
     >[] = [];
 
     const PROJECT_FOLDER: string =
@@ -99,15 +105,20 @@ export class AttachmentsService {
         `${PROJECT_FOLDER}/posts/image`,
       );
 
-      uploadedImgs.forEach((f) => {
-        if (!f) return;
+      uploadedImgs.forEach(({ file, result }) => {
+        if (!result) return;
 
         attachmentsToSave.push({
           parentType,
           parentId,
+          originalName: file.originalname,
           type: 'images' as AttachmentType,
-          url: f.secure_url,
-          publicId: f.public_id,
+          url: result.secure_url,
+          publicId: result.public_id,
+          metadata: {
+            size: result.bytes,
+            format: result.format,
+          },
         });
       });
     }
@@ -118,15 +129,20 @@ export class AttachmentsService {
         `${PROJECT_FOLDER}/posts/audio`,
       );
 
-      uploadedAudio.forEach((f) => {
-        if (!f) return;
+      uploadedAudio.forEach(({ file, result }) => {
+        if (!result) return;
 
         attachmentsToSave.push({
           parentType,
           parentId,
+          originalName: file.originalname,
           type: 'audio' as AttachmentType,
-          url: f.secure_url,
-          publicId: f.public_id,
+          url: result.secure_url,
+          publicId: result.public_id,
+          metadata: {
+            size: result.bytes,
+            format: result.format,
+          },
         });
       });
     }
@@ -137,15 +153,20 @@ export class AttachmentsService {
         'posts/file',
       );
 
-      uploadedAudio.forEach((f) => {
-        if (!f) return;
+      uploadedAudio.forEach(({ file, result }) => {
+        if (!result) return;
 
         attachmentsToSave.push({
           parentType,
           parentId,
+          originalName: file.originalname,
           type: 'file' as AttachmentType,
-          url: f.secure_url,
-          publicId: f.public_id,
+          url: result.secure_url,
+          publicId: result.public_id,
+          metadata: {
+            size: result.bytes,
+            format: result.format,
+          },
         });
       });
     }
@@ -156,15 +177,24 @@ export class AttachmentsService {
         `${PROJECT_FOLDER}/posts/video`,
       );
 
-      uploadedAudio.forEach((f) => {
-        if (!f) return;
+      uploadedAudio.forEach(({ file, result }) => {
+        if (!result) return;
 
+        const thumbnailUrl = this.cloudinaryService.generateThumbnailUrl(
+          result.public_id,
+        );
         attachmentsToSave.push({
           parentType,
           parentId,
+          originalName: file.originalname,
           type: 'video' as AttachmentType,
-          url: f.secure_url,
-          publicId: f.public_id,
+          url: result.secure_url,
+          publicId: result.public_id,
+          metadata: {
+            thumbnailUrl: thumbnailUrl,
+            size: result.bytes,
+            format: result.format,
+          },
         });
       });
     }

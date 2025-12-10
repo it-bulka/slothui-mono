@@ -60,9 +60,16 @@ export class CloudinaryService implements OnModuleInit {
   async uploadFiles(
     files: Express.Multer.File[],
     folder: string,
-  ): Promise<(UploadApiResponse | null)[]> {
-    const uploadPromises = files.map((file) => {
-      return this.uploadFile(file, folder).catch(() => null);
+  ): Promise<
+    { file: Express.Multer.File; result: UploadApiResponse | null }[]
+  > {
+    const uploadPromises = files.map(async (file) => {
+      try {
+        const result = await this.uploadFile(file, folder);
+        return { file, result };
+      } catch {
+        return { file, result: null };
+      }
     });
 
     return await Promise.all(uploadPromises);
@@ -71,12 +78,29 @@ export class CloudinaryService implements OnModuleInit {
   async uploadFilesStream(
     files: Express.Multer.File[],
     folder: string,
-  ): Promise<(UploadApiResponse | null)[]> {
-    const uploadPromises = files.map((file) => {
-      return this.uploadFileStream(file, folder).catch(() => null);
+  ): Promise<
+    { file: Express.Multer.File; result: UploadApiResponse | null }[]
+  > {
+    const uploadPromises = files.map(async (file) => {
+      try {
+        const result = await this.uploadFileStream(file, folder);
+        return { file, result };
+      } catch {
+        return { file, result: null };
+      }
     });
 
     return await Promise.all(uploadPromises);
+  }
+
+  generateThumbnailUrl(public_id: string) {
+    const thumbnailUrl = cloudinary.url(public_id, {
+      resource_type: 'video',
+      format: 'jpg',
+      transformation: [{ so: 1, width: 400, height: 400, crop: 'fill' }],
+    });
+
+    return thumbnailUrl;
   }
 
   async deleteFile(publicId: string) {
