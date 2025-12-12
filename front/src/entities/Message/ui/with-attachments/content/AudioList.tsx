@@ -5,12 +5,11 @@ import { AttachmentList, type AttachmentListProps } from './AttachmentList/Attac
 type IAudio = Pick<Attachment, 'id' | 'url' | 'originalName' | 'metadata'>
 type AudioListProps = Omit<AttachmentListProps<IAudio>, 'renderItem'>
 
-export const AudioList = ({ list, showAll, setShowAll, limit }: AudioListProps) => {
+export const AudioList = ({ list, showAll, limit }: AudioListProps) => {
   return (
     <AttachmentList
       list={list}
       showAll={showAll}
-      setShowAll={setShowAll}
       limit={limit}
       renderItem={(d) => {
         return (

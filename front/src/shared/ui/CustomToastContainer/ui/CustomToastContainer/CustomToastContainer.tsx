@@ -13,6 +13,7 @@ export const CustomToastContainer = () => {
         pauseOnHover
         limit={2}
         newestOnTop={true}
+        style={{ zIndex: 9999999999999 }}
       />
     </Portal>
   )

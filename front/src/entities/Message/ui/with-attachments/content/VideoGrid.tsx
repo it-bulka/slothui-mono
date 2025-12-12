@@ -1,4 +1,4 @@
-import { AttachmentVideo } from '../attachments';
+import { AttachmentVideoPreview } from '../attachments';
 import type { Attachment } from '../../../model/type/attachment.dto.ts';
 
 interface IVideoGrid {
@@ -31,7 +31,7 @@ export const VideoGrid = ({ list, showAll, setShowAll }: IVideoGrid ) => {
           )
         }
 
-        return <AttachmentVideo key={item.id} url={item.url} />;
+        return <AttachmentVideoPreview key={item.id} url={item.url} />;
       })}
     </div>
   );

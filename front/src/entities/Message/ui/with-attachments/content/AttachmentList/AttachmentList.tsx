@@ -1,30 +1,30 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Button } from '@/shared/ui';
 
 export interface AttachmentListProps<T> {
   list: T[]
-  showAll: boolean
-  setShowAll: (arg: boolean) => void,
+  showAll?: boolean
   renderItem: (item: T) => ReactNode,
   limit?: number
 }
-export const AttachmentList = <T,>({ list, showAll, setShowAll, renderItem, limit = 3 }: AttachmentListProps<T>) => {
-  const visible = showAll ? list : list.slice(0, limit);
+export const AttachmentList = <T,>({ list, showAll = false, renderItem, limit = 3 }: AttachmentListProps<T>) => {
+  const [showAllItems, setShowAllItems] = useState(showAll);
+
+  const visible = showAllItems ? list : list.slice(0, limit);
   const hiddenCount = list.length - limit;
+  const isMore = !showAllItems && hiddenCount > 0
 
   return (
     <div className="attachments-docs">
       {visible.map(renderItem)}
 
-      {!showAll && hiddenCount > 0 && (
-        <Button
-          className="ml-auto"
-          variant="link"
-          onClick={() => setShowAll(true)}
-        >
-          +{hiddenCount} more
-        </Button>
-      )}
+      <Button
+        className="ml-auto"
+        variant="link"
+        onClick={() => setShowAllItems(isMore)}
+      >
+        {isMore ? `+${hiddenCount} more` : 'show less'}
+      </Button>
     </div>
   );
 };

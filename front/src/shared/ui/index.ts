@@ -34,3 +34,5 @@ export { CustomToastContainer } from './CustomToastContainer';
 export { CopyButton } from './CopyButton';
 export { VStack, HStack } from './Stack';
 export { ShareButton } from './ShareButton';
+export { MoreButton } from './MoreButton';
+export { DownloadButton } from './DownloadButton';

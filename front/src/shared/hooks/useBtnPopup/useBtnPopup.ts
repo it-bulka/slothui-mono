@@ -1,15 +1,35 @@
-import { flip, offset, shift, useClick, useDismiss, useFloating, useInteractions } from '@floating-ui/react';
+import {
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  autoUpdate
+} from '@floating-ui/react';
 import { useState } from 'react';
 
-export const useBtnPopup = ({ defaultState = false }: {defaultState?: boolean } = {}) => {
+interface UseFloatingOptions {
+  defaultState?: boolean
+  placement?: 'bottom' | 'top' | 'left' | 'right'
+  strategy?: 'fixed' | 'absolute'
+}
+
+export const useBtnPopup = ({
+  defaultState = false,
+  placement = 'bottom',
+  strategy = 'fixed',
+}: UseFloatingOptions = {}) => {
   const [isOpen, setIsOpen] = useState(defaultState);
 
-  const { x, y, refs, strategy, context } = useFloating({
-    placement: 'bottom',
+  const { x, y, refs, strategy: st, context } = useFloating({
+    placement,
     middleware: [offset(10), flip(), shift()],
-    strategy: 'fixed',
+    strategy,
     open: isOpen,
     onOpenChange: setIsOpen,
+    whileElementsMounted: autoUpdate
   });
 
   const click = useClick(context);
@@ -20,5 +40,5 @@ export const useBtnPopup = ({ defaultState = false }: {defaultState?: boolean } 
 
   const { getFloatingProps, getReferenceProps } = useInteractions([click, dismiss]);
 
-  return { x, y, strategy, context, refs, getFloatingProps, getReferenceProps };
+  return { x, y, strategy: st, context, refs, getFloatingProps, getReferenceProps };
 }
