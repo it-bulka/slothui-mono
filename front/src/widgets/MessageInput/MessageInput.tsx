@@ -3,7 +3,7 @@ import { EmojiAction, SendAction } from '@/features';
 import { AttachAction } from '../AttachAction';
 import { twMerge } from 'tailwind-merge';
 import { usePopup } from '@/shared/hooks';
-import { DraftAttachmentsPreview } from '@/features';
+import { DraftAttachmentsPreview, DraftMapView } from '@/features';
 import { withDraftMessageProvider } from '@/features/MessageComposer';
 import { useDraftMessage } from '@/features/MessageComposer';
 import { useEffect } from 'react';
@@ -21,15 +21,15 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
     open, close
   } = usePopup<HTMLDivElement, HTMLDivElement>({ sameWidth: true, trigger: 'manual' });
 
-  const { draft: { attachments }} = useDraftMessage()
+  const { draft: { attachments, geo }} = useDraftMessage()
 
   useEffect(() => {
-    if(attachments.length) {
+    if(attachments.length || geo) {
       open()
     } else {
       close()
     }
-  }, [attachments, open, close])
+  }, [attachments, geo, open, close])
   return (
     <>
       <div
@@ -58,6 +58,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             className="max-h-[70%] max-w-full p-2 rounded-md bg-gray-100"
           >
             <DraftAttachmentsPreview />
+            <DraftMapView />
           </div>
         )
       }

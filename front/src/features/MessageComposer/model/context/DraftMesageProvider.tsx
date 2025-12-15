@@ -61,8 +61,11 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const setGeo = (geo: DraftGeo) =>
     setDraft(d => ({ ...d, geo }));
 
-  const clearGeo = () =>
+  const clearGeo = () => {
+    console.log('clear Geo');
     setDraft(d => ({ ...d, geo: null }));
+  }
+
 
   const setPoll = (poll: DraftPoll) =>
     setDraft(d => ({ ...d, poll }));
@@ -100,6 +103,7 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
     }, { image: [], file: [], audio: [], video: [] } as DraftGroupedAttachments)
   }, [draft.attachments]);
 
+  console.log('DraftMessageProvider', draft.geo);
   return (
     <DraftMessageContext.Provider value={{
       draft,

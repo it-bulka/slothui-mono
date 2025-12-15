@@ -26,7 +26,7 @@
 }
 
 .active {
-  @apply active:top-1 active:left-1;
+  @apply active:scale-[0.97];
 }
 
 .active:active:not(.link) {

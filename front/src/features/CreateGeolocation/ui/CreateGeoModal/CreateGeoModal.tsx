@@ -1,7 +1,7 @@
 import { Modal, ModalCard } from '@/shared/ui';
 import { CreateGeoFormLazy } from '../CreateGeoForm/CreateGeoForm.async.tsx';
 
-interface GeoModalProps {
+export interface GeoModalProps {
   isOpen: boolean
   onClose: () => void
 }

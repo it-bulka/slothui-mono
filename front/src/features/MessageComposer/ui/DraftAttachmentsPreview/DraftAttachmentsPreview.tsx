@@ -4,7 +4,9 @@ import { MediaGrid } from '@/features/MessageComposer/ui/MediaGrid/MediaGrid.tsx
 import { useDraftMessage } from '@/features/MessageComposer';
 
 export const DraftAttachmentsPreview = () => {
-  const { groupedDraftAttachments, removeAttachment } = useDraftMessage()
+  const { draft: { attachments }, groupedDraftAttachments, removeAttachment } = useDraftMessage()
+  if(!attachments.length) return null;
+
   return (
     <div className="max-h-[70vh] overflow-y-auto">
       <div>

@@ -6,7 +6,7 @@ export const useGeolocation = () => {
   const getLocation = () => {
     setIsLoading(true)
     return new Promise<[number, number] | null>((resolve) => {
-      navigator.geolocation.getCurrentPosition(
+      navigator.geolocation?.getCurrentPosition(
         (pos) => {
           setIsLoading(false)
           resolve([pos.coords.latitude, pos.coords.longitude])

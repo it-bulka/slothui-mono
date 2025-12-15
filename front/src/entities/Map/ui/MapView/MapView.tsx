@@ -3,6 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { RecenterAutomatically } from '../RecenterAutomatically/RecenterAutomatically.tsx';
+import classnames from 'classnames';
+import { twMerge } from 'tailwind-merge';
+import { FixMapSize } from '../FixMapSize/FixMapSize.tsx';
 
 const markerIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -13,10 +16,11 @@ const markerIcon = new L.Icon({
 interface MapViewProps {
   position?: [number, number] | null; //
   locationName?: string
+  className?: string,
 }
-export const MapView = ({ children, position, locationName }: PropsWithChildren<MapViewProps>) => {
+export const MapView = ({ children, position, locationName, className }: PropsWithChildren<MapViewProps>) => {
   return (
-    <div style={{ height: '400px', width: '100%', position: 'relative' }}>
+    <div className={twMerge(classnames('h-[400px] w-full relative', [className]))}>
       {children}
       <MapContainer
         center={position || [50.4501, 30.5234]} // Київ як дефолт
@@ -34,6 +38,7 @@ export const MapView = ({ children, position, locationName }: PropsWithChildren<
           </Marker>
         )}
         {position && <RecenterAutomatically lat={position[0]} lng={position[1]} />}
+        <FixMapSize />
       </MapContainer>
     </div>
   )
