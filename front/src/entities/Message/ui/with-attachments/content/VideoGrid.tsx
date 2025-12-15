@@ -1,5 +1,5 @@
-import { AttachmentVideoPreview } from '../attachments';
-import type { Attachment } from '../../../model/type/attachment.dto.ts';
+import { AttachmentVideoPreview } from '@/shared/ui';
+import type { Attachment } from '@/shared/ui/Attachments/model/type/attachment.dto.ts';
 
 interface IVideoGrid {
   list: Attachment[],
@@ -31,7 +31,7 @@ export const VideoGrid = ({ list, showAll, setShowAll }: IVideoGrid ) => {
           )
         }
 
-        return <AttachmentVideoPreview key={item.id} url={item.url} />;
+        return <AttachmentVideoPreview key={item.id} url={item.url} originalName={item.originalName} />;
       })}
     </div>
   );

@@ -3,7 +3,7 @@ import css from './ImagesGrid.module.css';
 import {
   renderMediaItem
 } from '../../attachments/renderMediaItem/renderMediaItem.tsx';
-import type { Attachment } from '../../../../model/type/attachment.dto.ts';
+import type { Attachment } from '@/shared/ui/Attachments/model/type/attachment.dto.ts';
 import {
   MediaAttachmentsModal
 } from '../../modals/MediaAttachmentsModal/MediaAttachmentsModal.tsx';

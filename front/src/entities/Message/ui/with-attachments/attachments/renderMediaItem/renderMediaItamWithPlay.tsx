@@ -1,17 +1,24 @@
-import type { Attachment } from '@/entities/Message/model/type/attachment.dto.ts';
-import { AttachmentImage } from '../AttachmentImage.tsx';
+import type { Attachment } from '@/shared/ui/Attachments/model/type/attachment.dto.ts';
 import { AttachmentVideo } from '../AttachmentVideo.tsx';
+import { MediaMoreAction } from '@/entities/Message/ui/with-attachments/actions/MediaMoreAction/MediaMoreAction.tsx';
+import { AttachmentImage } from '@/shared/ui';
 
 export const renderMediaItemWithPlay = (item: Attachment, className?: string) => {
   if (item.type === 'images') {
     return <AttachmentImage
       key={item.id}
       url={item.url}
-      publicId={item.publicId}
       originalName={item.originalName}
       className={className}
       imgClass={className}
-      withMoreBtn
+      additionalComp={(
+        <MediaMoreAction
+          className="absolute top-2 right-2"
+          fileUrl={item.url}
+          filename={item.originalName}
+          publicId={item.publicId}
+        />
+      )}
     />;
   }
 
@@ -23,6 +30,13 @@ export const renderMediaItemWithPlay = (item: Attachment, className?: string) =>
       publicId={item.publicId}
       className={className}
       videoClass={className}
+      additionalComponent={(
+        <MediaMoreAction
+          className="absolute top-2 right-2" fileUrl={item.url}
+          filename={item.originalName}
+          publicId={item.publicId}
+        />
+      )}
     />
   );
 };

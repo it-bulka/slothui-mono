@@ -21,3 +21,4 @@ export { UploadPhotosButton } from './UploadPhotos';
 export { UploadAudioButton } from './UploadAudio';
 export { UploadStoryButton } from './UploadStory';
 export { ShareOnSocialMediaModal } from './ShareOnSocialMedia';
+export { DraftAttachmentsPreview } from './MessageComposer/ui';

@@ -1,10 +1,14 @@
-import type { Attachment } from '../../../../model/type/attachment.dto.ts';
-import { useCallback } from 'react';
+import type { Attachment } from '../../model/type/attachment.dto.ts';
+import { type ReactNode, useCallback } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { shortenMiddle } from '@/shared/libs';
 
-export const AttachmentAudio = ({ url, originalName, metadata }: Pick<Attachment, 'url' | 'originalName' | 'metadata'>) => {
+type AttachmentAudioProps = Pick<Attachment, 'url' | 'originalName'> & {
+  size?: number;
+  additionalComp?: ReactNode
+}
+export const AttachmentAudio = ({ url, originalName, size }: AttachmentAudioProps) => {
   const formatSize = useCallback((bytes?: number) => {
     if (!bytes) return '';
     if (bytes < 1024) return bytes + ' B';
@@ -16,8 +20,8 @@ export const AttachmentAudio = ({ url, originalName, metadata }: Pick<Attachment
     <div className="attachment-audio flex flex-col gap-1 p-2 ">
       <div className="flex align-bottom gap-1">
         <p className="text-sm font-medium grow">{originalName ? shortenMiddle(originalName) : 'Audio file'}</p>
-        {metadata?.size && (
-          <span className="text-xs text-gray-500">{formatSize(metadata.size)}</span>
+        {size && (
+          <span className="text-xs text-gray-500">{formatSize(size)}</span>
         )}
       </div>
 

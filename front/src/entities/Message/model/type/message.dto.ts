@@ -1,4 +1,4 @@
-import type { GroupedAttachment } from './attachment.dto.ts';
+import type { GroupedAttachment } from '../../../../shared/ui/Attachments/model/type/attachment.dto.ts';
 import type { PollDto } from './poll.dto.ts';
 import type { StoryDTO } from '@/shared/libs/services';
 

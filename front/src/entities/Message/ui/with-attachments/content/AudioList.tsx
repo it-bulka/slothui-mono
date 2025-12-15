@@ -1,6 +1,6 @@
-import { AttachmentAudio } from '../attachments';
-import type { Attachment } from '../../../model/type/attachment.dto.ts';
+import type { Attachment } from '../../../../../shared/ui/Attachments/model/type/attachment.dto.ts';
 import { AttachmentList, type AttachmentListProps } from './AttachmentList/AttachmentList.tsx';
+import { AttachmentAudio } from '@/shared/ui';
 
 type IAudio = Pick<Attachment, 'id' | 'url' | 'originalName' | 'metadata'>
 type AudioListProps = Omit<AttachmentListProps<IAudio>, 'renderItem'>
@@ -13,7 +13,7 @@ export const AudioList = ({ list, showAll, limit }: AudioListProps) => {
       limit={limit}
       renderItem={(d) => {
         return (
-          <AttachmentAudio key={d.id} url={d.url} originalName={d.originalName} metadata={d.metadata}/>
+          <AttachmentAudio key={d.id} url={d.url} originalName={d.originalName} size={d.metadata?.size}/>
         )
       }}
     />

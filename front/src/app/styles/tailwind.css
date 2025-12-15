@@ -67,6 +67,7 @@
     --z-index-overlay: 99999;
     --z-index-modal: 999999;
     --z-index-modal-content: 9999999;
+    --z-index-actions-popup: 999999999;
 
     /* === MODAL === */
     --modal-y-shift: -75.2%;

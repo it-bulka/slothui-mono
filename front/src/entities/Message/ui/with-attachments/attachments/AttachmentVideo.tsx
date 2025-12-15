@@ -1,19 +1,18 @@
-import type { Attachment } from '../../../model/type/attachment.dto.ts';
-import { MediaMoreAction } from '@/entities/Message/ui/with-attachments/actions/MediaMoreAction/MediaMoreAction.tsx';
+import type { Attachment } from '../../../../../shared/ui/Attachments/model/type/attachment.dto.ts';
 import classnames from 'classnames';
+import type { ReactNode } from 'react';
 
 type IAttachmentVideo = Pick<Attachment, 'url' | 'originalName' | 'publicId'> & {
   className?: string;
   videoClass?: string;
   withMoreBtn?: boolean;
+  additionalComponent?: ReactNode;
 }
 export const AttachmentVideo = ({
   url,
-  originalName,
-  withMoreBtn,
-  publicId,
   className,
-  videoClass
+  videoClass,
+  additionalComponent
 }: IAttachmentVideo) => {
   return (
     <div className={classnames('relative',[className])}>
@@ -21,7 +20,7 @@ export const AttachmentVideo = ({
         <source src={url} />
       </video>
 
-      {withMoreBtn && <MediaMoreAction className="absolute top-2 right-2" fileUrl={url} filename={originalName} publicId={publicId} />}
+      {additionalComponent}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import type { FileWithTempUrl } from '../../../../types/file.types.tsx';
 export type AttachmentType = 'images' | 'file' | 'audio' | 'video';
 export interface AttachmentMetadata {
   width?: number;
@@ -18,3 +19,4 @@ export type Attachment = {
   type: AttachmentType;
 }
 export type GroupedAttachment = Record<AttachmentType, Attachment[]>;
+export type GroupedAttachmentWithTempUrl = Record<AttachmentType, FileWithTempUrl[]>;

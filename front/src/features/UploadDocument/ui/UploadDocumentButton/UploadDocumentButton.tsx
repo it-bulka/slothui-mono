@@ -2,16 +2,11 @@ import { UploadButton } from '@/shared/ui';
 import DocumentSvg from '@/shared/assets/images/actions/document.svg?react'
 import { memo } from 'react';
 
+interface UploadDocumentButtonProps {
+  onFilesSelect: (files: File[]) => void;
+}
 
-export const UploadDocumentButton = memo(() => {
-  const onFilesSelect = (files: File[])=> {
-    const formData = new FormData()
-
-    files.forEach(f => {
-      formData.append('files', f)
-    })
-  }
-
+export const UploadDocumentButton = memo(({ onFilesSelect }: UploadDocumentButtonProps) => {
   return (
     <>
       <UploadButton

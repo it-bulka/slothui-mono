@@ -1,5 +1,5 @@
-import type { Attachment } from '@/entities/Message/model/type/attachment.dto.ts';
-import { AttachmentImage, AttachmentVideoPreview } from '@/entities/Message/ui/with-attachments/attachments';
+import type { Attachment } from '@/shared/ui/Attachments/model/type/attachment.dto.ts';
+import { AttachmentVideoPreview, AttachmentImage } from '@/shared/ui';
 
 export const renderMediaItem = (item: Attachment, className?: string, onClick?: () => void) => {
   if (item.type === 'images') {
@@ -8,7 +8,6 @@ export const renderMediaItem = (item: Attachment, className?: string, onClick?: 
       url={item.url}
       originalName={item.originalName}
       className={className}
-      publicId={item.publicId}
       onClick={onClick}
     />;
   }
