@@ -21,4 +21,5 @@ export { UploadPhotosButton } from './UploadPhotos';
 export { UploadAudioButton } from './UploadAudio';
 export { UploadStoryButton } from './UploadStory';
 export { ShareOnSocialMediaModal } from './ShareOnSocialMedia';
-export { DraftAttachmentsPreview, DraftMapView } from './MessageComposer/ui';
+export { DraftAttachmentsPreview, DraftMapView, DraftPollView } from './MessageComposer/ui';
+export { PollDraftProvider, type PollDraft } from './CreatePoll';

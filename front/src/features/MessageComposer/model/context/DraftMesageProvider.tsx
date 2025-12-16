@@ -5,12 +5,12 @@ import { draftToPayload } from '../draft-to-payload.ts';
 import { nanoid } from 'nanoid';
 import { validateAddAttachments } from '../validation/validation.ts';
 import type {
-  DraftPoll,
   DraftGeo,
   DraftAttachmentType,
   MessageDraft,
   DraftGroupedAttachments
 } from '../types';
+import type { PollDraft } from '../../../CreatePoll';
 
 export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const [draft, setDraft] = useState<MessageDraft>({
@@ -62,12 +62,10 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
     setDraft(d => ({ ...d, geo }));
 
   const clearGeo = () => {
-    console.log('clear Geo');
     setDraft(d => ({ ...d, geo: null }));
   }
 
-
-  const setPoll = (poll: DraftPoll) =>
+  const setPoll = (poll: PollDraft) =>
     setDraft(d => ({ ...d, poll }));
 
   const clearPoll = () =>
@@ -103,7 +101,7 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
     }, { image: [], file: [], audio: [], video: [] } as DraftGroupedAttachments)
   }, [draft.attachments]);
 
-  console.log('DraftMessageProvider', draft.geo);
+  console.log('DraftMessageProvider', draft.poll);
   return (
     <DraftMessageContext.Provider value={{
       draft,

@@ -5,7 +5,7 @@ import { memo } from 'react';
 type SingleChoice = SingleChoicePollProps & { isMultiple?: false }
 type MultipleChoice = MultipleChoicePollProps & { isMultiple: true }
 
-type PollViewProps = (SingleChoice | MultipleChoice)
+export type PollViewProps = (SingleChoice | MultipleChoice)
 
 export const PollView = memo((props: PollViewProps) => {
   if(props.isMultiple) {

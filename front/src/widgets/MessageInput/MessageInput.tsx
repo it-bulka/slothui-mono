@@ -1,11 +1,9 @@
 import { Input } from '@/shared/ui';
-import { EmojiAction, SendAction } from '@/features';
 import { AttachAction } from '../AttachAction';
 import { twMerge } from 'tailwind-merge';
 import { usePopup } from '@/shared/hooks';
-import { DraftAttachmentsPreview, DraftMapView } from '@/features';
-import { withDraftMessageProvider } from '@/features/MessageComposer';
-import { useDraftMessage } from '@/features/MessageComposer';
+import { DraftAttachmentsPreview, DraftMapView, DraftPollView, EmojiAction, SendAction } from '@/features';
+import { withDraftMessageProvider, useDraftMessage } from '@/features/MessageComposer';
 import { useEffect } from 'react';
 
 interface MessageInputProps {
@@ -21,15 +19,15 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
     open, close
   } = usePopup<HTMLDivElement, HTMLDivElement>({ sameWidth: true, trigger: 'manual' });
 
-  const { draft: { attachments, geo }} = useDraftMessage()
+  const { draft: { attachments, geo, poll }} = useDraftMessage()
 
   useEffect(() => {
-    if(attachments.length || geo) {
+    if(attachments.length || geo || poll) {
       open()
     } else {
       close()
     }
-  }, [attachments, geo, open, close])
+  }, [attachments, geo, poll, open, close])
   return (
     <>
       <div
@@ -55,10 +53,11 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             ref={setPopupWrapperRef}
             {...getFloatingProps()}
             style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
-            className="max-h-[70%] max-w-full p-2 rounded-md bg-gray-100"
+            className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100"
           >
             <DraftAttachmentsPreview />
             <DraftMapView />
+            <DraftPollView />
           </div>
         )
       }

@@ -3,13 +3,15 @@ import { memo } from 'react';
 import DeleteSvg from '@/shared/assets/images/actions/delete.svg?react'
 import { Toggler, Error } from '@/shared/ui';
 import { Controller } from 'react-hook-form';
-import { usePollForm } from '@/features/CreatePoll/model/libs';
+import { usePollForm } from '../../model/libs';
+import type { PollDraft } from '../../model/types/poll.types.tsx';
 
 interface CreatePollModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onCreatePoll: (poll: PollDraft) => void;
 }
-export const CreatePollModal = memo(({ isOpen, onClose }: CreatePollModalProps) => {
+export const CreatePollModal = memo(({ isOpen, onClose, onCreatePoll }: CreatePollModalProps) => {
   const {
     onSubmit,
     remove,
@@ -22,7 +24,7 @@ export const CreatePollModal = memo(({ isOpen, onClose }: CreatePollModalProps) 
     validateQuestion,
     isNoEmptyInput,
     answerErr
-  } = usePollForm()
+  } = usePollForm({ onSubmit: onCreatePoll })
 
   return (
     <>

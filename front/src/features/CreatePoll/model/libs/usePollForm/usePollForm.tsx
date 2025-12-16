@@ -1,18 +1,15 @@
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useCallback, useMemo, useEffect } from 'react';
+import type { PollDraft } from '../../types/poll.types.tsx';
 
-type PollActionForm = {
-  question: string;
-  answers: {value: string}[];
-  anonymous: boolean;
-  multiple: boolean;
+type PollActionForm = PollDraft & {
   root: string;
 }
 
 const ERRORS_FIELDS = {
   ROOT: 'answers',
 } as const
-export const usePollForm = ({ limit = 4 }: { limit?: number } = {}) => {
+export const usePollForm = ({ limit = 4, onSubmit }: { limit?: number, onSubmit?: (poll: PollDraft) => void } = {}) => {
   const {
     handleSubmit, control, watch, setError, getValues, formState: { errors }, clearErrors
   } = useForm<PollActionForm>({
@@ -64,7 +61,7 @@ export const usePollForm = ({ limit = 4 }: { limit?: number } = {}) => {
     append({ value: ''})
   }, [append])
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmitHandle = handleSubmit((data) => {
     // TODO: add creating poll
     const values = data.answers.map(a => a.value.trim().toLowerCase());
     const hasDuplicates = new Set(values).size !== values.length;
@@ -80,6 +77,8 @@ export const usePollForm = ({ limit = 4 }: { limit?: number } = {}) => {
     const last = values[values.length - 1]
     if(last === '') values.pop()
 
+    console.log('onSubmit props', onSubmit)
+    onSubmit?.(data)
     console.log('✅ valid poll', data);
   })
 
@@ -115,7 +114,7 @@ export const usePollForm = ({ limit = 4 }: { limit?: number } = {}) => {
     isNoEmptyInput,
     append,
     validateAnswer,
-    onSubmit,
+    onSubmit: onSubmitHandle,
     addFieldOnInputChange,
     addField,
     remove,

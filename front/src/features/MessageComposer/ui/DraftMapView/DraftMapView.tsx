@@ -1,6 +1,6 @@
 import { MapView } from '@/entities';
 import { useDraftMessage } from '../../model/context/useDraftMessage.tsx';
-import { CloseButton } from '@/shared/ui';
+import { ClearDraftButton } from '@/features/MessageComposer/ui/ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftMapView = () => {
   const { draft: { geo }, clearGeo } = useDraftMessage()
@@ -9,7 +9,7 @@ export const DraftMapView = () => {
 
   return (
     <div className="h-200px relative" >
-      <CloseButton className="absolute top-2 right-2 z-[999999]" onClick={() => clearGeo()}></CloseButton>
+      <ClearDraftButton onClick={clearGeo} />
       <MapView position={geo.position} locationName={geo.locationName} className="h-[200px]"/>
     </div>
   )
