@@ -11,7 +11,7 @@ import {
   SendAction
 } from '@/features';
 import { withDraftMessageProvider, useDraftMessage } from '@/features/MessageComposer';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface MessageInputProps {
   className?: string;
@@ -35,6 +35,15 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
       close()
     }
   }, [attachments, geo, poll, event, open, close])
+
+  const floatingStyle = useMemo(
+    () => ({
+      position: strategy,
+      top: y ?? 0,
+      left: x ?? 0,
+    }),
+    [strategy, x, y]
+  )
   return (
     <>
       <div
@@ -59,7 +68,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
           <div
             ref={setPopupWrapperRef}
             {...getFloatingProps()}
-            style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
+            style={floatingStyle}
             className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100"
           >
             <DraftAttachmentsPreview />
