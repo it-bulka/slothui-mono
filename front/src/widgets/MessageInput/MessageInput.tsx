@@ -2,7 +2,14 @@ import { Input } from '@/shared/ui';
 import { AttachAction } from '../AttachAction';
 import { twMerge } from 'tailwind-merge';
 import { usePopup } from '@/shared/hooks';
-import { DraftAttachmentsPreview, DraftMapView, DraftPollView, EmojiAction, SendAction } from '@/features';
+import {
+  DraftAttachmentsPreview,
+  DraftEventPreview,
+  DraftMapView,
+  DraftPollView,
+  EmojiAction,
+  SendAction
+} from '@/features';
 import { withDraftMessageProvider, useDraftMessage } from '@/features/MessageComposer';
 import { useEffect } from 'react';
 
@@ -19,15 +26,15 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
     open, close
   } = usePopup<HTMLDivElement, HTMLDivElement>({ sameWidth: true, trigger: 'manual' });
 
-  const { draft: { attachments, geo, poll }} = useDraftMessage()
+  const { draft: { attachments, geo, poll, event }} = useDraftMessage()
 
   useEffect(() => {
-    if(attachments.length || geo || poll) {
+    if(attachments.length || geo || poll || event) {
       open()
     } else {
       close()
     }
-  }, [attachments, geo, poll, open, close])
+  }, [attachments, geo, poll, event, open, close])
   return (
     <>
       <div
@@ -58,6 +65,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             <DraftAttachmentsPreview />
             <DraftMapView />
             <DraftPollView />
+            <DraftEventPreview />
           </div>
         )
       }

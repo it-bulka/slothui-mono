@@ -7,6 +7,7 @@ import type {
   DraftGroupedAttachments
 } from '../types';
 import type { PollDraft } from '../../../CreatePoll';
+import type { DraftEvent } from '../../../CreateEvent';
 
 export type DraftMessageAttachments = { file: FileWithTempUrl[], images: FileWithTempUrl[], audio: FileWithTempUrl[], video: FileWithTempUrl[] }
 interface DraftMessageType {
@@ -22,6 +23,9 @@ interface DraftMessageType {
   // poll
   setPoll: (poll: PollDraft) => void;
   clearPoll: () => void;
+  // poll
+  setEvent: (event: DraftEvent) => void;
+  clearEvent: () => void;
   // submit
   submit: () => void;
 

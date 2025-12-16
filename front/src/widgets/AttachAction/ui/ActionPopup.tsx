@@ -8,7 +8,9 @@ import {
   UploadPhotosButton,
   UploadAudioButton,
   PollDraftProvider,
-  type PollDraft
+  type PollDraft,
+  DraftEventProvider,
+  type DraftEvent
 } from '@/features';
 
 import { ActionButton } from '@/shared/ui';
@@ -20,7 +22,7 @@ import type { GeoData } from '@/features/CreateGeolocation/model/types/geo.types
 
 //TODO: remove to widgets
 export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) => {
-  const { addAttachments, setGeo, setPoll } = useDraftMessage()
+  const { addAttachments, setGeo, setPoll, setEvent } = useDraftMessage()
 
   const onFilesSelected = useCallback((type: DraftAttachmentType)=> (files: File[]) => {
     addAttachments(type, files);
@@ -33,10 +35,14 @@ export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) 
   }, [setGeo, onBtnClick]);
 
   const onPollCreate = useCallback((poll: PollDraft) => {
-    console.log('AttachActionsPopup', poll);
     setPoll(poll)
     onBtnClick?.()
   }, [setPoll, onBtnClick]);
+
+  const onEventCreate = useCallback((event: DraftEvent) => {
+    setEvent(event)
+    onBtnClick?.()
+  }, [setEvent, onBtnClick]);
 
   return (
     <div className="grid grid-cols-4 gap-2 bg-white px-2 py-4 rounded-lg border-gray-g2 shadow">
@@ -51,7 +57,9 @@ export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) 
       <PollDraftProvider onPollCreate={onPollCreate}>
         <CreatePollButton />
       </PollDraftProvider>
-      <CreateEventButton />
+      <DraftEventProvider onEventCreate={onEventCreate}>
+        <CreateEventButton />
+      </DraftEventProvider>
     </div>
   )
 }

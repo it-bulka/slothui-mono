@@ -11,6 +11,7 @@ import type {
   DraftGroupedAttachments
 } from '../types';
 import type { PollDraft } from '../../../CreatePoll';
+import type { DraftEvent } from '@/features/CreateEvent';
 
 export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const [draft, setDraft] = useState<MessageDraft>({
@@ -71,6 +72,12 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const clearPoll = () =>
     setDraft(d => ({ ...d, poll: null }));
 
+  const setEvent = (event: DraftEvent) =>
+    setDraft(d => ({ ...d, event }));
+
+  const clearEvent = () =>
+    setDraft(d => ({ ...d, event: null }));
+
   const submit = () => {
     if (!draft.text && !draft.attachments.length && !draft.geo && !draft.poll) {
       return;
@@ -112,6 +119,8 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
       setPoll,
       clearPoll,
       setText,
+      setEvent,
+      clearEvent,
       submit,
       groupedDraftAttachments,
     }}>

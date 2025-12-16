@@ -3,16 +3,9 @@ import { useForm, Controller } from 'react-hook-form'
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Button, Typography, Input, CheckboxInput, FormField, Textarea } from '@/shared/ui';
+import type { DraftEvent } from '../../model/types/event.type.ts';
 
-type FormValues = {
-  title: string
-  description: string
-  isOnline: boolean
-  locationName?: string
-  latitude?: number
-  longitude?: number
-
-}
+type FormValues = DraftEvent
 
 const LocationPicker = memo(({ onPick }: { onPick: (lat: number, lng: number) => void }) => {
   useMapEvents({
@@ -24,7 +17,9 @@ const LocationPicker = memo(({ onPick }: { onPick: (lat: number, lng: number) =>
 })
 LocationPicker.displayName = 'LocationPicker'
 
-export const EventCreateForm = memo(() => {
+export const EventCreateForm = memo(({
+  onCreateEvent
+}: { onCreateEvent: (event: DraftEvent) => void }) => {
   const { handleSubmit, watch, setValue, control } = useForm<FormValues>({
     defaultValues: {
       isOnline: false
@@ -36,6 +31,7 @@ export const EventCreateForm = memo(() => {
 
   const onSubmit = (data: FormValues) => {
     console.log('Event data:', data)
+    onCreateEvent?.(data)
   }
 
   return (
