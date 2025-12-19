@@ -1,9 +1,9 @@
 import { StoryImage } from '../StoryImage/StoryImage';
 import { StoryVideo } from '../StoryVideo/StoryVideo';
 import { type StoryProps } from '../../model';
-import type { PropsWithChildren } from 'react';
+import type { ReactNode } from 'react';
 
-export const Story = ({ type, url, onComplete }: PropsWithChildren<StoryProps>) => {
+export const Story = ({ type, url, onComplete, children }: StoryProps & {  children?: ReactNode }) => {
   const content =
     type === 'image' ? (
       <StoryImage url={url} onComplete={onComplete} />
@@ -16,6 +16,7 @@ export const Story = ({ type, url, onComplete }: PropsWithChildren<StoryProps>) 
   return (
     <div className="h-full w-full relative">
       {content}
+      {children}
     </div>
   );
 };

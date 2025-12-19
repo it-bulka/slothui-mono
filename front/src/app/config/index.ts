@@ -1,1 +1,1 @@
-export { useAppDispatch, type RootState } from './store/config.ts';
+export { type RootState, type AppStore } from './store/config.ts';

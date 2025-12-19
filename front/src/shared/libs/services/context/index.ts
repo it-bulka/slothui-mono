@@ -5,3 +5,4 @@ export { useChatService } from './useChatService.ts';
 export { useUserService } from './useUserService.ts';
 export { useEventsService } from './useEventsService.tsx';
 export { useStoriesService } from './useStoriesService.tsx';
+export { useMessagesService } from './useMessagesService.ts';

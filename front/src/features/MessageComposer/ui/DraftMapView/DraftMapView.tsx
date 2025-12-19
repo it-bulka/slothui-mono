@@ -1,9 +1,9 @@
 import { MapView } from '@/entities';
-import { useDraftMessage } from '../../model/context/useDraftMessage.tsx';
+import { useDraftMessageExtras } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
 import { ClearDraftButton } from '@/features/MessageComposer/ui/ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftMapView = () => {
-  const { draft: { geo }, clearGeo } = useDraftMessage()
+  const { geo, clearGeo } = useDraftMessageExtras()
 
   if (!geo) return null;
 

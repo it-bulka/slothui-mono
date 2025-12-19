@@ -38,3 +38,4 @@ export { MoreButton } from './MoreButton';
 export { DownloadButton } from './DownloadButton';
 export { AttachmentImage, AttachmentDocument, AttachmentVideoPreview, AttachmentAudio } from './Attachments';
 export type { GroupedAttachment, GroupedAttachmentWithTempUrl } from './Attachments/model/type/attachment.dto.ts';
+export { MessageToast } from './Toast';

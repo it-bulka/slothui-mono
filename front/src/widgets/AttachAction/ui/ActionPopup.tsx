@@ -14,7 +14,7 @@ import {
 } from '@/features';
 
 import { ActionButton } from '@/shared/ui';
-import { useDraftMessage } from '@/features/MessageComposer';
+import { useDraftMessageExtras } from '@/features/MessageComposer';
 import { useCallback } from 'react';
 import type { DraftAttachmentType } from '@/features/MessageComposer/model/types';
 import { GeoDraftProvider } from '@/features/CreateGeolocation/model';
@@ -22,7 +22,7 @@ import type { GeoData } from '@/features/CreateGeolocation/model/types/geo.types
 
 //TODO: remove to widgets
 export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) => {
-  const { addAttachments, setGeo, setPoll, setEvent } = useDraftMessage()
+  const { addAttachments, setGeo, setPoll, setEvent } = useDraftMessageExtras()
 
   const onFilesSelected = useCallback((type: DraftAttachmentType)=> (files: File[]) => {
     addAttachments(type, files);

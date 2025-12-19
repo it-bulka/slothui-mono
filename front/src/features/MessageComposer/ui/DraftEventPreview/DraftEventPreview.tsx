@@ -1,9 +1,9 @@
 import { Typography, TypographyTypes } from '@/shared/ui';
-import { useDraftMessage } from '../../model/context/useDraftMessage.tsx';
+import { useDraftMessageExtras } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftEventPreview = () => {
-  const { draft: { event }, clearEvent } = useDraftMessage()
+  const { event, clearEvent } = useDraftMessageExtras()
   if (!event) return  null;
 
   return (

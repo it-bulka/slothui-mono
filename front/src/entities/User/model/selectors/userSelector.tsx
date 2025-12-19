@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/app/config/store/config.ts';
+import { useAppSelector } from '@/shared/config/redux';
 
 export const useUserSelector = () => useAppSelector(state => state.user.data);
 export const useUserErrorSelector = () => useAppSelector(state => state.user.error);

@@ -1,2 +1,3 @@
 export { withDraftMessageProvider } from './model/context/withDtaftMessageProvider.tsx';
-export { useDraftMessage } from './model/context/useDraftMessage.tsx';
+export { useDraftMessageExtras } from './model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
+export { useDraftMessageText } from './model/context/DraftMessageTextContext/useDraftMessageText.tsx';

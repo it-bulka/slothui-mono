@@ -9,11 +9,18 @@ export interface ActionButtonProps {
   variant?: 'primary' | 'secondary'
   onClick?: (event: MouseEvent) => void;
   column?: boolean
+  disabled?: boolean
 }
 
-export const ActionButton = forwardRef<HTMLButtonElement, PropsWithChildren<ActionButtonProps>>(({ children, Icon, className, onClick, variant = 'primary', column = false }, ref) => {
+export const ActionButton = forwardRef<HTMLButtonElement, PropsWithChildren<ActionButtonProps>>(({ children, disabled, Icon, className, onClick, variant = 'primary', column = false }, ref) => {
   return (
-    <button className={twMerge(classnames(cls.btn, cls[variant], { "flex-col": column}), className)} onClick={onClick} ref={ref}>
+    <button
+      className={twMerge(classnames(cls.btn, cls[variant],
+        { "flex-col": column}), className)}
+      onClick={onClick}
+      ref={ref}
+      disabled={disabled}
+    >
       <Icon className={classnames(cls.icon, cls[variant])}/>
       {children && <span>{children}</span>}
     </button>

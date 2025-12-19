@@ -24,3 +24,5 @@ export { ShareOnSocialMediaModal } from './ShareOnSocialMedia';
 export { DraftAttachmentsPreview, DraftMapView, DraftPollView, DraftEventPreview } from './MessageComposer/ui';
 export { PollDraftProvider, type PollDraft } from './CreatePoll';
 export { DraftEventProvider, type DraftEvent } from './CreateEvent';
+export { DraftExtras, MessageComposer } from './MessageComposer/ui';
+export { SendMessageBtn } from './send-message';

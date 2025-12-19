@@ -5,7 +5,9 @@ export {
   useChatService,
   useUserService,
   useEventsService,
-  useStoriesService
+  useStoriesService,
+  useMessagesService
 } from './context';
 export { createServices } from './createServices/createServices.tsx';
 export type { UserStories, StoryDTO } from './storiesService/stories.type.tsx';
+export { MessagesService } from './messagesService/messages.service.ts';

@@ -4,7 +4,6 @@ import type { PollDraft } from '../../../CreatePoll';
 import type { DraftEvent } from '../../../CreateEvent/model/types/event.type.ts';
 
 export type MessageDraft = {
-  text: string;
   attachments: DraftAttachment[];
   geo?: DraftGeo | null;
   poll?: PollDraft | null;

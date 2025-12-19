@@ -1,4 +1,4 @@
-import type { GroupedAttachment } from '../../../../shared/ui/Attachments/model/type/attachment.dto.ts';
+import type { GroupedAttachment } from '../ui/Attachments/model/type/attachment.dto.ts';
 import type { PollDto } from './poll.dto.ts';
 import type { StoryDTO } from '@/shared/libs/services';
 
@@ -7,6 +7,7 @@ export type MessageBaseDto = {
   chatId: string;
   text: string;
   authorId: string;
+  createdAt: string; // ISOString
 };
 
 export type MessageWithAttachmentsDto = MessageBaseDto & {
@@ -21,8 +22,19 @@ export type MessageWithStoryDto = MessageBaseDto & {
   story: StoryDTO;
 };
 
+export type MessageWithEventDto = MessageBaseDto & {
+  event: {
+    description: string;
+    title: string;
+    location?: string;
+    date?: string;
+    id: string
+  };
+};
+
 export type MessageDto =
   | MessageBaseDto
   | MessageWithAttachmentsDto
   | MessageWithPollDto
-  | MessageWithStoryDto;
+  | MessageWithStoryDto
+  | MessageWithEventDto;

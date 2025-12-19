@@ -26,6 +26,7 @@ interface InputProps<T extends FieldValues | undefined = undefined>
   addendumFull?: boolean
   error?: string
   accept?: string
+  readOnly?: boolean
 }
 
 // <T extends FieldValues | undefined = undefined>
@@ -47,6 +48,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   accept,
   error,
   register,
+  readOnly,
   ...props
 }, ref) => {
   const [value, setValue] = useState<InputVal>(inputValue ?? defaultValue ?? '')
@@ -116,6 +118,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
             })
           )}
           ref={ref}
+          readOnly={readOnly}
         />
         {addendum && <button onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
       </div>

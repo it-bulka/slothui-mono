@@ -1,17 +1,9 @@
-import { Input } from '@/shared/ui';
-import { AttachAction } from '../AttachAction';
 import { twMerge } from 'tailwind-merge';
-import { usePopup } from '@/shared/hooks';
-import {
-  DraftAttachmentsPreview,
-  DraftEventPreview,
-  DraftMapView,
-  DraftPollView,
-  EmojiAction,
-  SendAction
-} from '@/features';
-import { withDraftMessageProvider, useDraftMessage } from '@/features/MessageComposer';
-import { useEffect, useMemo } from 'react';
+import { DraftExtras } from '@/features';
+import { withDraftMessageProvider } from '@/features/MessageComposer';
+import { MessageInputText } from './ui/MessageInputText/MessageInputText.tsx';
+import { MessageActions } from './ui/MessageActions/MessageActions.tsx';
+import { useMessageInputPopup } from './model';
 
 interface MessageInputProps {
   className?: string;
@@ -19,31 +11,12 @@ interface MessageInputProps {
 const MessageInputComp = ({ className }: MessageInputProps) => {
   const {
     anchorRef,
-    context,
-    setPopupWrapperRef,
     getFloatingProps,
-    strategy, y, x, getReferenceProps,
-    open, close
-  } = usePopup<HTMLDivElement, HTMLDivElement>({ sameWidth: true, trigger: 'manual' });
-
-  const { draft: { attachments, geo, poll, event }} = useDraftMessage()
-
-  useEffect(() => {
-    if(attachments.length || geo || poll || event) {
-      open()
-    } else {
-      close()
-    }
-  }, [attachments, geo, poll, event, open, close])
-
-  const floatingStyle = useMemo(
-    () => ({
-      position: strategy,
-      top: y ?? 0,
-      left: x ?? 0,
-    }),
-    [strategy, x, y]
-  )
+    getReferenceProps,
+    floatingStyle,
+    context,
+    setPopupWrapperRef
+  } = useMessageInputPopup()
   return (
     <>
       <div
@@ -51,16 +24,8 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
         ref={anchorRef}
         {...getReferenceProps()}
       >
-        <Input
-          name="comment"
-          placeholder={"Write your message.."}
-          className="grow max-w-[400px] mr-2"
-        />
-        <div className="flex items-center gap-[6px]">
-          <AttachAction />
-          <EmojiAction />
-          <SendAction />
-        </div>
+        <MessageInputText className="grow max-w-[400px] mr-2" />
+        <MessageActions />
       </div>
 
       {
@@ -71,10 +36,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             style={floatingStyle}
             className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100"
           >
-            <DraftAttachmentsPreview />
-            <DraftMapView />
-            <DraftPollView />
-            <DraftEventPreview />
+           <DraftExtras />
           </div>
         )
       }

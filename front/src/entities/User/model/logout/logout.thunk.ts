@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { ThunkAPI } from '@/app/config/store/config.ts';
+import type { ThunkAPI } from '@/shared/config/redux';
 
 export const logout = createAsyncThunk<
   void,

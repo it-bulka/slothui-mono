@@ -5,6 +5,7 @@ import type { EmojiClickData } from 'emoji-picker-react';
 import { memo, useLayoutEffect } from 'react';
 import { useRef } from 'react';
 import { useBtnPopup } from '@/shared/hooks';
+import { FloatingPortal } from '@floating-ui/react';
 
 export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick?: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
   const btnRef = useRef<HTMLButtonElement>(null)
@@ -31,9 +32,11 @@ export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmoji
       />
       {
         context.open && (
-          <div ref={setWrapperRef} {...getFloatingProps()} style={{ position: strategy, top: y ?? 0, left: x ?? 0 }} className="">
-            <EmojiPicker onEmojiClick={onEmojiClick}/>
-          </div>
+          <FloatingPortal>
+            <div ref={setWrapperRef} {...getFloatingProps()} style={{ position: strategy, top: y ?? 0, left: x ?? 0 }} className="z-[999999999999999]">
+              <EmojiPicker onEmojiClick={onEmojiClick}/>
+            </div>
+          </FloatingPortal>
         )
       }
     </>

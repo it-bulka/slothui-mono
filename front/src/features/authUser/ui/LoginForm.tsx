@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormData } from '../model/validation-login.ts';
 import { useCallback } from 'react';
 import { loginUser } from '@/entities/User';
-import { useAppDispatch } from '@/app/config';
+import { useAppDispatch } from '@/shared/config/redux';
 import { AuthInput } from './AuthInput.tsx';
 
 const inputs = [

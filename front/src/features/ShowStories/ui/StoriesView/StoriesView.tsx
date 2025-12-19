@@ -76,7 +76,7 @@ export const StoriesView = ({ onStoriesEnd, allStories, onClose, startUserIndex 
           duration={storyData.duration}
           onComplete={() => {
             console.log('Story complete')
-            nextStory()
+            //nextStory()
           }}
         >
           <CommentStory storyId={storyId} userId={userId} />

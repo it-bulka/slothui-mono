@@ -6,6 +6,7 @@ import { EventsService } from '../eventsService/events.service.tsx';
 import { StoriesService } from '../storiesService/stories.service.ts';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
+import { MessagesService } from '../messagesService/messages.service.ts';
 
 interface IServices {
   http: HttpService
@@ -15,6 +16,7 @@ interface IServices {
   user:  UserService
   events: EventsService
   stories: StoriesService
+  messages:  MessagesService
 }
 export interface CtxProps {
   services:  IServices;

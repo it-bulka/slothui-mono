@@ -200,4 +200,26 @@ export const mockStories: UserStories[] = [
   },
 ];
 
+const type = "video" as const;
+export const msgWithStory = {
+  chatId: '2',
+  id: "jk", author: 'user 2', text: 'oooooooo', disFirst: true, createdAt: "2025-09-05T18:40:00.000Z",
+  story: {
+    "id": "f1766703-154c-4b54-8dbe-9a517f5e23fe",
+    "user": {
+      "id": "ad81aa80-7685-43d5-a360-1722ffa41e57",
+      nickname: 'some nickname',
+      name: "some nickname",
+      avatarUrl: ""
+    },
+    "url": 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+    "publicId": "slothui/stories/k1udo2abzpcltqiytogx",
+    "type": type,
+    "duration": null,
+    "createdAt": "2025-12-03T19:31:12.542Z",
+    "expiresAt": "2025-12-04T20:31:12.509Z",
+    "userId": "ad81aa80-7685-43d5-a360-1722ffa41e57"
+  }
+}
+
 

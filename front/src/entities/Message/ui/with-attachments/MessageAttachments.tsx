@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { MessageWithAttachmentsDto } from '@/entities/Message/model/type/message.dto.ts';
+import type { MessageWithAttachmentsDto } from '@/shared/types/message.dto.ts';
 import { DocumentsList, AudioList, MediaGrid } from './content';
 
 export const MessageAttachments = ({ attachments }: Pick<MessageWithAttachmentsDto, 'attachments'>) => {

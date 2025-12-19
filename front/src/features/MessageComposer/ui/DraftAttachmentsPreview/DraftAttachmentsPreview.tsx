@@ -1,10 +1,10 @@
 import { AudioList } from '@/features/MessageComposer/ui/AudioList/AudioList.tsx';
 import { DocsList } from '@/features/MessageComposer/ui/DocsList/DocsList.tsx';
 import { MediaGrid } from '@/features/MessageComposer/ui/MediaGrid/MediaGrid.tsx';
-import { useDraftMessage } from '@/features/MessageComposer';
+import { useDraftMessageExtras } from '@/features/MessageComposer';
 
 export const DraftAttachmentsPreview = () => {
-  const { draft: { attachments }, groupedDraftAttachments, removeAttachment } = useDraftMessage()
+  const { attachments, groupedDraftAttachments, removeAttachment } = useDraftMessageExtras()
   if(!attachments.length) return null;
 
   return (

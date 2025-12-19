@@ -1,12 +1,12 @@
 import { PollView } from '@/features/PollView';
 import { PollMode } from '@/features/PollView/model/types';
 import { useId } from 'react';
-import { useDraftMessage } from '@/features/MessageComposer';
+import { useDraftMessageExtras } from '@/features/MessageComposer';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftPollView = () => {
   const id = useId();
-  const { draft: { poll }, clearPoll } = useDraftMessage();
+  const { poll, clearPoll } = useDraftMessageExtras();
   if (!poll) return null;
 
   return (

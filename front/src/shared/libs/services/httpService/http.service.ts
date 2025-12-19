@@ -28,7 +28,7 @@ export class HttpService {
     opts: {
       method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
       body?: unknown;
-      params?: Record<string, string | number | boolean | undefined>;
+      params?: Record<string, string | number | boolean | undefined | null>;
       /** Override / add headers if you need something extra */
       headers?: HeadersInit;
       /** Supply a custom AbortController for timeouts etc. */
@@ -49,7 +49,7 @@ export class HttpService {
     opts: {
       method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
       body?: unknown;
-      params?: Record<string, string | number | boolean | undefined>;
+      params?: Record<string, string | number | boolean | undefined | null>;
       /** Override / add headers if you need something extra */
       headers?: HeadersInit;
       /** Supply a custom AbortController for timeouts etc. */
