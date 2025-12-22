@@ -2,6 +2,7 @@ export enum AppRoutes {
   HOME = 'home',
   MESSAGES_ALL = 'messages_all',
   MESSAGES_WITH = 'messages_with',
+  CHATS = 'chats',
   FRIENDS = 'friends',
   USER_FRIENDS = 'user_friends',
   ME = 'me',
@@ -29,8 +30,9 @@ export const AuthRelativePaths = {
 }
 
 export const getHomePage = () => '/'
+export const getChatsPage = () => '/chats'
 export const getAllMessagesPage = () => '/msgs'
-export const getMessagesWithUserPage = (id: string) => `/msgs/${id}`
+export const getMessagesWithUserPage = (id: string) => `/chats/${id}`
 export const getFriendsPage = () => '/friends'
 export const getUserPage = (id: string) => `/users/${id}`
 export const getUserFriendsPage = (id: string) => `/users/${id}/${UserRelativePaths.friends}`
@@ -66,6 +68,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.SETTINGS_ACCOUNT]: getSettingsAccountPage(),
   [AppRoutes.SETTINGS_PRIVACY]: getSettingsPrivacyPage(),
   [AppRoutes.EVENT_DETAILS]: getEventsDetailsPage(":id"),
+  [AppRoutes.CHATS]: getChatsPage(),
   //auth
   [AppRoutes.AUTH]: getAuthLayout(),
   [AppRoutes.NOT_FOUND]: getNotFoundPage()

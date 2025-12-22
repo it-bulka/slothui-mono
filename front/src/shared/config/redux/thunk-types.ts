@@ -1,5 +1,6 @@
 import type { ErrorHelper } from '../../libs';
 import type { createServices } from '@/shared/libs/services';
+import type { RootState } from '@/app/config';
 
 export type ThunkExtra = {
   services: ReturnType<typeof createServices>;
@@ -8,6 +9,7 @@ export type ThunkExtra = {
 };
 
 export type ThunkAPI = {
+  state: RootState;
   extra: ThunkExtra;
   rejectValue: string;
 };

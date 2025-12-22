@@ -15,6 +15,7 @@ import {
   LoginPage,
   RegisterPage,
   EventDetailsPage,
+  ChatsPage,
   NotFound
 } from '@/pages';
 import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: RoutePaths.event_details,
         element: <EventDetailsPage />
+      },
+      {
+        path: RoutePaths.chats,
+        element: <ChatsPage />
       },
       {
         path: RoutePaths.not_found,

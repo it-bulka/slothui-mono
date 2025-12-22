@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/shared/config/redux';
 
 export const useActiveChatId = () => useAppSelector(state => {
-  return state.chat.activeChatId;
+  return state.chats.activeChatId;
 })

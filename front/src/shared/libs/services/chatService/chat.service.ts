@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import type { MessageDTO, ChatDTO } from '@/shared/types/chat.types.ts';
+import type { MessageDTO, ChatDTO, ChatGlobalSearchResult } from '../../../types/chat.types.ts';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
 import { ChatRequestEvents, ChatServerEvents } from './event.types.ts';
@@ -39,6 +39,19 @@ export class ChatService {
   /** GET /api/chats */
   async listChats(): Promise<ChatDTO[]> {
     const res = await this.http.request<{ items: ChatDTO[] }>('/api/chats');
+    return res.items;
+  }
+
+  async search(name: string): Promise<ChatDTO[]> {
+    const res = await this.http.request<{ items: ChatDTO[] }>(`/api/chats?search=${name}`);
+    return res.items;
+  }
+
+  async globalSearch(name: string, options?: { signal?: AbortSignal }): Promise<ChatGlobalSearchResult> {
+    const res = await this.http.request<{ items: ChatGlobalSearchResult }>(
+      `/api/chats/global?search=${name}`,
+      { signal: options?.signal }
+    );
     return res.items;
   }
 

@@ -2,16 +2,20 @@ import SearchIcon from '@/shared/assets/images/general/search.svg?react'
 import { twMerge } from 'tailwind-merge'
 import { type ForwardedRef, type KeyboardEventHandler, useCallback, forwardRef  } from 'react';
 import cls from './SearchBar.module.css'
+import classnames from 'classnames';
 
 interface SearchBarProps {
   className?: string
+  value: string
+  onChange: (value: string) => void
   onSearch?: () => void
   placeholder?: string
   iconPosition?: 'left' | 'right'
   size?: 'md' | 'lg'
+  name?: string
 }
 export const SearchBar = forwardRef(
-  ({ className, onSearch, placeholder, iconPosition = 'left', size = 'md' }: SearchBarProps,
+  ({ className, onSearch, placeholder, iconPosition = 'left', size = 'md', value, onChange, name }: SearchBarProps,
    ref: ForwardedRef<HTMLInputElement | null>) => {
     const onKeyDown: KeyboardEventHandler<HTMLDivElement> = useCallback(
       e => {
@@ -35,9 +39,9 @@ export const SearchBar = forwardRef(
 
     return (
       <div
-        className={twMerge(
+        className={twMerge(classnames(
           `flex items-center rounded-3xl border border-gray-g4 wrapper ${cls[size]}`,
-          className)}
+          [className]))}
         onKeyDown={onKeyDown}
         role="button"
         tabIndex={0}
@@ -46,8 +50,11 @@ export const SearchBar = forwardRef(
         <input
           type="text"
           ref={ref}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           className={'grow font-medium placeholder:text-gray-g1'}
           placeholder={placeholder}
+          name={name}
         />
         {iconPosition === 'right' && <Search />}
       </div>

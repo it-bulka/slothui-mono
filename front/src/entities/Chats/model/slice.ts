@@ -1,31 +1,43 @@
 import { createEntityAdapter, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { PaginatedResponse } from '@/shared/types';
+import type { ChatDTO } from '@/shared/types/chat.types.ts';
+import { searchChats } from './thunk/searchChats.thunk.ts';
+import { createPrivateChatThunk } from './thunk/createPrivateChat.thunk.ts';
 
-interface Chat {
-  id: string;
-  name: string;
-  lastMessageId: string;
-  lastMessageCreatedAt: string;
-}
-
+export type Chat = ChatDTO;
 interface ChatState {
   activeChatId: string | null
+  allChatsLoaded: boolean
+  searchResults: string[]
 }
 
-const chatAdapter = createEntityAdapter<Chat, string>({
+const chatAdapter = createEntityAdapter<ChatDTO, string>({
   selectId: (chat) => chat.id,
-  sortComparer: (a, b) => new Date(a.lastMessageCreatedAt).getTime() - new Date(b.lastMessageCreatedAt).getTime(),
+  sortComparer: (a, b) => {
+    const aDate = a.lastMessage?.createdAt
+    const bDate = b.lastMessage?.createdAt
+
+    if (aDate && bDate) {
+      return new Date(bDate).getTime() - new Date(aDate).getTime()
+    }
+    if (aDate && !bDate) return -1
+    if (!aDate && bDate) return 1
+
+    return a.name.localeCompare(b.name)
+  }
 });
 
 const initialState = chatAdapter.getInitialState<ChatState>({
-  activeChatId: '1'
+  activeChatId: '1',
+  allChatsLoaded: true,
+  searchResults: [],
 });
 
 export const chatSlice = createSlice({
   name: 'chats',
   initialState,
   reducers: {
-    chatLoaded: (state, action: PayloadAction<PaginatedResponse<Chat>>) => {
+    chatsLoaded: (state, action: PayloadAction<PaginatedResponse<Chat>>) => {
       chatAdapter.addMany(state, action.payload.items);
     },
     openChat: (state, action: PayloadAction<string>) => {
@@ -34,7 +46,24 @@ export const chatSlice = createSlice({
     closeChat: (state) => {
       state.activeChatId = null;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(searchChats.fulfilled, (state, action) => {
+      chatAdapter.upsertMany(state, action.payload);
+      state.searchResults = action.payload.map(chat => chat.id);
+    })
+      .addCase(createPrivateChatThunk.fulfilled, (state, action) => {
+      chatAdapter.addOne(state, action.payload);
+    });
   }
 });
 
 export const { actions: chatsActions, reducer: chatsReducer } = chatSlice;
+export const {
+  selectById: selectChatById,
+  selectEntities: selectChats,
+  selectAll: selectSortedChats,
+  selectIds: selectChatsIds
+} = chatAdapter.getSelectors<{
+  chats: typeof initialState
+}>((state) => state.chats);

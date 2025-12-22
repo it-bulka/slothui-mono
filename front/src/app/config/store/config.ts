@@ -8,7 +8,7 @@ const services = createServices();
 export const store = configureStore({
   reducer: {
     currentChat: currentChatReducer,
-    chat: chatsReducer,
+    chats: chatsReducer,
     user: userReducer,
     usersSuggestions: usersSuggestionsReducer,
     messages: messageReducer
