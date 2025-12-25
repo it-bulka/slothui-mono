@@ -9,6 +9,7 @@ import {
   ManyToOne,
   JoinTable,
   RelationId,
+  JoinColumn,
 } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { User } from '../../user/entities/user.entity';
@@ -28,11 +29,8 @@ export class Chat {
   @Column({ type: 'varchar', length: 255, nullable: true })
   name: string | null;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column({ type: 'varchar', nullable: true })
+  avatarUrl: string | null;
 
   @OneToMany(() => Message, (message) => message.chat)
   messages: Message[];
@@ -49,4 +47,14 @@ export class Chat {
 
   @RelationId((chat: Chat) => chat.owner)
   ownerId: string;
+
+  @ManyToOne(() => Message, { nullable: true })
+  @JoinColumn({ name: 'last_message_id' })
+  lastMessage?: Message;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

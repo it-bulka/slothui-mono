@@ -9,16 +9,26 @@ import { Repository } from 'typeorm';
 import { CreateChatDtoWithOwner } from './dto/createChat.dto';
 import { UserService } from '../user/user.service';
 import { ChatMapper } from './chat-mapper';
-import { ChatRelations } from './types/chat.type';
+import {
+  ChatRelations,
+  LastMessageDTO,
+  ChatListItemDTO,
+  ChatGlobalSearchResult,
+  SearchOptions,
+  ChatMemberDTO,
+} from './types/chat.type';
 import type { ChatWithRelations } from './types/chat.type';
 import { WsException } from '@nestjs/websockets';
 import { UserMapper } from '../user/user-mapper';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectRepository(Chat)
     private readonly chatRepo: Repository<Chat>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
     private readonly userService: UserService,
   ) {}
 
@@ -76,6 +86,223 @@ export class ChatsService {
     });
 
     return this.chatRepo.save(chat);
+  }
+
+  async findChatsByMember(
+    userId: string,
+    options: { cursor?: string; limit?: number } = {},
+  ): Promise<ChatListItemDTO[]> {
+    const qb = this.chatRepo
+      .createQueryBuilder('chat')
+      .innerJoin('chat.members', 'member', 'member.id = :userId', { userId })
+      .leftJoinAndSelect(
+        'chat.members',
+        'otherMember',
+        'chat.type = :privateType AND otherMember.id != :userId',
+        { privateType: 'private', userId },
+      )
+      .leftJoinAndSelect(
+        'chat.messages',
+        'lastMessage',
+        'lastMessage.id = chat.lastMessageId',
+      )
+      .loadRelationCountAndMap('chat.membersCount', 'chat.members')
+      .orderBy('lastMessage.createdAt', 'DESC')
+      .orderBy('lastMessage.createdAt', 'DESC')
+      .take(options.limit || 100);
+
+    if (options.cursor) {
+      qb.andWhere('lastMessage.createdAt < :cursor', {
+        cursor: options.cursor,
+      });
+    }
+
+    const chats = await qb.getMany();
+
+    return chats.map((chat) => {
+      const isPrivate = chat.type === 'private';
+      const isClosedGroup =
+        chat.type === 'group' && chat.visibility === 'private';
+
+      let member: User | undefined;
+      if (isPrivate) {
+        member = chat.members.find((u) => u.id !== userId);
+      }
+
+      const lastMessage: LastMessageDTO | undefined =
+        chat.messages.length > 0
+          ? {
+              id: chat.messages[chat.messages.length - 1].id,
+              text: chat.messages[chat.messages.length - 1].text,
+              createdAt:
+                chat.messages[chat.messages.length - 1].createdAt.toISOString(),
+            }
+          : undefined;
+
+      const otherUser =
+        isPrivate && member
+          ? {
+              id: member?.id,
+              name: member?.name,
+              avatarUrl: member?.avatarUrl,
+            }
+          : undefined;
+
+      return {
+        id: chat.id,
+        name: isPrivate
+          ? (member?.name ?? 'Private Chat')
+          : (chat.name ?? 'Group Chat'),
+        avatarUrl: isPrivate ? member?.avatarUrl : chat.avatarUrl,
+        lastMessage,
+        membersCount: (chat as any as { membersCount: number }).membersCount,
+        isPrivate,
+        isClosedGroup,
+        otherUser,
+        updatedAt: chat.updatedAt.toISOString(),
+      };
+    });
+  }
+
+  async globalSearch({
+    userId,
+    query,
+    limit = 50,
+  }: SearchOptions): Promise<ChatGlobalSearchResult[]> {
+    const safeLimit = Math.min(limit, 50);
+
+    const chatQb = this.chatRepo
+      .createQueryBuilder('chat')
+      .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
+      .where('chat.name ILIKE :query', { query: `%${query}%` })
+      .andWhere((qb) => {
+        const subQuery = qb
+          .subQuery()
+          .select('cm.chatId')
+          .from('chat_members', 'cm')
+          .where('cm.userId = :userId', { userId })
+          .getQuery();
+        return 'chat.id NOT IN ' + subQuery;
+      })
+      .orderBy('lastMessage.createdAt', 'DESC')
+      .take(safeLimit);
+
+    const chats = await chatQb.getMany();
+
+    const userQb = this.userRepo
+      .createQueryBuilder('user')
+      .leftJoin(
+        'user.chats',
+        'chat',
+        'chat.type = :privateType AND :userId MEMBER OF chat.members',
+        { privateType: 'private', userId },
+      )
+      .where('(user.name ILIKE :query OR user.nickname ILIKE :query)', {
+        query: `%${query}%`,
+      })
+      .andWhere('user.id != :currentUserId', { currentUserId: userId })
+      .andWhere('chat.id IS NULL')
+      .take(safeLimit);
+
+    const users = await userQb.getMany();
+    const chatResults: ChatGlobalSearchResult[] = chats.map((chat) => ({
+      type: 'chat',
+      chat: {
+        id: chat.id,
+        name: chat.name || 'Chat',
+        avatarUrl: chat.avatarUrl || undefined,
+        lastMessage: chat.lastMessage
+          ? {
+              id: chat.lastMessage.id,
+              text: chat.lastMessage.text,
+              createdAt: chat.lastMessage.createdAt.toISOString(),
+            }
+          : undefined,
+        members: chat.members?.map((m) => m.id) || [],
+        updatedAt: chat.updatedAt.toISOString(),
+      },
+    }));
+
+    const userResults: ChatGlobalSearchResult[] = users.map((user) => ({
+      type: 'user',
+      user: {
+        id: user.id,
+        name: user.name,
+        avatarUrl: user.avatarUrl || undefined,
+      },
+    }));
+
+    return [...chatResults, ...userResults].slice(0, safeLimit);
+  }
+
+  async searchUserChats({
+    userId,
+    query,
+    limit = 50,
+  }: SearchOptions): Promise<ChatListItemDTO[]> {
+    const chats = await this.chatRepo
+      .createQueryBuilder('chat')
+      .innerJoin('chat.members', 'member', 'member.id = :userId', { userId })
+      .leftJoinAndSelect(
+        'chat.members',
+        'otherMember',
+        'chat.type = :privateType AND otherMember.id != :userId',
+        { privateType: 'private', userId },
+      )
+      .leftJoinAndSelect(
+        'chat.messages',
+        'lastMessage',
+        'lastMessage.id = chat.lastMessageId',
+      )
+      .loadRelationCountAndMap('chat.membersCount', 'chat.members')
+      .where(
+        `(chat.type = 'group' AND chat.name ILIKE :query)
+       OR
+       (chat.type = 'private' AND (otherMember.name ILIKE :query OR otherMember.nickname ILIKE :query))`,
+        { query: `%${query}%` },
+      )
+      .orderBy('lastMessage.createdAt', 'DESC')
+      .take(limit)
+      .getMany();
+
+    return chats.map((chat) => {
+      const isPrivate = chat.type === 'private';
+      let otherUser: ChatMemberDTO | undefined;
+
+      if (isPrivate && chat.members.length) {
+        const member = chat.members.find((u) => u.id !== userId);
+        if (member) {
+          otherUser = {
+            id: member.id,
+            name: member.name,
+            avatarUrl: member.avatarUrl || '',
+          };
+        }
+      }
+
+      const lastMessage = chat.messages[0]
+        ? {
+            id: chat.messages[0].id,
+            text: chat.messages[0].text,
+            createdAt: chat.messages[0].createdAt.toISOString(),
+          }
+        : undefined;
+
+      return {
+        id: chat.id,
+        name: isPrivate
+          ? otherUser?.name || 'Private Chat'
+          : chat.name || 'Group Chat',
+        avatarUrl: isPrivate ? otherUser?.avatarUrl : chat.avatarUrl,
+        lastMessage,
+        members: chat.memberIds,
+        membersCount: (chat as any as { membersCount: number }).membersCount,
+        isPrivate,
+        isClosedGroup: chat.type === 'group' && chat.visibility === 'private',
+        otherUser,
+        updatedAt: chat.updatedAt.toISOString(),
+      };
+    });
   }
 
   async create(preDto: CreateChatDtoWithOwner) {
@@ -151,6 +378,29 @@ export class ChatsService {
     await this.chatRepo.save(chat);
 
     return { chat, newUser: UserMapper.toResponse(user) };
+  }
+
+  async updateMembers(
+    chatId: string,
+    { add = [], remove = [] }: { add: string[]; remove: string[] },
+  ) {
+    let usersToAdd: User[] = [];
+    if (remove.length) {
+      usersToAdd = await this.userService.findByIds(add);
+    }
+    const chat = await this.findOneById(chatId, {
+      throwErrorIfNotExist: true,
+      relations: ['members'],
+    });
+
+    chat.members.push(...usersToAdd);
+
+    if (remove.length) {
+      chat.members = chat.members.filter((u) => !remove.includes(u.id));
+    }
+    await this.chatRepo.save(chat);
+
+    return { chat };
   }
 
   async updateChat(updatedChatData: Chat) {

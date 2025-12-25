@@ -62,5 +62,5 @@ export class Message {
   forwardSourceId: string | null;
 
   @CreateDateColumn()
-  sentAt: Date;
+  createdAt: Date;
 }
