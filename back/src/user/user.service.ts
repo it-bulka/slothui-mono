@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/user.dto';
 import { AuthJwtUser } from '../auth/types/jwt.types';
 import { In, type FindOptionsWhere } from 'typeorm';
+import { UserShortDTO } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -141,5 +142,19 @@ export class UserService {
     }
 
     return users;
+  }
+
+  async getUserShort(id: string): Promise<UserShortDTO | null> {
+    return await this.userRepo.findOne({
+      where: { id },
+      select: ['id', 'nickname', 'avatarUrl'],
+    });
+  }
+
+  async getUsersShort(ids: string[]): Promise<UserShortDTO[]> {
+    return await this.userRepo.find({
+      where: { id: In(ids) },
+      select: ['id', 'nickname', 'avatarUrl'],
+    });
   }
 }
