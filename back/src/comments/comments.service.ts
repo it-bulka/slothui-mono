@@ -10,6 +10,7 @@ import { CreateCommentDTO } from './dto/createComment.dto';
 import { NotFoundException } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common';
 import { EditedCommentDTO } from './dto/editedComment.dto';
+import { Post } from '../posts/entities/post.entity';
 
 @Injectable()
 export class CommentsService {
@@ -166,32 +167,46 @@ export class CommentsService {
     parentId,
     text,
   }: CreateCommentDTO & { authorId: string }): Promise<CommentListItemDTO> {
-    const comment = await this.commentRepo.save(
-      this.commentRepo.create({
-        authorId,
-        postId,
-        text,
-        parentId: parentId ?? null,
-      }),
+    const savedComment = await this.commentRepo.manager.transaction(
+      async (manager) => {
+        const comment = await manager.getRepository(CommentEntity).save(
+          manager.getRepository(CommentEntity).create({
+            authorId,
+            postId,
+            text,
+            parentId: parentId ?? null,
+          }),
+        );
+
+        await manager.increment(Post, { id: postId }, 'commentsCount', 1);
+
+        return comment;
+      },
     );
 
-    const [dto] = await this.buildCommentListItems([comment]);
+    const [dto] = await this.buildCommentListItems([savedComment]);
     return dto;
   }
 
   async deleteComment(userId: string, commentId: string): Promise<void> {
-    const comment = await this.commentRepo.findOne({
-      where: { id: commentId },
-    });
+    await this.commentRepo.manager.transaction(async (manager) => {
+      const repo = manager.getRepository(CommentEntity);
 
-    if (!comment)
-      throw new NotFoundException(`Comment with id ${commentId} not found`);
-    if (comment.authorId !== userId) {
-      throw new ForbiddenException(
-        'You are not allowed to delete this comment',
-      );
-    }
-    await this.commentRepo.remove(comment);
+      const comment = await repo.findOne({
+        where: { id: commentId },
+      });
+
+      if (!comment)
+        throw new NotFoundException(`Comment with id ${commentId} not found`);
+      if (comment.authorId !== userId) {
+        throw new ForbiddenException(
+          'You are not allowed to delete this comment',
+        );
+      }
+
+      await repo.remove(comment);
+      await manager.decrement(Post, { id: comment.postId }, 'commentsCount', 1);
+    });
   }
 
   async editComment(

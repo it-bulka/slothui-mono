@@ -43,11 +43,21 @@ export class PostsService {
     }
 
     if (userId) {
-      qb.leftJoinAndSelect('post.likes', 'like', 'like.user = :userId', {
-        userId,
-      }).leftJoinAndSelect('post.saves', 'save', 'save.user = :userId', {
-        userId,
-      });
+      qb.addSelect(
+        `
+        EXISTS (
+          SELECT 1
+          FROM post_like pl
+          WHERE pl.postId = post.id
+            AND pl.userId = :userId
+        )
+        `,
+        'isLiked',
+      )
+        .setParameter('userId', userId)
+        .leftJoinAndSelect('post.saves', 'save', 'save.user = :userId', {
+          userId,
+        });
     }
 
     qb.leftJoinAndSelect('post.author', 'author')
@@ -72,6 +82,7 @@ export class PostsService {
       content: post.content,
       isLiked: post.likes?.length > 0,
       isSaved: post.saves?.length > 0,
+      commentsCount: post.commentsCount,
       attachments: groupedAttachments.get(post.id),
       poll: groupedPolls.get(post.id),
     }));
@@ -93,7 +104,7 @@ export class PostsService {
     postId: string;
     userId: string;
   }): Promise<PostDto> {
-    const post = await this.postRepo
+    const post = (await this.postRepo
       .createQueryBuilder('post')
       .leftJoin('post.author', 'author')
       .addSelect([
@@ -102,20 +113,29 @@ export class PostsService {
         'author.nickname',
         'author.avatarUrl',
       ])
-      .leftJoinAndSelect('post.likes', 'like', 'like.userId = :userId', {
-        userId,
-      })
+      .addSelect(
+        `
+        EXISTS (
+          SELECT 1
+          FROM post_like pl
+          WHERE pl.postId = post.id
+            AND pl.userId = :userId
+        )
+        `,
+        'isLiked',
+      )
+      .setParameter('userId', userId)
       .leftJoinAndSelect('post.saves', 'save', 'save.userId = :userId', {
         userId,
       })
       .where('post.id = :id', { id: postId })
-      .getOne();
+      .getOne()) as Post & { isLiked: boolean };
 
     if (!post) {
       throw new NotFoundException(`Post with ID ${postId} not found`);
     }
 
-    const isLiked = post?.likes?.length > 0;
+    const isLiked = Boolean(post.isLiked);
     const isSaved = post?.saves?.length > 0;
 
     const attachments = await this.attachmentService.getMany('post', [postId]);
@@ -130,6 +150,7 @@ export class PostsService {
       content: post.content,
       isLiked,
       isSaved,
+      commentsCount: post.commentsCount,
       attachments: groupedAttachments,
       poll: groupedPolls.get(post.id),
     };

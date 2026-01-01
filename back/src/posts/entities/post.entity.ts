@@ -29,6 +29,9 @@ export class Post {
   @OneToMany(() => PostSave, (save) => save.post)
   saves: PostSave[];
 
+  @Column({ default: 0 })
+  commentsCount: number;
+
   @CreateDateColumn()
   createdAt: Date;
 }
