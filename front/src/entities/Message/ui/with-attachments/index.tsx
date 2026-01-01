@@ -1,1 +1,0 @@
-export { MessageWithAttachments } from './MessageWithAttachments.tsx';

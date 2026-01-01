@@ -1,6 +1,5 @@
 import { Observable, shareReplay, Subject } from 'rxjs';
 import type {
-  Message,
   MessageToSend,
   MsgWithAttachmentsToSend,
   MsgWithGeoToSend,
@@ -64,7 +63,7 @@ export class MessagesService {
   wsTyping(chatId: string, isTyping: boolean): void { this.socket?.emit(MessageRequestEvents.TYPING, { chatId, isTyping }); }
 
   /** POST /api/chats/:id/messages  MessageToSend */
-  async sendMessage(msg: Message): Promise<void> {
+  async sendMessage(msg: MessageToSend & { chatId: string }): Promise<void> {
     console.log('sendMessage - msg:', msg);
     const body: MessageToSend = { text: msg.text }
     if('geo' in msg && msg.geo) {

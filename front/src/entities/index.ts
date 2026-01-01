@@ -11,3 +11,30 @@ export { messageReducer, messagesAction } from './Message/model';
 export { Typing } from './Typing';
 export { useActiveChatId, Chats, selectSortedChats, searchChats, ChatRow, useGoToChat, createPrivateChatThunk } from './Chats';
 export { useSelectMessagesByChatId, useSelectIsMessageSending } from './Message/model';
+export {
+  commentsReducer,
+  useGetRepliesLoading,
+  useAddOptimisticReply,
+  useFetchPostComments,
+  useResendComment,
+  useDeleteUnsentComment
+} from './Comment';
+export { CommentItem } from './Comment/ui';
+export {
+  postsReducer,
+  useSelectSavedPosts,
+  useSelectFeedPosts,
+  useSelectProfilePosts,
+  useSelectLikedPosts,
+  useSelectMyPosts,
+  useSelectPostById,
+} from './Post';
+
+export {
+  replyTargetReducer,
+  replyTargetActions,
+  type ReplyTargetState,
+  useReplyTarget,
+  useGetReplyTarget,
+  selectReplyTarget
+} from './ReplyTarget';

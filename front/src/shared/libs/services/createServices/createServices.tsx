@@ -6,6 +6,8 @@ import { AuthService } from '../authService/auth.service';
 import { EventsService } from '../eventsService/events.service.tsx';
 import { StoriesService } from '../storiesService/stories.service.ts';
 import { MessagesService } from '../messagesService/messages.service.ts';
+import { CommentsService } from '../commentsService/comments.service.ts';
+import { PostsService } from '../postsService/posts.service.ts';
 
 export const createServices = (token = '') => {
   const httpService = new HttpService(token)
@@ -20,5 +22,7 @@ export const createServices = (token = '') => {
     events: new EventsService(httpService),
     stories: new StoriesService(httpService),
     messages: new MessagesService(httpService, socketService),
+    comments: new CommentsService(httpService, socketService),
+    posts: new PostsService(httpService),
   }
 }

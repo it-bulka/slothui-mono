@@ -6,8 +6,10 @@ export {
   useUserService,
   useEventsService,
   useStoriesService,
-  useMessagesService
+  useMessagesService,
+  useCommentsService
 } from './context';
 export { createServices } from './createServices/createServices.tsx';
 export type { UserStories, StoryDTO } from './storiesService/stories.type.tsx';
 export { MessagesService } from './messagesService/messages.service.ts';
+export type { GetCommentDto, EditedCommentDTO, EditCommentDto, GetReplyDto } from './commentsService/comments.type.ts';

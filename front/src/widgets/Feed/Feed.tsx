@@ -1,11 +1,11 @@
 import { type ReactNode } from 'react';
 import { Stories, SubscribeEventButton } from '@/features';
-import { PostCard, type PostCardProps } from '@/widgets/PostCard/PostCard.tsx';
-import MockImg from '@/mock/images/avatar.png'
+import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { EventCard } from '@/entities';
+import type { PostWithAttachmentsDto } from '@/shared/types';
 
 //TODO: add posts data
-const posts: PostCardProps[] = [
+/*const posts: PostCardProps[] = [
   {
     avatarSrc: '/',
     userName: 'userName',
@@ -14,9 +14,9 @@ const posts: PostCardProps[] = [
     images: [MockImg, MockImg, MockImg]
 
   }
-]
+]*/
 
-export const Feed = ({ header, withOutAuthor = false }: { header?: ReactNode, withOutAuthor?: boolean }) => {
+export const Feed = ({ header, posts }: { header?: ReactNode, withOutAuthor?: boolean, posts: PostWithAttachmentsDto[] }) => {
   return (
     <div className="flex flex-col h-full">
       {header}
@@ -38,7 +38,19 @@ export const Feed = ({ header, withOutAuthor = false }: { header?: ReactNode, wi
           )}
         />
 
-        {posts.map((post) => <PostCard {...post} withOutAuthor={withOutAuthor}/>)}
+        {posts.map((post) => (
+          <PostCard
+            postId={post.id}
+            userName={post.author.nickname}
+            userPosition={post.author.nickname}
+            avatarSrc={post.author.avatarUrl}
+            file={post.attachments.file}
+            video={post.attachments.video}
+            audio={post.attachments.audio}
+            images={post.attachments.images}
+            text={post.text}
+          />
+        ))}
       </div>
     </div>
   )

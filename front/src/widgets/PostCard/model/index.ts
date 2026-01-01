@@ -1,0 +1,1 @@
+export { splitTextToParagraphs } from './utils/splitTextToParagraphs.ts';

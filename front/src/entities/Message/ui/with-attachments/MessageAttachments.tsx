@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import type { MessageWithAttachmentsDto } from '@/shared/types/message.dto.ts';
-import { DocumentsList, AudioList, MediaGrid } from './content';
+import { DocumentsList, MediaGrid, AudioList } from '@/shared/ui';
 
 export const MessageAttachments = ({ attachments }: Pick<MessageWithAttachmentsDto, 'attachments'>) => {
   const { audioLimit, docLimit } = useMemo(() => {

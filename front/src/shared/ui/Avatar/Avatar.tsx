@@ -4,7 +4,7 @@ import cls from './Avatar.module.css'
 import { twMerge } from 'tailwind-merge';
 
 export interface AvatarProps {
-  src?: string
+  src?: string | null
   name?: string
   className?: string
   size?: 'md' | 'lg' | 'sm'

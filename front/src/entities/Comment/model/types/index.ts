@@ -1,0 +1,1 @@
+export type { CommentsState } from './comment.type.ts';

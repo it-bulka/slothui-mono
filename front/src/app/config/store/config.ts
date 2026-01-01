@@ -1,6 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createServices } from '@/shared/libs/services';
-import { currentChatReducer, chatsReducer, usersSuggestionsReducer, userReducer, messageReducer } from '@/entities';
+import {
+  currentChatReducer,
+  chatsReducer,
+  usersSuggestionsReducer,
+  userReducer,
+  messageReducer,
+  commentsReducer,
+  postsReducer,
+  replyTargetReducer
+} from '@/entities';
 import { ErrorHelper } from '@/shared/libs';
 
 const services = createServices();
@@ -11,7 +20,10 @@ export const store = configureStore({
     chats: chatsReducer,
     user: userReducer,
     usersSuggestions: usersSuggestionsReducer,
-    messages: messageReducer
+    messages: messageReducer,
+    comments: commentsReducer,
+    posts: postsReducer,
+    replyTarget: replyTargetReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

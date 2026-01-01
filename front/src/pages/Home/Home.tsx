@@ -1,7 +1,9 @@
 import { Feed, PostsToolbar } from '@/widgets';
+import { useSelectFeedPosts } from '@/entities';
 
 const Home = () => {
-  return <Feed header={<PostsToolbar />}/>
+  const { posts } = useSelectFeedPosts()
+  return <Feed header={<PostsToolbar />} posts={posts} />
 }
 
 export default Home
