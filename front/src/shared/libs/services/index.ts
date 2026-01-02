@@ -7,7 +7,8 @@ export {
   useEventsService,
   useStoriesService,
   useMessagesService,
-  useCommentsService
+  useCommentsService,
+  useFriendsService
 } from './context';
 export { createServices } from './createServices/createServices.tsx';
 export type { UserStories, StoryDTO } from './storiesService/stories.type.tsx';

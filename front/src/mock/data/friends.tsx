@@ -7,14 +7,14 @@ export const mockFriendsTabs = {
   ],
   contents: [
     [
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Name" }
+      { id: 'u1', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u2', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u3', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u3', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" }
     ],
     [
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Followers" },
-      { src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u21', src: mockAvatar, nickname: "jkjkjkjk", username: "Followers" },
+      { id: 'u21', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
     ]
   ]
 }

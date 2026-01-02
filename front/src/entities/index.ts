@@ -38,3 +38,11 @@ export {
   useGetReplyTarget,
   selectReplyTarget
 } from './ReplyTarget';
+export {
+  useFollowUser,
+  friendsReducer,
+  useFollowersSelector,
+  useFollowingsSelector,
+  useRemoveFollower,
+  useRemoveFollowee
+} from './Friends';

@@ -10,6 +10,7 @@ interface TabProps {
   activeTabIndex?: ActiveTabIndex
   contentClassName?: string
   tabClassName?: string
+  onTabChange?: (index: ActiveTabIndex) => void
 }
 
 export const Tab = memo(({
@@ -17,7 +18,8 @@ export const Tab = memo(({
   contents,
   activeTabIndex,
   contentClassName,
-  tabClassName
+  tabClassName,
+  onTabChange
 }: TabProps) => {
   const [underlinePosition, setUnderlinePosition] = useState({ left: 0, top: 0, width: 0 });
   const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex || 0);
@@ -37,7 +39,8 @@ export const Tab = memo(({
     const el = e.target as HTMLElement;
     setRect(el)
     setActiveElId(id)
-  }, [setRect, setActiveElId])
+    onTabChange?.(id)
+  }, [setRect, setActiveElId, onTabChange])
 
 
   useLayoutEffect(() => {

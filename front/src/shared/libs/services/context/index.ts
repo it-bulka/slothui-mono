@@ -8,3 +8,4 @@ export { useStoriesService } from './useStoriesService.tsx';
 export { useMessagesService } from './useMessagesService.ts';
 export { useCommentsService } from './useCommentsService.tsx';
 export { usePostsService } from './usePostsService.tsx';
+export { useFriendsService } from './useFriendsService.ts';
