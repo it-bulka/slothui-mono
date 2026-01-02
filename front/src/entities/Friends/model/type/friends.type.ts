@@ -1,5 +1,5 @@
 import type { EntityState } from '@reduxjs/toolkit';
-import type { UserShort } from '@/shared/types';
+import type { FriendDto } from '@/shared/types';
 
 type FriendPage = {
   ids: string[]
@@ -7,7 +7,7 @@ type FriendPage = {
   hasMore?: boolean,
   nextCursor?: string | null
 }
-export interface FriendsState extends EntityState<UserShort, string>{
+export interface FriendsState extends EntityState<FriendDto, string>{
   followersByUser: Record<string, FriendPage>;
   followingsByUser: Record<string, FriendPage>;
   suggestions: FriendPage;

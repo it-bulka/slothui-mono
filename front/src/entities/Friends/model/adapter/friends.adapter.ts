@@ -1,6 +1,6 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import type { UserShort } from '@/shared/types';
+import type { FriendDto } from '@/shared/types';
 
-export const friendsAdapter = createEntityAdapter<UserShort, string>({
+export const friendsAdapter = createEntityAdapter<FriendDto, string>({
   selectId: (user) => user.id,
 })
