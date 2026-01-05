@@ -1,5 +1,4 @@
-import { useCallback, useRef, useState, type MouseEvent } from 'react';
-import { usePrefetchNextUserStories } from '../../model';
+import { useCallback, useRef, useState, type MouseEvent, memo } from 'react';
 import type { UserStories } from '@/shared/libs/services';
 import { Story } from '@/entities';
 import { Avatar, CloseButton } from '@/shared/ui';
@@ -7,8 +6,14 @@ import { StoryProgress } from '../StoryProgress/StoryProgress.tsx';
 import { CommentStory } from '@/features/CommentStory';
 import { Link } from 'react-router';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { useClickStory, usePressEvent } from '../../model';
-import { useSwitchStories, useSelectStoryData } from '../../model';
+import {
+  useSwitchStories,
+  useSelectStoryData,
+  useClickStory,
+  usePressEvent,
+  usePrefetchNextUserStories
+} from '../../model';
+import { useMarkStoriesViewedLocally } from '@/entities';
 
 interface StoriesView {
   onStoriesEnd?: () => void;
@@ -16,11 +21,11 @@ interface StoriesView {
   startUserIndex?: number | null;
   onClose: () => void;
 }
-export const StoriesView = ({ onStoriesEnd, allStories, onClose, startUserIndex }: StoriesView) => {
+export const StoriesView = memo(({ onStoriesEnd, allStories, onClose, startUserIndex }: StoriesView) => {
   const [currentStoryIndex, setCurrentStoryIndex] = useState<number>(0)
   const [currentUserIndex, setCurrentUserIndex] = useState<number>(startUserIndex || 0)
   const viewedStories = useRef<Record<string, string>>({}) // Record<userId, storyId>
-
+  const { markStoryViewedLocally } = useMarkStoriesViewedLocally()
   const { prevStory, nextStory } = useSwitchStories({
     setCurrentStoryIndex,
     setCurrentUserIndex,
@@ -74,6 +79,9 @@ export const StoriesView = ({ onStoriesEnd, allStories, onClose, startUserIndex 
           url={storyData.url}
           type={storyData.type}
           duration={storyData.duration}
+          onStart={() => {
+            markStoryViewedLocally(storyData.id)
+          }}
           onComplete={() => {
             console.log('Story complete')
             //nextStory()
@@ -93,4 +101,6 @@ export const StoriesView = ({ onStoriesEnd, allStories, onClose, startUserIndex 
       />
     </div>
   )
-}
+})
+
+StoriesView.displayName = 'StoriesView'

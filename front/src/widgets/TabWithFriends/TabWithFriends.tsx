@@ -17,6 +17,7 @@ export const TabWithFriends = ({
   const { renderActions } = useFriendActions()
   return (
     <Tab
+      animated
       tabs={tabs}
       onTabChange={onTabChange}
       contents={contents.map((items, tabIndex) => (

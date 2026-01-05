@@ -4,12 +4,9 @@ export interface StoryDTO {
   type: 'image' | 'video';
   duration?: number | null;
   isViewed?: boolean;
-  user: {
-    id: string;
-    nickname: string;
-    name: string;
-    avatarUrl: string
-  }
+  createdAt: string;
+  expiresAt?: string;
+  userId: string
 }
 
 export type UserStories = {
@@ -17,7 +14,7 @@ export type UserStories = {
   username: string;
   avatar: string
   storiesAmount: number
-  stories: Omit<StoryDTO, 'user'>[];
+  stories: StoryDTO[];
 };
 
 export type StoryFormData = {

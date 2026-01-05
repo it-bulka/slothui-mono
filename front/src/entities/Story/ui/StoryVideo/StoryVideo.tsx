@@ -5,15 +5,17 @@ import { useVideoProgress } from '@/shared/hooks/useProgress/useVideoProgress.ts
 type StoryVideoProps = {
   url: string;
   onComplete?: () => void;
+  onStart?: () => void;
 };
 
-export const StoryVideo = ({ url, onComplete }: StoryVideoProps) => {
+export const StoryVideo = ({ url, onComplete, onStart }: StoryVideoProps) => {
     const ref = useRef<HTMLVideoElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     useVideoProgress({
       progressRef,
       videoRef: ref,
-      onComplete
+      onComplete,
+      onStart
     })
     return (
 

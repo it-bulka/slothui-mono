@@ -11,6 +11,7 @@ interface TabProps {
   contentClassName?: string
   tabClassName?: string
   onTabChange?: (index: ActiveTabIndex) => void
+  animated?: boolean
 }
 
 export const Tab = memo(({
@@ -19,7 +20,8 @@ export const Tab = memo(({
   activeTabIndex,
   contentClassName,
   tabClassName,
-  onTabChange
+  onTabChange,
+  animated = true,
 }: TabProps) => {
   const [underlinePosition, setUnderlinePosition] = useState({ left: 0, top: 0, width: 0 });
   const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex || 0);
@@ -71,16 +73,20 @@ export const Tab = memo(({
           style={{ width: underlinePosition.width, left: underlinePosition.left, top: underlinePosition.top }}/>
       </div>
 
-      <div className="grid overflow-hidden">
-        {contents?.map((content, index) => (
-          <div
-            className={twMerge(`bg-white ${cls.content} ${cls.active} ${cls.inactive}`, contentClassName)}
-            data-active={activeElId === index}
-          >
-            {content}
+      {
+        animated ? (
+          <div className="grid overflow-hidden">
+            {contents?.map((content, index) => (
+              <div
+                className={twMerge(`bg-white ${cls.content} ${cls.active} ${cls.inactive}`, contentClassName)}
+                data-active={activeElId === index}
+              >
+                {content}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        ) : contents?.map((content) => content)
+      }
     </>
 
   )

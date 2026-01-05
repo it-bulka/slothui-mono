@@ -1,5 +1,6 @@
 import { HttpService } from '../httpService/http.service.ts';
-import type { StoryDTO, StoryFormData, UserStories } from './stories.type.tsx';
+import type { StoryFormData, UserStories } from './stories.type.tsx';
+import type { PaginatedResponse } from '@/shared/types';
 
 export class StoriesService {
   constructor(
@@ -11,12 +12,12 @@ export class StoriesService {
   /* ------------------------------------------------------------------ */
 
   /** GET /api/stories?cursor&limit=50 */
-  async listUserWithStories(cursor?: string): Promise<UserStories[]> {
-    const res = await this.http.request<{ items: UserStories[] }>(
+  async listUserWithStories(cursor?: string | null): Promise<PaginatedResponse<UserStories>> {
+    const res = await this.http.request<PaginatedResponse<UserStories>>(
       `/api/stories`,
       { params: { cursor, limit: 50 } },
     );
-    return res.items;
+    return res;
   }
 
   /** GET /api/stories/batch?ids=a,b,s */
@@ -29,16 +30,16 @@ export class StoriesService {
   }
 
   /** GET /api/stories?userId=:id */
-  async getUserStories(userId: string): Promise<UserStories[]> {
-    return await this.http.request<UserStories[]>(
+  async getUserStories(userId: string): Promise<UserStories> {
+    return await this.http.request<UserStories>(
       `/api/stories`,
       { params: { userId } },
     );
   }
 
   /** POST /api/stories StoryFormData */
-  async createStory(data: StoryFormData): Promise<StoryDTO> {
-    return this.http.request<StoryDTO>(
+  async createStory(data: StoryFormData): Promise<UserStories> {
+    return this.http.request<UserStories>(
       '/api/stories',
       { method: 'POST', body: data },
     );

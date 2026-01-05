@@ -3,15 +3,17 @@ import { useEffect, useRef } from 'react';
 interface ProgressOnDurationProps {
   duration: number; //s
   onComplete?: () => void;
+  onStart?: () => void;
 }
 export const useProgressOnDuration = ({
-  duration, onComplete,
+  duration, onComplete, onStart
 }: ProgressOnDurationProps) => {
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!progressRef.current) return;
     progressRef.current.style.width = '0'; // скидаємо при mount
+    let started = false;
 
     // for image
     const start = performance.now();
@@ -20,6 +22,10 @@ export const useProgressOnDuration = ({
       const p = Math.min((elapsed / duration) * 100, 100);
       progressRef.current!.style.width = `${p}%`;
 
+      if(!started && p >= 15) {
+        onStart?.()
+        started = true;
+      }
       if(p >= 100) {
         onComplete?.()
       }
@@ -27,7 +33,7 @@ export const useProgressOnDuration = ({
       if (p < 100) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, [duration, onComplete]);
+  }, [duration, onComplete, onStart]);
 
   return { progressRef }
 }

@@ -1,7 +1,7 @@
-export { HomePage } from './Home/Home.async.ts';
+export { HomePage } from './Home/ui/Home.async.ts';
 export { MessagesPage } from './Messages/Messages.async.tsx';
 export { FriendsPage } from '@/pages/Friends/Friends.async.tsx';
-export { UserPage } from './User/User.async.tsx';
+export { UserPage } from './User/ui/User.async.tsx';
 export { UserFriendsPage } from './UserFriends/UserFriends.async.tsx';
 export { MessagesAllPage } from './MessagesAll/MessagesAll.async.tsx';
 export { MePage } from './Me/Me.async.tsx';

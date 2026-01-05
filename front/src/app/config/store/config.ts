@@ -9,7 +9,8 @@ import {
   commentsReducer,
   postsReducer,
   replyTargetReducer,
-  friendsReducer
+  friendsReducer,
+  storiesReducer
 } from '@/entities';
 import { ErrorHelper } from '@/shared/libs';
 
@@ -26,6 +27,7 @@ export const store = configureStore({
     posts: postsReducer,
     replyTarget: replyTargetReducer,
     friends: friendsReducer,
+    stories: storiesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
