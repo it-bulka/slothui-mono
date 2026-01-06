@@ -1,5 +1,6 @@
 import { HttpService } from '../httpService/http.service.ts';
 import type { EventDTO, EventParticipant, CreateEventDTO } from './events.type.ts';
+import type { PaginatedResponse } from '@/shared/types';
 
 export class EventsService {
   constructor(
@@ -11,12 +12,30 @@ export class EventsService {
   /* ------------------------------------------------------------------ */
 
   /** GET /api/events?cursor&limit=50 */
-  async listEvents(cursor?: string): Promise<EventDTO[]> {
-    const res = await this.http.request<{ items: EventDTO[] }>(
+  async listEvents(cursor?: string | null): Promise<PaginatedResponse<EventDTO>> {
+    const res = await this.http.request<PaginatedResponse<EventDTO>>(
       `/api/events`,
       { params: { cursor, limit: 50 } },
     );
-    return res.items;
+    return res;
+  }
+
+  /** GET /api/events/subscribed?cursor&limit=50 */
+  async getSubscribedEvents(cursor?: string | null): Promise<PaginatedResponse<EventDTO>> {
+    const res = await this.http.request<PaginatedResponse<EventDTO>>(
+      `/api/events/subscribed`,
+      { params: { cursor, limit: 50 } },
+    );
+    return res;
+  }
+
+  /** GET /api/events?cursor&limit=50 */
+  async getEventsByUser(userId: string, cursor?: string | null): Promise<PaginatedResponse<EventDTO>> {
+    const res = await this.http.request<PaginatedResponse<EventDTO>>(
+      `/api/events/${userId}`,
+      { params: { cursor, limit: 50 } },
+    );
+    return res;
   }
 
   /** GET /api/events/:id */
@@ -27,12 +46,12 @@ export class EventsService {
   }
 
   /** GET /api/events/:id/participants?cursor&limit=50 */
-  async listEventParticipants(eventId: string, cursor?: string): Promise<EventParticipant[]> {
-    const res = await this.http.request<{ items: EventParticipant[] }>(
+  async listEventParticipants(eventId: string, cursor?: string): Promise<PaginatedResponse<EventParticipant>> {
+    const res = await this.http.request<PaginatedResponse<EventParticipant>>(
       `/api/events/${eventId}/participants`,
       { params: { cursor, limit: 50 } },
     );
-    return res.items;
+    return res;
   }
 
   /** POST /api/events CreateEventDTO */

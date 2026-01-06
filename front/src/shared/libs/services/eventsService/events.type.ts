@@ -1,7 +1,8 @@
 export interface EventParticipant {
   id: string;
-  avatar: string;
+  avatar?: string;
   name: string;
+  nickname: string;
 }
 
 export interface EventDTO {
@@ -14,8 +15,8 @@ export interface EventDTO {
     name: string
     avatar?: string
   }
-  participantsCount?: number
-  participants?: EventParticipant[]
+  participantsCount: number
+  // participants?: EventParticipant[]
   isSubscribed?: boolean,
 }
 

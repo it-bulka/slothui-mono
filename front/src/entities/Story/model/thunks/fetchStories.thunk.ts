@@ -14,7 +14,7 @@ export const fetchStoriesThunk = createAsyncThunk<
   { cursor?: string | null },
   ThunkAPI
 >(
-  'stories/fetchUsers',
+  'stories/fetchStories',
   async (
     { cursor },
     { extra, rejectWithValue, getState }

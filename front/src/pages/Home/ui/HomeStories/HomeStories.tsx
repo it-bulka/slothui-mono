@@ -1,9 +1,9 @@
 import { Stories } from '@/features';
 import { useFetchAllStories, useAllGroupedStoriesSelect } from '@/entities';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 
 
-export const HomeStories = () => {
+export const HomeStories = memo(() => {
   const { items: stories, isLoading } = useAllGroupedStoriesSelect();
   const { fetchAllStories } = useFetchAllStories()
 
@@ -14,4 +14,6 @@ export const HomeStories = () => {
   if (isLoading || stories.length === 0) return null;
 
   return <Stories stories={stories} />;
-};
+});
+
+HomeStories.displayName = 'HomeStories';

@@ -10,3 +10,4 @@ export type { UserShort } from './user.types.ts';
 export type { CommentsPaginated, Comment } from './comments.type.ts';
 export type { PostWithAttachmentsDto, PostBaseDTO } from './posts.types.ts';
 export type { FriendDto } from './friends.type.ts';
+export type { EventsPayload } from './events.types.ts';

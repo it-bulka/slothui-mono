@@ -56,3 +56,11 @@ export {
   useGroupedStoriesByUserSelect,
   useAllGroupedStoriesSelect
 } from './Story/model';
+
+export {
+  eventsReducer,
+  useEventsHomeSelect,
+  useSubscribedEventsSelect,
+  useEventParticipantsSelect,
+  useEventsByUserSelect
+} from './Event/model';

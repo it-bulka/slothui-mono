@@ -1,27 +1,27 @@
-import { EventCard } from '@/entities';
+import { EventCard, useEventsHomeSelect } from '@/entities';
 import { SubscribeEventButton } from '@/features';
-import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.ts';
 import { Typography } from '@/shared/ui';
+import { memo } from 'react';
 
-export const HomeEventContent = () => {
-  const events: EventDTO[] = []
+export const HomeEventContent = memo(() => {
+  const { items: events } = useEventsHomeSelect()
 
   if(!events?.length) return <Typography bold>No any event yet</Typography>
 
-  return events.map(() => (
+  return events.map((item) => (
     <EventCard
-      id="1"
-      title="Frontend Meetup"
-      description="Зустріч розробників для обговорення React, TypeScript і FSD архітектури."
-      date="2025-11-12"
-      location="Київ, UNIT.City"
-      organizer={{ name: 'Iv Li', avatar: '/avatars/ivli.png' }}
-      participantsCount={57}
+      id={item.id}
+      title={item.title}
+      description={item.description}
+      date={item.date}
+      location={item.location}
+      organizer={{ name: item.organizer.name, avatar: item.organizer.avatar }}
+      participantsCount={item.participantsCount || 0}
       actions={(
-        <SubscribeEventButton
-          eventId={"1"}
-        />
+        <SubscribeEventButton eventId={item.id} />
       )}
     />
   ))
-}
+})
+
+HomeEventContent.displayName = 'HomeEventContent'
