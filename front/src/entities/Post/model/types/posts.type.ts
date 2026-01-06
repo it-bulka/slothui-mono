@@ -9,7 +9,12 @@ export type FeedState = {
   nextCursor?: string | null
 }
 
-export interface PostsState extends EntityState<PostWithAttachmentsDto, string>{
+export type PostWithAttachmentsUI = PostWithAttachmentsDto & {
+  isTogglingLike?: boolean;
+  isTogglingSave?: boolean;
+};
+
+export interface PostsState extends EntityState<PostWithAttachmentsUI, string>{
   home: FeedState;
   profile: Record<string, FeedState>
   saves: FeedState;

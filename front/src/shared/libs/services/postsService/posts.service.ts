@@ -63,4 +63,23 @@ export class PostsService {
     );
   }
 
+  /** POST /api/posts/:postId/like */
+  async likePost(postId: string): Promise<void> {
+    return this.http.request(`${this.BASE_URL}/${postId}/like`, { method: 'POST' });
+  }
+
+  /** DELETE /api/posts/:postId/like */
+  async unlikePost(postId: string): Promise<void> {
+    return this.http.request(`${this.BASE_URL}/${postId}/like`, { method: 'DELETE' });
+  }
+
+  /** POST /api/posts/:postId/save */
+  async savePost(postId: string): Promise<void> {
+    return this.http.request(`${this.BASE_URL}/${postId}/save`, { method: 'POST' });
+  }
+
+  /** DELETE /api/posts/:postId/save */
+  async unsavePost(postId: string): Promise<void> {
+    return this.http.request(`${this.BASE_URL}/${postId}/save`, { method: 'DELETE' });
+  }
 }

@@ -5,10 +5,10 @@ import { SharePost } from '../../SharePost';
 export const PostActions = memo(({ postId, onCommentClick }: { postId: string, onCommentClick?: () => void}) => {
   return (
     <div className="flex items-center text-sm font-medium gap-[2%]">
-      <LikePost />
+      <LikePost postId={postId} />
       <CommentPost postId={postId} onCommentClick={onCommentClick}/>
       <SharePost postId={postId} />
-      <SavePost className="ml-auto"/>
+      <SavePost className="ml-auto" postId={postId}/>
     </div>
   )
 })

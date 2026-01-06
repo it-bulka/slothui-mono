@@ -5,5 +5,10 @@ export {
   useSelectProfilePosts,
   useSelectLikedPosts,
   useSelectMyPosts ,
-  useSelectPostById, postsActions
+  useSelectPostById, postsActions,
+  useToggleSavePost,
+  useToggleLikePost,
+  usePostByIdSelect,
+  usePostLikeSelect,
+  usePostSaveSelect
 } from './model';
