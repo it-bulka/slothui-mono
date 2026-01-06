@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
+
 export const useFetchLocation = () => {
-  const fetchLocationName = async (
+  const fetchLocationName = useCallback(async (
     [lat, lon]: [number, number],
     onSuccessFetch: (name: string) => void
   ) => {
@@ -10,7 +12,7 @@ export const useFetchLocation = () => {
     } catch (err) {
       console.error(err)
     }
-  }
+  }, [])
 
   return { fetchLocationName }
 }

@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/shared/config/redux';
+import { selectRepliesErrorByParentId } from '../selectors/selectRepliesErrorByParentId.ts';
 
 export const useGetRepliesError = (parentId?: string) => useAppSelector(
-  (state) => (parentId && state.comments.replies[parentId]) && state.comments.replies[parentId!].error
+  (state) => selectRepliesErrorByParentId(state, parentId)
 )

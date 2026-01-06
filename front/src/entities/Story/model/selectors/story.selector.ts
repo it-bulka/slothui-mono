@@ -27,7 +27,7 @@ export const selectStoriesByUser = (userId?: string) =>
     }
   );
 
-export const selectAllGroupedStories = () =>
+export const selectAllGroupedStories =
   createSelector(
     (state: RootState) => state.stories.entities,
     (state: RootState) => state.stories.storiesByUser,
@@ -42,22 +42,27 @@ export const selectAllGroupedStories = () =>
     }
   );
 
-export const selectGroupedStoriesByUser = (userId?: string) =>
-  createSelector(
+export const selectGroupedStoriesByUser = createSelector(
+  [
+    (_: RootState, userId?: string) => userId,
     (state: RootState) => state.stories.entities,
     (state: RootState) => state.stories.storiesByUser,
     (state: RootState) => state.stories.isLoading,
     (state: RootState) => state.stories.error,
-    (entities, storiesByUser, isLoading, error) => {
-      if(!userId) return { items: [], isLoading, error };
+  ],
+  (userId, entities, storiesByUser, isLoading, error) => {
+    if (!userId) return { items: [], isLoading, error };
 
-      const users = [storiesByUser[userId]].filter(Boolean)
+    const userMeta = storiesByUser[userId];
+    if (!userMeta) return { items: [], isLoading, error };
 
-      const items: UserStories[] = users.map(userMeta => mapUserMetaToUserStories(userMeta, entities));
-
-      return { items, isLoading, error };
-    }
-  );
+    return {
+      items: [mapUserMetaToUserStories(userMeta, entities)],
+      isLoading,
+      error,
+    };
+  }
+);
 
 export const storiesSelectors = storiesAdapter.getSelectors<RootState>(
   (state) => state.stories

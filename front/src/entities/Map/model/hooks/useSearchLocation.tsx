@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
+
 export const useSearchLocation = () => {
-  const searchLocation = async ({
+  const searchLocation = useCallback(async ({
      q, setPosition, setLocationName
   }: {
     q: string,
@@ -18,7 +20,7 @@ export const useSearchLocation = () => {
     } catch (err) {
       console.error(err)
     }
-  }
+  }, [])
 
   return { searchLocation }
 }

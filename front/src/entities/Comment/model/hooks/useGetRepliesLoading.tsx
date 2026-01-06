@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/shared/config/redux';
+import { selectRepliesLoadingByParentId } from '../selectors/selectRepliesLoadingByParentId.ts';
 
 export const useGetRepliesLoading = (parentId?: string) => useAppSelector(
-  (state) => Boolean(parentId && state.comments.replies[parentId]) && state.comments.replies[parentId!].isLoading
+  (state) => selectRepliesLoadingByParentId(state, parentId)
 )

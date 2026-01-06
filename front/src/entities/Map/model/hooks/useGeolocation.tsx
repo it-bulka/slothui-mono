@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export const useGeolocation = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const getLocation = () => {
+  const getLocation = useCallback(() => {
     setIsLoading(true)
     return new Promise<[number, number] | null>((resolve) => {
       navigator.geolocation?.getCurrentPosition(
@@ -17,7 +17,7 @@ export const useGeolocation = () => {
         }
       )
     })
-  }
+  }, [setIsLoading])
 
   return { getLocation, isLoading }
 }
