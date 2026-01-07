@@ -9,7 +9,8 @@ import {
   fetchSuggestionsExtraReducer,
   followUserExtraReducer,
   removeFolloweeExtraReducer,
-  removeFollowerExtraReducer
+  removeFollowerExtraReducer,
+  markNewFollowersSeenExtraReducer
 } from '../extraReducers';
 
 export const initialState = friendsAdapter.getInitialState<FriendsState>({
@@ -19,7 +20,8 @@ export const initialState = friendsAdapter.getInitialState<FriendsState>({
   followingsByUser: {},
   suggestions: {
     ids: [],
-  }
+  },
+  followersLastViewedAt: 0,
 });
 
 export const friendsSlice = createSlice({
@@ -41,6 +43,7 @@ export const friendsSlice = createSlice({
     followUserExtraReducer(builder);
     removeFolloweeExtraReducer(builder);
     removeFollowerExtraReducer(builder);
+    markNewFollowersSeenExtraReducer(builder);
   }
 })
 

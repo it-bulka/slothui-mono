@@ -2,3 +2,8 @@ export { useEventParticipantsSelect } from './useEventParticipantsSelect.ts';
 export { useEventsByUserSelect } from './useEventsByUserSelect.ts';
 export { useSubscribedEventsSelect } from './useSubscribedEventsSelect.ts';
 export { useEventsHomeSelect } from './useEventsHomeSelector.ts';
+export { useUpcomingEventsSelect } from './useUpcomingEvents.ts';
+export { useFetchEventsByUser } from './useFetchEventsByUser.ts';
+export { useFetchUpcomingEvents } from './useFetchUpcomingEvents.ts';
+export { useFetchSubscribedEvents } from './useFetchSubscribedEvents.ts';
+export { useCreateEvent } from './useCreateEvent.ts';

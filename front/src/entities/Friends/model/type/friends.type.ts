@@ -1,14 +1,29 @@
 import type { EntityState } from '@reduxjs/toolkit';
-import type { FriendDto } from '@/shared/types';
 
 type FriendPage = {
   ids: string[]
   isLoading?: boolean,
   hasMore?: boolean,
   nextCursor?: string | null
+
+  followersLastSeenAt?: number
 }
-export interface FriendsState extends EntityState<FriendDto, string>{
+
+export type FriendEntity = {
+  id: string;
+  src: string
+  name: string
+  nickname: string
+
+  isFollowing: boolean
+  isFollower: boolean
+
+  followedAt: number; // timestamp -> from createdAt ISO
+}
+
+export interface FriendsState extends EntityState<FriendEntity, string>{
   followersByUser: Record<string, FriendPage>;
   followingsByUser: Record<string, FriendPage>;
   suggestions: FriendPage;
+  followersLastViewedAt: number // timestamp
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { TabWithFriends } from '@/widgets';
+import { TabWithFriends } from '@/features';
 import { useGetFollowers, useGetFollowings } from '@/entities/Friends';
 import { useUserSelector } from '@/entities/User';
 import { useFollowersSelector, useFollowingsSelector } from '@/entities/Friends';

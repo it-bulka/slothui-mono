@@ -7,6 +7,8 @@ export enum AppRoutes {
   FRIENDS_SUGGESTION = 'friends_suggestions',
   USER_FRIENDS = 'user_friends',
   ME = 'me',
+  MY_EVENTS = 'my_events',
+  MY_POSTS = 'my_posts',
   STORED_POSTS = 'stored_posts',
   SETTINGS = 'settings',
   SETTINGS_PROFILE = 'settings_profile',
@@ -40,6 +42,8 @@ export const getUserPage = (id: string) => `/users/${id}`
 export const getUserFriendsPage = (id: string) => `/users/${id}/${UserRelativePaths.friends}`
 
 export const getMePage = () => `/me`
+export const getMyPostsPage = () => `/me/posts`
+export const getMyEventsPage = () => `/me/events`
 export const getStoredPostsPage = () => `/me/stored`
 
 export const getSettingsPage = () => `/settings`
@@ -65,6 +69,8 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.USER]: getUserPage(":id"),
   [AppRoutes.USER_FRIENDS]: getUserFriendsPage(":id"),
   [AppRoutes.ME]: getMePage(),
+  [AppRoutes.MY_EVENTS]: getMyEventsPage(),
+  [AppRoutes.MY_POSTS]: getMyPostsPage(),
   [AppRoutes.STORED_POSTS]: getStoredPostsPage(),
   [AppRoutes.SETTINGS]: getSettingsPage(),
   [AppRoutes.SETTINGS_PROFILE]: getSettingsProfilePage(),

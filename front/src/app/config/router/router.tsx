@@ -17,6 +17,7 @@ import {
   EventDetailsPage,
   ChatsPage,
   MyFriendsSuggestionsPage,
+  MyEventsPage,
   NotFound
 } from '@/pages';
 import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
@@ -35,8 +36,12 @@ export const router = createBrowserRouter([
         element: <MessagesAllPage />
       },
       {
-        path: RoutePaths.me,
+        path: RoutePaths.my_posts,
         element: <MePage />
+      },
+      {
+        path: RoutePaths.my_events,
+        element: <MyEventsPage />
       },
       {
         path: RoutePaths.messages_with,

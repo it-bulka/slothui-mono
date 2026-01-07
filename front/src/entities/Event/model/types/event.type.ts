@@ -25,6 +25,7 @@ export interface EventsState extends EntityState<EventDTO, string> {
   home: FeedState
   eventsByUser: Record<string, FeedState>
   subscribed: FeedState
+  upcoming: FeedState
 
   participants: Record<string, ParticipantsFeedState> // key = eventId
 }

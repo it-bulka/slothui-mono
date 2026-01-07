@@ -4,14 +4,14 @@ import type { ChatDTO } from '@/shared/types/chat.types.ts';
 import { searchChats } from './thunk/searchChats.thunk.ts';
 import { createPrivateChatThunk } from './thunk/createPrivateChat.thunk.ts';
 
-export type Chat = ChatDTO;
+export type Chat = ChatDTO & { unreadCount?: number };
 interface ChatState {
   activeChatId: string | null
   allChatsLoaded: boolean
   searchResults: string[]
 }
 
-const chatAdapter = createEntityAdapter<ChatDTO, string>({
+const chatAdapter = createEntityAdapter<Chat, string>({
   selectId: (chat) => chat.id,
   sortComparer: (a, b) => {
     const aDate = a.lastMessage?.createdAt
@@ -61,7 +61,7 @@ export const chatSlice = createSlice({
 export const { actions: chatsActions, reducer: chatsReducer } = chatSlice;
 export const {
   selectById: selectChatById,
-  selectEntities: selectChats,
+  selectEntities: selectChatsEntities,
   selectAll: selectSortedChats,
   selectIds: selectChatsIds
 } = chatAdapter.getSelectors<{

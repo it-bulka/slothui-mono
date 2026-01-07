@@ -8,3 +8,4 @@ export { PostsToolbar } from './PostsToolbar/PostsToolbar.tsx';
 export { ContactUserToolbar } from './ContactUserToolbar/ContactUserToolbar.tsx';
 export { ThemeSelect } from './ThemeSelect/ThemeSelect.tsx';
 export { SharePost } from './SharePost';
+export { EventsList } from './EventsList';

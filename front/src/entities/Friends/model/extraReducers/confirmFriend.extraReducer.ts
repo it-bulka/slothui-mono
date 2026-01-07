@@ -2,6 +2,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { confirmFriendThunk } from '../thunk/confirmFriend.thunk.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
+import { mapFollowerDtoToEntity } from '../utils';
 
 export const confirmFriendExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
@@ -9,7 +10,7 @@ export const confirmFriendExtraReducer = (builder: ActionReducerMapBuilder<Frien
       const user = action.payload
       const myId = 'me'
 
-      friendsAdapter.upsertOne(state, user)
+      friendsAdapter.upsertOne(state, mapFollowerDtoToEntity(user))
 
       // followers
       state.followersByUser[myId] ??= { ids: [] }

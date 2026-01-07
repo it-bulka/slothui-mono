@@ -1,20 +1,38 @@
 import { type ReactNode, memo } from 'react';
-import { AvatarWithInfo, List } from '@/shared/ui';
-import type { FriendDto } from '@/shared/types';
+import { AvatarWithInfo, List, Typography } from '@/shared/ui';
+import { twMerge } from 'tailwind-merge';
+import classnames from 'classnames';
+import type { FriendEntity } from '@/entities';
 
 interface FriendsListProps {
-  friends: FriendDto[];
-  renderActions?: (friend: FriendDto, index: number) => ReactNode;
+  friends: FriendEntity[];
+  newFollowerIds?: string[];
+  renderActions?: (friend: FriendEntity, index: number) => ReactNode;
 }
 
-export const FriendsList = memo(({ friends, renderActions }: FriendsListProps) => {
+export const FriendsList = memo(({
+  friends,
+  renderActions,
+  newFollowerIds = []
+}: FriendsListProps) => {
   return (
     <List topBorder={false}>
-      {friends.map((friend, index) => (
-        <li
+      {friends.map((friend, index) => {
+        const isNew = newFollowerIds.includes(friend.id);
+        return <li
           key={friend.id}
-          className="flex justify-between items-center py-[0.9375rem] border-style-b gap-2"
-        >
+          className={twMerge(classnames(
+            "relative flex justify-between items-center py-[0.9375rem] border-style-b gap-2 px-2",
+            { 'bg-blue-200': isNew}))
+        }>
+          {isNew && <Typography
+            bold
+            variant="span"
+            className="absolute top-0 right-0 text-blue-400 px-2"
+          >
+            new
+          </Typography>
+          }
           <AvatarWithInfo
             src={friend.src}
             position={friend.nickname}
@@ -23,7 +41,7 @@ export const FriendsList = memo(({ friends, renderActions }: FriendsListProps) =
           />
           {renderActions?.(friend, index)}
         </li>
-      ))}
+      })}
     </List>
   );
 });

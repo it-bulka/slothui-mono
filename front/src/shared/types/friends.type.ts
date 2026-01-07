@@ -6,4 +6,6 @@ export type FriendDto = {
 
   isFollowing: boolean
   isFollower: boolean
+
+  createdAt: string; // ISO
 }

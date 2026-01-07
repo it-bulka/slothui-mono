@@ -7,24 +7,34 @@ import SubscrptionSvg from '@/shared/assets/images/sidebar/5.subscrption.svg?rea
 import SettingsSvg from '@/shared/assets/images/sidebar/6.settings.svg?react'
 import HelpSvg from '@/shared/assets/images/sidebar/7.help.svg?react'
 import { twMerge } from 'tailwind-merge';
+import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { useNavbarCounts } from './model/hooks/useNavbarCounts.ts';
+import type { NavbarListType } from './model/types';
 
-const navLinks = [
-  { Icon: FeedSvg, title: 'Feed', key: 'feed', count: 10 },
-  { Icon: StoriesSvg, title: 'Stories', key: 'stories' },
-  { Icon: FriendsSvg, title: 'Friends', key: 'friends', count: 4 },
-  { Icon: ApiSvg, title: 'APIs', key: 'apis' },
-  { Icon: SubscrptionSvg, title: 'Subscription', key: 'subscription' },
-  { Icon: SettingsSvg, title: 'Settings', key: 'settings' },
-  { Icon: HelpSvg, title: 'Help & Support', key: 'help' },
+const navLinks: NavbarListType = [
+  { Icon: FeedSvg, title: 'Feed', key: 'feed', href: RoutePaths.home },
+  { Icon: SubscrptionSvg, title: 'Chats', key: 'chats', href: RoutePaths.chats },
+  { Icon: StoriesSvg, title: 'My Posts', key: 'posts', href: RoutePaths.my_posts },
+  { Icon: ApiSvg, title: 'My Events', key: 'events', href: RoutePaths.my_events },
+  { Icon: FriendsSvg, title: 'Friends', key: 'friends', href: `${RoutePaths.friends}?type=followers` },
+  { Icon: SettingsSvg, title: 'Settings', key: 'settings', href: RoutePaths.settings },
+  { Icon: HelpSvg, title: 'Help & Support', key: 'help', href: RoutePaths.home }, // TODO: add path for support or change
 ]
 
 export const NavBar = ({ className }: { className?: string }) => {
+  const counts = useNavbarCounts()
+
   return (
     <>
       <div className={twMerge("flex flex-col justify-start", className)}>
-        {navLinks.map(({Icon, title, key, count }) => {
-          // TODO: change href
-          return <NavbarLink Icon={Icon} title={title} key={key} href={"/"} count={count}/>
+        {navLinks.map(({Icon, title, key, href }) => {
+          return <NavbarLink
+            Icon={Icon}
+            title={title}
+            key={key}
+            href={href}
+            count={counts[key]}
+          />
         })}
       </div>
     </>

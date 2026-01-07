@@ -1,17 +1,16 @@
 import { Feed, PostTextarea } from '@/widgets';
 import { AddPostBtn } from '@/features';
 import { useState } from 'react';
-import { useSelectMyPosts } from '@/entities';
+import { MyFeedContent } from './ui/MyFeedContent/MyFeedContent.tsx';
+import { AppLink } from '@/shared/ui';
+import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 const Me = () => {
   const [isPostTextarea, setPostTextarea] = useState(false);
-  const { posts } = useSelectMyPosts()
 
   return (
     <>
       <Feed
-        posts={posts}
-        withOutAuthor
         header={(
         <div className={"toolbar"}>
           <AddPostBtn
@@ -21,7 +20,12 @@ const Me = () => {
           />
           {isPostTextarea && <PostTextarea className="basis-full py-6"/>}
         </div>
-      )}/>
+        )}>
+        <>
+          <AppLink to={RoutePaths.my_events} className="ml-auto">Go to Events</AppLink>
+          <MyFeedContent />
+        </>
+      </Feed>
     </>
 
   )

@@ -7,7 +7,7 @@ export const LeftSidebar = () => {
   return (
     <div className={"px-4 py-8 flex flex-col h-full border-style-r"}>
       <Logo />
-      <SearchBar className="my-8" placeholder={"Search..."}/>
+      <SearchBar className="my-8" placeholder={"Navigation over site..."}/>
       <NavBar className="grow" />
 
       <Divider className={"my-6"}/>

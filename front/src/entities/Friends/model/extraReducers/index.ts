@@ -5,3 +5,6 @@ export { fetchSuggestionsExtraReducer } from './fetchSuggestions.extraReducer.ts
 export { followUserExtraReducer } from './followUser.extraReducer.ts';
 export { removeFollowerExtraReducer } from './removeFollower.extraReducer.ts';
 export { removeFolloweeExtraReducer } from './removeFollowee.extraReducer.ts';
+export {
+  markNewFollowersSeenExtraReducer
+} from './markNewFollowersSeen.extraReducor.ts';

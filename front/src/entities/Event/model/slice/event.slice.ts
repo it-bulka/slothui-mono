@@ -28,6 +28,12 @@ const initialState = eventsAdapter.getInitialState<EventsState>({
     hasMore: true,
     nextCursor: null,
   },
+  upcoming: {
+    ids: [],
+    isLoading: false,
+    hasMore: true,
+    nextCursor: null,
+  },
   participants: {}
 })
 

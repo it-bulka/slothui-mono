@@ -4,6 +4,7 @@ import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
 import { ChatRequestEvents, ChatServerEvents } from './event.types.ts';
 import { Socket } from 'socket.io-client';
+import type { PaginatedResponse } from '@/shared/types';
 
 export class ChatService {
   /** Multicast streams */
@@ -37,9 +38,9 @@ export class ChatService {
   /* ------------------------------------------------------------------ */
 
   /** GET /api/chats */
-  async listChats(): Promise<ChatDTO[]> {
-    const res = await this.http.request<{ items: ChatDTO[] }>('/api/chats');
-    return res.items;
+  async listChats(): Promise<PaginatedResponse<ChatDTO & { unreadCount: number }>> {
+    const res = await this.http.request<PaginatedResponse<ChatDTO & { unreadCount: number }>>('/api/chats');
+    return res;
   }
 
   async search(name: string): Promise<ChatDTO[]> {

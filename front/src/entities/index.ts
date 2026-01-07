@@ -43,6 +43,7 @@ export {
   useGetReplyTarget,
   selectReplyTarget
 } from './ReplyTarget';
+
 export {
   useFollowUser,
   friendsReducer,
@@ -50,8 +51,13 @@ export {
   useFollowingsSelector,
   useRemoveFollower,
   useRemoveFollowee,
-  useSuggestedFriendsSelect
+  useSuggestedFriendsSelect,
+  useUnseenFollowersCountSelect,
+  useNewFollowersIdsSelect,
+  useFollowersWithNewOnTopSelect,
+  type FriendEntity
 } from './Friends';
+
 export {
   storiesReducer,
   useFlushStoriesViewed,
@@ -68,5 +74,13 @@ export {
   useEventsHomeSelect,
   useSubscribedEventsSelect,
   useEventParticipantsSelect,
-  useEventsByUserSelect
+  useEventsByUserSelect,
+  useUpcomingEventsSelect,
+  useFetchUpcomingEvents,
+  useFetchSubscribedEvents,
+  useFetchEventsByUser,
+  useCreateEvent
 } from './Event/model';
+
+export { useUserChatSelect, useChatsTotalUnreadCount } from './Chats';
+export { useUserSelector } from './User';

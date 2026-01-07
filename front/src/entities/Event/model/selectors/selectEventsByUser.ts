@@ -14,6 +14,8 @@ export const selectEventsByUser = (userId?: string) =>
         items: userFeed.ids.map(id => entities[id]!).filter(Boolean),
         isLoading: userFeed.isLoading,
         error: userFeed.error,
+        hasMore: Boolean(userFeed.hasMore),
+        nextCursor: userFeed.nextCursor,
       };
     }
   );

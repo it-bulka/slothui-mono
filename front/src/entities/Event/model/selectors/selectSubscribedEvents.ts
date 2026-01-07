@@ -8,6 +8,7 @@ export const selectSubscribedEvents = createSelector(
     items: feed.ids.map(id => state.events.entities[id]).filter(Boolean),
     isLoading: feed.isLoading,
     error: feed.error,
-    hasMore: feed.hasMore,
+    hasMore: Boolean(feed.hasMore),
+    nextCursor: feed.nextCursor,
   })
 )

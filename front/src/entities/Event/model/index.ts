@@ -3,5 +3,10 @@ export {
   useEventsHomeSelect,
   useSubscribedEventsSelect,
   useEventParticipantsSelect,
-  useEventsByUserSelect
+  useEventsByUserSelect,
+  useUpcomingEventsSelect,
+  useFetchSubscribedEvents,
+  useFetchEventsByUser,
+  useFetchUpcomingEvents,
+  useCreateEvent
 } from './hooks';

@@ -9,8 +9,8 @@ export class FriendsService {
   ) {}
 
   /** GET /api/friends/followers */
-  async getFollowers({ cursor, userId }: { cursor?: string | null, userId?: string } = {}): Promise<PaginatedResponse<FriendDto>> {
-    return await this.http.request<PaginatedResponse<FriendDto>>(
+  async getFollowers({ cursor, userId }: { cursor?: string | null, userId?: string } = {}): Promise<PaginatedResponse<FriendDto> & { followersLastViewedAt: number }> {
+    return await this.http.request<PaginatedResponse<FriendDto> & { followersLastViewedAt: number }>(
       this.BASE_URL + '/followers',
       { params: { cursor, userId } },
     );
@@ -73,6 +73,16 @@ export class FriendsService {
       this.BASE_URL + '/confirmation',
       {
         body: { userId },
+        method: 'POST',
+      },
+    );
+  }
+
+  /** POST /api/friends/followers/markSeen  timestamp */
+  async markFollowersSeen(): Promise<number> {
+    return await this.http.request<number>(
+      this.BASE_URL + '/followers/markSeen',
+      {
         method: 'POST',
       },
     );

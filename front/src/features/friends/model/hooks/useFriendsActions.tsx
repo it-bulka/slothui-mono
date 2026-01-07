@@ -1,5 +1,4 @@
-import { useFollowUser, useRemoveFollower, useRemoveFollowee } from '@/entities';
-import type { FriendDto } from '@/shared/types';
+import { useFollowUser, useRemoveFollower, useRemoveFollowee, type FriendEntity } from '@/entities';
 import { Button } from '@/shared/ui';
 import { ActionButton } from '@/shared/ui';
 import DeleteIcon from '@/shared/assets/images/actions/delete.svg?react'
@@ -14,7 +13,7 @@ export const useFriendActions = () => {
   const { followUser } = useFollowUser()
   const { removeFollowee } = useRemoveFollowee()
 
-  const renderActions = (friend: FriendDto, tabIndex: number) => {
+  const renderActions = (friend: FriendEntity, tabIndex: number) => {
     if (tabIndex === FriendsTab.Followers) {
       return (
         <>

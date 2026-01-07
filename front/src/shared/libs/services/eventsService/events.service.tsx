@@ -29,6 +29,15 @@ export class EventsService {
     return res;
   }
 
+  /** GET /api/events/upcoming?cursor&limit=50 */
+  async getUpcomingEvents(cursor?: string | null): Promise<PaginatedResponse<EventDTO>> {
+    const res = await this.http.request<PaginatedResponse<EventDTO>>(
+      `/api/events/upcoming`,
+      { params: { cursor, limit: 50 } },
+    );
+    return res;
+  }
+
   /** GET /api/events?cursor&limit=50 */
   async getEventsByUser(userId: string, cursor?: string | null): Promise<PaginatedResponse<EventDTO>> {
     const res = await this.http.request<PaginatedResponse<EventDTO>>(

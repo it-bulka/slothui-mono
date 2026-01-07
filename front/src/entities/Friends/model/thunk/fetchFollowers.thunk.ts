@@ -4,7 +4,7 @@ import type { PaginatedResponse } from '@/shared/types';
 import type { FriendDto } from '@/shared/types';
 
 export const fetchFollowers = createAsyncThunk<
-  PaginatedResponse<FriendDto>,
+  PaginatedResponse<FriendDto> & { followersLastViewedAt: number },
   { cursor?: string, userId: string },
   ThunkAPI
 >(

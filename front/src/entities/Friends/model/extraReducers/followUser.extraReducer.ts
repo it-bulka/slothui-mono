@@ -2,13 +2,14 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { followUserThunk } from '../thunk/followUser.thunk.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
+import { mapFollowerDtoToEntity } from '../utils';
 
 export const followUserExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
     .addCase(followUserThunk.fulfilled, (state, action) => {
       const user = action.payload
 
-      friendsAdapter.upsertOne(state, user)
+      friendsAdapter.upsertOne(state, mapFollowerDtoToEntity(user))
 
       const myId = 'me'
       state.followingsByUser[myId] ??= { ids: [] }

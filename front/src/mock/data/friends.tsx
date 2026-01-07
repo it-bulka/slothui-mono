@@ -14,7 +14,8 @@ export const mockFriendsTabs = {
     ],
     [
       { id: 'u21', src: mockAvatar, nickname: "jkjkjkjk", username: "Followers" },
-      { id: 'u21', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u23', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
+      { id: 'u25', src: mockAvatar, nickname: "jkjkjkjk", username: "Name" },
     ]
   ]
 }

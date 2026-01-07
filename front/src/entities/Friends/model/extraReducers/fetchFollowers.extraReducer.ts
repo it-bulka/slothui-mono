@@ -2,6 +2,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { fetchFollowers } from '../thunk/fetchFollowers.thunk.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
+import { mapFollowerDtoToEntity } from '../utils';
 
 export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
@@ -12,6 +13,7 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
         ids: [],
         isLoading: false,
         hasMore: true,
+        followersLastSeenAt: 0
       }
 
       state.followersByUser[userId].isLoading = true
@@ -19,9 +21,12 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
 
     .addCase(fetchFollowers.fulfilled, (state, action) => {
       const { userId } = action.meta.arg
-      const { items, nextCursor, hasMore } = action.payload
+      const { items, nextCursor, hasMore, followersLastViewedAt } = action.payload
 
-      friendsAdapter.upsertMany(state, items)
+      friendsAdapter.upsertMany(
+        state,
+        items.map(mapFollowerDtoToEntity)
+      )
 
       const page = state.followersByUser[userId]
 
@@ -29,6 +34,7 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
       page.hasMore = hasMore
       page.isLoading = false
       page.nextCursor = nextCursor
+      page.followersLastSeenAt = followersLastViewedAt
     })
 
     .addCase(fetchFollowers.rejected, (state, action) => {

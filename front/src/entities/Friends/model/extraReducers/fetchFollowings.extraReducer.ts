@@ -2,6 +2,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { fetchFollowings } from '../thunk/fetchFollowings.thunk.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
+import { mapFollowerDtoToEntity } from '../utils';
 
 export const fetchFollowingsExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
@@ -20,7 +21,10 @@ export const fetchFollowingsExtraReducer = (builder: ActionReducerMapBuilder<Fri
       const { userId } = action.meta.arg
       const { items, nextCursor, hasMore } = action.payload
 
-      friendsAdapter.upsertMany(state, items)
+      friendsAdapter.upsertMany(
+        state,
+        items.map(mapFollowerDtoToEntity)
+      )
 
       const page = state.followingsByUser[userId]
 

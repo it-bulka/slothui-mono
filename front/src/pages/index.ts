@@ -15,3 +15,4 @@ export { EventDetailsPage } from './EventDetails';
 export { NotFound } from './NotFound/NotFound.tsx';
 export { ChatsPage } from './Chats';
 export { MyFriendsSuggestionsPage } from './MyFriendsSuggestions';
+export { MyEventsPage } from './MyEvents';

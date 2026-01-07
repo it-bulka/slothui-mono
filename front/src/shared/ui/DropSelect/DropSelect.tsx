@@ -1,14 +1,16 @@
 import { memo, type ReactNode } from 'react';
-import Select, { type Props } from 'react-select'
+import Select, { type Props } from 'react-select';
 
-type OptionType = {
+type BaseOption = {
   value: string;
   label: ReactNode;
 };
 
-type DropSelectProps = Props<OptionType, false>;
+type DropSelectProps<T extends BaseOption> = Props<T, false>;
 
-export const DropSelect = memo(({options, defaultValue, ...rest }: DropSelectProps) => {
+function DropSelectInner<T extends BaseOption>(
+  { options, defaultValue, ...rest }: DropSelectProps<T>
+) {
   return (
     <Select
       options={options}
@@ -16,7 +18,9 @@ export const DropSelect = memo(({options, defaultValue, ...rest }: DropSelectPro
       {...rest}
       classNamePrefix="rs"
     />
-  )
-})
+  );
+}
 
-DropSelect.displayName = 'DropSelect'
+DropSelectInner.displayName = 'DropSelect';
+export const DropSelect = memo(DropSelectInner) as typeof DropSelectInner;
+

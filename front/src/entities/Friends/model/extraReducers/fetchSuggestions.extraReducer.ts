@@ -2,6 +2,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { fetchSuggestions } from '../thunk/fetchSuggestions.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
+import { mapFollowerDtoToEntity } from '../utils';
 
 export const fetchSuggestionsExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
@@ -12,7 +13,10 @@ export const fetchSuggestionsExtraReducer = (builder: ActionReducerMapBuilder<Fr
     .addCase(fetchSuggestions.fulfilled, (state, action) => {
       const { items, nextCursor, hasMore } = action.payload
 
-      friendsAdapter.upsertMany(state, items)
+      friendsAdapter.upsertMany(
+        state,
+        items.map(mapFollowerDtoToEntity)
+      )
 
       state.suggestions.ids.push(...items.map((u) => u.id))
       state.suggestions.hasMore = hasMore
