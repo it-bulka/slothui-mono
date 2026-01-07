@@ -16,6 +16,7 @@ import {
   RegisterPage,
   EventDetailsPage,
   ChatsPage,
+  MyFriendsSuggestionsPage,
   NotFound
 } from '@/pages';
 import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: RoutePaths.friends,
         element: <FriendsPage />
+      },
+      {
+        path: RoutePaths.friends_suggestions,
+        element: <MyFriendsSuggestionsPage />
       },
       {
         path: RoutePaths.settings,

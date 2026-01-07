@@ -1,31 +1,39 @@
-import { AppLink, AvatarWithInfo } from '@/shared/ui';
+import { AppLink } from '@/shared/ui';
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
-import { List } from '@/shared/ui';
+import { getFriendsSuggestionsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { FriendsListWithActions } from '@/features';
+import { useLocation } from 'react-router';
+import { useMemo } from 'react';
 
 const suggestions = [
   {
-    avatarSrc: '/',
-    userPosition: 'some position',
-    userName: 'userName'
+    id: '1',
+    src: '/',
+    name: 'some position',
+    nickname: 'userName',
+
+    isFollowing: false,
+    isFollower: true
   }
 ]
 export const FriendSuggestions = () => {
+  const location = useLocation()
+  const isFriendsSuggestionsPage = useMemo(() => {
+    return location.pathname.includes(getFriendsSuggestionsPage());
+  }, [location.pathname])
+
+  if(isFriendsSuggestionsPage) return null;
+
   return (
     <div>
       {/*TODO: add redirection*/}
       <BlockTitle
         title="Friend Suggestions"
         withMargin
-        customBtn={(<AppLink to={'/'} className="text-lg font-bold">See All</AppLink>)}
+        customBtn={(<AppLink to={getFriendsSuggestionsPage()} className="text-lg font-bold">See All</AppLink>)}
       />
 
-      <List>
-        {suggestions.map(({ avatarSrc, userPosition, userName }) => (
-          <List.Item btnText="+">
-            <AvatarWithInfo src={avatarSrc} position={userPosition} name={userName} titleClass="text-sm text-gray-g1"/>
-          </List.Item>
-        ))}
-      </List>
+      <FriendsListWithActions friends={suggestions} />
     </div>
   );
 }

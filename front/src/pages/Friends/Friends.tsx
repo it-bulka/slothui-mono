@@ -1,7 +1,5 @@
-import { TabWithFriends } from '@/widgets';
+import { TabWithFriends } from '@/features';
 import { mockFriendsTabs } from '@/mock/data';
-
-
 
 const Friends = () => {
   return (

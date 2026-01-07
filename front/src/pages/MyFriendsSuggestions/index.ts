@@ -1,0 +1,1 @@
+export { MyFriendsSuggestionsPage } from './ui/MyFriendsSuggestions.async.ts';

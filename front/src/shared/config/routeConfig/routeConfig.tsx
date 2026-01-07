@@ -4,6 +4,7 @@ export enum AppRoutes {
   MESSAGES_WITH = 'messages_with',
   CHATS = 'chats',
   FRIENDS = 'friends',
+  FRIENDS_SUGGESTION = 'friends_suggestions',
   USER_FRIENDS = 'user_friends',
   ME = 'me',
   STORED_POSTS = 'stored_posts',
@@ -34,6 +35,7 @@ export const getChatsPage = () => '/chats'
 export const getAllMessagesPage = () => '/msgs'
 export const getMessagesWithUserPage = (id: string) => `/chats/${id}`
 export const getFriendsPage = () => '/friends'
+export const getFriendsSuggestionsPage = () => '/friends/suggestions'
 export const getUserPage = (id: string) => `/users/${id}`
 export const getUserFriendsPage = (id: string) => `/users/${id}/${UserRelativePaths.friends}`
 
@@ -59,6 +61,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.MESSAGES_ALL]: getAllMessagesPage(),
   [AppRoutes.MESSAGES_WITH]: getMessagesWithUserPage(":id"),
   [AppRoutes.FRIENDS]: getFriendsPage(),
+  [AppRoutes.FRIENDS_SUGGESTION]: getFriendsSuggestionsPage(),
   [AppRoutes.USER]: getUserPage(":id"),
   [AppRoutes.USER_FRIENDS]: getUserFriendsPage(":id"),
   [AppRoutes.ME]: getMePage(),

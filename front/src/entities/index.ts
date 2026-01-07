@@ -32,7 +32,7 @@ export {
   useToggleLikePost,
   usePostByIdSelect,
   usePostLikeSelect,
-  usePostSaveSelect
+  usePostSaveSelect,
 } from './Post';
 
 export {
@@ -49,7 +49,8 @@ export {
   useFollowersSelector,
   useFollowingsSelector,
   useRemoveFollower,
-  useRemoveFollowee
+  useRemoveFollowee,
+  useSuggestedFriendsSelect
 } from './Friends';
 export {
   storiesReducer,

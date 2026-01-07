@@ -10,5 +10,5 @@ export {
   useToggleLikePost,
   usePostByIdSelect,
   usePostLikeSelect,
-  usePostSaveSelect
+  usePostSaveSelect,
 } from './model';

@@ -7,3 +7,4 @@ export { useRemoveFollowee } from './useRemoveFollowee.ts';
 // selectors hooks
 export { useFollowingsSelector } from './useFollowingSelector.ts';
 export { useFollowersSelector } from './useFollowersSelector.tsx';
+export { useSuggestedFriendsSelect } from './useSuggestedFriendsSelect.ts';

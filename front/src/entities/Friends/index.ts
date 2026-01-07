@@ -5,6 +5,7 @@ export {
   useFollowersSelector,
   useFollowingsSelector,
   useRemoveFollower,
-  useRemoveFollowee
+  useRemoveFollowee,
+  useSuggestedFriendsSelect
 } from './model/hooks';
 export { friendsReducer } from './model/slice/friends.slice.ts';
