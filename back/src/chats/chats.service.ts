@@ -21,12 +21,15 @@ import type { ChatWithRelations } from './types/chat.type';
 import { WsException } from '@nestjs/websockets';
 import { UserMapper } from '../user/user-mapper';
 import { User } from '../user/entities/user.entity';
+import { ChatMember } from './entities/chatMember.entity';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectRepository(Chat)
     private readonly chatRepo: Repository<Chat>,
+    @InjectRepository(ChatMember)
+    private readonly chatMemberRepo: Repository<ChatMember>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
     private readonly userService: UserService,
@@ -239,10 +242,21 @@ export class ChatsService {
     userId,
     query,
     limit = 50,
-  }: SearchOptions): Promise<ChatListItemDTO[]> {
-    const chats = await this.chatRepo
+    cursor,
+  }: SearchOptions & { cursor?: string }): Promise<
+    (ChatListItemDTO & { unreadCount: number })[]
+  > {
+    const safeLimit = Math.min(limit, 50);
+
+    const qb = this.chatRepo
       .createQueryBuilder('chat')
       .innerJoin('chat.members', 'member', 'member.id = :userId', { userId })
+      .innerJoin(
+        'chat_members',
+        'cm',
+        'cm.chatId = chat.id AND cm.userId = :userId',
+        { userId },
+      )
       .leftJoinAndSelect(
         'chat.members',
         'otherMember',
@@ -255,6 +269,16 @@ export class ChatsService {
         'lastMessage.id = chat.lastMessageId',
       )
       .loadRelationCountAndMap('chat.membersCount', 'chat.members')
+      // підрахунок unreadCount незалежно від пагінації
+      .addSelect(
+        (subQb) =>
+          subQb
+            .select('COUNT(m.id)')
+            .from('messages', 'm')
+            .where('m.chatId = chat.id')
+            .andWhere('(cm.lastReadAt IS NULL OR m.createdAt > cm.lastReadAt)'),
+        'unreadCount',
+      )
       .where(
         `(chat.type = 'group' AND chat.name ILIKE :query)
        OR
@@ -262,10 +286,17 @@ export class ChatsService {
         { query: `%${query}%` },
       )
       .orderBy('lastMessage.createdAt', 'DESC')
-      .take(limit)
-      .getMany();
+      .take(safeLimit);
 
-    return chats.map((chat) => {
+    if (cursor) {
+      qb.andWhere('lastMessage.createdAt < :cursor', { cursor });
+    }
+
+    const { entities, raw } = await qb.getRawAndEntities<{
+      unreadCount: string;
+    }>();
+
+    return entities.map((chat, i) => {
       const isPrivate = chat.type === 'private';
       let otherUser: ChatMemberDTO | undefined;
 
@@ -301,6 +332,7 @@ export class ChatsService {
         isClosedGroup: chat.type === 'group' && chat.visibility === 'private',
         otherUser,
         updatedAt: chat.updatedAt.toISOString(),
+        unreadCount: Number(raw[i].unreadCount),
       };
     });
   }
@@ -423,5 +455,12 @@ export class ChatsService {
     });
 
     return { chat, author };
+  }
+
+  async markChatAsRead(chatId: string, userId: string) {
+    await this.chatMemberRepo.update(
+      { chatId, userId },
+      { lastReadAt: new Date() },
+    );
   }
 }

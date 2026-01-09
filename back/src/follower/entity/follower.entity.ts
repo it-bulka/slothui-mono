@@ -24,5 +24,5 @@ export class Follower {
   confirmed: boolean;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date; // followedAt
 }

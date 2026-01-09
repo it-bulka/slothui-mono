@@ -7,6 +7,7 @@ import { FindManyOptions, LessThan, Repository } from 'typeorm';
 import { UserMapper } from '../user/user-mapper';
 import { FriendDto } from './dto/follower.dto';
 import { User } from '../user/entities/user.entity';
+import { FollowersViewed } from './entity/followersViewed.entity';
 
 @Injectable()
 export class FollowerService {
@@ -14,6 +15,8 @@ export class FollowerService {
     private readonly userService: UserService,
     @InjectRepository(Follower)
     private readonly followerRepo: Repository<Follower>,
+    @InjectRepository(FollowersViewed)
+    private readonly viewedRepo: Repository<FollowersViewed>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
   ) {}
@@ -112,10 +115,12 @@ export class FollowerService {
       nextCursor = nextItem!.createdAt.toISOString();
     }
 
+    const followersLastSeenAt = await this.getFollowersViewed(userId);
     return {
       confirmed,
       items: followers,
       nextCursor,
+      followersLastSeenAt,
     };
   }
 
@@ -200,5 +205,30 @@ export class FollowerService {
     }));
 
     return { items, nextCursor };
+  }
+
+  async getFollowersViewed(currentUserId: string) {
+    const existing = await this.viewedRepo.findOne({
+      where: { user: { id: currentUserId } },
+    });
+
+    if (!existing) return null;
+    return existing.lastViewedAt;
+  }
+
+  async markFollowersView(currentUserId: string) {
+    const existing = await this.viewedRepo.findOne({
+      where: { user: { id: currentUserId } },
+    });
+    if (existing) {
+      existing.lastViewedAt = Date.now();
+      await this.viewedRepo.save(existing);
+    } else {
+      const newViewed = this.viewedRepo.create({
+        user: { id: currentUserId } as User,
+        lastViewedAt: Date.now(),
+      });
+      await this.viewedRepo.save(newViewed);
+    }
   }
 }

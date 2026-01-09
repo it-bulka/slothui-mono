@@ -6,10 +6,11 @@ import { Follower } from './entity/follower.entity';
 import { UserModule } from '../user/user.module';
 import { EventEmitterModule } from '../event-emitter/event-emitter.module';
 import { User } from '../user/entities/user.entity';
+import { FollowersViewed } from './entity/followersViewed.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Follower, User]),
+    TypeOrmModule.forFeature([Follower, User, FollowersViewed]),
     UserModule,
     EventEmitterModule,
   ],

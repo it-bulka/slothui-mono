@@ -74,4 +74,9 @@ export class ChatsController {
   async addMember(@Body() dto: UpdateMembersDto, @Param('id') id: string) {
     return await this.chatsService.updateMembers(id, dto);
   }
+
+  @Post(':chatId/read')
+  markAsRead(@Param('chatId') chatId: string, @Request() request: AuthRequest) {
+    return this.chatsService.markChatAsRead(chatId, request.user.id);
+  }
 }
