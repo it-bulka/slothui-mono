@@ -9,3 +9,5 @@ export { ContactUserToolbar } from './ContactUserToolbar/ContactUserToolbar.tsx'
 export { ThemeSelect } from './ThemeSelect/ThemeSelect.tsx';
 export { SharePost } from './SharePost';
 export { EventsList } from './EventsList';
+export { NavigationSearchBar } from './NavigationSearchBar';
+export { NavBar } from './NavBar/NavBar.tsx';

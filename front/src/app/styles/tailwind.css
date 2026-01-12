@@ -24,6 +24,15 @@
         @apply !rounded-3xl;
     }
     /* === react-select END === */
+
+    input:focus {
+        outline: none;
+        border: none;
+    }
+
+    input:focus-visible {
+        outline: none;
+    }
 }
 
 @theme {

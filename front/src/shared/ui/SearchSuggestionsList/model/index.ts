@@ -1,0 +1,1 @@
+export type { SearchSuggestionsType } from './types/searchSuggestions.type.ts';

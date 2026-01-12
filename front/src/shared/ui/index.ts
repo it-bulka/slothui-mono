@@ -43,3 +43,5 @@ export { MessageToast } from './Toast';
 export { ReplyComment } from './ReplyComment';
 export { Skeleton } from './Skeleton';
 export { ScrollableBlock } from './ScrollableBlock';
+export { SearchSuggestionsList } from './SearchSuggestionsList';
+export { Divider } from './Divider/Divider.tsx';

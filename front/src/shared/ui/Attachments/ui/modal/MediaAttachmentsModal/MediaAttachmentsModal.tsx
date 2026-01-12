@@ -1,5 +1,5 @@
 import { Modal } from '@/shared/ui';
-import type { Attachment } from '@/shared/ui/Attachments/model/type/attachment.dto.ts';
+import type { Attachment } from '@/shared/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Thumbs, Navigation, Scrollbar, FreeMode } from 'swiper/modules';
 import { useState } from 'react';
