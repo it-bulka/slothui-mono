@@ -18,6 +18,9 @@ import { StoriesService } from '../stories/stories.service';
 import { EventsService } from '../events/events.service';
 import { PollsService } from '../polls/polls.service';
 import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
+import { OpenedChatsTracker } from '../ws/opened-chats-tracker.service';
+import { UnreadBufferService } from '../ws/unread-buffer.service';
+import { MessageResponseDto } from './dto/message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -30,6 +33,8 @@ export class MessagesService {
     private readonly storiesService: StoriesService,
     private readonly eventsService: EventsService,
     private readonly pollsService: PollsService,
+    private readonly unreadBufferService: UnreadBufferService,
+    private readonly openedChatsTracker: OpenedChatsTracker,
   ) {}
 
   async getList({
@@ -171,22 +176,45 @@ export class MessagesService {
   }
 
   async createWithExtra(dto: CreateMessageDto) {
+    let msg: Message | MessageResponseDto;
     if ('files' in dto && dto.files) {
-      return await this.createWithAttachments(dto);
+      msg = await this.createWithAttachments(dto);
+    } else if ('storyId' in dto && dto.storyId) {
+      msg = await this.createWithStory(dto);
+    } else if ('eventId' in dto && dto.eventId) {
+      msg = await this.createWithEvent(dto);
+    } else if ('poll' in dto && dto.poll) {
+      msg = await this.createWithPoll(dto);
+    } else {
+      msg = await this.create(dto);
     }
 
-    if ('storyId' in dto && dto.storyId) {
-      return await this.createWithStory(dto);
-    }
+    await this.handleUnreadCounters({
+      chatId: dto.chatId,
+      authorId: dto.authorId,
+    });
 
-    if ('eventId' in dto && dto.eventId) {
-      return await this.createWithEvent(dto);
-    }
+    return msg;
+  }
 
-    if ('poll' in dto && dto.poll) {
-      return await this.createWithPoll(dto);
+  private async handleUnreadCounters({
+    chatId,
+    authorId,
+  }: {
+    chatId: string;
+    authorId: string;
+  }) {
+    const memberIds = await this.chatsService.getChatMemberIds(chatId);
+
+    for (const userId of memberIds) {
+      if (userId === authorId) continue;
+
+      const isOpened = this.openedChatsTracker.isChatOpened(userId, chatId);
+
+      if (isOpened) continue;
+
+      this.unreadBufferService.increment(userId, chatId);
     }
-    return await this.create(dto);
   }
 
   async sendMessageOnStory({

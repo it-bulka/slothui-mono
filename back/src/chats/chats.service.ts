@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { Chat } from './entities/chat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -240,12 +241,9 @@ export class ChatsService {
 
   async searchUserChats({
     userId,
-    query,
     limit = 50,
     cursor,
-  }: SearchOptions & { cursor?: string }): Promise<
-    (ChatListItemDTO & { unreadCount: number })[]
-  > {
+  }: SearchOptions & { cursor?: string }): Promise<ChatListItemDTO[]> {
     const safeLimit = Math.min(limit, 50);
 
     const qb = this.chatRepo
@@ -269,22 +267,6 @@ export class ChatsService {
         'lastMessage.id = chat.lastMessageId',
       )
       .loadRelationCountAndMap('chat.membersCount', 'chat.members')
-      // підрахунок unreadCount незалежно від пагінації
-      .addSelect(
-        (subQb) =>
-          subQb
-            .select('COUNT(m.id)')
-            .from('messages', 'm')
-            .where('m.chatId = chat.id')
-            .andWhere('(cm.lastReadAt IS NULL OR m.createdAt > cm.lastReadAt)'),
-        'unreadCount',
-      )
-      .where(
-        `(chat.type = 'group' AND chat.name ILIKE :query)
-       OR
-       (chat.type = 'private' AND (otherMember.name ILIKE :query OR otherMember.nickname ILIKE :query))`,
-        { query: `%${query}%` },
-      )
       .orderBy('lastMessage.createdAt', 'DESC')
       .take(safeLimit);
 
@@ -292,11 +274,9 @@ export class ChatsService {
       qb.andWhere('lastMessage.createdAt < :cursor', { cursor });
     }
 
-    const { entities, raw } = await qb.getRawAndEntities<{
-      unreadCount: string;
-    }>();
+    const entities = await qb.getMany();
 
-    return entities.map((chat, i) => {
+    return entities.map((chat) => {
       const isPrivate = chat.type === 'private';
       let otherUser: ChatMemberDTO | undefined;
 
@@ -332,7 +312,6 @@ export class ChatsService {
         isClosedGroup: chat.type === 'group' && chat.visibility === 'private',
         otherUser,
         updatedAt: chat.updatedAt.toISOString(),
-        unreadCount: Number(raw[i].unreadCount),
       };
     });
   }
@@ -462,5 +441,19 @@ export class ChatsService {
       { chatId, userId },
       { lastReadAt: new Date() },
     );
+  }
+
+  async getChatMemberIds(chatId: string): Promise<string[]> {
+    const rows = await this.chatMemberRepo
+      .createQueryBuilder('cm')
+      .select('cm.userId')
+      .where('cm.chatId = :chatId', { chatId })
+      .getRawMany<{ cm_userId: string }>();
+
+    if (!rows.length) {
+      throw new NotFoundException('Chat not found');
+    }
+
+    return rows.map((r) => r.cm_userId);
   }
 }

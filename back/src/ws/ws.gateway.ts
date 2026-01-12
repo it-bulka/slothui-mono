@@ -30,6 +30,8 @@ import {
   NotificationEmitterType,
   NotificationEvent,
 } from '../event-emitter/type/notification.type';
+import { OpenedChatsTracker } from './opened-chats-tracker.service';
+import { UnreadBufferService } from './unread-buffer.service';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -47,12 +49,16 @@ export class WsGateway
   private msgEvent$: Observable<MsgEmitterType>;
   private notificationEvent$: Observable<NotificationEmitterType>;
 
+  private interval: NodeJS.Timeout;
+
   constructor(
     private readonly wsService: WsService,
     private readonly messagesService: MessagesService,
     private readonly chatsService: ChatsService,
     private readonly msgEmitterService: EventEmitterMessageService,
     private readonly notificationEmitterService: EventEmitterNotificationService,
+    private readonly openedChatsTracker: OpenedChatsTracker,
+    private readonly unreadBufferService: UnreadBufferService,
   ) {
     this.msgEvent$ = msgEmitterService.getEvent();
     this.notificationEvent$ = notificationEmitterService.getEvent();
@@ -92,6 +98,16 @@ export class WsGateway
   }
   afterInit(server: Server) {
     this.wsService.authMiddleware(server);
+
+    this.interval = setInterval(() => {
+      const batches = this.unreadBufferService.flushAll();
+
+      for (const batch of batches) {
+        this.server
+          .to(`user:${batch.userId}`)
+          .emit(ChatServerEvents.UNREAD_BATCH, batch);
+      }
+    }, 1000);
   }
 
   handleConnection(client: Socket) {
@@ -157,12 +173,13 @@ export class WsGateway
 
   @SubscribeMessage(ChatRequestEvents.LEAVE)
   async onLeave(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: SocketWithUser,
     @MessageBody() body: { chatId: string },
   ): Promise<void> {
     const room = body.chatId;
     await client.leave(room);
     this.server.to(room).emit(ChatServerEvents.LEFT, { chatId: room });
+    this.openedChatsTracker.closeChat(client.data.user.id, body.chatId);
   }
 
   @SubscribeMessage(ChatRequestEvents.REMOVE_MEMBER)
@@ -201,5 +218,20 @@ export class WsGateway
     };
 
     client.to(data.chatId).emit(MessageServerEvents.TYPING, data);
+  }
+
+  @SubscribeMessage(ChatRequestEvents.ENTER)
+  async onChatEnter(
+    @ConnectedSocket() client: SocketWithUser,
+    @MessageBody() body: { chatId: string },
+  ) {
+    const { chatId } = body;
+    const userId = client.data.user.id;
+    await this.chatsService.markChatAsRead(chatId, userId);
+
+    this.openedChatsTracker.openChat(client.data.user.id, body.chatId);
+    this.unreadBufferService.clear(chatId, userId);
+
+    client.emit(ChatServerEvents.UNREAD_SYNC, { chatId, unread: 0 });
   }
 }
