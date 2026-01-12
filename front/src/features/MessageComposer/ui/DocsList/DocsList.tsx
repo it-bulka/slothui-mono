@@ -16,6 +16,7 @@ export const DocsList = ({ docs, onDelete }: DocsListProps) => {
           additionalComp={(
             <button onClick={() => onDelete(doc.id)} className="px-2">x</button>
           )}
+          key={doc.tempUrl}
         />
       ))}
     </div>

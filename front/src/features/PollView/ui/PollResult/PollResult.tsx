@@ -17,7 +17,7 @@ export const PollResult = memo(({ options, className, anonymous }: PollResultPro
           {anonymous || (
             <List>
               {option.voters.map(voter => (
-                <AvatarWithInfo src={voter.avatar} name={voter.name} position=""/>
+                <AvatarWithInfo src={voter.avatar} name={voter.name} position="" key={voter.name}/>
               ))}
             </List>
           )}

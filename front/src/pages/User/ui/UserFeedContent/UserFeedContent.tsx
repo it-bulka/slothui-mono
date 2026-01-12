@@ -10,6 +10,7 @@ export const UserFeedContent = ({ userId }: { userId: string }) => {
   return posts.map((post) => (
     <PostCard
       postId={post.id}
+      key={post.id}
       userName={post.author.nickname}
       userPosition={post.author.nickname}
       avatarSrc={post.author.avatarUrl}

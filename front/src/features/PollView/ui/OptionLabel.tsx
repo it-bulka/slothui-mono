@@ -20,6 +20,7 @@ export const OptionLabel = memo(({ value, votes, voters, percentage = 0 }: Optio
           <div className="inline-flex -space-x-1">
             {voters.slice(0, 3).map((voter) => (
               <ImageWithFallback
+                key={voter.name}
                 fallback={AvatarDefaultImg}
                 src={voter.avatar}
                 alt={`${voter.name}\`s avatar`}

@@ -21,7 +21,7 @@ export const UpcomingEvents = memo(() => {
 
       <List>
         {events.map(({ avatarSrc, userPosition, userName }) => (
-          <List.Item btnIcon={BellSvg}>
+          <List.Item btnIcon={BellSvg} key={userName}>
             <AvatarWithInfo src={avatarSrc} position={userPosition} name={userName} titleClass="text-sm text-gray-g1"/>
           </List.Item>
         ))}

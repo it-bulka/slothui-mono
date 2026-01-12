@@ -63,6 +63,7 @@ export const Tab = memo(({
             onClick={onActiveElClick(index, checkActive(index))}
             className={twMerge("border-style-b grow px-6 py-5", tabClassName)}
             id={`${id}-${index}`}
+            key={id}
           >
             {tab}
           </button>
@@ -80,6 +81,7 @@ export const Tab = memo(({
               <div
                 className={twMerge(`bg-white ${cls.content} ${cls.active} ${cls.inactive}`, contentClassName)}
                 data-active={activeElId === index}
+                key={index}
               >
                 {content}
               </div>

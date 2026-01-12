@@ -6,10 +6,10 @@ import { useMemo } from 'react';
 const TextBlock = ({ paragraphs }: {paragraphs: string[]}) => {
   return (
     <div>
-      {paragraphs.map(itemText => {
+      {paragraphs.map((itemText, index) => {
         const parsed = itemText.split(/(#[a-zA-Z0-9_]+)/g);
 
-        return <Typography type={TypographyTypes.P_SM}>
+        return <Typography type={TypographyTypes.P_SM} key={index}>
           {parsed.map((part, i) =>
             part.startsWith("#") ? (
               <span key={i} className="text-svg-third font-medium">

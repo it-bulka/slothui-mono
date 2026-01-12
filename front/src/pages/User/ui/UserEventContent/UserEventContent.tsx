@@ -10,6 +10,7 @@ export const UserEventContent = ({ userId }: { userId: string }) => {
   return events.map((item) => (
     <EventCard
       id={item.id}
+      key={item.id}
       title={item.title}
       description={item.description}
       date={item.date}

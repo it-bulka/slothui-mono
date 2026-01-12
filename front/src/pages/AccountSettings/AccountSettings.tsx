@@ -31,7 +31,7 @@ const AccountSettings = () => {
         <Typography bold>Active sessions:</Typography>
         <List topBorder={false}>
           {sessions.map((session) => (
-            <List.Item btnText="stop session">
+            <List.Item btnText="stop session" key={session}>
               {session}
             </List.Item>
           ))}

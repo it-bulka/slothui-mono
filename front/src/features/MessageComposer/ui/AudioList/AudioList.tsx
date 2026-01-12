@@ -17,6 +17,7 @@ export const AudioList = ({ list, onDelete }: AudioListProps) => {
           additionalComp={(
             <button onClick={() => onDelete(item.id)}>x</button>
           )}
+          key={item.tempUrl}
         />
       ))}
     </div>

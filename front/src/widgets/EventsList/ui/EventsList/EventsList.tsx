@@ -6,6 +6,7 @@ export const EventsList = ({ events, withActions }: { events: EventDTO[], withAc
   return events.map((item) => (
     <EventCard
       id={item.id}
+      key={item.id}
       title={item.title}
       description={item.description}
       date={item.date}
