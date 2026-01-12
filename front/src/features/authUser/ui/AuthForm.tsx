@@ -1,7 +1,7 @@
 import { SocialBtnsOauth } from '@/features';
 import { Typography, TypographyTypes } from '@/shared/ui';
 import type { ReactNode } from 'react';
-import { useUserErrorSelector, useUserLoadingSelector } from '@/entities/User';
+import { useAuthUserErrorSelector, useAuthUserLoadingSelector } from '@/entities/AuthUser';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
 
@@ -16,8 +16,8 @@ export const AuthForm = ({
   oAuthTitle,
   form,
 }: AuthFormProps) => {
-  const error = useUserErrorSelector()
-  const isLoading = useUserLoadingSelector()
+  const error = useAuthUserErrorSelector()
+  const isLoading = useAuthUserLoadingSelector()
   console.log('Auth error', error)
   return (
     <div className={twMerge(classnames("max-w-1/3 min-w-[300px] flex flex-col gap-2 p-10 bg-auth-form mx-auto", {'opacity-20 pointer-none:': isLoading}))}>

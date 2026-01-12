@@ -14,7 +14,6 @@ export { TypographyTypes } from './Typography/typography.types.ts';
 export { List } from './List/List.tsx';
 export { Message } from './Message/Message.tsx';
 export { Tab } from './Tab/Tab.tsx';
-export { Statistics } from './Statistics/Statistics.tsx';
 export { DropSelect } from './DropSelect/DropSelect.tsx';
 export { FileInput } from './FileIput/FileInput.tsx';
 export { TogglerBtn, Toggler } from './Toggler';
@@ -42,3 +41,4 @@ export {
 } from './Attachments';
 export { MessageToast } from './Toast';
 export { ReplyComment } from './ReplyComment';
+export { Skeleton } from './Skeleton';

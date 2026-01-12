@@ -16,7 +16,7 @@ const User = () => {
         tabs={['Posts', 'Events']}
         contents={[
           <UserFeedContent userId={userId} />,
-          <UserEventContent />
+          <UserEventContent userId={userId} />
         ]}
         contentClassName="space-y-4"
       />

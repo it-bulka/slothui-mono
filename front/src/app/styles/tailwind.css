@@ -9,10 +9,10 @@
     }
 
     body {
-        font-family: theme('fontFamily.sans'), 'sans-serif';
-        color: theme('color.dark');
+        font-family: var(--font-sans);
+        color: var(--color-dark);
+        background-color: var(--color-white);
         font-size: theme('fontSize.base');
-        background-color: theme('color.white');
     }
 
     svg {
@@ -59,6 +59,9 @@
     --color-auth-form: var(--color-gray-g3);
 
     --color-gradient: conic-gradient(#ff0057, #ff7b00, #ff00c3, #ff0057);
+
+    --color-light-bg: #CBD5E1;
+    --color-dark-bg: #94A3B8;
 
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;

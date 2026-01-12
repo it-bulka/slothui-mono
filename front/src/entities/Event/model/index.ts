@@ -10,3 +10,4 @@ export {
   useFetchUpcomingEvents,
   useCreateEvent
 } from './hooks';
+export { fetchAllEventsThunk } from './thunk';

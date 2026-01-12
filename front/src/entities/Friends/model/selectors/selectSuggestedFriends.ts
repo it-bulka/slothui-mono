@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/app/config';
-import type { FriendDto } from '@/shared/types';
+import type { FriendEntity } from '../type/friends.type.ts';
 
 const selectFriendsState = (state: RootState) => state.friends;
 
@@ -10,6 +10,6 @@ export const selectSuggestedFriends = createSelector(
   [selectFriendsState, selectFriendEntities],
   (friendsState, entities) => {
     const suggestionIds = friendsState.suggestions.ids;
-    return suggestionIds.map(id => entities[id]).filter((f): f is FriendDto => !!f);
+    return suggestionIds.map(id => entities[id]).filter((f): f is FriendEntity => !!f);
   }
 );

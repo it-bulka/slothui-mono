@@ -9,3 +9,4 @@ export { useMessagesService } from './useMessagesService.ts';
 export { useCommentsService } from './useCommentsService.tsx';
 export { usePostsService } from './usePostsService.tsx';
 export { useFriendsService } from './useFriendsService.ts';
+export { useNotificationsCountersService } from './useNotificationsCountersService.tsx';

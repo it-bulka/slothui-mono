@@ -1,10 +1,10 @@
-import type { FriendDto } from '@/shared/types';
 import { useFriendActions } from '../../model/hooks/useFriendsActions.tsx';
 import { FriendsList } from '../FriendsList/FriendsList.tsx';
 import { memo } from 'react';
+import type { FriendEntity } from '@/entities';
 
 interface FriendsListWithActionsProps {
-  friends: FriendDto[];
+  friends: FriendEntity[];
 }
 
 export const FriendsListWithActions = memo(({ friends }: FriendsListWithActionsProps) => {

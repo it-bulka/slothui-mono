@@ -3,7 +3,7 @@ export { FriendSuggestions } from './FriendSuggestions/FriendSuggestions.tsx';
 export { currentChatReducer } from './CurrentChat';
 export { chatsReducer } from './Chats';
 export { usersSuggestionsReducer } from './UsersSugestions';
-export { userReducer, type IAuthResponse } from './User';
+export { authUserReducer, type IAuthResponse } from './AuthUser';
 export { EventCard } from './Event';
 export { MapView } from './Map';
 export { Story } from './Story';
@@ -33,6 +33,7 @@ export {
   usePostByIdSelect,
   usePostLikeSelect,
   usePostSaveSelect,
+  fetchFeedPostsThunk
 } from './Post';
 
 export {
@@ -52,7 +53,6 @@ export {
   useRemoveFollower,
   useRemoveFollowee,
   useSuggestedFriendsSelect,
-  useUnseenFollowersCountSelect,
   useNewFollowersIdsSelect,
   useFollowersWithNewOnTopSelect,
   type FriendEntity
@@ -79,8 +79,31 @@ export {
   useFetchUpcomingEvents,
   useFetchSubscribedEvents,
   useFetchEventsByUser,
-  useCreateEvent
+  useCreateEvent,
+  fetchAllEventsThunk
 } from './Event/model';
 
-export { useUserChatSelect, useChatsTotalUnreadCount } from './Chats';
-export { useUserSelector } from './User';
+export { useUserChatSelect } from './Chats';
+export { useAuthUserSelector } from './AuthUser';
+
+export {
+  notificationsCountersReducer,
+  useNewFollowersCountSelect,
+  useUnreadMessagesByChatSelect,
+  useUnreadMessagesTotalSelect
+} from './NotificationsCounters';
+export { useFetchFriendsSuggestions } from './Friends';
+export {
+  usersProfilesReducer,
+  useFetchUserProfileStats,
+  useUserProfileSelect,
+  StatisticsSkeleton,
+  Statistics
+} from './UsersProfiles';
+
+export {
+  analyticsActions,
+  analyticsReducer,
+  useProfileAnalyticsSelect,
+  useFetchProfileAnalytics
+} from './ProfileAnalytics';

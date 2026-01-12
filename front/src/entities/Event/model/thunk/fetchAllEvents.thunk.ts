@@ -4,11 +4,11 @@ import type { EventsPayload } from '@/shared/types';
 
 export const fetchAllEventsThunk = createAsyncThunk<
   EventsPayload,
-  { cursor?: string | null },
+  { cursor?: string | null } | void,
   ThunkAPI
 >(
   'events/fetchAllEvents',
-  async ({ cursor }, { extra, getState, rejectWithValue }) => {
+  async ({ cursor } = {}, { extra, getState, rejectWithValue }) => {
     const { events } = getState()
     const feed = events.home
     const now = Date.now()

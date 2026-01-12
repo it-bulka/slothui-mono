@@ -38,8 +38,8 @@ export class ChatService {
   /* ------------------------------------------------------------------ */
 
   /** GET /api/chats */
-  async listChats(): Promise<PaginatedResponse<ChatDTO & { unreadCount: number }>> {
-    const res = await this.http.request<PaginatedResponse<ChatDTO & { unreadCount: number }>>('/api/chats');
+  async listChats(): Promise<PaginatedResponse<ChatDTO>> {
+    const res = await this.http.request<PaginatedResponse<ChatDTO>>('/api/chats');
     return res;
   }
 

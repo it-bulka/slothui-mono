@@ -1,5 +1,6 @@
 import { HttpService } from '../httpService/http.service.ts';
 import type { UserDTO } from '@/shared/types/chat.types.ts';
+import type { ProfileAnalyticsDto, UserProfileStatsDto } from '../../../types';
 
 const USERS_API = 'api/users';
 export class UserService {
@@ -26,6 +27,20 @@ export class UserService {
   async deleteUser(id: string): Promise<void>{
     await this.http.request<{ items: UserDTO[] }>(
       `${USERS_API}/${id}`,
+    );
+  }
+
+  /** GET /api/users/:id/profile-stats */
+  async getProfileStats(id: string): Promise<UserProfileStatsDto> {
+    return await this.http.request<UserProfileStatsDto>(
+      `${USERS_API}/${id}/profile-stats`,
+    );
+  }
+
+  /** GET /api/users/profile-analytics */
+  async getAnalytics(): Promise<ProfileAnalyticsDto> {
+    return await this.http.request<ProfileAnalyticsDto>(
+      `${USERS_API}/profile-analytics`,
     );
   }
 }

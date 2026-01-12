@@ -1,1 +1,1 @@
-export { useUserChatSelect, useChatsTotalUnreadCount } from './hooks';
+export { useUserChatSelect } from './hooks';

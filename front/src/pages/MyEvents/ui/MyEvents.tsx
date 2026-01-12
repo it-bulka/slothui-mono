@@ -1,13 +1,13 @@
 import { Feed } from '@/widgets';
 import { AppLink } from '@/shared/ui';
-import { useUserIdSelector } from '@/entities/User';
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { EventsContent } from './EventsContetn/EventsContent.tsx';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Typography } from '@/shared/ui';
 import { CreateEvent } from '@/pages/MyEvents/ui/CreateEvent/CreateEvent.tsx';
 
 const MyEventsPage = () => {
-  const id = useUserIdSelector()
+  const id = useAuthUserIdSelector()
 
   return (
     <>

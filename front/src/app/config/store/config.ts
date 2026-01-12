@@ -4,14 +4,17 @@ import {
   currentChatReducer,
   chatsReducer,
   usersSuggestionsReducer,
-  userReducer,
+  authUserReducer,
   messageReducer,
   commentsReducer,
   postsReducer,
   replyTargetReducer,
   friendsReducer,
   storiesReducer,
-  eventsReducer
+  eventsReducer,
+  notificationsCountersReducer,
+  usersProfilesReducer,
+  analyticsReducer
 } from '@/entities';
 import { ErrorHelper } from '@/shared/libs';
 
@@ -21,7 +24,7 @@ export const store = configureStore({
   reducer: {
     currentChat: currentChatReducer,
     chats: chatsReducer,
-    user: userReducer,
+    authUser: authUserReducer,
     usersSuggestions: usersSuggestionsReducer,
     messages: messageReducer,
     comments: commentsReducer,
@@ -29,7 +32,10 @@ export const store = configureStore({
     replyTarget: replyTargetReducer,
     friends: friendsReducer,
     stories: storiesReducer,
-    events: eventsReducer
+    events: eventsReducer,
+    notificationsCounters: notificationsCountersReducer,
+    usersProfiles: usersProfilesReducer,
+    analytics: analyticsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

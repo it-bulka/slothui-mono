@@ -1,5 +1,5 @@
 import { HttpService } from '../httpService/http.service.ts';
-import type { IAuthResponse } from '@/entities/User';
+import type { IAuthResponse } from '@/entities/AuthUser';
 import { API_BASE } from '@/shared/constants';
 
 const AUTH_PATH = '/api/auth';

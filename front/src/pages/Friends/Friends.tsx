@@ -1,14 +1,14 @@
 import { TabWithFriends } from '@/features';
 import {
   useNewFollowersIdsSelect,
-  useUserSelector,
+  useAuthUserSelector,
   useFollowersWithNewOnTopSelect,
   useFollowingsSelector
 } from '@/entities';
 import { Typography } from '@/shared/ui';
 
 const Friends = () => {
-  const user = useUserSelector()
+  const user = useAuthUserSelector()
   const newFollowerIds = useNewFollowersIdsSelect(user?.id);
   const followers = useFollowersWithNewOnTopSelect(user?.id);
   const followings = useFollowingsSelector(user?.id);

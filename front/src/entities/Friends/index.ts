@@ -7,9 +7,9 @@ export {
   useRemoveFollower,
   useRemoveFollowee,
   useSuggestedFriendsSelect,
-  useUnseenFollowersCountSelect,
   useNewFollowersIdsSelect,
-  useFollowersWithNewOnTopSelect
+  useFollowersWithNewOnTopSelect,
+  useFetchFriendsSuggestions,
 } from './model/hooks';
 export { friendsReducer } from './model/slice/friends.slice.ts';
 export type { FriendEntity } from './model/type/friends.type.ts';

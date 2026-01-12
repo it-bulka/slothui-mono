@@ -1,14 +1,12 @@
 import {
-  useChatsTotalUnreadCount,
-  useUserSelector,
-  useUnseenFollowersCountSelect
+  useUnreadMessagesTotalSelect,
+  useNewFollowersCountSelect,
 } from '@/entities';
 import type { NavbarLinkType } from '../types';
 
 export const useNavbarCounts = (): Partial<Record<NavbarLinkType, number>> => {
-  const user = useUserSelector()
-  const chatsCount = useChatsTotalUnreadCount(user?.id)
-  const friendsCount = useUnseenFollowersCountSelect(user?.id)
+  const chatsCount = useUnreadMessagesTotalSelect()
+  const friendsCount = useNewFollowersCountSelect()
 
   return {
     chats: chatsCount,

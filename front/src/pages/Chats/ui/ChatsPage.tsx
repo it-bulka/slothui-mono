@@ -1,10 +1,10 @@
 import { ChatSearchProvider, SearchChatInput, ChatSearchResult } from '@/features';
-import { useUserSelector } from '@/entities/User';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { Typography } from '@/shared/ui';
 import { AllChats } from './Chats/AllChats.tsx';
 
 const ChatsPage = () => {
-  const user = useUserSelector()
+  const user = useAuthUserSelector()
   if (!user) return <Typography>User not authorized</Typography>
 
   return (

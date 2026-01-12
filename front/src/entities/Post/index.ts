@@ -11,4 +11,5 @@ export {
   usePostByIdSelect,
   usePostLikeSelect,
   usePostSaveSelect,
+  fetchFeedPostsThunk
 } from './model';

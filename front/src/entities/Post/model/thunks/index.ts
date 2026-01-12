@@ -1,0 +1,1 @@
+export { fetchFeedPostsThunk } from './fetchPosts.thunk.ts';

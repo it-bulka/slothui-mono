@@ -2,12 +2,33 @@ import { Avatar, Typography, TypographyTypes } from '@/shared/ui';
 import AvatarMock from '@/mock/images/avatar.png'
 import TrendUpSvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
+import { useProfileAnalyticsSelect, useFetchProfileAnalytics } from '@/entities';
+import { useEffect } from 'react';
 
+// TODO: add fetching last added followers; limit = 4
 const lastAddedFriends: string[] = [
   AvatarMock, AvatarMock, AvatarMock, AvatarMock
 ]
 
 export const ProfileActivity = () => {
+  const { data, isLoading, error } = useProfileAnalyticsSelect()
+  const { fetchProfileAnalytics } = useFetchProfileAnalytics()
+
+  useEffect(() => {
+    // TODO: add fetching amount limit
+    if(data && !isLoading && !error) return;
+    fetchProfileAnalytics()
+  }, [fetchProfileAnalytics, data, isLoading, error])
+
+  if(isLoading) {
+    // TODO: add Skeleton
+    return <div>Loading...</div>
+  }
+
+  if(!data) {
+    return <div>No data</div>
+  }
+
   return (
     <div>
       <BlockTitle

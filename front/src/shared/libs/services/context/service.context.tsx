@@ -10,6 +10,9 @@ import { MessagesService } from '../messagesService/messages.service.ts';
 import { CommentsService } from '../commentsService/comments.service.ts';
 import { PostsService } from '../postsService/posts.service.ts';
 import { FriendsService } from '../friendsService/friends.service.ts';
+import {
+  NotificationsCountersService
+} from '../notificationsCountersService/notificationsCounters.service.ts';
 
 interface IServices {
   http: HttpService
@@ -23,6 +26,7 @@ interface IServices {
   comments:  CommentsService
   posts:  PostsService
   friends:  FriendsService
+  notificationsCounters:  NotificationsCountersService
 }
 export interface CtxProps {
   services:  IServices;

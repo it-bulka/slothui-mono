@@ -12,3 +12,4 @@ export {
   usePostLikeSelect,
   usePostSaveSelect
 } from './hooks';
+export { fetchFeedPostsThunk } from './thunks';

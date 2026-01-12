@@ -1,0 +1,1 @@
+export { useInitHomePage } from './hooks/useInitHomePage.ts';

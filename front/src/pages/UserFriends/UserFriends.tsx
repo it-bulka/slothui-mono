@@ -2,14 +2,14 @@ import { useEffect } from 'react';
 
 import { TabWithFriends } from '@/features';
 import { useGetFollowers, useGetFollowings } from '@/entities/Friends';
-import { useUserSelector } from '@/entities/User';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { useFollowersSelector, useFollowingsSelector } from '@/entities/Friends';
 
 
 const UserFriends = () => {
   const { getUserFollowers } = useGetFollowers()
   const { getFollowings } = useGetFollowings()
-  const user = useUserSelector()
+  const user = useAuthUserSelector()
   const followers = useFollowersSelector(user?.id)
   const followings = useFollowingsSelector(user?.id)
 

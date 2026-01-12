@@ -1,8 +1,8 @@
-import { useUserIdSelector } from '../../../User';
+import { useAuthUserIdSelector } from '../../../AuthUser';
 import { useSelectProfilePosts } from './useSelectProfilePosts.ts';
 
 export const useSelectMyPosts = () => {
-  const userId = useUserIdSelector()
+  const userId = useAuthUserIdSelector()
   const { posts } = useSelectProfilePosts(userId)
   return { posts}
 }

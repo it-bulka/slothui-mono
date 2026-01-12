@@ -5,4 +5,4 @@ export { searchChats } from './model/thunk/searchChats.thunk.ts';
 export { ChatRow } from './ui/ChatRow.tsx';
 export { useGoToChat } from './model/hooks/useGoToChat.tsx';
 export { createPrivateChatThunk } from './model/thunk/createPrivateChat.thunk.ts';
-export { useUserChatSelect , useChatsTotalUnreadCount} from './model';
+export { useUserChatSelect } from './model';

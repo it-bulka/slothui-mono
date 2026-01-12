@@ -9,6 +9,9 @@ import { MessagesService } from '../messagesService/messages.service.ts';
 import { CommentsService } from '../commentsService/comments.service.ts';
 import { PostsService } from '../postsService/posts.service.ts';
 import { FriendsService } from '../friendsService/friends.service.ts';
+import {
+  NotificationsCountersService
+} from '../notificationsCountersService/notificationsCounters.service.ts';
 
 export const createServices = (token = '') => {
   const httpService = new HttpService(token)
@@ -26,5 +29,6 @@ export const createServices = (token = '') => {
     comments: new CommentsService(httpService, socketService),
     posts: new PostsService(httpService),
     friends: new FriendsService(httpService),
+    notificationsCounters: new NotificationsCountersService(httpService),
   }
 }
