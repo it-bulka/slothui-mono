@@ -42,3 +42,4 @@ export {
 export { MessageToast } from './Toast';
 export { ReplyComment } from './ReplyComment';
 export { Skeleton } from './Skeleton';
+export { ScrollableBlock } from './ScrollableBlock';

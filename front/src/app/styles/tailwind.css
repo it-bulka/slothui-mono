@@ -216,5 +216,31 @@
         box-shadow: 2px 2px 15px gray;
         margin: 0 0 4px 4px;
     }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE, Edge */
+        scrollbar-width: none;    /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .scroll-fade-bottom {
+        position: relative;
+    }
+
+    .scroll-fade-bottom::after {
+        content: '';
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px; /* висота градієнта */
+        pointer-events: none;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); /* якщо фон світлий */
+        /* Для темного фону: background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.4)); */
+        z-index: 10;
+    }
 }
 
