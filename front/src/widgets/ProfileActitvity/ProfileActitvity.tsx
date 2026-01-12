@@ -16,7 +16,7 @@ export const ProfileActivity = () => {
 
   useEffect(() => {
     // TODO: add fetching amount limit
-    if(data && !isLoading && !error) return;
+    if(data || isLoading || error) return;
     fetchProfileAnalytics()
   }, [fetchProfileAnalytics, data, isLoading, error])
 

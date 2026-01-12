@@ -11,6 +11,7 @@ export const MyFeedContent = memo(() => {
   return posts.map((post) => (
     <PostCard
       postId={post.id}
+      userId={post.author.id}
       userName={post.author.nickname}
       userPosition={post.author.nickname}
       avatarSrc={post.author.avatarUrl}

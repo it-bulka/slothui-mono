@@ -13,6 +13,7 @@ export const UserFeedContent = ({ userId }: { userId: string }) => {
       userName={post.author.nickname}
       userPosition={post.author.nickname}
       avatarSrc={post.author.avatarUrl}
+      userId={post.author.id}
       file={post.attachments.file}
       video={post.attachments.video}
       audio={post.attachments.audio}

@@ -9,5 +9,5 @@ export const useInitHomePage = () => {
     dispatch(initHomePageThunk())
   }, [dispatch])
 
-  return { initHomePage}
+  return { initHomePage }
 }

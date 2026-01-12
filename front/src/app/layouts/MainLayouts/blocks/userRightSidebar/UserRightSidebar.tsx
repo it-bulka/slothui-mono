@@ -12,16 +12,7 @@ import { UserContactInformation } from './UserContactInformation/UserContactInfo
 export const UserRightSidebar = () => {
   const { userId } = useParams<{ userId: string }>()
   const { fetchUserProfileStats } = useFetchUserProfileStats()
-  const {
-    isLoading,
-    error,
-    nickname,
-    username,
-    avatarUrl,
-    followersCount,
-    postsCount,
-    followingCount
-  } = useUserProfileSelect(userId)
+  const { isLoading, error, data } = useUserProfileSelect(userId)
 
   useEffect(() => {
     if(!userId) return;
@@ -50,13 +41,17 @@ export const UserRightSidebar = () => {
     return <p>Loading ....</p>
   }
 
+  if(!data) {
+    return <Typography>User not found</Typography>
+  }
+
   return (
     <div className="px-sidebar py-sidebar border-style-l bg-underground-secondary">
-      <UserProfileData name={username} avatarSrc={avatarUrl} nickname={nickname} />
+      <UserProfileData name={data.username} avatarSrc={data.avatarUrl} nickname={data.nickname} />
       <Statistics
-        followingCount={followingCount}
-        followersCount={followersCount}
-        postsCount={postsCount}
+        followingCount={data.followingCount}
+        followersCount={data.followersCount}
+        postsCount={data.postsCount}
       />
 
       <div>
@@ -65,7 +60,7 @@ export const UserRightSidebar = () => {
           withMargin
         />
         <Typography type={TypographyTypes.P_SM}>
-          Hi there! 👋 I'm X-AE-A-19, an AI enthusiast and fitness aficionado. When I'm not crunching numbers or optimizing algorithms, you can find me hitting the gym.
+          Hi there! I'm X-AE-A-19, an AI enthusiast and fitness aficionado. When I'm not crunching numbers or optimizing algorithms, you can find me hitting the gym.
         </Typography>
       </div>
 
@@ -78,7 +73,11 @@ export const UserRightSidebar = () => {
         </div>
       </div>
 
-      <UserContactInformation contacts={[{ username, nickname, avatarSrc: avatarUrl}]}/>
+      <UserContactInformation contacts={[{
+        username: data.username,
+        nickname: data.nickname,
+        avatarSrc: data.avatarUrl
+      }]}/>
       <BlockTitle title="Friends" CustomBtnIcon={ArrowUpRightSvg} onBtnClick={() => {}}/>
     </div>
   )
