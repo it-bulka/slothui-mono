@@ -26,6 +26,7 @@ export const router = createBrowserRouter([
   {
     path: RoutePaths.home,
     element: <MainLayout rightSidebar={<RightSidebar />} />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -88,6 +89,7 @@ export const router = createBrowserRouter([
   {
     path: RoutePaths.user,
     element: <MainLayout rightSidebar={<UserRightSidebar />} />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -102,6 +104,7 @@ export const router = createBrowserRouter([
   {
     path: RoutePaths.auth,
     element: <AuthLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: AuthRelativePaths.login,
