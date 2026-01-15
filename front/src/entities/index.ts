@@ -9,7 +9,16 @@ export { MapView } from './Map';
 export { Story } from './Story';
 export { messageReducer, messagesAction } from './Message/model';
 export { Typing } from './Typing';
-export { useActiveChatId, Chats, selectSortedChats, searchChats, ChatRow, useGoToChat, createPrivateChatThunk } from './Chats';
+export {
+  useActiveChatId,
+  Chats,
+  selectSortedChats,
+  searchChatsThunk,
+  ChatRow,
+  useGoToChat,
+  createPrivateChatThunk,
+  useFetchSearchedChats
+} from './Chats';
 export { useSelectMessagesByChatId, useSelectIsMessageSending } from './Message/model';
 export {
   commentsReducer,

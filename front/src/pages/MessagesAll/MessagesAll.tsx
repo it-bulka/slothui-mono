@@ -1,10 +1,26 @@
-import { List, SearchBar, Typography, TypographyTypes } from '@/shared/ui';
-import { AvatarWithInfo, Badge } from '@/shared/ui';
+import { useState, useCallback } from 'react';
+import {
+  List,
+  SearchBar,
+  Typography,
+  TypographyTypes,
+  AvatarWithInfo,
+  Badge
+} from '@/shared/ui';
 import ArrowUpSvg from '@/shared/assets/images/general/arrow-up-right.svg?react'
 import { mockMessages } from '@/mock/data';
+import { useFetchSearchedChats } from '@/entities';
 
 
 const MessagesAll = () => {
+  const [query, setQuery] = useState('');
+  const { onSearchChange } = useFetchSearchedChats()
+
+  const handleSearchChange = useCallback((val: string) => {
+    setQuery(val)
+    onSearchChange(val)
+  }, [onSearchChange, setQuery]);
+
   return (
     <div className="bg-underground-secondary min-h-full">
       <div className={"border-style-b px-main py-5 flex flex-wrap justify-between bg-underground-primary"}>
@@ -13,6 +29,8 @@ const MessagesAll = () => {
           size="lg"
           iconPosition="right"
           className="grow"
+          onChange={handleSearchChange}
+          value={query}
         />
       </div>
       <List className="px-main py-6">

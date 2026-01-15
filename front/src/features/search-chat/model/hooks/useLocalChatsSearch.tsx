@@ -1,6 +1,6 @@
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { searchChats, selectSortedChats } from '@/entities';
+import { searchChatsThunk, selectSortedChats } from '@/entities';
 import { debounce } from 'lodash';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import { useChatSearchDebouncedText } from '@/features/search-chat/model/context/useChatSearchDebouncedText.tsx';
@@ -32,7 +32,7 @@ export const useLocalChatsSearch = () => {
       if (!search) return;
 
       setLoading(true);
-      searchThunkRef.current = dispatch(searchChats(search));
+      searchThunkRef.current = dispatch(searchChatsThunk(search));
 
       searchThunkRef.current
         ?.unwrap()

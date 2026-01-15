@@ -49,11 +49,11 @@ export class ChatService {
   }
 
   async globalSearch(name: string, options?: { signal?: AbortSignal }): Promise<ChatGlobalSearchResult> {
-    const res = await this.http.request<{ items: ChatGlobalSearchResult }>(
+    const res = await this.http.request<ChatGlobalSearchResult>(
       `/api/chats/global?search=${name}`,
       { signal: options?.signal }
     );
-    return res.items;
+    return res;
   }
 
   /** GET /api/chats/:id/messages?cursor&limit=50 */

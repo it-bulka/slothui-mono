@@ -1,10 +1,10 @@
 import { createEntityAdapter, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { PaginatedResponse } from '@/shared/types';
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
-import { searchChats } from './thunk/searchChats.thunk.ts';
+import { searchChatsThunk } from './thunk/searchChats.thunk.ts';
 import { createPrivateChatThunk } from './thunk/createPrivateChat.thunk.ts';
 
-export type Chat = ChatDTO & { unreadCount?: number };
+export type Chat = ChatDTO;
 interface ChatState {
   activeChatId: string | null
   allChatsLoaded: boolean
@@ -48,7 +48,7 @@ export const chatSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(searchChats.fulfilled, (state, action) => {
+    builder.addCase(searchChatsThunk.fulfilled, (state, action) => {
       chatAdapter.upsertMany(state, action.payload);
       state.searchResults = action.payload.map(chat => chat.id);
     })

@@ -7,5 +7,6 @@ export {
   useAuthUserLoadingSelector,
   useAuthUserErrorSelector,
   useAuthUserTokenSelector,
-  useAuthUserIdSelector
+  useAuthUserIdSelector,
+  selectAuthUser
 } from './model/selectors/userSelector.tsx';

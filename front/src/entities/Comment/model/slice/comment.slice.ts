@@ -7,15 +7,9 @@ import {
   editComment,
   deleteComment
 } from '../thunk'
-import { createEntityAdapter } from '@reduxjs/toolkit';
 import { mockComments } from '@/mock/data/comments.tsx';
 import type { CommentWithMeta } from '../types/comment.type.ts';
-import type { RootState } from '@/app/config';
-
-export const commentsAdapter = createEntityAdapter<CommentWithMeta, string>({
-  selectId: (comment) => comment.id,
-  sortComparer: false, // backend sorts
-})
+import { commentsAdapter } from '../adaptor/comment.adaptor.ts';
 
 const initialState = commentsAdapter.getInitialState<CommentsState>({
   entities: mockComments.entities,
@@ -199,10 +193,3 @@ export const commentsSlice = createSlice({
 
 export const commentsReducer = commentsSlice.reducer
 export const commentsActions = commentsSlice.actions
-
-export const {
-  selectById: selectCommentById,
-  selectEntities: selectCommentEntities,
-} = commentsAdapter.getSelectors<RootState>(
-  (state) => state.comments
-)

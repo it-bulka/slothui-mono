@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
 import type { ThunkAPI } from '@/shared/config/redux';
 
-export const searchChats = createAsyncThunk<
+export const searchChatsThunk = createAsyncThunk<
   ChatDTO[],
   string,
   ThunkAPI

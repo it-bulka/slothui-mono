@@ -1,9 +1,9 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ChatDTO } from '@/shared/types/chat.types.ts';
+import { createSlice } from '@reduxjs/toolkit';
 import { fetchGlobalChats } from '../thunk/fetchGlobalChats.tsx';
+import type { ChatGlobalSearchResult } from '@/shared/types/chat.types.ts';
 
 interface GlobalSearchState {
-  results: ChatDTO[];
+  results: ChatGlobalSearchResult;
   loading: boolean;
   error: string | null;
 }
@@ -24,7 +24,7 @@ const globalSearchSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchGlobalChats.fulfilled, (state, action: PayloadAction<ChatDTO[]>) => {
+      .addCase(fetchGlobalChats.fulfilled, (state, action) => {
         state.loading = false;
         state.results = action.payload;
       })

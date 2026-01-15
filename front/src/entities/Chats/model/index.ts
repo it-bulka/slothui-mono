@@ -1,1 +1,1 @@
-export { useUserChatSelect } from './hooks';
+export { useUserChatSelect, useFetchSearchedChats } from './hooks';
