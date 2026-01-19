@@ -116,7 +116,7 @@ export class AuthService {
 
     res.cookie('refresh_token', token, {
       ...options,
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: ms(expiresIn),
     });
   }

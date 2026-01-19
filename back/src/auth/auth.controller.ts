@@ -27,6 +27,8 @@ import {
   GithubAuthGuard,
   TelepassAuthGuard,
 } from './guards';
+import { UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -36,10 +38,12 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @UseInterceptors(FileInterceptor('avatar'))
   async registerByLogin(
     @Body() createUserDto: CreateUserDto,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
+    console.log('register', createUserDto);
     const user = await this.userService.create(createUserDto);
 
     const { accessToken, refreshToken } = await this.authService.login({
@@ -81,9 +85,11 @@ export class AuthController {
   }
 
   @UseGuards(RefreshJwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
   async logout(@Request() req: AuthRequest) {
     await this.authService.logout(req.user.id);
+    return;
   }
 
   @UseGuards(GoogleAuthGuard)
