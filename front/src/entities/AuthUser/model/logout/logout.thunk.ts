@@ -12,6 +12,7 @@ export const logout = createAsyncThunk<
     try {
       const authService = extra.services.auth;
       await authService.logout();
+      extra.services.tokenManager.clearToken();
     } catch (err) {
       const errMsg = extra.extractErrorMessage(err, 'Failed to logout');
       return rejectWithValue(errMsg)

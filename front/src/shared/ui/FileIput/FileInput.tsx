@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent, type HTMLAttributes } from 'react'
-import { Button } from '@/shared/ui';
+import { Button, Typography } from '@/shared/ui';
 
 interface FileInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?: (files: FileList | null) => void
@@ -10,6 +10,8 @@ interface FileInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'onChang
   defaultPreview?: string
   title?: string
   name: string
+  error?: string
+  value?: unknown
 }
 
 const Previews = ({ previews }: { previews: string[]}) => {
@@ -36,11 +38,14 @@ export function FileInput({
   defaultPreview,
   title,
   name,
+  error,
   ...props
 }: FileInputProps) {
   const [fileNames, setFileNames] = useState<string>('')
   const [previews, setPreviews] = useState<string[]>(defaultPreview ? [defaultPreview] : [])
   const [errors, setErrors] = useState<string[]>([])
+
+  const { value: _val, ...inputProps } = props
 
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     const files = (e.target as HTMLInputElement).files
@@ -98,14 +103,14 @@ export function FileInput({
           onChange={handleChange}
           accept={accept}
           multiple
-          className="absolute w-full h-full opacity-0 cursor-pointer z-10"
-          {...props}
+          {...inputProps}
           name={name}
+          className="absolute w-full h-full opacity-0 cursor-pointer z-10 inset-0"
         />
 
         <Button
           type="button"
-          className="w-full z-0"
+          className="block w-full! z-0 grow"
         >
           {title || 'Upload file'}
         </Button>
@@ -114,6 +119,7 @@ export function FileInput({
           {previews.length ? `Chosen ${previews.length} files` : 'File not chosen'}
         </span>
       </div>
+      {error && <Typography color='error'>{error}</Typography>}
       {previews.length > 0 && <p className="text-gray-200 truncate w-full">{fileNames}</p>}
 
       {errors.length > 0 && (

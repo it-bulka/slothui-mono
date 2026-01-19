@@ -12,12 +12,16 @@ import { FriendsService } from '../friendsService/friends.service.ts';
 import {
   NotificationsCountersService
 } from '../notificationsCountersService/notificationsCounters.service.ts';
+import { TokenManager } from '../tokenManager/TokenManager.ts';
 
-export const createServices = (token = '') => {
-  const httpService = new HttpService(token)
-  const socketService = new SocketService(token)
+export const createServices = () => {
+  const tokenManager = new TokenManager();
+
+  const httpService = new HttpService(tokenManager)
+  const socketService = new SocketService(tokenManager)
 
   return {
+    tokenManager,
     http: httpService,
     socket: socketService,
     auth: new AuthService(httpService),

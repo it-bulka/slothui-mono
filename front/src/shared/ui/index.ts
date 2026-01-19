@@ -45,3 +45,4 @@ export { Skeleton } from './Skeleton';
 export { ScrollableBlock } from './ScrollableBlock';
 export { SearchSuggestionsList } from './SearchSuggestionsList';
 export { Divider } from './Divider/Divider.tsx';
+export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary.tsx';

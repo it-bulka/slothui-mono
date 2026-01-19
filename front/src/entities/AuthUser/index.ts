@@ -1,6 +1,5 @@
 export { authUserReducer } from './model/slice.ts';
 export type { IUser } from './types/User.ts';
-export type { IAuthResponse } from './types/Auth.ts';
 export { loginUser } from './model/login/loginUser.thunk.ts';
 export {
   useAuthUserSelector,
@@ -10,3 +9,6 @@ export {
   useAuthUserIdSelector,
   selectAuthUser
 } from './model/selectors/userSelector.tsx';
+export { useRegisterUser, useLogout } from './model/hooks';
+export { logout } from './model/logout/logout.thunk.ts';
+export { authUserActions } from './model/slice.ts';

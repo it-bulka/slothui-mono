@@ -7,17 +7,17 @@ export const registerUserExtra = (builder: ActionReducerMapBuilder<AuthUserState
     .addCase(registerUser.pending, (state) => {
       state.isLoading = true;
       state.data = null;
-      state.token = null;
+      state.isToken = false;
     })
     .addCase(registerUser.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.user;
-      state.token = action.payload.token;
+      state.isToken = !!action.payload.token;
     })
     .addCase(registerUser.rejected, (state, action) => {
       state.isLoading = false;
       state.data = null;
-      state.token = null;
+      state.isToken = false;
       state.error = action.payload ?? null;
     })
 };

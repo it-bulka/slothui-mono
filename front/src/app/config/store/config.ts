@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createServices } from '@/shared/libs/services';
+import { getServices } from '@/shared/libs/services';
 import {
   currentChatReducer,
   chatsReducer,
@@ -14,11 +14,13 @@ import {
   eventsReducer,
   notificationsCountersReducer,
   usersProfilesReducer,
-  analyticsReducer
+  analyticsReducer,
+  authUserActions
 } from '@/entities';
 import { ErrorHelper } from '@/shared/libs';
+import { deleteTokenToLocalStorage } from '@/shared/libs';
 
-const services = createServices();
+const services = getServices();
 
 export const store = configureStore({
   reducer: {
@@ -42,9 +44,8 @@ export const store = configureStore({
       thunk: {
         extraArgument: {
           services: services,
-          updateToken: (t:string) => {
-            services.http.updateToken(t)
-            services.socket.updateToken(t)
+          updateToken: (t:string | null) => {
+            services.tokenManager.setToken(t)
           },
           extractErrorMessage: ErrorHelper.extractErrorMessage
         },
@@ -52,6 +53,7 @@ export const store = configureStore({
     }),
 })
 
-
-export type AppStore = typeof store
-export type RootState = ReturnType<typeof store.getState>;
+services.http.setOnUnauthorized(() => {
+  store.dispatch(authUserActions.logoutLocal());
+  deleteTokenToLocalStorage()
+});

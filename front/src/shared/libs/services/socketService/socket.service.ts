@@ -1,23 +1,30 @@
 import { io, Socket } from 'socket.io-client';
 import { ReplaySubject, take } from 'rxjs';
+import { TokenManager } from '../tokenManager/TokenManager.ts';
 
 const CONNECTION_TIMEOUT = 1000 * 60; // 1m
 export class SocketService {
-  private token: string = '';
+  private token: string | null = null;
   socket?: Socket;
   private isConnecting: boolean = false;  // if multiple reconnection attempt from other services that use this one
   private static instance: SocketService | null = null;
   public readonly $connected = new ReplaySubject<boolean>(1);
   public readonly $reconnected = new ReplaySubject<boolean>(1);
 
-  constructor(token: string) {
+  constructor(tokenManager: TokenManager) {
     if(SocketService.instance) {
       return SocketService.instance;
     }
 
-    this.token = token;
+    this.token = tokenManager.getToken();
+
+    tokenManager.subscribe(async (token) => {
+      this.updateToken(token); // with reconnect
+    });
+
     SocketService.instance = this;
   }
+
 
   async connect(): Promise<Socket> {
     if (this.socket && this.socket?.connected) return this.socket;
@@ -101,8 +108,9 @@ export class SocketService {
     }
   }
 
-  updateToken(newToken: string) {
+  private updateToken(newToken: string | null) {
     this.token = newToken;
+    if(!newToken) return;
     this.updateAuthHandshake()
   }
 

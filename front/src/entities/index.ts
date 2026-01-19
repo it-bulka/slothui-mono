@@ -1,9 +1,16 @@
 export { StoryAvatar } from './StoryAvatar/StoryAvatar.tsx';
 export { FriendSuggestions } from './FriendSuggestions/FriendSuggestions.tsx';
 export { currentChatReducer } from './CurrentChat';
-export { chatsReducer } from './Chats';
 export { usersSuggestionsReducer } from './UsersSugestions';
-export { authUserReducer, type IAuthResponse } from './AuthUser';
+export {
+  authUserReducer,
+  useRegisterUser,
+  logout,
+  useAuthUserSelector,
+  useLogout,
+  authUserActions
+} from './AuthUser';
+
 export { EventCard } from './Event';
 export { MapView } from './Map';
 export { Story } from './Story';
@@ -17,8 +24,11 @@ export {
   ChatRow,
   useGoToChat,
   createPrivateChatThunk,
-  useFetchSearchedChats
+  useFetchSearchedChats,
+  chatsReducer,
+  useUserChatSelect
 } from './Chats';
+
 export { useSelectMessagesByChatId, useSelectIsMessageSending } from './Message/model';
 export {
   commentsReducer,
@@ -91,9 +101,6 @@ export {
   useCreateEvent,
   fetchAllEventsThunk
 } from './Event/model';
-
-export { useUserChatSelect } from './Chats';
-export { useAuthUserSelector } from './AuthUser';
 
 export {
   notificationsCountersReducer,

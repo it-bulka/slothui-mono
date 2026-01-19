@@ -11,10 +11,11 @@ export const logoutExtra = (builder: ActionReducerMapBuilder<AuthUserState>) => 
     .addCase(logout.fulfilled, (state) => {
       state.isLoading = false;
       state.data = null;
-      state.token = null;
+      state.isToken = false;
     })
     .addCase(logout.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload ?? null;
+      console.log('logout error', action.payload);
     })
 };

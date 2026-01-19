@@ -2,7 +2,7 @@ import type { UserWithStats } from '@/shared/types';
 
 export interface AuthUserState {
   data: UserWithStats | null;
-  token: string | null;
+  isToken: boolean;
   isLoading: boolean;
   error: string | null;
 }

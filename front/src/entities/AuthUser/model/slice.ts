@@ -3,12 +3,11 @@ import type { AuthUserState } from './types.ts';
 import { loginUserExtra } from './login/login.extra.ts';
 import { registerUserExtra } from './register/register.extra.ts';
 import { logoutExtra } from './logout/logout.extra.ts';
-import { refreshTokenExtra } from './refresh/refreshToken.extra.ts';
 import type { UserWithStats } from '@/shared/types';
 
 const initialState: AuthUserState = {
   data: null,
-  token: null,
+  isToken: false,
   isLoading: false,
   error: null
 };
@@ -23,12 +22,14 @@ export const authUserSlice = createSlice({
     clearUser(state) {
       state.data = null;
     },
+    logoutLocal:() => {
+      return initialState
+    }
   },
   extraReducers: (builder) => {
     registerUserExtra(builder);
     loginUserExtra(builder);
     logoutExtra(builder);
-    refreshTokenExtra(builder);
   }
 });
 

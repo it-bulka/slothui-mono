@@ -5,15 +5,14 @@ export const registerSchema = z.object({
   username: z.string().min(3, 'Username is too short'),
   nickname: nicknameSchema,
   avatar: z
-    .custom<FileList>((val) => val instanceof FileList && val.length > 0, {
-      message: 'File is required',
-    })
+    .custom<FileList>((val) => val instanceof FileList, { message: 'Invalid file' })
+    .optional()
     .refine(
-      (files) => files && files[0]?.size < 2 * 1024 * 1024, // < 2MB
+      (files) => !files ||  files[0]?.size < 2 * 1024 * 1024, // < 2MB
       { message: 'File size must be less than 2MB' }
     )
     .refine(
-      (files) => files && ['image/jpeg', 'image/png'].includes(files[0]?.type),
+      (files) => !files ||  ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(files[0]?.type),
       { message: 'Only .jpg and .png are allowed' }
     ),
   email: z.string().email('Invalid email'),

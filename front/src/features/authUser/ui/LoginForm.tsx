@@ -6,6 +6,9 @@ import { useCallback } from 'react';
 import { loginUser } from '@/entities/AuthUser';
 import { useAppDispatch } from '@/shared/config/redux';
 import { AuthInput } from './AuthInput.tsx';
+import { useNavigate } from 'react-router';
+import { getHomePage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { useUpdateToken } from '@/shared/libs/services';
 
 const inputs = [
   { name: 'email', placeholder: '@my_email@gmail.com' },
@@ -17,10 +20,17 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   })
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const updateToken = useUpdateToken()
 
   const onSubmit = useCallback(async (data: LoginFormData) => {
     dispatch(loginUser(data))
-  }, [dispatch])
+      .unwrap()
+      .then(res => {
+        updateToken(res.token)
+        navigate(getHomePage())
+      })
+  }, [dispatch, navigate, updateToken])
 
   return (
     <form

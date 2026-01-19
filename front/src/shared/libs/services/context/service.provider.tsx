@@ -1,23 +1,16 @@
-import { type ReactNode, useCallback, useMemo, useEffect } from 'react';
+import { type ReactNode, useCallback, useMemo } from 'react';
 import { Ctx } from './service.context.tsx';
-import { createServices } from '../createServices/createServices.tsx';
+import { getServices } from '../getServices/getServices.ts';
 
 interface Props {
-  token: string,
   children: ReactNode
 }
-export const ServiceProvider = ({ children, token }: Props) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const services = useMemo(() => createServices(token), [])
+export const ServiceProvider = ({ children }: Props) => {
+  const services = useMemo(() => getServices(), [])
 
   const updateToken = useCallback((newToken: string) => {
-    services.http.updateToken(newToken)
-    services.socket.updateToken(newToken)
+    services.tokenManager.setToken(newToken)
   }, [services])
-
-  useEffect(() => {
-    updateToken(token)
-  }, [token, updateToken])
 
   return (
     <Ctx.Provider value={{ services, updateToken }}>

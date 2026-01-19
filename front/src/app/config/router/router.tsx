@@ -20,13 +20,25 @@ import {
   MyEventsPage,
   NotFound
 } from '@/pages';
-import { MainLayout, RightSidebar, UserRightSidebar, AuthLayout } from '@/app/layouts';
+import { ErrorBoundary } from '@/shared/ui';
+import {
+  MainLayout,
+  RightSidebar,
+  UserRightSidebar,
+  AuthLayout,
+  AuthRoute,
+  PrivateRoute
+} from '../../layouts';
 
 export const router = createBrowserRouter([
   {
     path: RoutePaths.home,
-    element: <MainLayout rightSidebar={<RightSidebar />} />,
-    errorElement: <NotFound />,
+    element: (
+      <PrivateRoute>
+        <MainLayout rightSidebar={<RightSidebar />} />
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,
@@ -88,8 +100,12 @@ export const router = createBrowserRouter([
   },
   {
     path: RoutePaths.user,
-    element: <MainLayout rightSidebar={<UserRightSidebar />} />,
-    errorElement: <NotFound />,
+    element: (
+      <PrivateRoute>
+        <MainLayout rightSidebar={<UserRightSidebar />} />
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,
@@ -103,8 +119,12 @@ export const router = createBrowserRouter([
   },
   {
     path: RoutePaths.auth,
-    element: <AuthLayout />,
-    errorElement: <NotFound />,
+    element: (
+      <AuthRoute>
+        <AuthLayout />
+      </AuthRoute>
+    )  ,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: AuthRelativePaths.login,
@@ -115,5 +135,13 @@ export const router = createBrowserRouter([
         element: <RegisterPage />
       },
     ]
-  }
+  },
+  {
+    path: RoutePaths.not_found,
+    element: <NotFound />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
 ])

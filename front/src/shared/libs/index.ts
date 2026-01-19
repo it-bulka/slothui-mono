@@ -3,3 +3,6 @@ export { disableBodyScroll, enableBodyScroll } from './bodyScrollHelpers/bodyScr
 export { ErrorHelper } from './errorHelper/errorHelper.ts';
 export { shortenMiddle } from './shortenMiddle/shortenMiddle.tsx';
 export { formatDate } from './formatDate/formatDate.tsx';
+export { checkAuthLoader } from './token/ckeckAuthLoader/checkAuthLoader.ts';
+export { storeTokenToLocalStorage } from './token/storeTokenToLocalStorage/storeTokenToLocalStorage.ts';
+export { deleteTokenToLocalStorage } from './token/deleteTokenLocalStorage/deleteTokenLocalStorage.tsx';

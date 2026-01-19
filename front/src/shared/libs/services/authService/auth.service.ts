@@ -1,15 +1,31 @@
 import { HttpService } from '../httpService/http.service.ts';
-import type { IAuthResponse } from '@/entities/AuthUser';
 import { API_BASE } from '@/shared/constants';
+import type { RegisterUserArgs, IAuthResponse } from '../../../types/auth.types.ts';
 
 const AUTH_PATH = '/api/auth';
 export class AuthService {
   constructor(private readonly http: HttpService) {}
 
-  async registerByPassword({ email, password, name }: { email: string, password: string, name: string }): Promise<IAuthResponse> {
+  async registerByPassword({
+    email,
+    password,
+    name,
+    nickname,
+    avatar, // FileList | undefined
+  }: RegisterUserArgs): Promise<IAuthResponse> {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('name', name);
+    formData.append('nickname', nickname);
+
+    if (avatar && avatar.length > 0) {
+      formData.append('avatar', avatar[0]);
+    }
     return await this.http.request(`${AUTH_PATH}/register`, {
       method: 'POST',
-      body: { email, password, name },
+      body: formData,
+      credentials: 'include'
     },)
   }
 
@@ -17,15 +33,12 @@ export class AuthService {
     return await this.http.request(`${AUTH_PATH}/login`, {
       method: 'POST',
       body: { email, password },
+      credentials: 'include'
     },)
   }
 
-  async logout(): Promise<void> {
-    await this.http.request(`${AUTH_PATH}/logout`)
-  }
-
-  async refreshToken(): Promise<{ token: string }> {
-    return await this.http.request(`${AUTH_PATH}/refresh`, { credentials: 'include' })
+  logout = async (): Promise<void> => {
+    await this.http.request(`${AUTH_PATH}/logout`, { credentials: 'include' });
   }
 
   async loginWithGoogle() {

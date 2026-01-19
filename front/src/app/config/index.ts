@@ -1,1 +1,1 @@
-export { type RootState, type AppStore } from './store/config.ts';
+export { type RootState, type AppStore } from './store/types.ts';
