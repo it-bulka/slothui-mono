@@ -51,7 +51,7 @@ export const SearchBar = forwardRef(
           type="text"
           ref={ref}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChange?.(e.target.value)}
           className={'grow font-medium placeholder:text-gray-g1'}
           placeholder={placeholder}
           name={name}

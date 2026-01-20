@@ -28,4 +28,4 @@ export { DraftExtras, MessageComposer } from './MessageComposer/ui';
 export { SendMessageBtn } from './send-message';
 export { ChatSearchProvider, SearchChatInput, ChatSearchResult } from './search-chat';
 export { UnsentCommentActions } from './UnsentCommentActions';
-export { TabWithFriends, FriendsList, FriendsListWithActions } from '@/features/friends';
+export { TabWithFriends, FriendsList, FriendsListWithActions } from './friends';
