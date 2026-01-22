@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,12 +11,21 @@ import { CreateUserDto } from './dto/user.dto';
 import { AuthJwtUser } from '../auth/types/jwt.types';
 import { In, type FindOptionsWhere } from 'typeorm';
 import { UserShortDTO } from './dto/user-response.dto';
+import { PaginatedResponse } from '../common/types/pagination.type';
+import { FollowerService } from '../follower/follower.service';
+import { PostsService } from '../posts/posts.service';
+import {
+  UserProfileDto,
+  UserProfileDtoWithRelations,
+} from './dto/user-profile.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    private readonly followerService: FollowerService,
+    private readonly postsService: PostsService,
   ) {}
 
   async create(
@@ -25,6 +35,8 @@ export class UserService {
     },
   ) {
     const { email, nickname } = createUserDto;
+    if (!email || !nickname)
+      throw new BadRequestException('Email or nickname is missing');
     const existingUser = await this.userRepo.findOne({
       where: [{ email }, { nickname }],
     });
@@ -45,6 +57,9 @@ export class UserService {
   ) {
     const { providerName, providerId, nickname, avatarUrl, name, email } =
       createUserDto;
+
+    if (!providerId) throw new BadRequestException('ProviderId is required');
+
     const existingUser = await this.userRepo.findOne({
       where: { [`${providerName}Id`]: providerId },
     });
@@ -97,19 +112,31 @@ export class UserService {
     id: string,
     options?: { throwErrorIfNotExist?: false },
   ): Promise<User | null>;
-  async findOne(id: string, { throwErrorIfNotExist }) {
+  async findOne(id: string, options: { throwErrorIfNotExist?: boolean } = {}) {
     const user = await this.userRepo.findOne({ where: { id } });
-    if (throwErrorIfNotExist && !user)
+    if (options.throwErrorIfNotExist && !user)
       throw new BadRequestException(`User with ID ${id} does not exist`);
     return user;
   }
 
   async updateRefreshToken(user: AuthJwtUser, token: string): Promise<void> {
-    await this.userRepo.update({ id: user.id }, { hashedRefreshToken: token });
+    const result = await this.userRepo.update(
+      { id: user.id },
+      { hashedRefreshToken: token },
+    );
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 
   async deleteRefreshToken(userId: string): Promise<void> {
-    await this.userRepo.update({ id: userId }, { hashedRefreshToken: null });
+    const result = await this.userRepo.update(
+      { id: userId },
+      { hashedRefreshToken: null },
+    );
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 
   async findByIds(
@@ -120,20 +147,26 @@ export class UserService {
     ids: string[],
     options?: { throwErrorIfNotExist?: false },
   ): Promise<User[]>;
-  async findByIds(ids: string[], { throwErrorIfNotExist, returnInvalidIds }) {
+  async findByIds(
+    ids: string[],
+    options: {
+      throwErrorIfNotExist?: boolean;
+      returnInvalidIds?: boolean;
+    } = {},
+  ) {
     const users = await this.userRepo.find({
       where: { id: In(ids) },
     });
 
     let notFoundIds: string[] = [];
-    if (returnInvalidIds) {
+    if (options.returnInvalidIds) {
       const foundIds = users.map((u) => u.id);
       notFoundIds = ids.filter((id) => !foundIds.includes(id));
     }
 
-    if (throwErrorIfNotExist && ids.length !== users.length) {
+    if (options.throwErrorIfNotExist && ids.length !== users.length) {
       const msg = 'Some user IDs do not exist';
-      if (!returnInvalidIds) throw new BadRequestException(msg);
+      if (!options.returnInvalidIds) throw new BadRequestException(msg);
 
       throw new BadRequestException({
         message: msg,
@@ -156,5 +189,89 @@ export class UserService {
       where: { id: In(ids) },
       select: ['id', 'nickname', 'avatarUrl'],
     });
+  }
+
+  async search(q: {
+    cursor?: string | null;
+    limit?: number;
+    search: string;
+  }): Promise<PaginatedResponse<UserShortDTO>> {
+    const limit = q.limit || 50;
+    const trimmedSearch = q.search?.trim().replace(/^@/, '');
+    if (!trimmedSearch)
+      return {
+        items: [],
+        nextCursor: null,
+        hasMore: false,
+      };
+
+    const qb = this.userRepo
+      .createQueryBuilder('u')
+      .where('u.nickname ILIKE :search', { search: `%${trimmedSearch}%` })
+      .select([
+        'u.id AS id',
+        'u.name AS username',
+        'u.nickname AS nickname',
+        'u.avatarUrl AS avatarUrl',
+      ])
+      .orderBy('u.id', 'ASC')
+      .take(limit + 1);
+
+    if (q.cursor) {
+      qb.andWhere('u.id > :cursor', { cursor: q.cursor });
+    }
+
+    const users = await qb.getRawMany<UserShortDTO>();
+    const hasMore = users.length > limit;
+    const items = hasMore ? users.slice(0, limit) : users;
+    const nextCursor = hasMore ? users[users.length - 1].id : null;
+
+    return {
+      items,
+      hasMore,
+      nextCursor,
+    };
+  }
+
+  async getProfileData(userId: string): Promise<UserProfileDto> {
+    const user = await this.findOne(userId, { throwErrorIfNotExist: true });
+    const [followersCount, followeesCount, postsCount] = await Promise.all([
+      this.followerService.countFollowers(userId),
+      this.followerService.countFollowees(userId),
+      this.postsService.countPosts(userId),
+    ]);
+
+    return {
+      user: {
+        id: user.id,
+        nickname: user.nickname,
+        username: user.name,
+        avatarUrl: user.avatarUrl,
+        description: user.description,
+      },
+      stats: {
+        followersCount,
+        followeesCount,
+        postsCount,
+      },
+    };
+  }
+
+  async getProfileDataForOtherUser(
+    userId: string,
+    currentUserId: string,
+  ): Promise<UserProfileDtoWithRelations> {
+    const profile = await this.getProfileData(userId);
+
+    const { isFollower, isFollowee } =
+      await this.followerService.getFollowingsRelations({
+        userId,
+        currentUserId,
+      });
+
+    return {
+      ...profile,
+      relation: { isFollower, isFollowee },
+    };
   }
 }

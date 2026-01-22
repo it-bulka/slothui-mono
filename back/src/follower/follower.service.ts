@@ -1,24 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Follower } from './entity/follower.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { FindManyOptions, LessThan, Repository } from 'typeorm';
-import { UserMapper } from '../user/user-mapper';
+import { FindManyOptions, LessThan, Repository, In } from 'typeorm';
 import { FriendDto } from './dto/follower.dto';
 import { User } from '../user/entities/user.entity';
 import { FollowersViewed } from './entity/followersViewed.entity';
+import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 
 @Injectable()
 export class FollowerService {
   constructor(
-    private readonly userService: UserService,
     @InjectRepository(Follower)
     private readonly followerRepo: Repository<Follower>,
     @InjectRepository(FollowersViewed)
     private readonly viewedRepo: Repository<FollowersViewed>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    private readonly notificationEmitter: EventEmitterNotificationService,
   ) {}
 
   async followUser(
@@ -26,12 +25,38 @@ export class FollowerService {
     followeeId: string,
     needConfirmation: boolean = false,
   ) {
-    const follower = await this.userService.findOne(currentUserId, {
-      throwErrorIfNotExist: true,
+    const ids = [currentUserId, followeeId];
+    const users = await this.userRepo.find({
+      where: { id: In(ids) },
     });
-    const followee = await this.userService.findOne(followeeId, {
-      throwErrorIfNotExist: true,
+    const usersById = new Map(users.map((u) => [u.id, u]));
+    const ordered = ids.map((id) => usersById.get(id) ?? null);
+    const [follower, followee] = ordered;
+    if (!follower) {
+      throw new NotFoundException('Current user not found');
+    }
+
+    if (!followee) {
+      throw new NotFoundException('Followee not found');
+    }
+    const relations = await this.followerRepo.find({
+      where: [
+        {
+          follower: { id: currentUserId },
+          followee: { id: followeeId },
+        },
+        {
+          follower: { id: followeeId },
+          followee: { id: currentUserId },
+        },
+      ],
     });
+
+    if (relations.some((r) => r.follower.id === currentUserId)) {
+      throw new BadRequestException('Already followee');
+    }
+
+    const isFollower = relations.some((r) => r.follower.id === followeeId);
 
     const following = this.followerRepo.create({
       followee,
@@ -42,10 +67,20 @@ export class FollowerService {
 
     // TODO: add ws notification
 
+    this.notificationEmitter.onFriendRequest(
+      following.followee.id,
+      following.follower,
+    );
+
     return {
-      ...following,
-      follower: UserMapper.toResponse(following.follower),
-      followee: UserMapper.toResponse(following.followee),
+      id: followee.id,
+      src: followee.avatarUrl,
+      name: followee.name,
+      nickname: followee.nickname,
+
+      confirmed: following.confirmed,
+      isFollowee: true,
+      isFollower,
     };
   }
 
@@ -230,5 +265,49 @@ export class FollowerService {
       });
       await this.viewedRepo.save(newViewed);
     }
+  }
+
+  async countFollowers(id: string) {
+    if (!id) throw new BadRequestException('id is required');
+
+    return this.followerRepo.count({
+      where: { followee: { id: id } },
+    });
+  }
+
+  async countFollowees(id: string) {
+    if (!id) throw new BadRequestException('id is required');
+
+    return this.followerRepo.count({
+      where: { follower: { id: id } },
+    });
+  }
+
+  // check user
+  async getFollowingsRelations({
+    userId,
+    currentUserId,
+  }: {
+    userId: string;
+    currentUserId: string;
+  }) {
+    const isFollowee = await this.followerRepo.findOne({
+      where: {
+        followee: { id: userId },
+        follower: { id: currentUserId },
+      },
+    });
+
+    const isFollower = await this.followerRepo.findOne({
+      where: {
+        followee: { id: userId },
+        follower: { id: currentUserId },
+      },
+    });
+
+    return {
+      isFollowee: !!isFollowee,
+      isFollower: !!isFollower,
+    };
   }
 }

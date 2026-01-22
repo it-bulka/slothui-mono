@@ -34,6 +34,9 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   nickname: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  description: string | null;
+
   @Column({ type: 'varchar', unique: true, nullable: true })
   email?: string;
 

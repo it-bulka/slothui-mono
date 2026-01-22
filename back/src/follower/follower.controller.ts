@@ -7,6 +7,7 @@ import {
   UseGuards,
   Query,
   Get,
+  Param,
 } from '@nestjs/common';
 import { FollowerService } from './follower.service';
 import { AuthRequest } from '../common/types/user.types';
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import { FriendDto } from './dto/follower.dto';
 import { Follower } from './entity/follower.entity';
+import { FollowUserDto } from './dto/follow-user.dto';
 
 @Controller('friends')
 @UseGuards(JwtAuthGuard)
@@ -24,37 +26,26 @@ export class FollowerController {
   ) {}
 
   @Post()
-  async follow(@Body() userId: string, @Request() req: AuthRequest) {
+  async follow(@Body() dto: FollowUserDto, @Request() req: AuthRequest) {
     const following = await this.followerService.followUser(
       req.user.id,
-      userId,
+      dto.userId,
     );
 
-    this.notificationEmitter.onFriendRequest(
-      following.followee.id,
-      following.follower,
-    );
-  }
-
-  @Delete()
-  async unfollow(@Body() userId: string, @Request() req: AuthRequest) {
-    await this.followerService.deleteFollower(userId, req.user.id);
+    return following;
   }
 
   @Delete('followers')
-  async removeFollower(
-    @Body('userId') userId: string,
+  async deleteFollowers(
+    @Param('userId') userId: string,
     @Request() req: AuthRequest,
   ) {
     await this.followerService.deleteFollower(userId, req.user.id);
     return { id: userId };
   }
 
-  @Delete('followings')
-  async removeFollowee(
-    @Body('userId') userId: string,
-    @Request() req: AuthRequest,
-  ) {
+  @Delete('followee/:userId')
+  async unfollow(@Param('userId') userId: string, @Request() req: AuthRequest) {
     await this.followerService.deleteFollower(req.user.id, userId);
     return { id: userId };
   }
