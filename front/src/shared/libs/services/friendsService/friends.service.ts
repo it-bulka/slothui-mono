@@ -19,11 +19,16 @@ export class FriendsService {
   /** DELETE /api/friends/followers */
   async removeFollower({ userId }: { userId: string }): Promise<FriendDto> {
     return await this.http.request<FriendDto>(
-      this.BASE_URL,
-      {
-        params: { userId },
-        method: 'POST',
-      },
+      `${this.BASE_URL}/followers/${userId}`,
+      { method: 'DELETE' },
+    );
+  }
+
+  /** DELETE /api/friends/followee/:userId */
+  async unfollow({ userId }: { userId: string }): Promise<FriendDto> {
+    return await this.http.request<FriendDto>(
+      `${this.BASE_URL}/followee/${userId}`,
+      { method: 'DELETE' },
     );
   }
 
@@ -34,17 +39,6 @@ export class FriendsService {
     return await this.http.request<PaginatedResponse<FriendDto>>(
       this.BASE_URL + '/followings',
       { params: { cursor, userId } },
-    );
-  }
-
-  /** DELETE /api/friends/followings */
-  async removeFollowee({ userId }: { userId: string }): Promise<void> {
-    return await this.http.request(
-      this.BASE_URL,
-      {
-        params: { userId },
-        method: 'POST',
-      },
     );
   }
 

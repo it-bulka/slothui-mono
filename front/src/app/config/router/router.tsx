@@ -24,11 +24,12 @@ import { ErrorBoundary } from '@/shared/ui';
 import {
   MainLayout,
   RightSidebar,
-  UserRightSidebar,
+  //UserRightSidebar,
   AuthLayout,
   AuthRoute,
   PrivateRoute
 } from '../../layouts';
+import { UserRightSidebar } from '@/widgets';
 
 export const router = createBrowserRouter([
   {

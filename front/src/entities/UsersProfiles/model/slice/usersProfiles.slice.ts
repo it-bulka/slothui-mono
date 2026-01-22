@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { usersProfilesAdapter } from '../adapter/usersProfiles.adapter';
-import { fetchUserProfileStatsThunk } from '../thunk/fetchUserProfileStatsThunk.ts';
-import type { UsersProfilesState } from '@/entities/UsersProfiles/model/types/usersProfiles.types.ts';
+import type { UsersProfilesState } from '../types/usersProfiles.types.ts';
+import {
+  addFollowerExtraReducer,
+  fetchProfileExtraReducer,
+  removeFollowerExtraReducer
+} from '../extraReducers';
 
 const initialState = usersProfilesAdapter.getInitialState<UsersProfilesState>({
   ids: [],
@@ -28,36 +32,9 @@ export const usersProfilesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserProfileStatsThunk.pending, (state, action) => {
-        const { userId } = action.meta.arg;
-        state.entities[userId] ??= {
-          isLoading: true,
-          error: undefined,
-
-          id: userId,
-          nickname: '',
-          username: '',
-          postsCount: 0,
-          followersCount: 0,
-          followingCount: 0,
-          fetchedAt: Date.now()
-        }
-        state.entities[userId].isLoading = true;
-        state.entities[userId].error = undefined;
-      })
-      .addCase(fetchUserProfileStatsThunk.fulfilled, (state, action) => {
-        const { userId } = action.meta.arg;
-
-        usersProfilesAdapter.upsertOne(state, action.payload);
-        state.entities[userId].isLoading = false;
-      })
-      .addCase(fetchUserProfileStatsThunk.rejected, (state, action) => {
-        const { userId } = action.meta.arg;
-
-        state.entities[userId].isLoading = false;
-        state.entities[userId].error = action.payload;
-      });
+    fetchProfileExtraReducer(builder);
+    addFollowerExtraReducer(builder);
+    removeFollowerExtraReducer(builder);
   },
 });
 

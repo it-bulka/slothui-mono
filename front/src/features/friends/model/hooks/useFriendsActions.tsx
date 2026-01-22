@@ -1,7 +1,5 @@
-import { useFollowUser, useRemoveFollower, useRemoveFollowee, type FriendEntity } from '@/entities';
-import { Button } from '@/shared/ui';
-import { ActionButton } from '@/shared/ui';
-import DeleteIcon from '@/shared/assets/images/actions/delete.svg?react'
+import { type FriendEntity } from '@/entities';
+import { DeleteFollowerButton, UnfollowButton, FollowButton } from '../../ui';
 
 enum FriendsTab {
   Followers = 0,
@@ -9,47 +7,23 @@ enum FriendsTab {
 }
 
 export const useFriendActions = () => {
-  const { removeFollower } = useRemoveFollower()
-  const { followUser } = useFollowUser()
-  const { removeFollowee } = useRemoveFollowee()
-
   const renderActions = (friend: FriendEntity, tabIndex: number) => {
     if (tabIndex === FriendsTab.Followers) {
       return (
         <>
-          {friend.isFollowing ? (
-            <Button
-              onClick={() => removeFollowee(friend.id)}
-              variant="link"
-            >
-              Unfollow
-            </Button>
+          {friend.isFollowee ? (
+            <UnfollowButton userId={friend.id} />
           ) : (
-            <Button
-              onClick={() => followUser(friend.id)}
-              variant="link"
-            >
-              Follow
-            </Button>
+            <FollowButton userId={friend.id} />
           )}
 
-          <ActionButton
-            Icon={DeleteIcon}
-            onClick={() => removeFollower(friend.id)}
-          />
+         <DeleteFollowerButton userId={friend.id} />
         </>
       )
     }
 
     if (tabIndex === FriendsTab.Followings) {
-      return (
-        <Button
-          onClick={() => removeFollowee(friend.id)}
-          variant="link"
-        >
-          Unfollow
-        </Button>
-      )
+      return  <UnfollowButton userId={friend.id} />
     }
 
     return null

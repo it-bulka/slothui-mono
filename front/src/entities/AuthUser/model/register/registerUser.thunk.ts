@@ -3,7 +3,7 @@ import type { ThunkAPI } from '@/shared/config/redux';
 import type { IAuthResponse, RegisterUserArgs } from '@/shared/types';
 
 export const registerUser = createAsyncThunk<
-  IAuthResponse,
+  Pick<IAuthResponse, 'token' | 'user'>,
   RegisterUserArgs,
   ThunkAPI
 >(

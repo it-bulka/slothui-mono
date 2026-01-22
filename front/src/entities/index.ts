@@ -70,10 +70,11 @@ export {
   useFollowersSelector,
   useFollowingsSelector,
   useRemoveFollower,
-  useRemoveFollowee,
+  useUnfollow,
   useSuggestedFriendsSelect,
   useNewFollowersIdsSelect,
   useFollowersWithNewOnTopSelect,
+  useFriendByIdSelect,
   type FriendEntity
 } from './Friends';
 

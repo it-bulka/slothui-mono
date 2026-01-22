@@ -7,7 +7,7 @@ export const mapFollowerDtoToEntity = (dto: FriendDto): FriendEntity => ({
   name: dto.name,
   nickname: dto.nickname,
 
-  isFollowing: dto.isFollowing,
+  isFollowee: dto.isFollowee,
   isFollower: dto.isFollower,
 
   followedAt: Date.parse(dto.createdAt),

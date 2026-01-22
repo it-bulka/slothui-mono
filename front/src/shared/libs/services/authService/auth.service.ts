@@ -12,7 +12,7 @@ export class AuthService {
     name,
     nickname,
     avatar, // FileList | undefined
-  }: RegisterUserArgs): Promise<IAuthResponse> {
+  }: RegisterUserArgs): Promise<Pick<IAuthResponse, 'token' | 'user'>> {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
@@ -34,7 +34,7 @@ export class AuthService {
       method: 'POST',
       body: { email, password },
       credentials: 'include'
-    },)
+    })
   }
 
   logout = async (): Promise<void> => {

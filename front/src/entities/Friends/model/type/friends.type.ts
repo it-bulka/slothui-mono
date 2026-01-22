@@ -11,11 +11,11 @@ type FriendPage = {
 
 export type FriendEntity = {
   id: string;
-  src: string
+  src?: string | null
   name: string
   nickname: string
 
-  isFollowing: boolean
+  isFollowee: boolean
   isFollower: boolean
 
   followedAt: number; // timestamp -> from createdAt ISO

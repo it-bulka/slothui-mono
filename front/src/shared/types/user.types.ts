@@ -9,10 +9,20 @@ export interface UserShort {
 export type UserProfileStatsDto = {
   postsCount: number
   followersCount: number
-  followingCount: number
+  followeesCount: number
 }
 
-export type UserWithStats = UserShort & UserProfileStatsDto
+export type UserWithStats = {
+  user: UserShort & { bio?: string | null; },
+  stats: UserProfileStatsDto
+}
+
+export type OtherUserWithStats = UserWithStats & {
+  relation: {
+    isFollowee: boolean,
+    isFollower: boolean,
+  }
+}
 
 export interface ProfileAnalyticsDto {
   userId: string

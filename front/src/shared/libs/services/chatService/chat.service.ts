@@ -84,6 +84,13 @@ export class ChatService {
     );
   }
 
+  /** GET /api/chats { members, name? } */
+  async findChatByMember(userId: string): Promise<{ chatId: string }> {
+    return this.http.request<{ chatId: string }>(
+      `/api/chats/private/${userId}`,
+    );
+  }
+
   /* ------------------------------------------------------------------ */
   /*                  ---- WebSocket via socket.io ----                 */
   /* ------------------------------------------------------------------ */

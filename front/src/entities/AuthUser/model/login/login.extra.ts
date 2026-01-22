@@ -12,7 +12,7 @@ export const loginUserExtra = (builder: ActionReducerMapBuilder<AuthUserState>) 
     })
     .addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data = action.payload.user;
+      state.data = { ...action.payload.user, ...action.payload.stats };
       state.isToken = !!action.payload.token;
     })
     .addCase(loginUser.rejected, (state, action) => {

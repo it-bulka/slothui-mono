@@ -1,7 +1,6 @@
 import type { UserWithStats } from '@/shared/types/user.types.ts';
 
-export interface IAuthResponse {
-  user: UserWithStats;
+export type IAuthResponse = UserWithStats & {
   token: string;
 }
 

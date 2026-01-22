@@ -1,6 +1,12 @@
 import { HttpService } from '../httpService/http.service.ts';
 import type { UserDTO } from '@/shared/types/chat.types.ts';
-import type { PaginatedResponse, ProfileAnalyticsDto, UserProfileStatsDto, UserShort } from '../../../types';
+import type {
+  PaginatedResponse,
+  ProfileAnalyticsDto,
+  UserShort,
+  UserWithStats,
+  OtherUserWithStats
+} from '../../../types';
 
 const USERS_API = '/api/users';
 export class UserService {
@@ -44,10 +50,17 @@ export class UserService {
     );
   }
 
-  /** GET /api/users/:id/profile-stats */
-  async getProfileStats(id: string): Promise<UserProfileStatsDto> {
-    return await this.http.request<UserProfileStatsDto>(
-      `${USERS_API}/${id}/profile-stats`,
+  /** GET /api/users/me/profile  for current user */
+  async getMyProfileData(): Promise<UserWithStats> {
+    return await this.http.request<UserWithStats>(
+      `${USERS_API}/me/profile`,
+    );
+  }
+
+  /** GET /api/users/:id/profile  for users, except current */
+  async getProfileData(id: string): Promise<OtherUserWithStats> {
+    return await this.http.request<OtherUserWithStats>(
+      `${USERS_API}/${id}/profile`,
     );
   }
 

@@ -7,15 +7,15 @@ import { mapFollowerDtoToEntity } from '../utils';
 export const followUserExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder
     .addCase(followUserThunk.fulfilled, (state, action) => {
-      const user = action.payload
+      const user = action.payload.profile
 
       friendsAdapter.upsertOne(state, mapFollowerDtoToEntity(user))
 
-      const myId = 'me'
+      const myId =  action.payload.currentUserId
       state.followingsByUser[myId] ??= { ids: [] }
       state.followingsByUser[myId].ids.unshift(user.id)
 
-      // прибрати з suggestions
+      // ? move from suggestions
       state.suggestions.ids = state.suggestions.ids.filter(
         id => id !== user.id
       )

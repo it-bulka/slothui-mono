@@ -1,7 +1,17 @@
 import type { EntityState } from '@reduxjs/toolkit';
-import type { UserWithStats } from '@/shared/types';
 
-export type UserProfile = UserWithStats & {
+export type UserProfile = {
+  // user
+  id: string;
+  username: string;
+  nickname: string;
+  avatarUrl?: string | null;
+  description?: string | null;
+  // stats
+  postsCount: number
+  followersCount: number
+  followeesCount: number
+  //meta
   fetchedAt: number
   isLoading?: boolean
   error?: string

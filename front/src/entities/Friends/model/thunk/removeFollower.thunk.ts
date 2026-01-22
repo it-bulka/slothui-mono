@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ThunkAPI } from '@/shared/config/redux';
+import { selectAuthUser } from '@/entities/AuthUser';
 
 export const removeFollowerThunk = createAsyncThunk<
   { followerId: string; currentUserId: string },
@@ -9,14 +10,14 @@ export const removeFollowerThunk = createAsyncThunk<
   'friends/removeFollower',
   async ({ followerId }, { getState, extra, rejectWithValue }) => {
     const state = getState();
-    const user = state.user.data
+    const currentUserId = selectAuthUser(state)?.id
 
-    if (!user) {
+    if (!currentUserId) {
       return rejectWithValue('User not authorized')
     }
     try {
       await extra.services.friends.removeFollower({ userId: followerId });
-      return { followerId, currentUserId: user.id };
+      return { followerId, currentUserId };
     } catch (e) {
       const errMsg = extra.extractErrorMessage(e, 'Failed to remove follower');
       return rejectWithValue(errMsg);

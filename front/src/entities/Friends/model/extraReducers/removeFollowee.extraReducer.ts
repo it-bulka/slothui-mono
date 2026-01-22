@@ -1,12 +1,17 @@
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
-import { removeFolloweeThunk } from '../thunk/removeFolowee.thunk.ts';
+import { unfollowThunk } from '../thunk/unfollow.thunk.ts';
+import { friendsAdapter } from '../adapter/friends.adapter.ts';
 
 export const removeFolloweeExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>) => {
   builder
-    .addCase(removeFolloweeThunk.fulfilled, (state, action) => {
+    .addCase(unfollowThunk.fulfilled, (state, action) => {
       const { followeeId, currentUserId } = action.payload;
 
+      friendsAdapter.updateOne(state, {
+        id: followeeId,
+        changes: { isFollowee: false },
+      })
       const followings = state.followingsByUser[currentUserId];
       if (followings) {
         followings.ids = followings.ids.filter(id => id !== followeeId);

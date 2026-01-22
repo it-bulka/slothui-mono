@@ -1,7 +1,8 @@
 export {
   usersProfilesReducer,
   useFetchUserProfileStats,
-  useUserProfileSelect
+  useUserProfileSelect,
+  fetchUserProfileDataThunk
 } from './model';
 
 export { Statistics } from './ui/Statistics/Statistics.tsx';

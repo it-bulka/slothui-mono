@@ -1,7 +1,17 @@
-import type { UserWithStats } from '@/shared/types';
-
+export interface UserState {
+  id: string;
+  username: string;
+  nickname: string;
+  email?: string;
+  avatarUrl?: string | null;
+  bio?: string | null;
+  // stats
+  postsCount: number
+  followersCount: number
+  followingCount: number
+}
 export interface AuthUserState {
-  data: UserWithStats | null;
+  data: UserState | null;
   isToken: boolean;
   isLoading: boolean;
   error: string | null;

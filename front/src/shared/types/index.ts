@@ -6,7 +6,13 @@ export type { GroupedAttachment, Attachment, RawAttachmentType, AttachmentType, 
 export type { MessageDto } from './message.dto.ts';
 export type { PaginatedResponse } from './paginatedResponse.types.ts';
 export type { ChatGlobalSearchResult } from './chat.types.ts';
-export type { UserShort, UserProfileStatsDto, UserWithStats, ProfileAnalyticsDto } from './user.types.ts';
+export type {
+  UserShort,
+  UserProfileStatsDto,
+  UserWithStats,
+  OtherUserWithStats,
+  ProfileAnalyticsDto
+} from './user.types.ts';
 export type { CommentsPaginated, Comment } from './comments.type.ts';
 export type { PostWithAttachmentsDto, PostBaseDTO } from './posts.types.ts';
 export type { FriendDto } from './friends.type.ts';
