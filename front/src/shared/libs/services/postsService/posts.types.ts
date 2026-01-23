@@ -1,8 +1,25 @@
-import type { RawGroupedAttachment } from '../../../types';
+import type { Poll, RawGroupedAttachment } from '../../../types';
 
-export interface CreatePostDTO {
-  attachments: RawGroupedAttachment;
+export type CreatePostDTO =
+  | CreateTextPostDTO
+  | CreateFilesPostDTO
+  | CreatePollPostDTO;
+
+export interface CreateTextPostDTO {
+  type: 'text';
   text: string;
+}
+
+export interface CreateFilesPostDTO {
+  type: 'files';
+  text?: string;
+  files: RawGroupedAttachment;
+}
+
+export interface CreatePollPostDTO {
+  type: 'poll';
+  text?: string;
+  poll: Poll;
 }
 
 export interface UpdatePostDTO {

@@ -2,7 +2,6 @@ export {
   postsReducer,
   useSelectSavedPosts,
   useSelectFeedPosts,
-  useSelectProfilePosts,
   useSelectLikedPosts,
   useSelectMyPosts ,
   useSelectPostById, postsActions,
@@ -11,5 +10,11 @@ export {
   usePostByIdSelect,
   usePostLikeSelect,
   usePostSaveSelect,
-  fetchFeedPostsThunk
+  useProfileFeedStateSelector,
+  useProfilePostsSelector,
+  fetchFeedPostsThunk,
+  useFetchPostsByUser,
+  useFetchMyPosts,
+  useCreatePost,
+  createPostThunk
 } from './model';

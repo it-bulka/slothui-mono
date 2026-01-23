@@ -1,6 +1,6 @@
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { postsAdapter } from '../adapter/postsAdapter.ts';
-import { addUniqueIds } from '../utils/addIniqueIds.ts';
+import { addUniqueIds } from '@/shared/libs';
 import type { PostsState } from '../types/posts.type.ts';
 import { fetchLikedPostsThunk } from '@/entities/Post/model/thunks/fetchLikedPosts.thunk.ts';
 
@@ -10,7 +10,7 @@ export const fetchLikedPostsExtraReducer = (builder: ActionReducerMapBuilder<Pos
     postsAdapter.addMany(state, posts);
 
     const liked = state.likes
-    addUniqueIds(liked.ids, posts)
+    liked.ids = addUniqueIds(liked.ids, posts)
 
     liked.hasMore = hasMore
     liked.nextCursor = nextCursor

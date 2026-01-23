@@ -9,7 +9,8 @@ import {
   fetchPostsByUserExtraReducer,
   createPostExtraReducer,
   toggleLikePostExtraReducer,
-  toggleSavePostExtraReducer
+  toggleSavePostExtraReducer,
+  fetchMyPostsExtraReducer
 } from '../extraReducers';
 import { mockPostsState } from '@/mock/data';
 
@@ -67,6 +68,7 @@ const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     fetchFeedPostsExtraReducer(builder);
+    fetchMyPostsExtraReducer(builder);
     fetchPostsByUserExtraReducer(builder);
     deletePostExtraReducer(builder);
     fetchSavedPostsExtraReducer(builder);

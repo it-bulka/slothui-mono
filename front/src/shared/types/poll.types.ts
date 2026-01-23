@@ -1,11 +1,10 @@
 export interface PollOption {
-  id: string;
   value: string;
 }
 
 export interface Poll {
   question: string;
-  options: PollOption[];
+  answers: PollOption[];
   multiple: boolean;
   anonymous: boolean;
 }

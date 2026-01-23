@@ -2,7 +2,6 @@ export { postsReducer, postsActions } from './slice/post.slice.ts';
 export {
   useSelectSavedPosts,
   useSelectFeedPosts,
-  useSelectProfilePosts,
   useSelectLikedPosts,
   useSelectMyPosts,
   useSelectPostById,
@@ -10,6 +9,11 @@ export {
   useToggleSavePost,
   usePostByIdSelect,
   usePostLikeSelect,
-  usePostSaveSelect
+  usePostSaveSelect,
+  useProfilePostsSelector,
+  useProfileFeedStateSelector,
+  useFetchPostsByUser,
+  useFetchMyPosts,
+  useCreatePost
 } from './hooks';
-export { fetchFeedPostsThunk } from './thunks';
+export { fetchFeedPostsThunk, createPostThunk } from './thunks';

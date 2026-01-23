@@ -43,7 +43,6 @@ export {
   postsReducer,
   useSelectSavedPosts,
   useSelectFeedPosts,
-  useSelectProfilePosts,
   useSelectLikedPosts,
   useSelectMyPosts,
   useSelectPostById,
@@ -52,7 +51,13 @@ export {
   usePostByIdSelect,
   usePostLikeSelect,
   usePostSaveSelect,
-  fetchFeedPostsThunk
+  fetchFeedPostsThunk,
+  useProfileFeedStateSelector,
+  useProfilePostsSelector,
+  useFetchPostsByUser,
+  useFetchMyPosts,
+  useCreatePost,
+  createPostThunk
 } from './Post';
 
 export {

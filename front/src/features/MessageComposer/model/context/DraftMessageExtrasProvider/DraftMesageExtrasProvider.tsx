@@ -11,7 +11,7 @@ import type {
   DraftGroupedAttachments
 } from '../../types';
 import type { PollDraft } from '../../../../CreatePoll';
-import type { DraftEvent } from '@/features/CreateEvent';
+import type { DraftEvent } from '../../../../CreateEvent';
 
 export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const [attachments, setAttachments] = useState<MessageDraft['attachments']>([])
@@ -61,9 +61,7 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const draft = { attachments, geo, poll }
-    const payload = draftToPayload(draft);
-    console.log('SEND', payload);
-    return payload;
+    return draftToPayload(draft);
   };
 
   const clearExtras = useCallback(() => {
@@ -76,8 +74,8 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const groupedDraftAttachments = useMemo(() => {
     return attachments?.reduce((acc, file) => {
       switch (file.type) {
-        case "image":
-          acc.image.push(file);
+        case "images":
+          acc.images.push(file);
           break;
         case "video":
           acc.video.push(file);
@@ -91,7 +89,7 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
       }
 
       return acc;
-    }, { image: [], file: [], audio: [], video: [] } as DraftGroupedAttachments)
+    }, { images: [], file: [], audio: [], video: [] } as DraftGroupedAttachments)
   }, [attachments]);
 
   const hasDraftExtras = useMemo(() => {

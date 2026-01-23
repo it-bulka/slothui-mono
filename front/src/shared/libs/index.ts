@@ -6,3 +6,5 @@ export { formatDate } from './formatDate/formatDate.tsx';
 export { checkAuthLoader } from './token/ckeckAuthLoader/checkAuthLoader.ts';
 export { storeTokenToLocalStorage } from './token/storeTokenToLocalStorage/storeTokenToLocalStorage.ts';
 export { deleteTokenToLocalStorage } from './token/deleteTokenLocalStorage/deleteTokenLocalStorage.tsx';
+export { addUniqueIds } from './addUniqueIds/addIniqueIds.ts';
+export { prependUniqueIds } from './prependUniqueIds/prependUniqueIds.ts';

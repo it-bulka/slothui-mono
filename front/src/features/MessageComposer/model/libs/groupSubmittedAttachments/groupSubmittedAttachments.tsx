@@ -3,8 +3,8 @@ import type { DraftAttachment, SubmitGroupAttachments } from '../../types';
 export const groupSubmittedAttachments = (files: DraftAttachment[]) => {
   return files.reduce((acc, file) => {
     switch (file.type) {
-      case "image":
-        acc.image.push(file.file);
+      case "images":
+        acc.images.push(file.file);
         break;
       case "video":
         acc.video.push(file.file);
@@ -18,5 +18,5 @@ export const groupSubmittedAttachments = (files: DraftAttachment[]) => {
     }
 
     return acc;
-  }, { image: [], file: [], audio: [], video: [] } as SubmitGroupAttachments);
+  }, { images: [], file: [], audio: [], video: [] } as SubmitGroupAttachments);
 }

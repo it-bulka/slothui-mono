@@ -17,6 +17,14 @@ export class PostsService {
     );
   }
 
+  /** GET /api/posts/my */
+  async getMyPosts({ cursor }: { cursor?: string | null } = {}): Promise<PaginatedResponse<PostWithAttachmentsDto>> {
+    return await this.http.request<PaginatedResponse<PostWithAttachmentsDto>>(
+      this.BASE_URL + '/my',
+      { params: { cursor } },
+    );
+  }
+
   /** GET /api/posts/saved */
   async getSavedPosts({ cursor }: { cursor?: string | null } = {}): Promise<PaginatedResponse<PostWithAttachmentsDto>> {
     return await this.http.request<PaginatedResponse<PostWithAttachmentsDto>>(
@@ -40,11 +48,29 @@ export class PostsService {
     );
   }
 
-  /** POST /api/posts/:postId */
-  async createOne({ attachments, text }: CreatePostDTO): Promise<PostWithAttachmentsDto> {
+  /** POST /api/posts */
+  async createOne(post: CreatePostDTO): Promise<PostWithAttachmentsDto> {
+    const formData = new FormData();
+
+    if ('text' in post && post.text) {
+      formData.append('text', post.text);
+    }
+
+    if (post.type === 'poll') {
+      formData.append('poll', JSON.stringify(post.poll));
+    }
+
+    if (post.type === 'files') {
+      Object.entries(post.files).forEach(([field, files]) => {
+        files.forEach(file => {
+          formData.append(field, file);
+        });
+      });
+    }
+
     return await this.http.request<PostWithAttachmentsDto>(
       this.BASE_URL,
-      { method: 'POST', body: { text, attachments } },
+      { method: 'POST', body: formData },
     );
   }
 

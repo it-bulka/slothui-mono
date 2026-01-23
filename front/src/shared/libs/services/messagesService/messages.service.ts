@@ -64,7 +64,6 @@ export class MessagesService {
 
   /** POST /api/chats/:id/messages  MessageToSend */
   async sendMessage(msg: MessageToSend & { chatId: string }): Promise<void> {
-    console.log('sendMessage - msg:', msg);
     const body: MessageToSend = { text: msg.text }
     if('geo' in msg && msg.geo) {
       (body as MsgWithGeoToSend).geo = JSON.stringify(msg.geo);

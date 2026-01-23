@@ -6,7 +6,7 @@ import { UserEventContent } from './UserEventContent/UserEventContent.tsx';
 import { Tab } from '@/shared/ui';
 
 const User = () => {
-  const { userId } = useParams();
+  const { id: userId } = useParams<{ id: string }>();
 
   if(!userId) return <p>Not Found User Id</p>
   return (

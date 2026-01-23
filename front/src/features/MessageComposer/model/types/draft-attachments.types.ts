@@ -1,5 +1,5 @@
 export type DraftAttachmentType =
-  | 'image'
+  | 'images'
   | 'video'
   | 'audio'
   | 'file';

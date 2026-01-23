@@ -8,3 +8,4 @@ export { fetchLikedPostsExtraReducer } from './fetchLikedPosts.extraReducer.ts';
 export { createPostExtraReducer } from './createPost.extraReducer.ts';
 export { toggleLikePostExtraReducer } from './toggleLikePost.extraReducer.ts';
 export { toggleSavePostExtraReducer } from './toggleSavePost.extraReducer.ts';
+export { fetchMyPostsExtraReducer } from './fetchMyPosts.extraReducer.ts';

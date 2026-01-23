@@ -17,6 +17,7 @@ import {
   analyticsReducer,
   authUserActions
 } from '@/entities';
+import { postComposerReducer } from '@/features/PostComposer';
 import { ErrorHelper } from '@/shared/libs';
 import { deleteTokenToLocalStorage } from '@/shared/libs';
 
@@ -31,6 +32,7 @@ export const store = configureStore({
     messages: messageReducer,
     comments: commentsReducer,
     posts: postsReducer,
+    postComposer: postComposerReducer,
     replyTarget: replyTargetReducer,
     friends: friendsReducer,
     stories: storiesReducer,

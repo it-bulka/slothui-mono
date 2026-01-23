@@ -46,7 +46,7 @@ export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) 
 
   return (
     <div className="grid grid-cols-4 gap-2 bg-white px-2 py-4 rounded-lg border-gray-g2 shadow">
-      <UploadPhotosButton onFilesSelect={onFilesSelected('image')} />
+      <UploadPhotosButton onFilesSelect={onFilesSelected('images')} />
       <ActionButton Icon={CameraSvg} column>Camera</ActionButton>
       <GeoDraftProvider sendGeo={onSendGeo}>
         <CreateGeoButton />

@@ -7,7 +7,7 @@ import { AttachActionsPopup } from './ActionPopup.tsx';
 export const AttachAction = () => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context, close } = useBtnPopup()
+  const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context, close } = useBtnPopup({ defaultState: false })
 
   const setWrapperRef = (node: HTMLDivElement | null) => {
     wrapperRef.current = node;
