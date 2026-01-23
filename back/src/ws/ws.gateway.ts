@@ -30,8 +30,8 @@ import {
   NotificationEmitterType,
   NotificationEvent,
 } from '../event-emitter/type/notification.type';
-import { OpenedChatsTracker } from './opened-chats-tracker.service';
-import { UnreadBufferService } from './unread-buffer.service';
+import { OpenedChatsTracker } from '../messages/opened-chats-tracker.service';
+import { UnreadBufferService } from '../messages/unread-buffer.service';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)

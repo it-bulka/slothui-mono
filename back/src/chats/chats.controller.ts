@@ -61,6 +61,19 @@ export class ChatsController {
     });
   }
 
+  @Get('private/:userId')
+  async findPrivateChat(
+    @Param('userId') userId: string,
+    @Request() request: AuthRequest,
+  ) {
+    const chat = await this.chatsService.findOrCreatePrivateChat([
+      request.user.id,
+      userId,
+    ]);
+
+    return { chatId: chat.id };
+  }
+
   @Delete(':id')
   async deleteChat(@Param('id') id: string, @Request() request: AuthRequest) {
     const chat = await this.chatsService.deleteChatByOwner(request.user.id, id);

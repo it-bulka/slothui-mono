@@ -14,6 +14,8 @@ import { EventEmitterModule } from '../event-emitter/event-emitter.module';
 import { StoriesModule } from '../stories/stories.module';
 import { EventsModule } from '../events/events.module';
 import { PollsModule } from '../polls/polls.module';
+import { OpenedChatsTracker } from './opened-chats-tracker.service';
+import { UnreadBufferService } from './unread-buffer.service';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { PollsModule } from '../polls/polls.module';
     PollsModule,
   ],
   controllers: [MessagesController],
-  providers: [MessagesService],
-  exports: [MessagesService],
+  providers: [MessagesService, OpenedChatsTracker, UnreadBufferService],
+  exports: [MessagesService, OpenedChatsTracker, UnreadBufferService],
 })
 export class MessagesModule {}

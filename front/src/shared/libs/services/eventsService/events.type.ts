@@ -24,7 +24,10 @@ export interface CreateEventDTO {
   title: string
   description: string
   isOnline: boolean
-  locationName?: string
-  latitude?: number
-  longitude?: number
+  location?: {
+    address?: string
+    latitude: number
+    longitude: number
+  }
+  date: string // ISO
 }

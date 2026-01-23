@@ -58,7 +58,7 @@ export class StoriesController {
     return await this.storiesService.create(uploaded.file[0], req.user.id);
   }
 
-  @Get('/users')
+  @Get()
   async getUsersWithStory(
     @Body('authorsIds') authorsIds: string[],
     @Query()

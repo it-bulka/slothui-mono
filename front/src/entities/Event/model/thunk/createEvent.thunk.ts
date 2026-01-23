@@ -9,6 +9,7 @@ export const createEventThunk = createAsyncThunk<
 >(
   'events/createEvent',
   async (data, { extra, rejectWithValue }) => {
+    console.log('createEventThunk', data);
     try {
       return await extra.services.events.createEvent(data)
     } catch (e) {

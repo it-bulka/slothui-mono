@@ -18,8 +18,8 @@ import { StoriesService } from '../stories/stories.service';
 import { EventsService } from '../events/events.service';
 import { PollsService } from '../polls/polls.service';
 import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
-import { OpenedChatsTracker } from '../ws/opened-chats-tracker.service';
-import { UnreadBufferService } from '../ws/unread-buffer.service';
+import { OpenedChatsTracker } from './opened-chats-tracker.service';
+import { UnreadBufferService } from './unread-buffer.service';
 import { MessageResponseDto } from './dto/message.dto';
 
 @Injectable()

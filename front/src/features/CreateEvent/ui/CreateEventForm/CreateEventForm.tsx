@@ -50,6 +50,9 @@ export const EventCreateForm = memo(({
         )}
       />
 
+      <input type="date" />
+      <input type="time" />
+
       <Controller
         control={control}
         name="description"
