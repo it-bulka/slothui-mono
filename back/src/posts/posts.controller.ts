@@ -9,15 +9,18 @@ import {
   Param,
   UseGuards,
   Body,
+  BadRequestException,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { GetPostsQueryDto } from './dto/getPostQuery.dto';
+import { GetMyPostsQueryDto, GetPostsQueryDto } from './dto/getPostQuery.dto';
 import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { ParseCreatePostPollPipe } from './pipes/parseCreatePostPoll.pipe';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
+import { normalizeFiles } from '../common/utils/normalizeFiles';
+import { CreatePostCommand } from './dto/createPost.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('posts')
@@ -25,7 +28,19 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async getMany(@Query() q: GetPostsQueryDto, @Request() req: AuthRequest) {
+  async getMany(@Query() q: GetPostsQueryDto) {
+    return await this.postsService.getMany({
+      cursor: q.cursor,
+      limit: Number(q.limit) || 100,
+      userId: q.userId,
+    });
+  }
+
+  @Get('/my')
+  async getMyPosts(
+    @Query() q: GetMyPostsQueryDto,
+    @Request() req: AuthRequest,
+  ) {
     return await this.postsService.getMany({
       cursor: q.cursor,
       limit: Number(q.limit) || 100,
@@ -97,22 +112,45 @@ export class PostsController {
   @Post()
   async createPost(
     @UploadedFiles()
-    files: {
+    rowFiles: {
       images?: Express.Multer.File[];
       audio?: Express.Multer.File[];
       file?: Express.Multer.File[];
       video?: Express.Multer.File[];
     },
     @Body(ParseCreatePostPollPipe)
-    body: { poll?: CreatePollDto; text: string },
+    body: { poll?: CreatePollDto; text?: string },
     @Request() req: AuthRequest,
   ) {
-    return await this.postsService.createPostWithExtras({
-      files,
-      text: body.text,
-      poll: body.poll,
-      authorId: req.user.id,
-    });
+    const files = normalizeFiles(rowFiles);
+
+    let command: CreatePostCommand;
+
+    if (body.poll) {
+      command = {
+        type: 'poll',
+        poll: body.poll,
+        text: body.text,
+        authorId: req.user.id,
+      };
+    } else if (files && Object.keys(files).length > 0) {
+      command = {
+        type: 'files',
+        files,
+        text: body.text,
+        authorId: req.user.id,
+      };
+    } else if (body.text) {
+      command = {
+        type: 'text',
+        text: body.text,
+        authorId: req.user.id,
+      };
+    } else {
+      throw new BadRequestException('No data for post');
+    }
+
+    return await this.postsService.createPost(command);
   }
 
   @Delete(':id')

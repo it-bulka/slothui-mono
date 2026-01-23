@@ -21,11 +21,11 @@ export class Attachment {
   @Column({ type: 'varchar', length: 255 })
   originalName: string;
 
-  @Column({ nullable: true })
-  url?: string;
+  @Column()
+  url: string;
 
-  @Column({ type: 'jsonb', nullable: true })
-  metadata?: AttachmentMetadata;
+  @Column({ type: 'jsonb' })
+  metadata: AttachmentMetadata;
 
   @Column()
   parentType: AttachmentParentType;

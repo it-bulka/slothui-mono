@@ -5,7 +5,7 @@ import { PollDto } from '../../polls/dto/poll.dto';
 
 export interface PostDto {
   id: string;
-  content: string;
+  text: string;
   author: UserResponse;
   isLiked?: boolean;
   isSaved?: boolean;

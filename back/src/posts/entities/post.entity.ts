@@ -16,7 +16,7 @@ export class Post {
   id: string;
 
   @Column()
-  content: string; // attachments separately, could be in message as well
+  text: string; // attachments separately, could be in message as well
 
   //TODO: add poll later
 

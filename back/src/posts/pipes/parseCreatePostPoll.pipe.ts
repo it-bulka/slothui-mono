@@ -2,13 +2,11 @@ import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { CreatePollDto } from '../../polls/dto/createPoll.dto';
-import { CreatePostDtoWithPoll } from '../dto/createPost.dto';
+import { CreatePostWithPoll } from '../dto/createPost.dto';
 
 @Injectable()
 export class ParseCreatePostPollPipe implements PipeTransform {
-  transform(
-    value: Partial<CreatePostDtoWithPoll>,
-  ): Partial<CreatePostDtoWithPoll> {
+  transform(value: Partial<CreatePostWithPoll>): Partial<CreatePostWithPoll> {
     let poll = value.poll;
     if (!poll) return value;
 

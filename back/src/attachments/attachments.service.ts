@@ -22,6 +22,7 @@ export class AttachmentsService {
   ) {}
 
   async getMany(parentType: AttachmentParentType, parentIds: string[]) {
+    if (!parentIds.length) return [];
     return await this.attachmentRepo.find({
       where: {
         parentId: In(parentIds),
@@ -35,9 +36,12 @@ export class AttachmentsService {
 
     for (const att of attachments) {
       const dto: AttachmentDto = {
+        id: att.id,
         url: att.url,
-        metadata: att.metadata,
         publicId: att.publicId,
+        originalName: att.originalName,
+        type: att.type,
+        metadata: att.metadata,
       };
 
       if (!grouped.has(att.parentId)) {
@@ -69,9 +73,12 @@ export class AttachmentsService {
       if (grouped[att.type]) {
         noAttachments = false;
         grouped[att.type].push({
+          id: att.id,
           url: att.url,
-          metadata: att.metadata,
           publicId: att.publicId,
+          originalName: att.originalName,
+          type: att.type,
+          metadata: att.metadata,
         });
       }
     }
@@ -183,10 +190,14 @@ export class AttachmentsService {
         const thumbnailUrl = this.cloudinaryService.generateThumbnailUrl(
           result.public_id,
         );
+        const originalName = Buffer.from(file.originalname, 'latin1').toString(
+          'utf8',
+        );
+
         attachmentsToSave.push({
           parentType,
           parentId,
-          originalName: file.originalname,
+          originalName,
           type: 'video' as AttachmentType,
           url: result.secure_url,
           publicId: result.public_id,

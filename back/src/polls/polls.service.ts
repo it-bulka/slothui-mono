@@ -46,6 +46,7 @@ export class PollsService {
     parentType: PallParentType,
     parentIds: string[],
   ): Promise<PollDto[]> {
+    if (!parentIds.length) return [];
     return (await this.pollRepo
       .createQueryBuilder('poll')
       .leftJoinAndSelect('poll.answers', 'answer')

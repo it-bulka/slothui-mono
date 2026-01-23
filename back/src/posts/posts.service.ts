@@ -8,10 +8,9 @@ import { PostPaginatedRes } from './dto/post.dto';
 import { UserMapper } from '../user/user-mapper';
 import { PostLike } from './entities/postLike.entity';
 import { PostSave } from './entities/postSave.entity';
-import { CreatePostDto, CreatePostDtoWithFiles } from './dto/createPost.dto';
 import { EntityManager } from 'typeorm';
-import { CreatePollDto } from '../polls/dto/createPoll.dto';
 import { PollsService } from '../polls/polls.service';
+import { CreatePostCommand } from './dto/createPost.dto';
 
 @Injectable()
 export class PostsService {
@@ -48,16 +47,24 @@ export class PostsService {
         EXISTS (
           SELECT 1
           FROM post_like pl
-          WHERE pl.postId = post.id
-            AND pl.userId = :userId
+          WHERE pl."postId" = post.id
+            AND pl."userId" = :userId
         )
         `,
         'isLiked',
       )
-        .setParameter('userId', userId)
-        .leftJoinAndSelect('post.saves', 'save', 'save.user = :userId', {
-          userId,
-        });
+        .addSelect(
+          `
+        EXISTS (
+          SELECT 1
+          FROM post_save ps
+          WHERE ps."postId" = post.id
+            AND ps."userId" = :userId
+        )
+        `,
+          'isSaved',
+        )
+        .setParameter('userId', userId);
     }
 
     qb.leftJoinAndSelect('post.author', 'author')
@@ -65,7 +72,11 @@ export class PostsService {
       .addOrderBy('post.id', 'DESC')
       .take(limit + 1);
 
-    const posts = await qb.getMany();
+    const { entities: posts, raw } = await qb.getRawAndEntities<{
+      isLiked: boolean;
+      isSaved: boolean;
+    }>();
+    console.log(raw[0]);
     const hasMore = posts.length > limit;
     const postIds = posts.slice(0, limit).map((p) => p.id);
 
@@ -76,12 +87,12 @@ export class PostsService {
     const polls = await this.pollsService.getMany('post', postIds);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
-    const postWithExtras: PostDto[] = posts.map((post) => ({
+    const postWithExtras: PostDto[] = posts.map((post, index) => ({
       id: post.id,
       author: UserMapper.toResponse(post.author),
-      content: post.content,
-      isLiked: post.likes?.length > 0,
-      isSaved: post.saves?.length > 0,
+      text: post.text,
+      isLiked: raw[index].isLiked,
+      isSaved: raw[index].isSaved,
       commentsCount: post.commentsCount,
       attachments: groupedAttachments.get(post.id),
       poll: groupedPolls.get(post.id),
@@ -104,7 +115,7 @@ export class PostsService {
     postId: string;
     userId: string;
   }): Promise<PostDto> {
-    const post = (await this.postRepo
+    const { entities, raw } = await this.postRepo
       .createQueryBuilder('post')
       .leftJoin('post.author', 'author')
       .addSelect([
@@ -118,25 +129,35 @@ export class PostsService {
         EXISTS (
           SELECT 1
           FROM post_like pl
-          WHERE pl.postId = post.id
-            AND pl.userId = :userId
+          WHERE pl."postId" = post.id
+            AND pl."userId" = :userId
         )
         `,
         'isLiked',
       )
+      .addSelect(
+        `
+        EXISTS (
+          SELECT 1
+          FROM post_save ps
+          WHERE ps."postId" = post.id
+            AND ps."userId" = :userId
+        )
+        `,
+        'isSaved',
+      )
       .setParameter('userId', userId)
-      .leftJoinAndSelect('post.saves', 'save', 'save.userId = :userId', {
-        userId,
-      })
       .where('post.id = :id', { id: postId })
-      .getOne()) as Post & { isLiked: boolean };
+      .getRawAndEntities<{ isLiked: boolean; isSaved: boolean }>();
+
+    const post = entities[0];
 
     if (!post) {
       throw new NotFoundException(`Post with ID ${postId} not found`);
     }
 
-    const isLiked = Boolean(post.isLiked);
-    const isSaved = post?.saves?.length > 0;
+    const isLiked = Boolean(raw[0].isLiked);
+    const isSaved = Boolean(raw[0].isSaved);
 
     const attachments = await this.attachmentService.getMany('post', [postId]);
     const groupedAttachments = this.attachmentService.groupByType(attachments);
@@ -147,7 +168,7 @@ export class PostsService {
     return {
       id: post.id,
       author: UserMapper.toResponse(post.author),
-      content: post.content,
+      text: post.text,
       isLiked,
       isSaved,
       commentsCount: post.commentsCount,
@@ -206,50 +227,63 @@ export class PostsService {
     });
   }
 
-  async createPostContent(
+  async createPostText(
     dto: { text: string; authorId: string },
     manager?: EntityManager,
   ) {
     const repo = manager ? manager.getRepository(Post) : this.postRepo;
 
     const post = repo.create({
-      content: dto.text,
+      text: dto.text,
       author: { id: dto.authorId },
     });
     return await repo.save(post);
   }
 
   async createPostWithAttachments(
-    dto: CreatePostDtoWithFiles & { authorId: string },
+    dto: Extract<CreatePostCommand, { type: 'files' }>,
   ): Promise<PostDto> {
-    const post = await this.createPostContent(dto);
+    const post = await this.createPostText({
+      text: dto.text || '',
+      authorId: dto.authorId,
+    });
     await this.attachmentService.saveAttachments(dto.files, 'post', post.id);
 
     return await this.getById({ postId: post.id, userId: dto.authorId });
   }
 
-  async createPostWithPoll(dto: {
-    text: string;
-    authorId: string;
-    poll: CreatePollDto;
-  }): Promise<PostDto> {
+  async createPostWithPoll(
+    dto: Extract<CreatePostCommand, { type: 'poll' }>,
+  ): Promise<PostDto> {
     //TODO: add poll
-    const post = await this.createPostContent(dto);
+    const post = await this.createPostText({
+      text: dto.text || '',
+      authorId: dto.authorId,
+    });
     await this.pollsService.createPoll(dto.poll, 'post', post.id);
     return await this.getById({ postId: post.id, userId: dto.authorId });
   }
 
-  async createPostWithExtras(
-    dto: CreatePostDto & { authorId: string },
-  ): Promise<PostDto | undefined> {
-    if ('poll' in dto && dto.poll) {
-      return await this.createPostWithPoll({
-        poll: dto.poll,
-        authorId: dto.authorId,
-        text: dto.text,
-      });
-    } else if ('files' in dto) {
-      return await this.createPostWithAttachments(dto);
+  async createPostWithText(
+    dto: Extract<CreatePostCommand, { type: 'text' }>,
+  ): Promise<PostDto> {
+    const post = await this.createPostText({
+      text: dto.text || '',
+      authorId: dto.authorId,
+    });
+    return await this.getById({ postId: post.id, userId: dto.authorId });
+  }
+
+  async createPost(command: CreatePostCommand) {
+    switch (command.type) {
+      case 'poll':
+        return this.createPostWithPoll(command);
+
+      case 'files':
+        return this.createPostWithAttachments(command);
+
+      case 'text':
+        return this.createPostWithText(command);
     }
   }
 
@@ -269,5 +303,13 @@ export class PostsService {
     await this.attachmentService.deleteMany(attachments);
 
     return deleted;
+  }
+
+  async countPosts(userId: string) {
+    return await this.postRepo.count({
+      where: {
+        author: { id: userId },
+      },
+    });
   }
 }
