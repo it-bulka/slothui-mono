@@ -5,13 +5,13 @@ import type { PaginatedResponse } from '@/shared/types';
 
 export const fetchMyPostsThunk = createAsyncThunk<
   PaginatedResponse<PostWithAttachmentsDto>,
-  { cursor?: string | null } | void,
+  { cursor?: string | null, currentUserId: string },
   ThunkAPI
 >(
   'posts/fetchMyPosts',
-  async ({ cursor } = {}, { extra, rejectWithValue }) => {
+  async (arg, { extra, rejectWithValue }) => {
     try {
-      return await extra.services.posts.getMyPosts({ cursor });
+      return await extra.services.posts.getMyPosts({ cursor: arg.cursor });
     } catch {
       return rejectWithValue('Failed to fetch posts.');
     }

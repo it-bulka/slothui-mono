@@ -1,34 +1,50 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, type RefObject, useRef, useState, useCallback } from 'react';
 
 interface UseInfiniteScrollProps {
-  triggerRef: RefObject<HTMLElement | null>;
-  wrapperRef: RefObject<HTMLElement | null>;
+  wrapperRef?: RefObject<HTMLElement | null>;
+  canLoadMore: boolean;
   isLoading: boolean;
-  hasMore: boolean;
   onLoadMore: () => void;
 }
 
 export const useInfiniteScroll = ({
-  triggerRef,
   wrapperRef,
+  canLoadMore,
   isLoading,
-  hasMore,
   onLoadMore,
 }: UseInfiniteScrollProps) => {
-  useEffect(() => {
-    if (!triggerRef.current || !wrapperRef.current) return;
+  const [isTriggered, setIsTriggered] = useState(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef(onLoadMore);
 
-    const observer = new IntersectionObserver(
+  useEffect(() => {
+    loadMoreRef.current = onLoadMore
+  }, [onLoadMore])
+
+  useEffect(() => {
+    if(canLoadMore && !isLoading && isTriggered) {
+      loadMoreRef.current?.()
+    }
+  }, [canLoadMore, isLoading, isTriggered]);
+
+  const setTrigger = useCallback((node: HTMLElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+    setIsTriggered(false);
+
+    if(!node) return;
+
+    const root = wrapperRef?.current ?? null;
+
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isLoading && hasMore) {
-          onLoadMore();
-        }
+        setIsTriggered(entry.isIntersecting);
       },
-      { root: wrapperRef.current, rootMargin: '0px', threshold: 0.1 }
+      { root, rootMargin: '0px', threshold: 0.1 }
     );
 
-    observer.observe(triggerRef.current);
+    observerRef.current.observe(node);
+  }, [wrapperRef, setIsTriggered])
 
-    return () => observer.disconnect();
-  }, [triggerRef, wrapperRef, isLoading, hasMore, onLoadMore]);
+  return { setTrigger };
 };

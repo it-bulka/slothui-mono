@@ -5,8 +5,8 @@ import { useCallback } from 'react';
 export const useFetchMyPosts = () => {
   const dispatch = useAppDispatch();
 
-  const fetchPosts = useCallback(({ cursor}: { cursor?: string | null } = {}) => {
-    dispatch(fetchMyPostsThunk({ cursor}))
+  const fetchPosts = useCallback(({ cursor, currentUserId }: { cursor?: string | null, currentUserId: string }) => {
+    dispatch(fetchMyPostsThunk({ cursor, currentUserId }))
   }, [dispatch]);
 
   return { fetchPosts };

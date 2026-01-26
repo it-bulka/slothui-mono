@@ -5,25 +5,36 @@ import type { PostsState } from '../types/posts.type.ts';
 import { fetchMyPostsThunk } from '../thunks/fetchMyPosts.thunk.ts';
 
 export const fetchMyPostsExtraReducer = (builder: ActionReducerMapBuilder<PostsState>) => {
-  builder.addCase(fetchMyPostsThunk.fulfilled, (state, action) => {
-    const { items: posts, hasMore, nextCursor } = action.payload;
-    if(!posts?.length) return
+  builder
+    .addCase(fetchMyPostsThunk.pending, (state, action) => {
+      const currentUserId = action.meta.arg.currentUserId;
+      state.profile[currentUserId] ??= {
+        ids: [],
+        isLoading: true,
+        hasMore: true,
+        nextCursor: null
+      }
 
-    postsAdapter.addMany(state, posts);
+      state.profile[currentUserId].isLoading = true
+    })
+    .addCase(fetchMyPostsThunk.fulfilled, (state, action) => {
+      const { items: posts, hasMore, nextCursor } = action.payload;
+      if(!posts?.length) return
 
-    const currentUserId = posts[0].author.id;
+      postsAdapter.addMany(state, posts);
 
-    state.profile[currentUserId] ??= {
-      ids: [],
-      isLoading: false,
-      hasMore: true,
-      nextCursor: null
-    }
+      const currentUserId = posts[0].author.id;
+      const feed = state.profile[currentUserId]
 
-    const feed = state.profile[currentUserId]
-    feed.ids = addUniqueIds(feed.ids, posts);
+      state.profile[currentUserId].ids = addUniqueIds(feed.ids, posts)
+      state.profile[currentUserId].isLoading = false
+      state.profile[currentUserId].hasMore = hasMore
+      state.profile[currentUserId].nextCursor = nextCursor
+    })
+    .addCase(fetchMyPostsThunk.rejected, (state, action) => {
+      const currentUserId = action.meta.arg.currentUserId;
 
-    feed.hasMore = hasMore
-    feed.nextCursor = nextCursor
-  });
+      state.profile[currentUserId].isLoading = false
+      state.profile[currentUserId].error = action.payload
+    })
 }

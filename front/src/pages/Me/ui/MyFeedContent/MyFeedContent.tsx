@@ -5,7 +5,7 @@ import {
 } from '@/entities';
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { Typography } from '@/shared/ui';
-import { memo, useEffect, useRef, useCallback } from 'react';
+import { memo, useEffect, useCallback } from 'react';
 import { useAuthUserSelector } from '@/entities';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useIsPostCreating } from '@/features/PostComposer';
@@ -14,12 +14,9 @@ export const MyFeedContent = memo(() => {
   const userId = useAuthUserSelector()?.id;
 
   const posts = useProfilePostsSelector(userId);
-  const { hasMore, nextCursor } = useProfileFeedStateSelector(userId);
+  const { hasMore, nextCursor, isLoading } = useProfileFeedStateSelector(userId);
   const isPostCreating = useIsPostCreating()
   const { fetchPosts } = useFetchMyPosts()
-
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!userId) return;
@@ -27,19 +24,18 @@ export const MyFeedContent = memo(() => {
     if (posts.length) return;
     if (isPostCreating) return;
 
-    fetchPosts();
+    fetchPosts({ currentUserId: userId });
   }, [fetchPosts, hasMore, posts.length, isPostCreating, userId]);
 
   const handleLoadMore = useCallback(() => {
-    if (!hasMore || isPostCreating) return;
-    fetchPosts({ cursor: nextCursor });
-  }, [hasMore, isPostCreating, fetchPosts, nextCursor]);
+    if (!userId) return;
 
-  useInfiniteScroll({
-    triggerRef,
-    wrapperRef,
-    isLoading: isPostCreating,
-    hasMore: !!hasMore,
+    fetchPosts({ cursor: nextCursor, currentUserId: userId });
+  }, [fetchPosts, nextCursor, userId]);
+
+  const { setTrigger } = useInfiniteScroll({
+    canLoadMore: hasMore,
+    isLoading: isPostCreating || isLoading,
     onLoadMore: handleLoadMore,
   });
 
@@ -62,7 +58,8 @@ export const MyFeedContent = memo(() => {
           text={post.text}
         />
       ))}
-      {hasMore && <div ref={triggerRef} />}
+      {isPostCreating && <Typography bold className="text-center">Loading more...</Typography>}
+      <div ref={setTrigger} className='h-[20px] bg-red'/>
     </>
   )
 })
