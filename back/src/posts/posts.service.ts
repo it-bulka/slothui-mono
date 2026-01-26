@@ -76,9 +76,12 @@ export class PostsService {
       isLiked: boolean;
       isSaved: boolean;
     }>();
-    console.log(raw[0]);
+
     const hasMore = posts.length > limit;
-    const postIds = posts.slice(0, limit).map((p) => p.id);
+    const visiblePosts = posts.slice(0, limit);
+    const lastPost = visiblePosts[visiblePosts.length - 1];
+
+    const postIds = visiblePosts.map((p) => p.id);
 
     const attachments = await this.attachmentService.getMany('post', postIds);
     const groupedAttachments =
@@ -87,7 +90,7 @@ export class PostsService {
     const polls = await this.pollsService.getMany('post', postIds);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
-    const postWithExtras: PostDto[] = posts.map((post, index) => ({
+    const postWithExtras: PostDto[] = visiblePosts.map((post, index) => ({
       id: post.id,
       author: UserMapper.toResponse(post.author),
       text: post.text,
@@ -98,7 +101,6 @@ export class PostsService {
       poll: groupedPolls.get(post.id),
     }));
 
-    const lastPost = posts[posts.length - 1];
     const nextCursor = lastPost ? lastPost.createdAt.toISOString() : undefined;
 
     return {

@@ -43,7 +43,7 @@ export class PostsController {
   ) {
     return await this.postsService.getMany({
       cursor: q.cursor,
-      limit: Number(q.limit) || 100,
+      limit: Number(q.limit) || 50,
       userId: req.user.id,
     });
   }
