@@ -7,7 +7,7 @@ export const selectEventsByUser = (userId?: string) =>
     (state: RootState) => state.events.entities,
     (userFeed, entities) => {
       if (!userFeed) {
-        return { items: [], isLoading: false, error: undefined };
+        return { items: [], isLoading: false, error: undefined, hasMore: true };
       }
 
       return {

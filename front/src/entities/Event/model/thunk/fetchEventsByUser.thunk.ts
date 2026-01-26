@@ -15,8 +15,6 @@ export const fetchEventsByUserThunk = createAsyncThunk<
 
     if (
       feed &&
-      !cursor &&
-      !feed.hasMore &&
       feed.lastFetchedAt &&
       now - feed.lastFetchedAt < 60_000
     ) {

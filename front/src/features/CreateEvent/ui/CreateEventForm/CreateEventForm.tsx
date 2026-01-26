@@ -1,8 +1,16 @@
-import { useState, memo } from 'react'
+import { useState, memo, useMemo } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { Button, Typography, Input, CheckboxInput, FormField, Textarea } from '@/shared/ui';
+import {
+  Button,
+  Typography,
+  Input,
+  CheckboxInput,
+  FormField,
+  Textarea,
+  EventDateTimePicker
+} from '@/shared/ui';
 import type { DraftEvent } from '../../model/types/event.type.ts';
 
 type FormValues = DraftEvent
@@ -20,9 +28,17 @@ LocationPicker.displayName = 'LocationPicker'
 export const EventCreateForm = memo(({
   onCreateEvent
 }: { onCreateEvent: (event: DraftEvent) => void }) => {
+  const tomorrow = useMemo(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow
+  }, [])
+
   const { handleSubmit, watch, setValue, control } = useForm<FormValues>({
     defaultValues: {
-      isOnline: false
+      isOnline: false,
+      date: tomorrow
     }
   })
   const [marker, setMarker] = useState<[number, number] | null>(null)
@@ -30,7 +46,6 @@ export const EventCreateForm = memo(({
   const isOnline = watch('isOnline')
 
   const onSubmit = (data: FormValues) => {
-    console.log('Event data:', data)
     onCreateEvent?.(data)
   }
 
@@ -50,8 +65,17 @@ export const EventCreateForm = memo(({
         )}
       />
 
-      <input type="date" />
-      <input type="time" />
+      <Controller
+        control={control}
+        name="date"
+        render={({ field }) => (
+          <EventDateTimePicker
+            value={field.value}
+            onChange={field.onChange}
+            minDate={tomorrow}
+          />
+        )}
+      />
 
       <Controller
         control={control}

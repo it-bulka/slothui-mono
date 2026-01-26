@@ -23,10 +23,12 @@ export const fetchSubscribedEventsExtraReducer = (builder: ActionReducerMapBuild
     .addCase(fetchSubscribedEventsThunk.rejected, (state, action) => {
       if (action.payload === 'cached') {
         state.subscribed.isLoading = false
+        state.subscribed.hasMore = false
         return
       }
 
       state.subscribed.isLoading = false
+      state.subscribed.hasMore = false
       state.subscribed.error = action.payload
     })
 }

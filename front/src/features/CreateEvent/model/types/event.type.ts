@@ -5,4 +5,5 @@ export type DraftEvent = {
   locationName?: string
   latitude?: number
   longitude?: number
+  date: Date
 }

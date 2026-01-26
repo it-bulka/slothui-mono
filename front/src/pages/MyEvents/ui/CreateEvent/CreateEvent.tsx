@@ -21,8 +21,7 @@ export const CreateEvent = memo(() => {
       description: event.description,
       isOnline: event.isOnline,
       location,
-      date:';;;'
-
+      date: event.date.toISOString()
     })
   }, [createEvent])
 

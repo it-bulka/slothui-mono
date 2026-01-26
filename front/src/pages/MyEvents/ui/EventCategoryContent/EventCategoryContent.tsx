@@ -3,34 +3,51 @@ import { EventsList } from '@/widgets';
 import type { EventsContentType } from '../../model/types/eventOption.type.ts';
 import { useEventsByTypeSelect } from '../../model/hooks/useEventsByTypeSelect.tsx';
 import { useInfiniteScroll } from '@/shared/hooks';
-import { useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLoadMoreEvents } from '../../model/hooks/useLoadMoreEvents.tsx';
+import { memo } from 'react';
+import { toast } from 'react-toastify'
 
 interface EventCategoryContentProps {
   userId: string;
   type: EventsContentType;
 }
 
-export const EventCategoryContent = ({ userId, type }: EventCategoryContentProps) => {
-  const { items: events, isLoading, hasMore, nextCursor } = useEventsByTypeSelect(userId, type);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
+export const EventCategoryContent = memo(({ userId, type }: EventCategoryContentProps) => {
+  const { items: events, isLoading, hasMore, nextCursor, error } = useEventsByTypeSelect(userId, type);
   const { loadMore } = useLoadMoreEvents()
 
-  useInfiniteScroll({
-    triggerRef,
-    wrapperRef,
-    isLoading,
-    hasMore: !!hasMore,
-    onLoadMore: () => loadMore({ userId, type, nextCursor }),
+  const onLoadMore = useCallback(() => {
+    loadMore({ userId, type, nextCursor });
+  }, [loadMore, userId, type, nextCursor]);
+
+  const { setTrigger } = useInfiniteScroll({
+    canLoadMore: hasMore,
+    isLoading: isLoading,
+    onLoadMore
   });
 
-  if (!events?.length) return <Typography bold>No any event yet</Typography>;
+  useEffect(() => {
+    if(error) {
+      toast.warn(error)
+    }
+  }, [error]);
+
+  if (!events?.length) return (
+    <>
+      <Typography bold>No any event yet</Typography>
+      <div ref={setTrigger} />
+    </>
+  );
 
   return (
-    <div ref={wrapperRef} className="overflow-auto space-y-4">
+    <div className="overflow-auto space-y-4">
       <EventsList events={events} withActions={type !== 'your'} />
-      <div ref={triggerRef} />
+      {isLoading && <Typography bold className="text-center">Loading more...</Typography>}
+      <div ref={setTrigger} />
     </div>
   )
-};
+});
+
+
+EventCategoryContent.displayName = 'EventCategoryContent';

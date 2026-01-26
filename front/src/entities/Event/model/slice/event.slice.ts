@@ -9,7 +9,8 @@ import {
   fetchEventsParticipantsExtraReducer,
   createEventExtraReducer,
   subscribeEventExtraReducer,
-  unsubscribeEventExtraReducer
+  unsubscribeEventExtraReducer,
+  fetchMyEventsExtraReducer
 } from '../extraReducers';
 
 const initialState = eventsAdapter.getInitialState<EventsState>({
@@ -48,6 +49,7 @@ const eventsSlice = createSlice({
   extraReducers: (builder) => {
     fetchAllEventsExtraReducer(builder)
     fetchEventsByUserExtraReducer(builder)
+    fetchMyEventsExtraReducer(builder)
     fetchSubscribedEventsExtraReducer(builder)
     fetchEventsByIdExtraReducer(builder)
     fetchEventsParticipantsExtraReducer(builder)

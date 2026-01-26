@@ -10,3 +10,4 @@ export {
 export { createEventExtraReducer } from './createEvent.extraReducer.ts';
 export { unsubscribeEventExtraReducer } from './unsubscribeEvent.extraReducer.ts';
 export { subscribeEventExtraReducer } from './subscribeEvent.extraReducer.ts';
+export { fetchMyEventsExtraReducer } from './fetchMyEvents.extraReducer.ts';

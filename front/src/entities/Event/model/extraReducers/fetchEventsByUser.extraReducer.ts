@@ -7,6 +7,11 @@ export const fetchEventsByUserExtraReducer = (builder: ActionReducerMapBuilder<E
   builder
     .addCase(fetchEventsByUserThunk.pending, (state, action) => {
       const { userId } = action.meta.arg;
+      state.eventsByUser[userId] ??= {
+        ids: [],
+        isLoading: true,
+        hasMore: true,
+      }
       state.eventsByUser[userId].isLoading = true
       state.eventsByUser[userId].error = undefined
     })
@@ -27,10 +32,12 @@ export const fetchEventsByUserExtraReducer = (builder: ActionReducerMapBuilder<E
 
       if (action.payload === 'cached') {
         state.eventsByUser[userId].isLoading = false
+        state.eventsByUser[userId].hasMore = true
         return
       }
 
       state.eventsByUser[userId].isLoading = false
+      state.eventsByUser[userId].hasMore = true
       state.eventsByUser[userId].error = action.payload
     })
 }
