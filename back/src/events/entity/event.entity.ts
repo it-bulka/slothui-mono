@@ -31,7 +31,7 @@ export class Event {
   date: string;
 
   @Column('jsonb', { nullable: true })
-  location: Location;
+  location: Location | null;
 
   @CreateDateColumn({
     transformer: {
