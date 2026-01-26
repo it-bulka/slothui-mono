@@ -11,6 +11,7 @@ import { EventParticipant, EventResponseDto } from './dto/event.dto';
 import { User } from '../user/entities/user.entity';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
+import { mapToEventDTO } from './utils/mapToEventDto';
 
 @Injectable()
 export class EventsService {
@@ -21,21 +22,32 @@ export class EventsService {
     private readonly userRepo: Repository<User>,
   ) {}
   async create(userId: string, dto: CreateEventDto) {
+    const organizer = await this.userRepo.findOne({ where: { id: userId } });
+    if (!organizer) throw new NotFoundException('User not found');
     const event = this.eventsRepo.create({
-      organizer: { id: userId },
+      organizer,
       title: dto.title,
       description: dto.description,
       date: dto.date,
       location: dto.location,
     });
 
-    return await this.eventsRepo.save(event);
+    const created = await this.eventsRepo.save(event);
+
+    return mapToEventDTO({
+      ...created,
+      organizer: {
+        id: organizer.id,
+        name: organizer.name,
+        nickname: organizer.nickname,
+        avatarUrl: organizer.avatarUrl,
+      },
+    });
   }
 
   async deleteEvent(eventId: string, userId: string) {
     const event = await this.eventsRepo.findOne({
       where: { id: eventId },
-      relations: ['organizer'],
     });
 
     if (!event) {
@@ -68,6 +80,7 @@ export class EventsService {
         `json_build_object(
            'id', organizer.id,
            'name', organizer.name,
+           'nickname', organizer.nickname,
            'avatar', organizer.avatar
          ) AS organizer`,
         'TRUE AS "isSubscribed"',
@@ -95,7 +108,7 @@ export class EventsService {
     userId: string,
     { pageSize = 10, cursor }: { pageSize?: number; cursor?: string } = {},
   ): Promise<PaginatedResponse<EventResponseDto>> {
-    const events = await this.eventsRepo
+    const qb = this.eventsRepo
       .createQueryBuilder('event')
       .innerJoin('event.organizer', 'organizer')
       .select([
@@ -109,15 +122,18 @@ export class EventsService {
         `json_build_object(
            'id', organizer.id,
            'name', organizer.name,
-           'avatar', organizer.avatar
+           'avatar', organizer."avatarUrl"
          ) AS organizer`,
       ])
-      .where('organizer.id = :userId', { userId })
-      .andWhere(cursor ? 'event.date < :cursor' : '1=1', { cursor })
-      .orderBy('event.date', 'DESC')
-      .limit(pageSize + 1)
-      .getRawMany<EventResponseDto>();
+      .where('organizer.id = :userId', { userId });
 
+    if (cursor) {
+      qb.andWhere('event.date < :cursor', { cursor });
+    }
+
+    qb.orderBy('event.date', 'DESC').limit(pageSize + 1);
+
+    const events = await qb.getRawMany<EventResponseDto>();
     const { resultItems, nextCursor, hasMore } = checkNextCursor({
       items: events,
       cursorField: 'date',
@@ -132,7 +148,24 @@ export class EventsService {
   }
 
   async findOne(id: string) {
-    return await this.eventsRepo.findOne({ where: { id } });
+    const event = await this.eventsRepo.findOne({
+      where: { id: id },
+      relations: ['organizer'],
+    });
+
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+
+    // isSubscribed:
+    const isSubscribed = await this.userRepo
+      .createQueryBuilder('user')
+      .innerJoin('user.participatingEvents', 'event')
+      .where('user.id = :userId', { userId: event.organizer.id })
+      .andWhere('event.id = :eventId', { eventId: event.organizer.id })
+      .getExists();
+
+    return mapToEventDTO(event, isSubscribed);
   }
 
   async getOne(eventId: string, userId: string): Promise<EventResponseDto> {
@@ -171,6 +204,7 @@ export class EventsService {
         id: event.organizer.id,
         name: event.organizer.name,
         avatar: event.organizer.avatarUrl,
+        nickname: event.organizer.nickname,
       },
       participantsCount: Number(rawRow.event_participantsCount),
       isSubscribed: Boolean(rawRow.isSubscribed),

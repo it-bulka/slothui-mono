@@ -25,14 +25,7 @@ export class EventsController {
     @Body() dto: CreateEventDto,
     @Request() req: AuthRequest,
   ): Promise<CreatedEvent> {
-    const created = await this.eventsService.create(req.user.id, dto);
-    return {
-      id: created.id,
-      title: dto.title,
-      description: dto.description,
-      date: created.date,
-      createdAt: created.createdAt,
-    };
+    return await this.eventsService.create(req.user.id, dto);
   }
 
   @Get('subscribed')
@@ -40,9 +33,15 @@ export class EventsController {
     return await this.eventsService.getSubscribedEvents(req.user.id);
   }
 
+  @Get('upcoming')
+  async getUpcomingEvents(@Request() req: AuthRequest) {
+    // TODO: add service method for upcoming
+    return await this.eventsService.getSubscribedEvents(req.user.id);
+  }
+
   @Get('organized')
-  async getOrganizedEvents(@Request() req: AuthRequest) {
-    return await this.eventsService.getOrganizedEvents(req.user.id);
+  async getOrganizedEvents(@Query('userId') userId: string) {
+    return await this.eventsService.getOrganizedEvents(userId);
   }
 
   @Delete(':id')
