@@ -27,7 +27,8 @@ export interface EventResponseDto {
   organizer: {
     id: string;
     name: string;
-    avatar?: string;
+    nickname: string;
+    avatar?: string | null;
   };
   participantsCount?: number;
   isSubscribed?: boolean;
