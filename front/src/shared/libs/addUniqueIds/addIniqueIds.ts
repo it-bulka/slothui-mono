@@ -1,4 +1,4 @@
-export function addUniqueIds(stateIds: string[], posts: { id: string }[]) {
+export function addUniqueIds(stateIds: string[] = [], posts: { id: string }[]) {
   const idsSet = new Set(stateIds);
   const newIds: string[] = [];
 

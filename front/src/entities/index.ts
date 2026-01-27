@@ -14,8 +14,17 @@ export {
 export { EventCard } from './Event';
 export { MapView } from './Map';
 export { Story } from './Story';
-export { messageReducer, messagesAction } from './Message/model';
+export {
+  messageReducer,
+  messagesAction,
+  useFetchMessagesByChat,
+  useMessagesByChatSelect,
+  useSelectIsMessageSending,
+  useChatMetaSelect
+} from './Message/model';
+
 export { Typing } from './Typing';
+
 export {
   useActiveChatId,
   Chats,
@@ -26,10 +35,10 @@ export {
   createPrivateChatThunk,
   useFetchSearchedChats,
   chatsReducer,
-  useUserChatSelect
+  useUserChatSelect,
+  chatsActions
 } from './Chats';
 
-export { useSelectMessagesByChatId, useSelectIsMessageSending } from './Message/model';
 export {
   commentsReducer,
   useGetRepliesLoading,

@@ -1,11 +1,16 @@
 import type { RootState } from '@/app/config';
-import { useAppSelector } from '@/shared/config/redux';
+import { createSelector } from '@reduxjs/toolkit';
 
-export const selectMessagesByChatId = (chatId: string | null) => (state: RootState) => {
-  if (!chatId) return []
+export const selectMessagesByChatId = createSelector(
+  [
+    (state: RootState) => state.messages.idsByChat,
+    (state: RootState) => state.messages.entities,
+    (_: RootState, chatId?: string | null) => chatId,
+  ],
+  (idsByChat, entities, chatId) => {
+    if (!chatId) return [];
 
-  const ids = state.messages.idsByChat[chatId] || [];
-  return ids.map((id: string) => state.messages.entities[id]);
-};
-
-export const useSelectMessagesByChatId = (chatId: string | null) => useAppSelector(selectMessagesByChatId(chatId))
+    const ids = idsByChat[chatId] || [];
+    return ids.map(id => entities[id]);
+  }
+);

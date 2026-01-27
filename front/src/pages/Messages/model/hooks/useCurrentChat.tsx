@@ -1,14 +1,14 @@
 import { useMessagesService } from '@/shared/libs/services';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useEffect, useState } from 'react';
-import { messagesAction, useActiveChatId, useSelectMessagesByChatId } from '@/entities';
+import { messagesAction, useActiveChatId, useMessagesByChatSelect } from '@/entities';
 
 export const useCurrentChat = () => {
   const messagesService = useMessagesService()
   const dispatch = useAppDispatch()
   const [typing, setTyping] = useState<{ userName: string } | null>(null);
   const activeChatId = useActiveChatId()
-  const messages = useSelectMessagesByChatId(activeChatId)
+  const messages = useMessagesByChatSelect(activeChatId)
 
   useEffect(() => {
     messagesService.onMessage(activeChatId).subscribe((msg) => {

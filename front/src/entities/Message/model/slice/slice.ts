@@ -1,26 +1,17 @@
-import { createSlice, createEntityAdapter, type PayloadAction } from '@reduxjs/toolkit';
-import type { MessageDto } from '../../../../shared/types/message.dto.ts';
-import { fetchMessagesByChat } from '../thunk/fetchMessagesByChat.tsx';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { MessageDto } from '../../../../shared/types/message.dto.ts'
 import type { PaginatedResponse } from '@/shared/types';
-import { sendMessage } from '../thunk/sendMessage.tsx';
-
-interface MessagesState {
-  idsByChat: Record<string, string[]>; // масив id по чатах
-  sendingByChat: Record<string, boolean>;
-  loadingByChat: Record<string, boolean>;
-  hasMoreByChat: Record<string, boolean>;
-  cursorByChat: Record<string, string | null | undefined>;
-}
-
-const messagesAdapter = createEntityAdapter<MessageDto, string>({
-  selectId: (msg) => msg.id,
-  sortComparer: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-});
+import type { MessagesState } from '../type/messageState.type.ts';
+import { messagesAdapter } from '../adapter/messages.adapter.ts';
+import { fetchMessagesByChatExtraReducer, sendMessageExtraReducer } from '../extraReducers';
 
 const initialState = messagesAdapter.getInitialState<MessagesState>({
+  entities: {},
+  ids: [],
   idsByChat: {},
   sendingByChat: {},
   loadingByChat: {},
+  errorByChat: {},
   hasMoreByChat: {},
   cursorByChat: {},
 });
@@ -74,43 +65,8 @@ const messageSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchMessagesByChat.fulfilled,
-      (state, action) => {
-        const { items: messages, nextCursor, hasMore } = action.payload;
-        const { chatId } = action.meta.arg
-        messagesAdapter.upsertMany(state, messages);
-
-        if (!state.idsByChat[chatId]) state.idsByChat[chatId] = [];
-
-        state.idsByChat[chatId] = [
-          ...messages.map((msg) => msg.id),
-          ...state.idsByChat[chatId].filter((id) => !messages.find((m) => m.id === id)),
-        ];
-
-        state.hasMoreByChat[chatId] = hasMore;
-        state.cursorByChat[chatId] = nextCursor;
-        state.loadingByChat[chatId] = false;
-      })
-      .addCase(
-        fetchMessagesByChat.pending,
-        (state, action ) => {
-          const { chatId } = action.meta.arg
-          state.loadingByChat[chatId] = true;
-      })
-      .addCase(sendMessage.pending, (state, action) => {
-        const chatId = action.meta.arg.chatId;
-        state.sendingByChat[chatId] = true;
-      })
-      .addCase(sendMessage.fulfilled, (state, action) => {
-        const chatId = action.meta.arg.chatId;
-        state.sendingByChat[chatId] = false;
-      })
-      .addCase(sendMessage.rejected, (state, action) => {
-        const chatId = action.meta.arg.chatId;
-        state.sendingByChat[chatId] = false;
-      });;
-
+    fetchMessagesByChatExtraReducer(builder)
+    sendMessageExtraReducer(builder)
   },
 });
 

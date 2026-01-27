@@ -1,15 +1,21 @@
 import { MessageInput } from '@/widgets';
 import { AvatarWithInfo, Typography, TypographyTypes } from '@/shared/ui';
 import MockAvatar from '@/mock/images/avatar.png'
-import { useRef, useEffect } from 'react';
-import { Typing } from '@/entities';
-import { useCurrentChat } from '@/pages/Messages/model/hooks/useCurrentChat.tsx';
+import { useRef, useEffect, useCallback } from 'react';
+import { Typing, useFetchMessagesByChat } from '@/entities';
+import { useCurrentChat } from './model/hooks/useCurrentChat.tsx';
 import { MessageComposer } from '@/features';
+import { useInfiniteScroll } from '@/shared/hooks';
+import { useMessagesByChatSelect, useChatMetaSelect } from '@/entities';
+import { useParams } from 'react-router';
 
 const Messages = () => {
+  const { id: chatId } = useParams<{ id: string }>()
   const ref = useRef<HTMLDivElement>(null);
   const { typing, messages } = useCurrentChat()
-  console.log('msgs', messages)
+  const { fetchMessagesByChat } = useFetchMessagesByChat()
+  const { loading, cursor, hasMore } = useChatMetaSelect(chatId)
+  const msgs = useMessagesByChatSelect(chatId)
 
   useEffect(() => {
     const el = ref.current
@@ -18,6 +24,16 @@ const Messages = () => {
     }
   }, [])
 
+  const onLoadMore = useCallback(() => {
+    if(!chatId) return
+    fetchMessagesByChat({ cursor, chatId })
+  }, [chatId, fetchMessagesByChat, cursor])
+
+  const { setTrigger} = useInfiniteScroll({
+    canLoadMore: hasMore,
+    isLoading: loading,
+    onLoadMore
+  })
   return (
     <div className="h-screen relative flex flex-col">
       <div className="border-style-b px-6 py-4">
@@ -25,7 +41,7 @@ const Messages = () => {
       </div>
       <div className="p-6 bg-underground-secondary grow overflow-y-scroll scrollbar-hide" ref={ref}>
         <div className="flex flex-col-reverse">
-          {messages.map((msg, index) => {
+          {msgs.map((msg, index) => {
             const dateObj = new Date(msg.createdAt);
             const date = dateObj.toDateString();
             const time = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -49,7 +65,8 @@ const Messages = () => {
               </>
             )
           })}
-          <div id="lazy-loading" />
+          {!msgs.length && <Typography bold className="text-center">No any messages yet</Typography>}
+          <div id="lazy-loading" ref={setTrigger}/>
         </div>
       </div>
       {typing && <Typing name={typing.userName} />}

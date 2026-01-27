@@ -84,7 +84,7 @@ export class ChatService {
     );
   }
 
-  /** GET /api/chats { members, name? } */
+  /** GET /api/chats/private/:userId */
   async findChatByMember(userId: string): Promise<{ chatId: string }> {
     return this.http.request<{ chatId: string }>(
       `/api/chats/private/${userId}`,

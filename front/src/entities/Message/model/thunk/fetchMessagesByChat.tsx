@@ -4,7 +4,7 @@ import type { PaginatedResponse } from '@/shared/types';
 import type { ThunkAPI } from '@/shared/config/redux';
 
 
-export const fetchMessagesByChat = createAsyncThunk<
+export const fetchMessagesByChatThunk = createAsyncThunk<
   PaginatedResponse<MessageDto>,
   { chatId: string, cursor?: string | null, limit?: number },
   ThunkAPI

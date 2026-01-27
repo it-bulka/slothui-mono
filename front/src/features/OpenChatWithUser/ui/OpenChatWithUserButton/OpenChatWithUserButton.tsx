@@ -6,15 +6,19 @@ import { useCallback } from 'react';
 import { toast } from 'react-toastify'
 import { getMessagesWithUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { memo } from 'react';
+import { chatsActions } from '@/entities';
+import { useAppDispatch } from '@/shared/config/redux';
 
 export const OpenChatWithUserButton = memo(({ userId }: { userId: string}) => {
   const chatService = useChatService();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
   const handleOpenChat = useCallback(async () => {
     try {
       const data  = await chatService.findChatByMember(userId);
       if (data.chatId) {
+        dispatch(chatsActions.openChat(data.chatId))
         navigate(getMessagesWithUserPage(data.chatId));
         return
       }
@@ -22,7 +26,7 @@ export const OpenChatWithUserButton = memo(({ userId }: { userId: string}) => {
     } catch {
       toast.warn('Failed to open a chat');
     }
-  }, [navigate, chatService, userId]);
+  }, [navigate, chatService, userId, dispatch]);
 
   return (
     <ActionButton Icon={MessageIcon} onClick={handleOpenChat}>

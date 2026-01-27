@@ -1,6 +1,6 @@
-import type { GroupedAttachment } from '../ui/Attachments/model/type/attachment.dto.ts';
+import type { GroupedAttachment } from './attachments.types.ts';
 import type { PollDto } from './poll.dto.ts';
-import type { StoryDTO } from '@/shared/libs/services';
+import type { StoryDTO } from '../libs/services';
 
 export type MessageBaseDto = {
   id: string;
