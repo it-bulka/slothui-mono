@@ -1,10 +1,5 @@
 import { Observable, shareReplay, Subject } from 'rxjs';
-import type {
-  MessageToSend,
-  MsgWithAttachmentsToSend,
-  MsgWithGeoToSend,
-  MsgWithPollToSend, MsgWithStoryToSend
-} from '../../../types/message.types.ts';
+import type { MessageToSend } from '../../../types/message.types.ts';
 import { Socket } from 'socket.io-client';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
@@ -64,27 +59,43 @@ export class MessagesService {
 
   /** POST /api/chats/:id/messages  MessageToSend */
   async sendMessage(msg: MessageToSend & { chatId: string }): Promise<void> {
-    const body: MessageToSend = { text: msg.text }
+    const fd = new FormData();
+    fd.append('text', msg.text);
+
     if('geo' in msg && msg.geo) {
-      (body as MsgWithGeoToSend).geo = JSON.stringify(msg.geo);
+      fd.append('geo',JSON.stringify(msg.geo));
     }
 
     if('poll' in msg && msg.poll) {
-      (body as MsgWithPollToSend).poll = JSON.stringify(msg.poll);
+      fd.append('poll',JSON.stringify(msg.poll));
     }
 
     if('attachments' in msg && msg.attachments) {
-      (body as MsgWithAttachmentsToSend).attachments = msg.attachments;
+      msg.attachments?.images?.forEach(file => {
+        fd.append('images', file); // file = File
+      });
+
+      msg.attachments?.audio?.forEach(file => {
+        fd.append('audio', file);
+      });
+
+      msg.attachments?.video?.forEach(file => {
+        fd.append('video', file);
+      });
+
+      msg.attachments?.file?.forEach(file => {
+        fd.append('file', file);
+      });
     }
 
     if('storyId' in msg && msg.storyId) {
-      (body as MsgWithStoryToSend).storyId = msg.storyId;
+      fd.append('storyId', msg.storyId);
     }
 
     // TODO: check, should be FormData
     await this.http.request<void>(
       `/api/chats/${msg.chatId}/messages`,
-      { method: 'POST', body },
+      { method: 'POST', body: fd },
     );
   }
 
