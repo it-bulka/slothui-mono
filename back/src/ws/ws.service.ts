@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { ChatServerEvents } from './types/chat.events';
-import { ChatResponseDto } from '../chats/dto/chat-response.dto';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { AuthService } from '../auth/auth.service';
+import { ChatDetailsDTO } from '../chats/types/chat.type';
 
 @Injectable()
 export class WsService {
@@ -49,7 +49,7 @@ export class WsService {
   async createRoomWithMembers(
     server: Server,
     membersIds: string[],
-    chat: ChatResponseDto,
+    chat: ChatDetailsDTO,
   ) {
     const allSockets: Socket[] = [];
     membersIds.forEach((memberId) => {

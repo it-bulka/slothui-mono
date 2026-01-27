@@ -11,7 +11,6 @@ import {
   CreateMessageDtoWithPoll,
   CreateMessageDtoWithStory,
 } from './dto/createMessage.dto';
-import { UserService } from '../user/user.service';
 import { AttachmentsService } from '../attachments/attachments.service';
 import { MessageMapper } from './message-mapper';
 import { StoriesService } from '../stories/stories.service';
@@ -21,6 +20,7 @@ import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
 import { OpenedChatsTracker } from './opened-chats-tracker.service';
 import { UnreadBufferService } from './unread-buffer.service';
 import { MessageResponseDto } from './dto/message.dto';
+import { PaginatedResponse } from '../common/types/pagination.type';
 
 @Injectable()
 export class MessagesService {
@@ -28,7 +28,6 @@ export class MessagesService {
     @InjectRepository(Message)
     private readonly messageRepo: Repository<Message>,
     private readonly chatsService: ChatsService,
-    private readonly userService: UserService,
     private readonly attachmentService: AttachmentsService,
     private readonly storiesService: StoriesService,
     private readonly eventsService: EventsService,
@@ -39,39 +38,49 @@ export class MessagesService {
 
   async getList({
     chatId,
-    limit,
+    userId,
+    limit = 50,
     cursor,
   }: {
     chatId: string;
-    limit: number;
-    cursor: string;
-  }) {
-    const chat = await this.chatsService.findOneById(chatId, {
-      throwErrorIfNotExist: true,
-    });
+    userId: string;
+    limit?: number | null;
+    cursor?: string | null;
+  }): Promise<PaginatedResponse<Message>> {
+    const safeLimit = limit ?? 50;
+
+    await this.chatsService.assertUserChatAccess(chatId, userId);
+
     const qb = this.messageRepo
       .createQueryBuilder('message')
-      .where('message.chatId = :chatId', { chatId: chat.id });
+      .where('message.chatId = :chatId', { chatId });
 
     if (cursor) {
-      qb.andWhere('message.sentAt < :lastSentAt', { lastSentAt: cursor });
+      qb.andWhere('message.createdAt < :lastSentAt', { lastSentAt: cursor });
     }
-    qb.orderBy('message.sentAt', 'DESC')
+    qb.orderBy('message.createdAt', 'DESC')
       .addOrderBy('message.id', 'DESC') // if sentAt the same
-      .take(limit);
-    return await qb.getMany();
+      .take(safeLimit + 1);
+    const items = await qb.getMany();
+
+    const visibleItems = items.slice(0, safeLimit);
+    const hasMore = items.length > visibleItems.length;
+    const lastItem = visibleItems[visibleItems.length - 1];
+
+    return {
+      items: visibleItems,
+      hasMore,
+      nextCursor: lastItem ? lastItem.createdAt.toISOString() : null,
+    };
   }
 
   async create({ chatId, authorId, text }: CreateMessageBaseDto) {
-    const { chat, author } = await this.chatsService.checkChatExistings({
-      chatId,
-      authorId,
-    });
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
 
     const msg = this.messageRepo.create({
-      chat: { id: chat.id },
+      chat: { id: chatId },
       text,
-      authorId: author.id,
+      authorId,
     });
     return await this.messageRepo.save(msg);
   }
@@ -103,19 +112,17 @@ export class MessagesService {
     authorId,
     storyId,
   }: CreateMessageDtoWithStory) {
-    const { chat, author } = await this.chatsService.checkChatExistings({
-      chatId,
-      authorId,
-    });
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
+
     const story = await this.storiesService.findById(storyId);
     if (!story) {
       throw new NotFoundException(`Story with id ${storyId} not found`);
     }
 
     const msg = this.messageRepo.create({
-      chat: { id: chat.id },
+      chat: { id: chatId },
       text,
-      authorId: author.id,
+      authorId,
       story: story,
       storyIdHistory: story.id,
     });
@@ -128,19 +135,17 @@ export class MessagesService {
     authorId,
     eventId,
   }: CreateMessageDtoWithEvent) {
-    const { chat, author } = await this.chatsService.checkChatExistings({
-      chatId,
-      authorId,
-    });
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
+
     const event = await this.eventsService.findOne(eventId);
     if (!event) {
       throw new NotFoundException(`Event with id ${eventId} not found`);
     }
 
     const msg = this.messageRepo.create({
-      chat: { id: chat.id },
+      chat: { id: chatId },
       text,
-      authorId: author.id,
+      authorId,
       event: event,
       eventIdHistory: event.id,
     });
@@ -153,14 +158,12 @@ export class MessagesService {
     authorId,
     poll,
   }: CreateMessageDtoWithPoll) {
-    const { chat, author } = await this.chatsService.checkChatExistings({
-      chatId,
-      authorId,
-    });
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
+
     const msg = this.messageRepo.create({
-      chat: { id: chat.id },
+      chat: { id: chatId },
       text,
-      authorId: author.id,
+      authorId,
     });
     const savedMsg = await this.messageRepo.save(msg);
     const savedPoll = await this.pollsService.createPoll(

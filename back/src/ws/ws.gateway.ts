@@ -161,14 +161,14 @@ export class WsGateway
     @ConnectedSocket() client: SocketWithUser,
     @MessageBody() body: { chatId: string },
   ) {
-    const { chat, newUser } = await this.chatsService.addMember(
+    const { chatId, newMember } = await this.chatsService.addMember(
       body.chatId,
       client.data.user.id,
     );
     await client.join(body.chatId);
     this.server
       .to(body.chatId)
-      .emit(ChatServerEvents.NEW_MEMBER, { chatId: chat.id, newUser });
+      .emit(ChatServerEvents.NEW_MEMBER, { chatId, newMember });
   }
 
   @SubscribeMessage(ChatRequestEvents.LEAVE)

@@ -6,7 +6,6 @@ import { UserModule } from '../user/user.module';
 import { Message } from './entities/message.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Story } from '../stories/entities/story.entity';
-import { User } from '../user/entities/user.entity';
 import { Chat } from '../chats/entities/chat.entity';
 import { AttachmentsModule } from '../attachments/attachments.module';
 import { Attachment } from '../attachments/entities/attachment.entity';
@@ -21,7 +20,7 @@ import { UnreadBufferService } from './unread-buffer.service';
   imports: [
     ChatsModule,
     UserModule,
-    TypeOrmModule.forFeature([Message, Story, User, Chat, Attachment]),
+    TypeOrmModule.forFeature([Message, Story, Chat, Attachment]),
     AttachmentsModule,
     EventEmitterModule,
     forwardRef(() => StoriesModule),

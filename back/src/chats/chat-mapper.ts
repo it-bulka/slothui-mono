@@ -1,18 +1,29 @@
 import { Chat } from './entities/chat.entity';
-import { ChatResponseDto } from './dto/chat-response.dto';
-import { ChatWithRelations } from './types/chat.type';
+import { ChatDetailsDTO, ChatListItemDTO } from './types/chat.type';
 
 export class ChatMapper {
-  static toResponse(chat: Chat | ChatWithRelations): ChatResponseDto {
-    const data = {
+  static toDetails(chat: Chat): ChatDetailsDTO {
+    return {
       id: chat.id,
       name: chat.name,
+      avatarUrl: chat.avatarUrl,
       ownerId: chat.ownerId,
-      memberIds: chat.memberIds,
-      type: chat.type,
-      createdAt: chat.createdAt,
+      isPrivate: chat.type === 'private',
       visibility: chat.visibility,
+      createdAt: chat.createdAt.toISOString(),
+      updatedAt: chat.updatedAt.toISOString(),
     };
-    return data;
+  }
+
+  static toListItem(chat: Chat, membersCount: number): ChatListItemDTO {
+    return {
+      id: chat.id,
+      name: chat.name ?? 'Chat',
+      avatarUrl: chat.avatarUrl,
+      isPrivate: chat.type === 'private',
+      membersCount,
+      lastMessage: chat.lastMessage && undefined,
+      updatedAt: chat.updatedAt.toISOString(),
+    };
   }
 }

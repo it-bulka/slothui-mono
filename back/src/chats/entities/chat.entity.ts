@@ -5,15 +5,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  ManyToMany,
   ManyToOne,
-  JoinTable,
   RelationId,
   JoinColumn,
 } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { User } from '../../user/entities/user.entity';
 import { ChatType, ChatVisibility } from '../types/chat.type';
+import { ChatMember } from './chatMember.entity';
 
 @Entity()
 export class Chat {
@@ -35,12 +34,8 @@ export class Chat {
   @OneToMany(() => Message, (message) => message.chat)
   messages: Message[];
 
-  @ManyToMany(() => User, (user) => user.chats, { eager: false })
-  @JoinTable()
-  members: User[];
-
-  @RelationId((chat: Chat) => chat.members)
-  memberIds: string[];
+  @OneToMany(() => ChatMember, (member) => member.chat)
+  members: ChatMember[];
 
   @ManyToOne(() => User, (user) => user.chats, { nullable: true, eager: false })
   owner: User;

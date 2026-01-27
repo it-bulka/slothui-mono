@@ -18,7 +18,11 @@ export class Message {
   id: string;
 
   @Index()
-  @ManyToOne(() => Chat, (chat) => chat.id, { onDelete: 'CASCADE' })
+  @Column()
+  chatId: string;
+
+  @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'chatId' })
   chat: Chat;
 
   @ManyToOne(() => User, (user) => user.messages, {

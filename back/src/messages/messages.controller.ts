@@ -2,11 +2,13 @@ import {
   Controller,
   UseGuards,
   Post,
+  Get,
   Request,
   UseInterceptors,
   Param,
   UploadedFiles,
   Body,
+  Query,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { JwtAuthGuard } from '../auth/guards';
@@ -21,6 +23,7 @@ import { Message } from './entities/message.entity';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
 import { ParseCreateMsgPollPipe } from './pipe/parseCreateMsgPoll.pipe';
 import { normalizeFiles } from '../common/utils/normalizeFiles';
+import { GetMessagesQuery } from './dto/getMessages.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('chats/:chatId/messages')
@@ -30,6 +33,20 @@ export class MessagesController {
     private readonly msgEmitterService: EventEmitterMessageService,
     private readonly notificationEmitter: EventEmitterNotificationService,
   ) {}
+
+  @Get()
+  async getMessages(
+    @Query() q: GetMessagesQuery,
+    @Param('chatId') chatId: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.messagesService.getList({
+      cursor: q.cursor,
+      chatId,
+      userId: req.user.id,
+      limit: q.limit,
+    });
+  }
 
   @UseInterceptors(
     FileFieldsInterceptor([

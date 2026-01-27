@@ -1,14 +1,10 @@
-import { Chat } from '../entities/chat.entity';
 export type ChatType = 'private' | 'group';
 export type ChatVisibility = 'private' | 'public';
-export type ChatRelations = 'members' | 'messages' | 'owner';
-export type ChatWithRelations<R extends ChatRelations[] = []> = Chat & {
-  [K in R[number]]: Chat[K];
-};
 
 export interface ChatMemberDTO {
   id: string;
   name: string;
+  nickname: string;
   avatarUrl?: string;
 }
 
@@ -29,6 +25,28 @@ export interface ChatListItemDTO {
   otherUser?: ChatMemberDTO; // just for private
   updatedAt: string;
 }
+
+export interface ChatMembersIdsDTO {
+  memberIds: string[];
+}
+
+export interface ChatMembersDTO {
+  members: ChatMemberDTO[];
+}
+
+export interface ChatDetailsDTO {
+  id: string;
+  name?: string | null;
+  avatarUrl?: string | null;
+  isPrivate: boolean;
+  ownerId: string;
+  visibility: string;
+  createdAt: string; //ISO
+  updatedAt: string; //ISO
+}
+
+export type ChatWithMemberIdsDTO = ChatDetailsDTO & ChatMembersIdsDTO;
+export type ChatWithMembersDTO = ChatDetailsDTO & ChatMembersDTO;
 
 export interface ChatGlobalDTO {
   id: string;

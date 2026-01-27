@@ -20,14 +20,14 @@ export class ChatMember {
   @JoinColumn({ name: 'chat_id' })
   chat: Chat;
 
-  @Column()
+  @Column({ type: 'uuid' })
   chatId: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
+  @Column({ type: 'uuid' })
   userId: string;
 
   @Column({ type: 'timestamp', nullable: true })
