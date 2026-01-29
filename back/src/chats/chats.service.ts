@@ -15,10 +15,13 @@ import {
   ChatGlobalSearchResult,
   SearchOptions,
   ChatWithMembersDTO,
+  ChatMemberDTO,
 } from './types/chat.type';
 import { WsException } from '@nestjs/websockets';
 import { User } from '../user/entities/user.entity';
 import { ChatMember } from './entities/chatMember.entity';
+import { PaginatedResponse } from '../common/types/pagination.type';
+import { checkNextCursor } from '../common/utils/checkNextCursor';
 
 @Injectable()
 export class ChatsService {
@@ -75,7 +78,7 @@ export class ChatsService {
   async findChatsByMember(
     userId: string,
     { cursor, limit = 50 }: { cursor?: string; limit?: number } = {},
-  ): Promise<ChatListItemDTO[]> {
+  ): Promise<PaginatedResponse<ChatListItemDTO>> {
     const qb = this.chatRepo
       .createQueryBuilder('chat')
       .innerJoin(
@@ -84,35 +87,98 @@ export class ChatsService {
         'cm.chatId = chat.id AND cm.userId = :userId',
         { userId },
       )
+
       .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
+
+      // 🔹 кількість мемберів
       .loadRelationCountAndMap('chat.membersCount', 'chat.members')
+
+      // 🔹 інший мембер (ChatMember)
+      .leftJoinAndMapOne(
+        'chat.otherUser',
+        ChatMember,
+        'otherCm',
+        'otherCm.chatId = chat.id AND otherCm.userId != :userId',
+        { userId },
+      )
+
+      // 🔥 КЛЮЧОВИЙ РЯДОК
+      .leftJoinAndMapOne(
+        'otherCm.user',
+        User,
+        'otherUser',
+        'otherUser.id = otherCm.userId',
+      )
+
       .orderBy('lastMessage.createdAt', 'DESC')
-      .take(limit);
+      .take(limit + 1);
 
     if (cursor) {
       qb.andWhere('lastMessage.createdAt < :cursor', { cursor });
     }
 
-    const { entities: chats, raw } = await qb.getRawAndEntities<{
+    const { entities, raw } = await qb.getRawAndEntities<{
       membersCount: number;
     }>();
 
-    return chats.map((chat, index) => ({
-      id: chat.id,
-      name: chat.name ?? 'Chat',
-      avatarUrl: chat.avatarUrl,
-      isPrivate: chat.type === 'private',
-      isClosedGroup: chat.type === 'group' && chat.visibility === 'private',
-      membersCount: raw[index].membersCount,
-      lastMessage: chat.lastMessage
+    // due to use leftJoinAndMapOne
+    const chats = entities as (Chat & { otherUser?: { user?: User } })[];
+    console.log('chats ENTITIES', chats);
+    console.log('chats RAW', raw);
+
+    const { resultItems, nextCursor, hasMore } = checkNextCursor({
+      items: chats,
+      cursorField: 'createdAt',
+      limit,
+    });
+
+    const items = resultItems.map((chat, index) => {
+      let avatarUrl = chat.avatarUrl;
+      let name = chat.name ?? 'Chat';
+      let otherUserData: ChatMemberDTO | undefined;
+      console.log('otherUser', chat.otherUser?.user);
+      if (chat.type === 'private' && chat.otherUser) {
+        const otherUser = chat.otherUser.user;
+        if (otherUser) {
+          avatarUrl = otherUser.avatarUrl || null;
+          name = otherUser.name;
+
+          otherUserData = {
+            id: otherUser.id,
+            avatarUrl: otherUser.avatarUrl,
+            nickname: otherUser.nickname,
+            name: otherUser.name,
+          };
+        }
+      }
+
+      const lastMessage = chat.lastMessage
         ? {
             id: chat.lastMessage.id,
             text: chat.lastMessage.text,
             createdAt: chat.lastMessage.createdAt.toISOString(),
           }
-        : undefined,
-      updatedAt: chat.updatedAt.toISOString(),
-    }));
+        : undefined;
+
+      return {
+        id: chat.id,
+        name: name ?? 'Chat',
+        avatarUrl,
+        isPrivate: chat.type === 'private',
+        isClosedGroup: chat.type === 'group' && chat.visibility === 'private',
+        membersCount: raw[index].membersCount,
+        lastMessage,
+        updatedAt: chat.updatedAt.toISOString(),
+        isMember: true,
+        otherUser: otherUserData,
+      };
+    });
+
+    return {
+      items,
+      hasMore,
+      nextCursor: nextCursor?.toISOString(),
+    };
   }
 
   async findOrCreatePrivateChat(members: [string, string]): Promise<Chat> {

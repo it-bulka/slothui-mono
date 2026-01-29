@@ -17,13 +17,14 @@ export interface LastMessageDTO {
 export interface ChatListItemDTO {
   id: string;
   name: string;
-  avatarUrl?: string | null; // avatar of chat or other user
+  avatarUrl?: string | null;
   lastMessage?: LastMessageDTO;
   membersCount: number;
   isPrivate: boolean;
   isClosedGroup?: boolean;
   otherUser?: ChatMemberDTO; // just for private
   updatedAt: string;
+  isMember?: boolean;
 }
 
 export interface ChatMembersIdsDTO {
