@@ -23,6 +23,7 @@ export const MessageComposer = ({ msg, isFirst, time, isAuthor }: { msg: Message
         story={msg.story}
         time={time}
         isAuthor={isAuthor}
+        isFirst={isFirst}
       />
     )
   }
@@ -33,6 +34,7 @@ export const MessageComposer = ({ msg, isFirst, time, isAuthor }: { msg: Message
         event={msg.event}
         time={time}
         isAuthor={isAuthor}
+        isFirst={isFirst}
       />
     )
   }
@@ -43,6 +45,7 @@ export const MessageComposer = ({ msg, isFirst, time, isAuthor }: { msg: Message
         poll={msg.poll}
         time={time}
         isAuthor={isAuthor}
+        isFirst={isFirst}
         text={msg.text}
         msgId={msg.id}
       />

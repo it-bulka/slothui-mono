@@ -8,6 +8,7 @@ import { MessageComposer } from '@/features';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useMessagesByChatSelect, useChatMetaSelect } from '@/entities';
 import { useParams } from 'react-router';
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 
 const Messages = () => {
   const { id: chatId } = useParams<{ id: string }>()
@@ -16,6 +17,7 @@ const Messages = () => {
   const { fetchMessagesByChat } = useFetchMessagesByChat()
   const { loading, cursor, hasMore } = useChatMetaSelect(chatId)
   const msgs = useMessagesByChatSelect(chatId)
+  const authUserId = useAuthUserIdSelector()
 
   useEffect(() => {
     const el = ref.current
@@ -49,13 +51,15 @@ const Messages = () => {
             const prevMsg = messages[index+1]
             const prevDate = prevMsg ? new Date(prevMsg.createdAt).toDateString() : null;
 
+            const nextMsg = msgs[index - 1]; // due to flex-col-reverse
+            const isFirstInGroup = !nextMsg || nextMsg.authorId !== msg.authorId;
             return (
               <>
                 <MessageComposer
                   msg={msg}
                   time={time}
-                  isAuthor={msg.id === 'someId'}
-                  isFirst={false}
+                  isAuthor={msg.authorId === authUserId}
+                  isFirst={isFirstInGroup}
                   key={msg.id}
                 />
 

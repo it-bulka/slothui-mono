@@ -17,7 +17,7 @@ export const MessageWithPoll = ({
   const mode = getPollMode(poll)
   const { updatePollInMessage } = useUpdatePollInMessage(msgId)
   return (
-    <Message isAuthor={isAuthor} isFirst={isFirst} time={time}>
+    <Message isAuthor={isAuthor} isFirst={isFirst} time={time} maxWidth>
       {text}
       <PollView poll={poll} mode={mode} onEditPollSubmit={updatePollInMessage}/>
     </Message>

@@ -4,6 +4,10 @@
     @apply relative max-w-[60%] px-[14px] py-[10px] rounded-2xl my-1;
 }
 
+.message.max {
+    @apply w-[60%];
+}
+
 .message.self {
     @apply bg-blue-b3 ml-auto;
 }
