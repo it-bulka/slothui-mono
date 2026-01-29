@@ -1,6 +1,6 @@
 import type { MessageDto } from '@/shared/types';
 import { Message } from '@/shared/ui';
-import { MessageWithAttachments, MessageWithStory, MessageWithEvent } from '@/entities/Message';
+import { MessageWithAttachments, MessageWithStory, MessageWithEvent, MessageWithPoll } from '../variants';
 import type { MessageProps } from '@/shared/ui/Message/Message.tsx';
 
 export const MessageComposer = ({ msg, isFirst, time, isAuthor }: { msg: MessageDto} & MessageProps) => {
@@ -33,6 +33,18 @@ export const MessageComposer = ({ msg, isFirst, time, isAuthor }: { msg: Message
         event={msg.event}
         time={time}
         isAuthor={isAuthor}
+      />
+    )
+  }
+
+  if ('poll' in msg && msg.poll) {
+    return (
+      <MessageWithPoll
+        poll={msg.poll}
+        time={time}
+        isAuthor={isAuthor}
+        text={msg.text}
+        msgId={msg.id}
       />
     )
   }

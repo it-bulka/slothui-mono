@@ -1,5 +1,5 @@
 import { AttachmentDocument } from '@/shared/ui';
-import type { DraftAttachment } from '../../model/types';
+import type { DraftAttachment } from '../../../model/types';
 
 interface DocsListProps {
   docs:  DraftAttachment[]

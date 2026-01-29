@@ -1,35 +1,34 @@
 import { memo, useId } from 'react';
 import { CheckboxInput, Typography, TypographyTypes } from '@/shared/ui';
-import type { PollMultipleChoiceResult } from '../../model/types/index.tsx';
 import { OptionLabel } from '@/features/PollView/ui/OptionLabel.tsx';
 import { PollResultWrapper } from '../PollResult/PollResultWrapper.tsx';
 import cls from '../common/styles.module.css';
 import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';
+import type { MultipleChoicePollResultDto } from '@/shared/types/poll.dto.ts';
 
-export type MultipleChoiceResultProps = PollMultipleChoiceResult
+export interface MultipleChoiceResultProps {
+  poll: MultipleChoicePollResultDto
+}
 export const MultipleChoiceResult = memo(({
-  question,
-  options,
-  userVote,
-  anonymous
+  poll
 }: MultipleChoiceResultProps) => {
   const id = useId()
   return (
-    <PollResultWrapper options={options} anonymous={anonymous}>
+    <PollResultWrapper options={poll.answers} anonymous={poll.anonymous}>
       <form className={cls.form}>
-        {anonymous && <AnonymousTitle />}
-        <Typography bold type={TypographyTypes.BLOCK_TITLE}>{question}</Typography>
-        {options.map((option, index) => (
+        {poll.anonymous && <AnonymousTitle />}
+        <Typography bold type={TypographyTypes.BLOCK_TITLE}>{poll.question}</Typography>
+        {poll.answers.map((option, index) => (
           <CheckboxInput
             name={id}
             key={index}
             disabled={true}
-            selected={userVote.includes(option.id)}
+            selected={poll.userVote.includes(option.id)}
           >
             <OptionLabel
               value={option.value}
               percentage={option.percentage}
-              voters={anonymous ? [] : option.voters}
+              voters={poll.anonymous ? [] : option.voters}
               votes={option.votes}
             />
           </CheckboxInput>

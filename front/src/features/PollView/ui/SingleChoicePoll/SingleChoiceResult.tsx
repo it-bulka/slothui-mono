@@ -1,35 +1,34 @@
 import { memo, useId } from 'react';
 import { OptionLabel } from '../OptionLabel.tsx';
-import type { PollSingleChoiceResult } from '../../model/types';
 import { Typography, TypographyTypes, RadioInput } from '@/shared/ui';
 import { PollResultWrapper } from '../PollResult/PollResultWrapper.tsx';
 import cls from '../common/styles.module.css';
 import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';
+import type { SingleChoicePollResultDto } from '@/shared/types/poll.dto.ts';
 
-export type SingleChoiceResultProps = PollSingleChoiceResult
+export type SingleChoiceResultProps = {
+  poll: SingleChoicePollResultDto
+}
 export const SingleChoiceResult = memo(({
-  question,
-  options,
-  userVote,
-  anonymous
+  poll
 }: SingleChoiceResultProps) => {
   const id = useId()
   return (
-    <PollResultWrapper options={options} anonymous={anonymous}>
+    <PollResultWrapper options={poll.answers} anonymous={poll.anonymous}>
       <form className={cls.form}>
-        {anonymous && <AnonymousTitle />}
-        <Typography bold type={TypographyTypes.BLOCK_TITLE}>{question}</Typography>
-        {options.map((option, index) => (
+        {poll.anonymous && <AnonymousTitle />}
+        <Typography bold type={TypographyTypes.BLOCK_TITLE}>{poll.question}</Typography>
+        {poll.answers.map((option, index) => (
           <RadioInput
             name={id}
             key={index}
             disabled={true}
-            selected={option.id === userVote}
+            selected={Boolean(poll.userVote && option.id === poll.userVote[0])}
           >
             <OptionLabel
               value={option.value}
               percentage={option.percentage}
-              voters={anonymous ? [] : option.voters}
+              voters={poll.anonymous ? [] : option.voters}
               votes={option.votes}
             />
           </RadioInput>

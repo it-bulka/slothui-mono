@@ -1,5 +1,5 @@
 import { AttachmentAudio } from '@/shared/ui';
-import type { DraftAttachment } from '../../model/types';
+import type { DraftAttachment } from '../../../model/types';
 
 interface AudioListProps {
   list:  DraftAttachment[]

@@ -1,8 +1,8 @@
 import { Button } from '@/shared/ui';
-import type { PollFullResult } from '../../model/types';
 import { PollResultWithWrapperWindow } from './PollResultWithWrapperWindow.tsx';
 import type { PropsWithChildren } from 'react';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
+import type { PollFullResult } from '@/features/PollView/model/types';
 
 export const PollResultWrapper = ({ children, options, anonymous }: PropsWithChildren<PollFullResult>) => {
   const { isOpen, close, open } = useModalControl(false)

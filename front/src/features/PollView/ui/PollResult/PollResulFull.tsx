@@ -1,10 +1,11 @@
 import type { PollFullResult } from '../../model/types';
 import { List, Typography, AvatarWithInfo } from '@/shared/ui';
 import { memo } from 'react';
+import type { UserShort } from '@/shared/types';
 
 type PollResultProps = PollFullResult & { className?: string };
 
-export const PollResult = memo(({ options, className, anonymous }: PollResultProps) => {
+export const PollResulFull = memo(({ options, className, anonymous }: PollResultProps) => {
   return (
     <div className={className}>
       {options.map((option) => (
@@ -16,8 +17,13 @@ export const PollResult = memo(({ options, className, anonymous }: PollResultPro
           </Typography>
           {anonymous || (
             <List>
-              {option.voters.map(voter => (
-                <AvatarWithInfo src={voter.avatar} name={voter.name} position="" key={voter.name}/>
+              {option.voters?.map((voter: UserShort) => (
+                <AvatarWithInfo
+                  src={voter.avatarUrl}
+                  name={voter.nickname}
+                  position={voter.username}
+                  key={voter.nickname}
+                />
               ))}
             </List>
           )}
@@ -27,4 +33,4 @@ export const PollResult = memo(({ options, className, anonymous }: PollResultPro
   )
 })
 
-PollResult.displayName = 'PollResult';
+PollResulFull.displayName = 'PollResultFull';

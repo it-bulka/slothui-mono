@@ -3,39 +3,40 @@ import { useCallback, memo } from 'react';
 import { OptionLabel } from '../OptionLabel.tsx';
 import { RadioInput, TypographyTypes, Typography } from '@/shared/ui';
 import cls from '../common/styles.module.css';
-import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';
+import { AnonymousTitle } from '../common/AnonymousTitle.tsx';
+import type { SingleChoicePollDto } from '@/shared/types/poll.dto.ts';
+import type { PollDraft } from '../../../CreatePoll';
 
 const FORM_FIELD = 'answerId'
 
 type FormValues = {
-  [FORM_FIELD]: number
+  [FORM_FIELD]: string
 }
 
-export interface SingleChoiceEditorProps extends Partial<FormValues>{
-  question: string
-  questionId: string
-  options: { value: string }[]
-  anonymous?:boolean
+export interface SingleChoiceEditorProps {
+  poll: SingleChoicePollDto | PollDraft
+  onSubmit?: (arg: {pollId: string, answerIds: string[]}) => void
 }
 
 export const SingleChoiceEditor = memo(({
-  question, options, answerId, anonymous
+  poll,
+  onSubmit
 }: SingleChoiceEditorProps) => {
-  const { handleSubmit, control } = useForm<FormValues>({
-    defaultValues: {
-      answerId
-    }
-  })
+  const { handleSubmit, control } = useForm<FormValues>()
 
-  const onSubmit = useCallback((data: FormValues) => {
-    console.log('single edit poll:', data)
-  }, [])
+  const submitSelectedAnswer = useCallback((data: FormValues) => {
+    const answer = data[FORM_FIELD]
+    onSubmit?.({
+      pollId: poll.id,
+      answerIds: [answer]
+    })
+  }, [poll.id, onSubmit])
   
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={cls.form}>
-      {anonymous && <AnonymousTitle />}
-      <Typography bold type={TypographyTypes.BLOCK_TITLE}>{question}</Typography>
-      {options.map((option, index) => (
+    <form onSubmit={handleSubmit(submitSelectedAnswer)} className={cls.form}>
+      {poll.anonymous && <AnonymousTitle />}
+      <Typography bold type={TypographyTypes.BLOCK_TITLE}>{poll.question}</Typography>
+      {poll.answers.map((option, index) => (
         <Controller
           control={control}
           name={FORM_FIELD}
@@ -45,12 +46,12 @@ export const SingleChoiceEditor = memo(({
               key={index}
               onChange={(checked) => {
                 if(checked) {
-                  field.onChange(index)
-                  handleSubmit(onSubmit)()
+                  field.onChange(option.id)
+                  handleSubmit(submitSelectedAnswer)()
                 }
               }}
               disabled={formState.isSubmitting || formState.isSubmitted}
-              selected={field.value === index}
+              selected={field.value === option.id}
             >
               <OptionLabel value={option.value} percentage={0}/>
             </RadioInput>

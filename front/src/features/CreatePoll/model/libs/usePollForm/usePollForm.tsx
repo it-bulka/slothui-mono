@@ -1,5 +1,6 @@
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useCallback, useMemo, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import type { PollDraft } from '../../types/poll.types.tsx';
 
 type PollActionForm = PollDraft & {
@@ -14,8 +15,12 @@ export const usePollForm = ({ limit = 4, onSubmit }: { limit?: number, onSubmit?
     handleSubmit, control, watch, setError, getValues, formState: { errors }, clearErrors
   } = useForm<PollActionForm>({
     defaultValues: {
+      id: nanoid(),
       question: '',
-      answers: [{ value: ''}, { value: ''}],
+      answers: [
+        { value: '', id: nanoid() },
+        { value: '', id: nanoid() }
+      ],
       anonymous: false,
       multiple: false
     }
@@ -53,12 +58,12 @@ export const usePollForm = ({ limit = 4, onSubmit }: { limit?: number, onSubmit?
    if(checkFieldsLimit()) return
 
     if(index === fields.length - 1 && value.trim() !== '') {
-      append({ value: ''})
+      append({ value: '',  id: nanoid()})
     }
   }, [fields, append, checkFieldsLimit])
 
   const addField = useCallback(() => {
-    append({ value: ''})
+    append({ value: '',  id: nanoid()})
   }, [append])
 
   const onSubmitHandle = handleSubmit((data) => {

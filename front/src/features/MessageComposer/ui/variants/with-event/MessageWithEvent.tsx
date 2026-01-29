@@ -2,7 +2,7 @@ import { Message, Typography } from '@/shared/ui';
 import { MsgEventPreview } from './MsgEventPreview.tsx';
 import type { MessageProps } from '@/shared/ui/Message/Message.tsx';
 import type { MsgEventPreviewProps } from './MsgEventPreview.tsx';
-import { SharedInfo } from '@/entities/Message/ui/base/SharedInfo.tsx';
+import { SharedInfo } from '@/features/MessageComposer/ui/variants/base/SharedInfo.tsx';
 
 type MessageWithEventProps = MessageProps & {
   event?: MsgEventPreviewProps

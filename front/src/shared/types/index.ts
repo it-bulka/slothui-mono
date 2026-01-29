@@ -1,9 +1,10 @@
 export type { NonNullableFields } from './common.types.ts';
 export type { Poll } from './poll.types.ts'
+export type { PollVotesUpdateDto, PollResultDto } from './poll.dto.ts';
 export type { Message, MessageNotification } from './message.types.ts';
 export type { Geo } from './geo.types.ts';
 export type { GroupedAttachment, Attachment, RawAttachmentType, AttachmentType, AttachmentMetadata, RawGroupedAttachment } from './attachments.types.ts';
-export type { MessageDto } from './message.dto.ts';
+export type { MessageDto, MessageWithPollDto } from './message.dto.ts';
 export type { PaginatedResponse } from './paginatedResponse.types.ts';
 export type { ChatGlobalSearchResult } from './chat.types.ts';
 export type {

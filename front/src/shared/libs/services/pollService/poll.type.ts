@@ -1,0 +1,1 @@
+export interface SelectPollAnswers { pollId: string, answerIds: string[] }

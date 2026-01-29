@@ -1,5 +1,5 @@
 import { Typography, TypographyTypes } from '@/shared/ui';
-import { useDraftMessageExtras } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
+import { useDraftMessageExtras } from '../../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftEventPreview = () => {

@@ -3,7 +3,11 @@ import type { MessageDto } from '../../../../shared/types/message.dto.ts'
 import type { PaginatedResponse } from '@/shared/types';
 import type { MessagesState } from '../type/messageState.type.ts';
 import { messagesAdapter } from '../adapter/messages.adapter.ts';
-import { fetchMessagesByChatExtraReducer, sendMessageExtraReducer } from '../extraReducers';
+import {
+  fetchMessagesByChatExtraReducer,
+  sendMessageExtraReducer,
+  updateMessagePollExtraReducer
+} from '../extraReducers';
 
 const initialState = messagesAdapter.getInitialState<MessagesState>({
   entities: {},
@@ -67,6 +71,7 @@ const messageSlice = createSlice({
   extraReducers: (builder) => {
     fetchMessagesByChatExtraReducer(builder)
     sendMessageExtraReducer(builder)
+    updateMessagePollExtraReducer(builder)
   },
 });
 

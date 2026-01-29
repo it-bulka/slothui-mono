@@ -1,4 +1,4 @@
-import { PollResult } from './PollResult.tsx';
+import { PollResulFull } from './PollResulFull.tsx';
 import { ActionButton, Card } from '@/shared/ui';
 import type { PollFullResult } from '@/features/PollView/model/types';
 import CloseImg from '@/shared/assets/images/actions/close.svg?react'
@@ -17,7 +17,7 @@ export const PollResultWithWrapperWindow = ({ isOpen, onClose, ...rest }: PollRe
           <ActionButton Icon={CloseImg} onClick={onClose} className="ml-auto"/>
         </Card.Header>
         <Card.Body>
-          <PollResult {...rest} />
+          <PollResulFull {...rest} />
         </Card.Body>
       </Card>
     </Modal>

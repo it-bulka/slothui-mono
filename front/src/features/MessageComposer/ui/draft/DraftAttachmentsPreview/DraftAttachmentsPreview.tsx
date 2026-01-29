@@ -1,6 +1,6 @@
-import { AudioList } from '@/features/MessageComposer/ui/AudioList/AudioList.tsx';
-import { DocsList } from '@/features/MessageComposer/ui/DocsList/DocsList.tsx';
-import { MediaGrid } from '@/features/MessageComposer/ui/MediaGrid/MediaGrid.tsx';
+import { AudioList } from '@/features/MessageComposer/ui/draft/AudioList/AudioList.tsx';
+import { DocsList } from '@/features/MessageComposer/ui/draft/DocsList/DocsList.tsx';
+import { MediaGrid } from '@/features/MessageComposer/ui/draft/MediaGrid/MediaGrid.tsx';
 import { useDraftMessageExtras } from '@/features/MessageComposer';
 
 export const DraftAttachmentsPreview = () => {

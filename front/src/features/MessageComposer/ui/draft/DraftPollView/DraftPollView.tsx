@@ -1,24 +1,16 @@
 import { PollView } from '@/features/PollView';
 import { PollMode } from '@/features/PollView/model/types';
-import { useId } from 'react';
 import { useDraftMessageExtras } from '@/features/MessageComposer';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
 
 export const DraftPollView = () => {
-  const id = useId();
   const { poll, clearPoll } = useDraftMessageExtras();
   if (!poll) return null;
 
   return (
     <div className="relative">
       <ClearDraftButton onClick={clearPoll} />
-      <PollView
-        isMultiple={poll.multiple}
-        options={poll.answers}
-        mode={PollMode.EDIT}
-        question={poll.question}
-        questionId={id}
-      />
+      <PollView poll={poll} mode={PollMode.EDIT}/>
     </div>
   )
 }

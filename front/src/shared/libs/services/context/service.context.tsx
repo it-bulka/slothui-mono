@@ -13,6 +13,7 @@ import { FriendsService } from '../friendsService/friends.service.ts';
 import {
   NotificationsCountersService
 } from '../notificationsCountersService/notificationsCounters.service.ts';
+import { PollService } from '../pollService/poll.service.ts';
 
 interface IServices {
   http: HttpService
@@ -25,6 +26,7 @@ interface IServices {
   messages:  MessagesService
   comments:  CommentsService
   posts:  PostsService
+  poll:  PollService
   friends:  FriendsService
   notificationsCounters:  NotificationsCountersService
 }

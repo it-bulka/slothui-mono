@@ -1,20 +1,20 @@
-import { MultipleChoicePoll, type MultipleChoicePollProps } from './MultipleChoicePoll/MultipleChoicePoll.tsx';
-import { SingleChoicePoll, type SingleChoicePollProps } from './SingleChoicePoll/SingleChoicePoll.tsx';
-import { memo } from 'react';
+import { PollEditor } from './PollEditor/PollEditor.tsx';
+import { PollReadOnly } from './PollReadOnly/PollReadOnly.tsx';
+import type { PollDto, PollResultDto } from '@/shared/types/poll.dto.ts';
+import { PollMode } from '../model/types';
+import type { PollDraft } from '../../CreatePoll';
 
-type SingleChoice = SingleChoicePollProps & { isMultiple?: false }
-type MultipleChoice = MultipleChoicePollProps & { isMultiple: true }
-
-export type PollViewProps = (SingleChoice | MultipleChoice)
-
-export const PollView = memo((props: PollViewProps) => {
-  if(props.isMultiple) {
-    const { isMultiple: _m, ...rest } = props;
-    return <MultipleChoicePoll {...rest} />
+interface PollProps {
+  mode: PollMode;
+  poll: PollDraft | PollDto | PollResultDto
+  onEditPollSubmit?: (arg: {pollId: string, answerIds: string[]}) => void
+}
+export const PollView = ({ poll, mode, onEditPollSubmit }: PollProps) => {
+  if (mode === PollMode.EDIT) {
+    return <PollEditor poll={poll as PollDto | PollDraft} onSubmit={onEditPollSubmit}/>
   }
 
-  const { isMultiple: _m, ...rest } = props;
-  return <SingleChoicePoll {...rest} />
-})
+  return <PollReadOnly poll={poll as PollResultDto} />
+}
 
 PollView.displayName = 'PollView'

@@ -1,5 +1,5 @@
 import { MessageAttachments } from './MessageAttachments.tsx';
-import type { MessageWithAttachmentsDto } from '../../../../shared/types/message.dto.ts';
+import type { MessageWithAttachmentsDto } from '../../../../../shared/types/message.dto.ts';
 import { Message } from '@/shared/ui';
 import type { MessageProps } from '@/shared/ui/Message/Message.tsx';
 

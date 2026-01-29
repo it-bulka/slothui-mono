@@ -8,6 +8,7 @@ import { StoriesService } from '../storiesService/stories.service.ts';
 import { MessagesService } from '../messagesService/messages.service.ts';
 import { CommentsService } from '../commentsService/comments.service.ts';
 import { PostsService } from '../postsService/posts.service.ts';
+import { PollService } from '../pollService/poll.service.ts';
 import { FriendsService } from '../friendsService/friends.service.ts';
 import {
   NotificationsCountersService
@@ -32,6 +33,7 @@ export const createServices = () => {
     messages: new MessagesService(httpService, socketService),
     comments: new CommentsService(httpService, socketService),
     posts: new PostsService(httpService),
+    poll: new PollService(httpService),
     friends: new FriendsService(httpService),
     notificationsCounters: new NotificationsCountersService(httpService),
   }

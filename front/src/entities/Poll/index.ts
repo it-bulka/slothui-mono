@@ -1,0 +1,1 @@
+export { answerPollThunk } from './model/thunk/answerPoll.thunk.tsx';
