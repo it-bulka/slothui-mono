@@ -1,10 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selectSortedChats } from '@/entities';
-import type { RootState } from '@/app/config';
+import { selectChatsEntities, selectChatsIds } from '../slice.ts';
+import type { ChatDTO } from '@/shared/types/chat.types.ts';
 
 export const selectUserChats = createSelector(
-    selectSortedChats,
-    (_state: RootState, userId: string) => userId,
-
-    (chats, userId) => chats.filter(chat => chat.members.includes(userId))
-  );
+  [selectChatsEntities, selectChatsIds],
+  (entities, ids) => {
+    const result: ChatDTO[] = [];
+    for (const id of ids) {
+      const chat = entities[id];
+      if (chat?.isMember) result.push(chat);
+    }
+    return result;
+  }
+);

@@ -36,6 +36,8 @@ export {
   useFetchSearchedChats,
   chatsReducer,
   useUserChatSelect,
+  useFetchMyChats,
+  useUserChatStateSelect,
   chatsActions
 } from './Chats';
 

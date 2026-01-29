@@ -1,35 +1,15 @@
-import { createEntityAdapter, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { PaginatedResponse } from '@/shared/types';
-import type { ChatDTO } from '@/shared/types/chat.types.ts';
-import { searchChatsThunk } from './thunk/searchChats.thunk.ts';
-import { createPrivateChatThunk } from './thunk/createPrivateChat.thunk.ts';
-
-export type Chat = ChatDTO;
-interface ChatState {
-  activeChatId: string | null
-  allChatsLoaded: boolean
-  searchResults: string[]
-}
-
-const chatAdapter = createEntityAdapter<Chat, string>({
-  selectId: (chat) => chat.id,
-  sortComparer: (a, b) => {
-    const aDate = a.lastMessage?.createdAt
-    const bDate = b.lastMessage?.createdAt
-
-    if (aDate && bDate) {
-      return new Date(bDate).getTime() - new Date(aDate).getTime()
-    }
-    if (aDate && !bDate) return -1
-    if (!aDate && bDate) return 1
-
-    return a.name.localeCompare(b.name)
-  }
-});
+import { chatAdapter } from './chat.adapter.ts';
+import type { ChatState, Chat } from './types/chat.type.ts';
+import { fetchMyChatsExtraReducer, searchChatsExtraReducer } from './extraReducer';
 
 const initialState = chatAdapter.getInitialState<ChatState>({
-  activeChatId: '1',
-  allChatsLoaded: true,
+  entities: {},
+  ids: [],
+  activeChatId: null,
+  hasMore: true,
+  isLoading: false,
   searchResults: [],
 });
 
@@ -48,13 +28,8 @@ export const chatSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(searchChatsThunk.fulfilled, (state, action) => {
-      chatAdapter.upsertMany(state, action.payload);
-      state.searchResults = action.payload.map(chat => chat.id);
-    })
-      .addCase(createPrivateChatThunk.fulfilled, (state, action) => {
-      chatAdapter.addOne(state, action.payload);
-    });
+    fetchMyChatsExtraReducer(builder);
+    searchChatsExtraReducer(builder);
   }
 });
 

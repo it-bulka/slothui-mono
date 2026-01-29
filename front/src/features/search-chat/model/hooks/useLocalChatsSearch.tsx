@@ -19,7 +19,7 @@ export const useLocalChatsSearch = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const filteredChats = useMemo(() => {
-    if (!debouncedSearchText) return chats;
+    if (!debouncedSearchText) return [];
 
     return chats.filter(chat =>
       chat.name.toLowerCase().includes(debouncedSearchText.toLowerCase())

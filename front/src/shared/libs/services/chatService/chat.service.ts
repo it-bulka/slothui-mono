@@ -38,9 +38,10 @@ export class ChatService {
   /* ------------------------------------------------------------------ */
 
   /** GET /api/chats */
-  async listChats(): Promise<PaginatedResponse<ChatDTO>> {
-    const res = await this.http.request<PaginatedResponse<ChatDTO>>('/api/chats');
-    return res;
+  async listChats(arg: { cursor?: string | null } = {}): Promise<PaginatedResponse<ChatDTO>> {
+    return await this.http.request<PaginatedResponse<ChatDTO>>('/api/chats', {
+      params: { cursor: arg.cursor }
+    });
   }
 
   async search(name: string): Promise<ChatDTO[]> {

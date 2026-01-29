@@ -2,24 +2,34 @@ import { ChatSearchProvider, SearchChatInput, ChatSearchResult } from '@/feature
 import { useAuthUserSelector } from '@/entities/AuthUser';
 import { Typography } from '@/shared/ui';
 import { AllChats } from './Chats/AllChats.tsx';
+import { useChatSearchDebouncedText } from '@/features/search-chat/model/context/useChatSearchDebouncedText.tsx';
 
 const ChatsPage = () => {
   const user = useAuthUserSelector()
+  const { debouncedSearchText } = useChatSearchDebouncedText()
+
   if (!user) return <Typography>User not authorized</Typography>
 
   return (
     <>
-      <ChatSearchProvider>
-        <>
-          <div className="px-main py-main">
-            <SearchChatInput />
-          </div>
-          <ChatSearchResult className="px-main py-main" />
-        </>
-      </ChatSearchProvider>
-      <AllChats userId={user.id}/>
+      <div className="px-main py-main">
+        <SearchChatInput />
+      </div>
+
+      {debouncedSearchText ? (
+        <ChatSearchResult className="px-main py-main" />
+      ) : (
+        <AllChats />
+      )}
     </>
   )
 }
 
-export default ChatsPage
+const ChatsPageWithProvider = () => {
+  return (
+    <ChatSearchProvider>
+      <ChatsPage />
+    </ChatSearchProvider>
+  )
+}
+export default ChatsPageWithProvider

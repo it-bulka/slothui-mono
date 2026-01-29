@@ -13,7 +13,7 @@ export interface ChatDTO {
     text: string;
     createdAt: string;
   }
-  members: string[];
+  isMember?: boolean;
   updatedAt: string;
 }
 
