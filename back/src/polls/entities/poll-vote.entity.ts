@@ -21,10 +21,10 @@ export class PollVote {
   @JoinColumn({ name: 'userId' })
   user?: User | null;
 
-  @ManyToOne(() => Poll, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Poll, { nullable: false, onDelete: 'CASCADE' })
   poll: Poll;
 
-  @ManyToOne(() => PollAnswer, { onDelete: 'CASCADE' })
+  @ManyToOne(() => PollAnswer, { nullable: false, onDelete: 'CASCADE' })
   answer: PollAnswer;
 
   @CreateDateColumn()

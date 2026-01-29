@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
@@ -21,6 +25,7 @@ import { OpenedChatsTracker } from './opened-chats-tracker.service';
 import { UnreadBufferService } from './unread-buffer.service';
 import { MessageResponseDto } from './dto/message.dto';
 import { PaginatedResponse } from '../common/types/pagination.type';
+import { PollMapperToPollResult } from '../polls/pollMapToPollResult';
 
 @Injectable()
 export class MessagesService {
@@ -46,7 +51,7 @@ export class MessagesService {
     userId: string;
     limit?: number | null;
     cursor?: string | null;
-  }): Promise<PaginatedResponse<Message>> {
+  }): Promise<PaginatedResponse<MessageResponseDto>> {
     const safeLimit = limit ?? 50;
 
     await this.chatsService.assertUserChatAccess(chatId, userId);
@@ -67,8 +72,25 @@ export class MessagesService {
     const hasMore = items.length > visibleItems.length;
     const lastItem = visibleItems[visibleItems.length - 1];
 
+    const msgsIds = visibleItems.map((item) => item.id);
+
+    const attachments = await this.attachmentService.getMany(
+      'message',
+      msgsIds,
+    );
+    const groupedAttachments =
+      this.attachmentService.groupByTypeAndParentId(attachments);
+
+    const polls = await this.pollsService.getMany('message', msgsIds, userId);
+    const groupedPolls = this.pollsService.groupedByParentId(polls);
     return {
-      items: visibleItems,
+      items: visibleItems.map((item) => {
+        return MessageMapper.toResponce({
+          ...item,
+          attachments: groupedAttachments.get(item.id),
+          poll: groupedPolls.get(item.id),
+        });
+      }),
       hasMore,
       nextCursor: lastItem ? lastItem.createdAt.toISOString() : null,
     };
@@ -126,7 +148,10 @@ export class MessagesService {
       story: story,
       storyIdHistory: story.id,
     });
-    return await this.messageRepo.save(msg);
+    const saved = await this.messageRepo.save(msg);
+    return MessageMapper.toResponce({
+      ...saved,
+    });
   }
 
   async createWithEvent({
@@ -149,7 +174,10 @@ export class MessagesService {
       event: event,
       eventIdHistory: event.id,
     });
-    return await this.messageRepo.save(msg);
+    const saved = await this.messageRepo.save(msg);
+    return MessageMapper.toResponce({
+      ...saved,
+    });
   }
 
   async createWithPoll({
@@ -166,16 +194,18 @@ export class MessagesService {
       authorId,
     });
     const savedMsg = await this.messageRepo.save(msg);
+
     const savedPoll = await this.pollsService.createPoll(
       poll,
       'message',
       savedMsg.id,
     );
 
-    return {
+    const pollResult = PollMapperToPollResult.transform(savedPoll);
+    return MessageMapper.toResponce({
       ...savedMsg,
-      poll: savedPoll,
-    };
+      poll: pollResult,
+    });
   }
 
   async createWithExtra(dto: CreateMessageDto) {
@@ -189,7 +219,11 @@ export class MessagesService {
     } else if ('poll' in dto && dto.poll) {
       msg = await this.createWithPoll(dto);
     } else {
-      msg = await this.create(dto);
+      if (dto.text.trim() === '') {
+        throw new BadRequestException(`Invalid message format for ${dto.text}`);
+      }
+      const saved = await this.create(dto);
+      msg = MessageMapper.toResponce(saved);
     }
 
     await this.handleUnreadCounters({

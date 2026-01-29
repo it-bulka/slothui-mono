@@ -1,11 +1,13 @@
 import { GroupedAttachment } from '../../attachments/types/attachments.type';
-import { PollDto } from '../../polls/dto/poll.dto';
+import { PollResultDto } from '../../polls/dto/poll.dto';
+import { Message } from '../entities/message.entity';
 
 export type MessageBaseResponseDto = {
   id: string;
   chatId: string;
   text: string;
   authorId: string;
+  createdAt: string; // ISO
 };
 
 export type MessageWithAttachmentsResponseDto = MessageBaseResponseDto & {
@@ -13,7 +15,7 @@ export type MessageWithAttachmentsResponseDto = MessageBaseResponseDto & {
 };
 
 export type MessageWithPollResponseDto = MessageBaseResponseDto & {
-  poll: PollDto;
+  poll: PollResultDto;
 };
 
 export type MessageResponseDto =
@@ -21,7 +23,7 @@ export type MessageResponseDto =
   | MessageWithAttachmentsResponseDto
   | MessageWithPollResponseDto;
 
-export type MessageWithOptionals = MessageBaseResponseDto & {
+export type MessageWithOptionals = Message & {
   attachments?: GroupedAttachment;
-  poll?: PollDto;
+  poll?: PollResultDto;
 };

@@ -1,7 +1,7 @@
 import { GroupedAttachment } from '../../attachments/types/attachments.type';
 import { PaginatedResponse } from '../../common/types/pagination.type';
 import { UserResponse } from '../../user/dto/user-response.dto';
-import { PollDto } from '../../polls/dto/poll.dto';
+import { PollResultDto } from '../../polls/dto/poll.dto';
 
 export interface PostDto {
   id: string;
@@ -11,7 +11,7 @@ export interface PostDto {
   isSaved?: boolean;
   commentsCount: number;
   attachments?: GroupedAttachment;
-  poll?: PollDto;
+  poll?: PollResultDto;
 }
 
 export type PostPaginatedRes = PaginatedResponse<PostDto>;

@@ -13,6 +13,7 @@ export class MessageMapper {
       chatId: msg.chatId,
       authorId: msg.authorId,
       text: msg.text,
+      createdAt: msg.createdAt.toISOString(),
     };
 
     if (msg.attachments) {
