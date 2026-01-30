@@ -234,7 +234,13 @@ export class UserService {
   }
 
   async getProfileData(userId: string): Promise<UserProfileDto> {
-    const user = await this.findOne(userId, { throwErrorIfNotExist: true });
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      select: ['id', 'nickname', 'name', 'email', 'avatarUrl', 'description'],
+    });
+
+    if (!user) throw new BadRequestException(`User not found`);
+
     const [followersCount, followeesCount, postsCount] = await Promise.all([
       this.followerService.countFollowers(userId),
       this.followerService.countFollowees(userId),
@@ -247,7 +253,7 @@ export class UserService {
         nickname: user.nickname,
         username: user.name,
         avatarUrl: user.avatarUrl,
-        description: user.description,
+        bio: user.description,
       },
       stats: {
         followersCount,

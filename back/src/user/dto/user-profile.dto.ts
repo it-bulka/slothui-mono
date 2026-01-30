@@ -4,7 +4,7 @@ export interface UserProfileDto {
     nickname: string;
     username: string;
     avatarUrl?: string;
-    description?: string | null;
+    bio?: string | null;
   };
   stats: {
     followersCount: number;
