@@ -47,3 +47,4 @@ export { SearchSuggestionsList } from './SearchSuggestionsList';
 export { Divider } from './Divider/Divider.tsx';
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary.tsx';
 export { EventDateTimePicker } from './EventDateTimePicker';
+export { ToolbarWrapper } from './ToolbarWrapper';
