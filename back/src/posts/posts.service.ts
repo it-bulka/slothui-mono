@@ -86,8 +86,13 @@ export class PostsService {
     const attachments = await this.attachmentService.getMany('post', postIds);
     const groupedAttachments =
       this.attachmentService.groupByTypeAndParentId(attachments);
-
+    console.log('post ids:', postIds);
     const polls = await this.pollsService.getMany('post', postIds, userId);
+    console.log(
+      'poll parentIds:',
+      polls.map((p) => p.parentId),
+    );
+
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
     const postWithExtras: PostDto[] = visiblePosts.map((post, index) => ({

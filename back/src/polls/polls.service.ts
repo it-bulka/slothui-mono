@@ -186,6 +186,8 @@ export class PollsService {
    * get answers ids grouped by poll id
    */
   async getGroupedAnswersIdsByPoll(pollIds: string[], userId: string) {
+    if (!pollIds.length) return {};
+
     const userAnswerIdsRaw = await this.voteRepo
       .createQueryBuilder('vote')
       .select(['vote.answerId', 'vote.pollId'])
@@ -210,6 +212,8 @@ export class PollsService {
   }
 
   async getVotersPreview(pollIds: string[], limit?: number) {
+    if (!pollIds.length) return {};
+
     const qb = this.voteRepo
       .createQueryBuilder('vote')
       .leftJoin('vote.user', 'user')
