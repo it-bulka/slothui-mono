@@ -17,7 +17,6 @@ export const followUserThunk = createAsyncThunk<
     }
     try {
       const profile = await extra.services.friends.followUser({ userId })
-      console.log('followUser', profile);
       return { profile, currentUserId };
     } catch (e) {
       return rejectWithValue(

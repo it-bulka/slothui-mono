@@ -23,10 +23,6 @@ export const fetchProfileExtraReducer = (builder: ActionReducerMapBuilder<UsersP
     })
     .addCase(fetchUserProfileDataThunk.fulfilled, (state, action) => {
       const { user: u, stats } = action.payload.profile;
-      console.log('slice in USER PROFILE')
-      console.log('fetchUserProfileDataThunk.fulfilled')
-      //usersProfilesAdapter.upsertOne(state, action.payload);
-
       state.entities[u.id] = {
         isLoading: false,
 

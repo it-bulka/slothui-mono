@@ -72,8 +72,7 @@ export const friendsSlice = createSlice({
     // from userProfile
     builder
       .addCase(fetchUserProfileDataThunk.fulfilled, (state, action) => {
-      console.log('slice in FRIENDS')
-        const { user, relation } = action.payload.profile
+      const { user, relation } = action.payload.profile
       friendsAdapter.upsertOne(state, {
         id: user.id,
         src: user.avatarUrl,

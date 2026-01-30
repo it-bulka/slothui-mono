@@ -6,7 +6,6 @@ export const useFetchUserProfileStats = () => {
   const dispatch = useAppDispatch();
 
   const fetchUserProfileStats = useCallback((userId: string) => {
-    console.log('fetchUserProfileStats for', userId);
     dispatch(fetchUserProfileDataThunk({ userId }))
   }, [dispatch]);
 

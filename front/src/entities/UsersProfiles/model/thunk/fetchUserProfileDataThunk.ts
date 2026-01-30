@@ -13,6 +13,7 @@ export const fetchUserProfileDataThunk = createAsyncThunk<
   'usersProfiles/fetchUserProfileData',
   async ({ userId }, { extra, rejectWithValue, getState }) => {
     const state = getState();
+    console.log('fetchUserProfileData', state.authUser)
     const currentUserId = state.authUser?.data?.id;
     if(!currentUserId) {
       return rejectWithValue('Failed to fetch user profile stats. No authorized user');
