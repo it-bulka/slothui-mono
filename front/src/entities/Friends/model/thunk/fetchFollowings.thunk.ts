@@ -5,11 +5,12 @@ import type { FriendDto } from '@/shared/types';
 
 export const fetchFollowings = createAsyncThunk<
   PaginatedResponse<FriendDto>,
-  { cursor?: string, userId: string},
+  { cursor?: string | null, userId: string},
   ThunkAPI
 >(
   'friends/fetchFollowings',
   async ({ cursor, userId }, { rejectWithValue, extra }) => {
+    console.log('fetchFollowings userId:', userId)
     try {
       return await extra.services.friends.getFollowings({ cursor, userId });
     } catch (e) {

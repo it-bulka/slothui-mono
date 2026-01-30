@@ -117,8 +117,8 @@ export class FollowerController {
   }
 
   private mapToFriendDto(f: Follower, currentUserId: string): FriendDto {
-    const isFollower = f.follower.id === currentUserId;
-    const isFollowing = f.followee.id === currentUserId;
+    const isFollowing = f.follower.id === currentUserId;
+    const isFollower = f.followee.id === currentUserId;
 
     const user = isFollower ? f.followee : f.follower;
 

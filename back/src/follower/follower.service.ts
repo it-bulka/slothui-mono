@@ -156,6 +156,7 @@ export class FollowerService {
       items: followers,
       nextCursor,
       followersLastSeenAt,
+      hasMore: followers.length > limit,
     };
   }
 
@@ -170,6 +171,10 @@ export class FollowerService {
   }) {
     const query: FindManyOptions<Follower> = {
       where: { follower: { id: userId } },
+      relations: {
+        follower: true,
+        followee: true,
+      },
       order: { createdAt: 'DESC' },
       take: limit + 1,
     };
@@ -190,6 +195,7 @@ export class FollowerService {
     return {
       items: followings,
       nextCursor,
+      hasMore: followings.length > limit,
     };
   }
 

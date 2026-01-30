@@ -5,6 +5,7 @@ type FriendPage = {
   isLoading?: boolean,
   hasMore?: boolean,
   nextCursor?: string | null
+  error?: string
 
   followersLastSeenAt?: number
 }

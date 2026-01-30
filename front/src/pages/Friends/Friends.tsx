@@ -1,28 +1,21 @@
-import { TabWithFriends } from '@/features';
-import {
-  useNewFollowersIdsSelect,
-  useAuthUserSelector,
-  useFollowersWithNewOnTopSelect,
-  useFollowingsSelector
-} from '@/entities';
-import { Typography } from '@/shared/ui';
+import { TabWithFriends, UserSearchToolbar } from '@/features';
+import { useAuthUserSelector } from '@/entities';
+import { ToolbarWrapper, Typography } from '@/shared/ui';
+import { memo } from 'react';
 
-const Friends = () => {
+const Friends = memo(() => {
   const user = useAuthUserSelector()
-  const newFollowerIds = useNewFollowersIdsSelect(user?.id);
-  const followers = useFollowersWithNewOnTopSelect(user?.id);
-  const followings = useFollowingsSelector(user?.id);
 
   if(!user) return <Typography>User is not authorized</Typography>
   return (
     <>
-      <TabWithFriends
-        tabs={['followers', 'followings']}
-        contents={[followers, followings]}
-        newFollowerIds={newFollowerIds}
-      />
+      <ToolbarWrapper>
+        <UserSearchToolbar />
+      </ToolbarWrapper>
+      <TabWithFriends userId={user.id} />
     </>
   )
-}
+})
+Friends.displayName = 'FriendsPage';
 
 export default Friends

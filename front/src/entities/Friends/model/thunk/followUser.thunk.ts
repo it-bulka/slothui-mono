@@ -12,6 +12,7 @@ export const followUserThunk = createAsyncThunk<
   async ({ userId }, { rejectWithValue, extra, getState }) => {
     const state = getState();
     const currentUserId = selectAuthUser(state)?.id;
+    console.log('followUser', currentUserId);
     if(!currentUserId) {
       return rejectWithValue('User not authorised');
     }

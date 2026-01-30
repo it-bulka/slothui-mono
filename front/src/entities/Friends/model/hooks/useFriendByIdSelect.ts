@@ -1,4 +1,4 @@
-import { selectFriendById } from '../slice/friends.slice.ts';
+import { selectFriendById } from '../adapter/friends.adapter.ts';
 import { useAppSelector } from '@/shared/config/redux';
 
 export const useFriendByIdSelect = (userId?: string) => {

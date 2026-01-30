@@ -92,6 +92,14 @@ export {
   useNewFollowersIdsSelect,
   useFollowersWithNewOnTopSelect,
   useFriendByIdSelect,
+  useFollowersStateSelect,
+  useFolloweeStateSelect,
+  selectFollowersStateByUser,
+  selectFolloweeStateByUser,
+  selectFollowersWithNewOnTop,
+  selectFollowingsByUser,
+  fetchFollowersThunk,
+  fetchFollowingsThunk,
   type FriendEntity
 } from './Friends';
 

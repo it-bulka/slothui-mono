@@ -1,14 +1,9 @@
 import { type FriendEntity } from '@/entities';
 import { DeleteFollowerButton, UnfollowButton, FollowButton } from '../../ui';
 
-enum FriendsTab {
-  Followers = 0,
-  Followings = 1,
-}
-
-export const useFriendActions = () => {
-  const renderActions = (friend: FriendEntity, tabIndex: number) => {
-    if (tabIndex === FriendsTab.Followers) {
+export const useFriendActions = (tab: 'followers' | 'followings') => {
+  const renderActions = (friend: FriendEntity) => {
+    if (tab === 'followers') {
       return (
         <>
           {friend.isFollowee ? (
@@ -22,7 +17,7 @@ export const useFriendActions = () => {
       )
     }
 
-    if (tabIndex === FriendsTab.Followings) {
+    if (tab === 'followings') {
       return  <UnfollowButton userId={friend.id} />
     }
 

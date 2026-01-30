@@ -7,24 +7,24 @@ import type { FriendEntity } from '@/entities';
 interface FriendsListProps {
   friends: FriendEntity[];
   newFollowerIds?: string[];
-  renderActions?: (friend: FriendEntity, index: number) => ReactNode;
+  renderActions?: (friend: FriendEntity) => ReactNode;
 }
 
 export const FriendsList = memo(({
   friends,
   renderActions,
-  newFollowerIds = []
+  newFollowerIds = [],
 }: FriendsListProps) => {
   return (
     <List topBorder={false}>
-      {friends.map((friend, index) => {
+      {friends.map((friend) => {
         const isNew = newFollowerIds.includes(friend.id);
         return <li
           key={friend.id}
           className={twMerge(classnames(
             "relative flex justify-between items-center py-[0.9375rem] border-style-b gap-2 px-2",
             { 'bg-blue-200': isNew}))
-        }>
+          }>
           {isNew && <Typography
             bold
             variant="span"
@@ -39,10 +39,11 @@ export const FriendsList = memo(({
             name={friend.name}
             className="grow"
           />
-          {renderActions?.(friend, index)}
+          {renderActions?.(friend)}
         </li>
       })}
     </List>
+
   );
 });
 

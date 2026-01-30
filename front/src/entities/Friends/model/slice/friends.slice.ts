@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FriendsState, FriendEntity } from '../type/friends.type.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
-import type { RootState } from '@/app/config';
 import {
   confirmFriendExtraReducer,
   fetchFollowingsExtraReducer,
@@ -109,10 +108,3 @@ export const {
   reducer: friendsReducer,
   actions: friendsActions,
 } = friendsSlice
-
-export const {
-  selectById: selectFriendById,
-  selectEntities: selectFriendsEntities,
-} = friendsAdapter.getSelectors<RootState>(
-  state => state.friends
-)
