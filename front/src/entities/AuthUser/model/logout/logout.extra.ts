@@ -16,6 +16,5 @@ export const logoutExtra = (builder: ActionReducerMapBuilder<AuthUserState>) => 
     .addCase(logout.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload ?? null;
-      console.log('logout error', action.payload);
     })
 };

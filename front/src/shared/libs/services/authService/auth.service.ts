@@ -12,7 +12,7 @@ export class AuthService {
     name,
     nickname,
     avatar, // FileList | undefined
-  }: RegisterUserArgs): Promise<Pick<IAuthResponse, 'token' | 'user'>> {
+  }: RegisterUserArgs): Promise<IAuthResponse> {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);

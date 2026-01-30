@@ -12,7 +12,17 @@ export const loginUserExtra = (builder: ActionReducerMapBuilder<AuthUserState>) 
     })
     .addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data = { ...action.payload.user, ...action.payload.stats };
+      const { user, stats } = action.payload.profile;
+      state.data = {
+        id: user.id,
+        username: user.username,
+        nickname: user.nickname,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        postsCount: stats.postsCount || 0,
+        followersCount: stats.followersCount || 0,
+        followeesCount: stats.followeesCount || 0,
+      };
       state.isToken = !!action.payload.token;
     })
     .addCase(loginUser.rejected, (state, action) => {

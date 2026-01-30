@@ -8,7 +8,7 @@ export interface UserState {
   // stats
   postsCount: number
   followersCount: number
-  followingCount: number
+  followeesCount: number
 }
 export interface AuthUserState {
   data: UserState | null;
