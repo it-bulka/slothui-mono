@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selectChatsEntities, selectChatsIds } from '../slice.ts';
+import { selectChatsEntities, selectChatsIds } from '../chat.adapter.ts';
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
 
 export const selectUserChats = createSelector(

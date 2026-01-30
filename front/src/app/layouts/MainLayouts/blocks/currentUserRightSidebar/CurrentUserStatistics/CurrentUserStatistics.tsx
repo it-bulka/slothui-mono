@@ -29,9 +29,9 @@ export const CurrentUserStatistics = memo(() => {
   if (!user) return <Typography>User not authorized</Typography>;
   if(isLoading) return <StatisticsSkeleton />
   return <Statistics
-    followingCount={user.followingCount}
-    followersCount={user.followersCount}
-    postsCount={user.postsCount}
+    followingCount={user.followingCount || 0}
+    followersCount={user.followersCount || 0}
+    postsCount={user.postsCount || 0}
   />
 })
 

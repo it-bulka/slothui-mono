@@ -15,10 +15,8 @@ export const SendMessageBtn = memo(() => {
   const isMsgSending = useSelectIsMessageSending()
 
   const sendMsg = () => {
-    if(!activeChatId) {
-      console.error(`activeChatId null`)
-      return
-    }
+    if(!activeChatId) return
+
     const extras = submitExtras()
     const msg: Message = {
       text: text,

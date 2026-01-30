@@ -1,5 +1,5 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import type { Chat } from './types/chat.type.ts';
+import type { Chat, ChatState } from './types/chat.type.ts';
 
 export const chatAdapter = createEntityAdapter<Chat, string>({
   selectId: (chat) => chat.id,
@@ -16,3 +16,21 @@ export const chatAdapter = createEntityAdapter<Chat, string>({
     return a.name.localeCompare(b.name)
   }
 });
+
+export const initialChatState = chatAdapter.getInitialState<ChatState>({
+  entities: {},
+  ids: [],
+  activeChatId: null,
+  hasMore: true,
+  isLoading: false,
+  searchResults: [],
+});
+
+export const {
+  selectById: selectChatById,
+  selectEntities: selectChatsEntities,
+  selectAll: selectSortedChats,
+  selectIds: selectChatsIds
+} = chatAdapter.getSelectors<{
+  chats: typeof initialChatState
+}>((state) => state.chats);

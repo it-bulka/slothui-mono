@@ -38,6 +38,7 @@ export {
   useUserChatSelect,
   useFetchMyChats,
   useUserChatStateSelect,
+  useActiveChatDataSelector,
   chatsActions
 } from './Chats';
 

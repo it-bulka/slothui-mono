@@ -1,4 +1,5 @@
-export { chatsReducer, selectSortedChats } from './model/slice.ts';
+export { chatsReducer } from './model/slice.ts';
+export { selectSortedChats } from './model/chat.adapter.ts';
 export { useActiveChatId } from './model/selectors/useActiveChatId.tsx';
 export { Chats } from './ui/Chats.tsx'
 export { searchChatsThunk } from './model/thunk/searchChats.thunk.ts';
@@ -10,5 +11,6 @@ export {
   useFetchSearchedChats,
   chatsActions,
   useFetchMyChats,
-  useUserChatStateSelect
+  useUserChatStateSelect,
+  useActiveChatDataSelector
 } from './model';

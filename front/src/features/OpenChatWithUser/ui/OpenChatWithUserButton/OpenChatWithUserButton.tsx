@@ -17,9 +17,10 @@ export const OpenChatWithUserButton = memo(({ userId }: { userId: string}) => {
   const handleOpenChat = useCallback(async () => {
     try {
       const data  = await chatService.findChatByMember(userId);
-      if (data.chatId) {
-        dispatch(chatsActions.openChat(data.chatId))
-        navigate(getMessagesWithUserPage(data.chatId));
+      if (data.id) {
+        dispatch(chatsActions.addChat(data))
+        dispatch(chatsActions.openChat(data.id))
+        navigate(getMessagesWithUserPage(data.id));
         return
       }
       toast.warn('Failed to open a chat');

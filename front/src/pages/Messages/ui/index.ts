@@ -1,0 +1,1 @@
+export { CurrentChatHeader } from './CurrentChatHeader/CurrentChatHeader.tsx';

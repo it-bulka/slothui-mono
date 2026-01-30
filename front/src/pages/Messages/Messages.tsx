@@ -1,14 +1,18 @@
 import { MessageInput } from '@/widgets';
-import { AvatarWithInfo, Typography, TypographyTypes } from '@/shared/ui';
-import MockAvatar from '@/mock/images/avatar.png'
+import { Typography, TypographyTypes } from '@/shared/ui';
 import { useRef, useEffect, useCallback } from 'react';
-import { Typing, useFetchMessagesByChat } from '@/entities';
 import { useCurrentChat } from './model/hooks/useCurrentChat.tsx';
 import { MessageComposer } from '@/features';
 import { useInfiniteScroll } from '@/shared/hooks';
-import { useMessagesByChatSelect, useChatMetaSelect } from '@/entities';
+import {
+  useMessagesByChatSelect,
+  useChatMetaSelect,
+  Typing,
+  useFetchMessagesByChat
+} from '@/entities';
 import { useParams } from 'react-router';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
+import { CurrentChatHeader } from './ui';
 
 const Messages = () => {
   const { id: chatId } = useParams<{ id: string }>()
@@ -38,9 +42,7 @@ const Messages = () => {
   })
   return (
     <div className="h-screen relative flex flex-col">
-      <div className="border-style-b px-6 py-4">
-        <AvatarWithInfo src={MockAvatar} name={"mock user"} position={"@nickname"}/>
-      </div>
+      <CurrentChatHeader />
       <div className="p-6 bg-underground-secondary grow overflow-y-scroll scrollbar-hide" ref={ref}>
         <div className="flex flex-col-reverse">
           {msgs.map((msg, index) => {

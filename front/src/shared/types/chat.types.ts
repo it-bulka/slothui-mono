@@ -1,6 +1,7 @@
 export interface UserDTO {
   id: string;
   name: string;
+  nickname: string;
   avatarUrl: string;
 }
 
@@ -13,6 +14,7 @@ export interface ChatDTO {
     text: string;
     createdAt: string;
   }
+  anotherMember?: UserDTO;
   isMember?: boolean;
   updatedAt: string;
 }

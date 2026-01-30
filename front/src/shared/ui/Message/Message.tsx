@@ -17,7 +17,6 @@ export const Message = memo(({
   time,
   maxWidth
 }: PropsWithChildren<MessageProps>) => {
-  console.log('Message', {isFirst, isAuthor})
   return (
     <div className={twMerge(classnames(cls.message, {
       [cls.self]: isAuthor,

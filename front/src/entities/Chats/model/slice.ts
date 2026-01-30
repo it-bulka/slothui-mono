@@ -1,24 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { PaginatedResponse } from '@/shared/types';
 import { chatAdapter } from './chat.adapter.ts';
-import type { ChatState, Chat } from './types/chat.type.ts';
+import type { Chat } from './types/chat.type.ts';
 import { fetchMyChatsExtraReducer, searchChatsExtraReducer } from './extraReducer';
-
-const initialState = chatAdapter.getInitialState<ChatState>({
-  entities: {},
-  ids: [],
-  activeChatId: null,
-  hasMore: true,
-  isLoading: false,
-  searchResults: [],
-});
+import { initialChatState } from './chat.adapter.ts';
 
 export const chatSlice = createSlice({
   name: 'chats',
-  initialState,
+  initialState: initialChatState,
   reducers: {
     chatsLoaded: (state, action: PayloadAction<PaginatedResponse<Chat>>) => {
       chatAdapter.addMany(state, action.payload.items);
+    },
+    addChat: (state, action: PayloadAction<Chat>) => {
+      chatAdapter.upsertOne(state, action.payload);
     },
     openChat: (state, action: PayloadAction<string>) => {
       state.activeChatId = action.payload;
@@ -34,11 +29,3 @@ export const chatSlice = createSlice({
 });
 
 export const { actions: chatsActions, reducer: chatsReducer } = chatSlice;
-export const {
-  selectById: selectChatById,
-  selectEntities: selectChatsEntities,
-  selectAll: selectSortedChats,
-  selectIds: selectChatsIds
-} = chatAdapter.getSelectors<{
-  chats: typeof initialState
-}>((state) => state.chats);

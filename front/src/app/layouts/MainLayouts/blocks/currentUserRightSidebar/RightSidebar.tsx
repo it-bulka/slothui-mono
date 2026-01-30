@@ -1,15 +1,22 @@
 import { AvatarWithStatus } from '@/shared/ui';
 import { NotificationAction, MessageAction, SettingAction } from '@/features';
-import AvatarImg from '@/mock/images/avatar.png'
 import { FriendSuggestions } from '@/entities';
 import { ProfileActivity, UpcomingEvents } from '@/widgets';
 import { CurrentUserStatistics } from './CurrentUserStatistics/CurrentUserStatistics.tsx';
+import { useAuthUserSelector } from '@/entities';
 
 export const RightSidebar = () => {
+  const userData = useAuthUserSelector()
+  if(!userData) return <p>No auth user</p>;
   return (
     <div className="border-style-l">
       <div className={"px-6 py-5 flex justify-end gap-2 text-svg-secondary"}>
-        <AvatarWithStatus src={AvatarImg} isOnline={true} className={"mr-auto"}/>
+        <AvatarWithStatus
+          src={userData?.avatarUrl}
+          name={userData.nickname}
+          isOnline={true}
+          className={"mr-auto"}
+        />
 
         <NotificationAction />
         <MessageAction />
