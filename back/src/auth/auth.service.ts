@@ -12,6 +12,8 @@ import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigType } from '@nestjs/config';
 import * as argon2 from 'argon2';
 import { User } from '../user/entities/user.entity';
+import { UserProfileDto } from '../user/dto/user-profile.dto';
+import { CreateUserDto } from '../user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -35,11 +37,49 @@ export class AuthService {
     return user;
   }
 
-  async login(user: AuthJwtUser) {
-    const { accessToken, refreshToken } = await this.generateToken(user);
+  async registerByLogin(dto: CreateUserDto): Promise<{
+    profile: UserProfileDto;
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const user = await this.userService.create(dto);
+    const { accessToken, refreshToken } =
+      await this.generateTokensAndSave(user);
 
+    const profile: UserProfileDto = {
+      user: {
+        id: user.id,
+        nickname: user.nickname,
+        username: user.name,
+        avatarUrl: user.avatarUrl,
+        bio: user.description,
+      },
+      stats: {
+        followersCount: 0,
+        followeesCount: 0,
+        postsCount: 0,
+      },
+    };
+    return { accessToken, refreshToken, profile };
+  }
+
+  async login(user: AuthJwtUser): Promise<{
+    profile: UserProfileDto;
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const { accessToken, refreshToken } =
+      await this.generateTokensAndSave(user);
+
+    const profile = await this.userService.getProfileData(user.id);
+    return { accessToken, refreshToken, profile };
+  }
+
+  private async generateTokensAndSave(user: User | AuthJwtUser) {
+    const { accessToken, refreshToken } = await this.generateToken(user);
     const hashedRefreshToken = await argon2.hash(refreshToken);
     await this.userService.updateRefreshToken(user, hashedRefreshToken);
+
     return { accessToken, refreshToken };
   }
 

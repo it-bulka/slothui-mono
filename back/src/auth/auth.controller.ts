@@ -14,7 +14,6 @@ import { CreateUserDto } from '../user/dto/user.dto';
 import { UserService } from '../user/user.service';
 import { HttpStatus } from '@nestjs/common';
 import { AuthRequest } from '../common/types/user.types';
-import { UserMapper } from '../user/user-mapper';
 import { Response as ExpressResponse } from 'express';
 import {
   FacebookAuthGuard,
@@ -43,16 +42,17 @@ export class AuthController {
     @Body() createUserDto: CreateUserDto,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    console.log('register', createUserDto);
     const user = await this.userService.create(createUserDto);
 
-    const { accessToken, refreshToken } = await this.authService.login({
-      id: user.id,
-      role: user.role,
-    });
+    const { accessToken, refreshToken, profile } = await this.authService.login(
+      {
+        id: user.id,
+        role: user.role,
+      },
+    );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
-    return { user: UserMapper.toResponse(user), accessToken };
+    return { profile, accessToken };
   }
 
   @UseGuards(LocalAuthGuard)
@@ -62,12 +62,12 @@ export class AuthController {
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    const { accessToken, refreshToken } = await this.authService.login(
+    const { accessToken, refreshToken, profile } = await this.authService.login(
       req.user,
     );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
-    return { user: UserMapper.toJwtUser(req.user), token: accessToken };
+    return { profile, token: accessToken };
   }
 
   @UseGuards(RefreshJwtAuthGuard)
