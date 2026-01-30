@@ -5,6 +5,7 @@ import { useGoToChat } from '@/entities/Chats/model/hooks/useGoToChat.tsx';
 
 export const Chats = ({ chats, className }: { chats: Chat[], className?: string}) => {
  const { goToChat } = useGoToChat()
+
   return (
     <List className={className}>
       {chats.map(chat => (
