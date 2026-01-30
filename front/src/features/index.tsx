@@ -37,3 +37,4 @@ export {
   UnfollowButton
 } from './friends';
 export { OpenChatWithUserButton } from './OpenChatWithUser';
+export { UserSearchToolbar } from './user-search';
