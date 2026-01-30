@@ -66,12 +66,10 @@ export class ChatsController {
     @Param('userId') userId: string,
     @Request() request: AuthRequest,
   ) {
-    const chat = await this.chatsService.findOrCreatePrivateChat([
+    return await this.chatsService.findOrCreatePrivateChat(
+      [request.user.id, userId],
       request.user.id,
-      userId,
-    ]);
-
-    return { chatId: chat.id };
+    );
   }
 
   @Delete(':id')

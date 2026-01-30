@@ -22,7 +22,7 @@ export interface ChatListItemDTO {
   membersCount: number;
   isPrivate: boolean;
   isClosedGroup?: boolean;
-  otherUser?: ChatMemberDTO; // just for private
+  anotherMember?: ChatMemberDTO; // just for private
   updatedAt: string;
   isMember?: boolean;
 }

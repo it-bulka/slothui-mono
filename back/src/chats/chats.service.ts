@@ -87,13 +87,10 @@ export class ChatsService {
         'cm.chatId = chat.id AND cm.userId = :userId',
         { userId },
       )
-
       .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
-
-      // 🔹 кількість мемберів
+      // members count
       .loadRelationCountAndMap('chat.membersCount', 'chat.members')
-
-      // 🔹 інший мембер (ChatMember)
+      // otherUser (ChatMember)
       .leftJoinAndMapOne(
         'chat.otherUser',
         ChatMember,
@@ -101,8 +98,7 @@ export class ChatsService {
         'otherCm.chatId = chat.id AND otherCm.userId != :userId',
         { userId },
       )
-
-      // 🔥 КЛЮЧОВИЙ РЯДОК
+      // add otherUser property to entity
       .leftJoinAndMapOne(
         'otherCm.user',
         User,
@@ -123,8 +119,6 @@ export class ChatsService {
 
     // due to use leftJoinAndMapOne
     const chats = entities as (Chat & { otherUser?: { user?: User } })[];
-    console.log('chats ENTITIES', chats);
-    console.log('chats RAW', raw);
 
     const { resultItems, nextCursor, hasMore } = checkNextCursor({
       items: chats,
@@ -136,7 +130,7 @@ export class ChatsService {
       let avatarUrl = chat.avatarUrl;
       let name = chat.name ?? 'Chat';
       let otherUserData: ChatMemberDTO | undefined;
-      console.log('otherUser', chat.otherUser?.user);
+
       if (chat.type === 'private' && chat.otherUser) {
         const otherUser = chat.otherUser.user;
         if (otherUser) {
@@ -170,7 +164,7 @@ export class ChatsService {
         lastMessage,
         updatedAt: chat.updatedAt.toISOString(),
         isMember: true,
-        otherUser: otherUserData,
+        anotherMember: otherUserData,
       };
     });
 
@@ -181,12 +175,14 @@ export class ChatsService {
     };
   }
 
-  async findOrCreatePrivateChat(members: [string, string]): Promise<Chat> {
+  async findOrCreatePrivateChat(
+    members: [string, string],
+    currentUserId: string,
+  ): Promise<ChatListItemDTO> {
     if (!members || members.length !== 2) {
-      throw new BadRequestException(
-        `Invalid members amount: ${members.length}`,
-      );
+      throw new BadRequestException('Private chat must have exactly 2 members');
     }
+
     let chat = await this.chatRepo
       .createQueryBuilder('chat')
       .innerJoin(ChatMember, 'cm', 'cm.chatId = chat.id')
@@ -196,32 +192,55 @@ export class ChatsService {
       .having('COUNT(DISTINCT cm.userId) = 2')
       .getOne();
 
-    if (chat) return chat;
-
-    const users = await this.userService.findByIds(members, {
-      throwErrorIfNotExist: true,
-    });
-
-    chat = await this.chatRepo.manager.transaction(async (manager) => {
-      const newChat = manager.create(Chat, {
-        type: 'private',
-        members: users,
+    if (!chat) {
+      const users = await this.userService.findByIds(members, {
+        throwErrorIfNotExist: true,
       });
 
-      await manager.save(newChat);
+      chat = await this.chatRepo.manager.transaction(async (manager) => {
+        const newChat = manager.create(Chat, {
+          type: 'private',
+        });
+        await manager.save(newChat);
 
-      const chatMembers = users.map((user) =>
-        manager.create(ChatMember, {
-          chatId: newChat.id,
-          userId: user.id,
-        }),
-      );
-      await manager.save(chatMembers);
+        const chatMembers = users.map((user) =>
+          manager.create(ChatMember, {
+            chatId: newChat.id,
+            userId: user.id,
+            role: 'MEMBER',
+          }),
+        );
+        await manager.save(chatMembers);
 
-      return newChat;
-    });
+        return newChat;
+      });
+    }
 
-    return chat;
+    const otherUser = await this.userRepo
+      .createQueryBuilder('user')
+      .innerJoin(ChatMember, 'cm', 'cm.userId = user.id')
+      .where('cm.chatId = :chatId', { chatId: chat.id })
+      .andWhere('user.id != :currentUserId', { currentUserId })
+      .getOne();
+
+    if (!otherUser) {
+      throw new Error('Private chat companion not found');
+    }
+
+    return {
+      id: chat.id,
+      isPrivate: true,
+      membersCount: 2,
+      updatedAt: chat.updatedAt.toISOString(),
+      name: otherUser.nickname,
+      avatarUrl: otherUser.avatarUrl,
+      anotherMember: {
+        id: otherUser.id,
+        name: otherUser.name,
+        nickname: otherUser.nickname,
+        avatarUrl: otherUser.avatarUrl,
+      },
+    };
   }
 
   async globalSearch({
@@ -356,7 +375,7 @@ export class ChatsService {
               createdAt: chat.lastMessage.createdAt.toISOString(),
             }
           : undefined,
-        otherUser: otherUser
+        anotherMember: otherUser
           ? {
               id: otherUser.id,
               name: otherUser.name,

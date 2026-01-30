@@ -119,6 +119,7 @@ export class StoriesController {
       ...dto,
       senderId: req.user.id,
       storyId,
+      currentUserId: req.user.id,
     });
   }
 }

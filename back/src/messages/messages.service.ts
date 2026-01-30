@@ -259,15 +259,20 @@ export class MessagesService {
     senderId,
     receiverId,
     text,
-  }: CreateStoryReactionMsgDto & { senderId: string; storyId: string }) {
+    currentUserId,
+  }: CreateStoryReactionMsgDto & {
+    senderId: string;
+    storyId: string;
+    currentUserId: string;
+  }) {
     const story = await this.storiesService.findById(storyId);
     if (!story) {
       throw new NotFoundException(`Story not found`);
     }
-    const chat = await this.chatsService.findOrCreatePrivateChat([
-      senderId,
-      receiverId,
-    ]);
+    const chat = await this.chatsService.findOrCreatePrivateChat(
+      [senderId, receiverId],
+      currentUserId,
+    );
 
     return await this.createWithStory({
       chatId: chat.id,
