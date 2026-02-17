@@ -75,7 +75,7 @@ export class FollowerService {
     return {
       id: followee.id,
       src: followee.avatarUrl,
-      name: followee.name,
+      username: followee.username,
       nickname: followee.nickname,
 
       confirmed: following.confirmed,
@@ -239,7 +239,7 @@ export class FollowerService {
     const items: FriendDto[] = users.map((u) => ({
       id: u.id,
       src: u.avatarUrl || '',
-      name: u.name,
+      username: u.username,
       nickname: u.nickname,
       isFollower: false,
       isFollowing: false,

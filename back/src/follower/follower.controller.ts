@@ -125,7 +125,7 @@ export class FollowerController {
     return {
       id: user.id,
       src: user.avatarUrl || '',
-      name: user.name,
+      username: user.username,
       nickname: user.nickname,
       isFollower,
       isFollowing,

@@ -29,13 +29,13 @@ export class User {
   password: string | null;
 
   @Column({ type: 'varchar' })
-  name: string;
+  username: string;
 
   @Column({ type: 'varchar', unique: true })
   nickname: string;
 
   @Column({ type: 'varchar', nullable: true })
-  description: string | null;
+  bio: string | null;
 
   @Column({ type: 'varchar', unique: true, nullable: true })
   email?: string;
@@ -57,6 +57,9 @@ export class User {
 
   @Column({ nullable: true, default: undefined })
   avatarUrl?: string;
+
+  @Column({ nullable: true, default: undefined })
+  avatarPublicId?: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -127,7 +127,7 @@ export class PostsService {
       .leftJoin('post.author', 'author')
       .addSelect([
         'author.id',
-        'author.name',
+        'author.username',
         'author.nickname',
         'author.avatarUrl',
       ])

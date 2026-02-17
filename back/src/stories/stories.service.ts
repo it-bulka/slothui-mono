@@ -90,7 +90,7 @@ export class StoriesService {
       .leftJoin('story.views', 'view', 'view.viewer = :currentUserId', {
         currentUserId,
       })
-      .select(['user.id', 'user.name', 'user.nickname', 'user.avatarUrl'])
+      .select(['user.id', 'user.username', 'user.nickname', 'user.avatarUrl'])
       .addSelect('MAX(story.createdAt)', 'lastStoryDate')
       .addSelect('COUNT(story.id)', 'totalStories')
       .addSelect('COUNT(view.id)', 'viewedStories')
@@ -180,7 +180,7 @@ export class StoriesService {
         'view.id',
         'view.viewedAt',
         'user.id',
-        'user.name',
+        'user.username',
         'user.nickname',
         'user.avatarUrl',
       ])

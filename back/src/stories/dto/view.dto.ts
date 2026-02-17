@@ -4,7 +4,7 @@ import { PaginatedResponse } from '../../common/types/pagination.type';
 export type ViewDto = {
   id: string;
   viewedAt: string;
-  viewer: Pick<UserResponse, 'id' | 'name' | 'nickname' | 'avatarUrl'>;
+  viewer: Pick<UserResponse, 'id' | 'username' | 'nickname' | 'avatarUrl'>;
 };
 
 export type ViewsPaginatedResponse = PaginatedResponse<ViewDto>;

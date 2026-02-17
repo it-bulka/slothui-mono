@@ -5,12 +5,18 @@ import {
   Request,
   Query,
   Param,
+  Patch,
+  UseInterceptors,
+  Body,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AuthRequest } from '../common/types/user.types';
 import { UserMapper } from './user-mapper';
 import { SearchUsersQueryDto } from './dto/search-user.query';
+import { ProfileUpdateDto } from './dto/profile-update.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -20,6 +26,22 @@ export class UserController {
   @Get('me/profile')
   async getProfile(@Request() req: AuthRequest) {
     const user = await this.userService.findOne(req.user.id);
+    if (!user) return null;
+    return UserMapper.toResponse(user);
+  }
+
+  @Patch('me/profile/update')
+  @UseInterceptors(FileInterceptor('avatar'))
+  async updateProfile(
+    @Body() dto: ProfileUpdateDto,
+    @Request() req: AuthRequest,
+    @UploadedFile() avatar?: Express.Multer.File,
+  ) {
+    console.log('profile/update', dto);
+    const user = await this.userService.updateProfileData(req.user.id, {
+      ...dto,
+      avatar,
+    });
     if (!user) return null;
     return UserMapper.toResponse(user);
   }

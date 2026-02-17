@@ -2,12 +2,12 @@ import { User } from '../entities/user.entity';
 
 export type UserResponse = Pick<
   User,
-  'id' | 'name' | 'nickname' | 'role' | 'avatarUrl' | 'email'
+  'id' | 'username' | 'nickname' | 'role' | 'avatarUrl' | 'email' | 'bio'
 >;
 
 export interface UserShortDTO {
   id: string;
-  //username: string;
+  username: string;
   nickname: string;
   avatarUrl?: string;
 }

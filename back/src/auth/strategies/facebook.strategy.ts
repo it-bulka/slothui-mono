@@ -39,7 +39,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     const user = await this.authService.validateGoogleUser({
       email: email,
       nickname: profile.displayName || email.split('@')[0],
-      name,
+      username: name,
       avatarUrl,
     });
 

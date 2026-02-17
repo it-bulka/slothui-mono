@@ -1,7 +1,10 @@
 import { PaginatedResponse } from '../../common/types/pagination.type';
 import { UserResponse } from '../../user/dto/user-response.dto';
 
-type UserData = Pick<UserResponse, 'id' | 'name' | 'nickname' | 'avatarUrl'>;
+type UserData = Pick<
+  UserResponse,
+  'id' | 'username' | 'nickname' | 'avatarUrl'
+>;
 export interface StoryDto {
   id: string;
   url: string;

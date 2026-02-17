@@ -3,7 +3,7 @@ import { Event } from '../entity/event.entity';
 
 interface OrganizerBase {
   id: string;
-  name: string;
+  username: string;
   nickname: string;
   avatarUrl?: string | null;
 }
@@ -24,7 +24,7 @@ export function mapToEventDTO(
     isSubscribed,
     organizer: {
       id: event.organizer.id,
-      name: event.organizer.name,
+      username: event.organizer.username,
       avatar: event.organizer.avatarUrl,
       nickname: event.organizer.nickname,
     },

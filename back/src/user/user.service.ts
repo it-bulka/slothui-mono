@@ -18,6 +18,9 @@ import {
   UserProfileDto,
   UserProfileDtoWithRelations,
 } from './dto/user-profile.dto';
+import { ProfileUpdateDto } from './dto/profile-update.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -26,6 +29,8 @@ export class UserService {
     private readonly userRepo: Repository<User>,
     private readonly followerService: FollowerService,
     private readonly postsService: PostsService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(
@@ -47,15 +52,88 @@ export class UserService {
     return await this.userRepo.save(user);
   }
 
+  async updateProfileData(
+    userId: string,
+    dto: ProfileUpdateDto & { avatar?: Express.Multer.File },
+  ) {
+    const keys = Object.keys(dto);
+    if (!keys.length) {
+      throw new BadRequestException('No data to update');
+    }
+    console.log('userId', userId, 'dto', dto);
+    if (!userId) throw new BadRequestException(`NO userId`);
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) throw new BadRequestException(`User not found`);
+
+    const { avatar: _a, removeAvatar, ...dtoData } = dto;
+    const newData: Partial<User> = dtoData;
+
+    if (dto.avatar) {
+      const uploaded = await this.updateAvatar(dto.avatar, user.avatarPublicId);
+      newData.avatarPublicId = uploaded?.public_id;
+      newData.avatarUrl = uploaded?.url;
+    }
+
+    if (removeAvatar) {
+      await this.deleteAvatar(user.avatarPublicId);
+      newData.avatarPublicId = undefined;
+      newData.avatarUrl = undefined;
+    }
+
+    Object.assign(user, newData);
+    return await this.userRepo.save(user);
+  }
+
+  async updateAvatar(
+    newAvatarFile: Express.Multer.File,
+    prevAvatarPublicId?: string,
+  ) {
+    const PROJECT_FOLDER: string =
+      this.configService.getOrThrow('CLOUDINARY_PROJECT');
+
+    /*const uploaded = await this.cloudinaryService.uploadFile(
+      newAvatarFile,
+      `${PROJECT_FOLDER}/avatars`,
+    );
+*/
+
+    const PATH = `${PROJECT_FOLDER}/avatar`;
+    let uploaded: Awaited<
+      ReturnType<typeof this.cloudinaryService.uploadFileBase64>
+    >;
+    try {
+      uploaded = await this.cloudinaryService.uploadFileStream(
+        newAvatarFile,
+        PATH,
+      );
+    } catch (err) {
+      console.warn('Stream upload failed, fallback to base64', err);
+
+      const base64 = `data:${newAvatarFile.mimetype};base64,${newAvatarFile.buffer.toString('base64')}`;
+      uploaded = await this.cloudinaryService.uploadFileBase64(base64, PATH);
+    }
+
+    if (prevAvatarPublicId) {
+      await this.cloudinaryService.deleteFile(prevAvatarPublicId);
+    }
+
+    return uploaded;
+  }
+
+  async deleteAvatar(prevAvatarPublicId?: string) {
+    if (!prevAvatarPublicId) return null;
+    return await this.cloudinaryService.deleteFile(prevAvatarPublicId);
+  }
+
   async createWithProviderId(
-    createUserDto: Pick<CreateUserDto, 'nickname' | 'name'> & {
+    createUserDto: Pick<CreateUserDto, 'nickname' | 'username'> & {
       avatarUrl?: string;
       providerId: string;
       providerName: 'instagram' | 'twitter' | 'github' | 'telegram';
       email?: string;
     },
   ) {
-    const { providerName, providerId, nickname, avatarUrl, name, email } =
+    const { providerName, providerId, nickname, avatarUrl, username, email } =
       createUserDto;
 
     if (!providerId) throw new BadRequestException('ProviderId is required');
@@ -70,7 +148,7 @@ export class UserService {
       [`${providerName}Id`]: providerId,
       avatarUrl,
       nickname,
-      name,
+      username,
       email,
     });
     return await this.userRepo.save(user);
@@ -236,7 +314,7 @@ export class UserService {
   async getProfileData(userId: string): Promise<UserProfileDto> {
     const user = await this.userRepo.findOne({
       where: { id: userId },
-      select: ['id', 'nickname', 'name', 'email', 'avatarUrl', 'description'],
+      select: ['id', 'nickname', 'username', 'email', 'avatarUrl', 'bio'],
     });
 
     if (!user) throw new BadRequestException(`User not found`);
@@ -251,9 +329,9 @@ export class UserService {
       user: {
         id: user.id,
         nickname: user.nickname,
-        username: user.name,
+        username: user.username,
         avatarUrl: user.avatarUrl,
-        bio: user.description,
+        bio: user.bio,
       },
       stats: {
         followersCount,

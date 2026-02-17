@@ -68,7 +68,7 @@ export class ChatsService {
       ...ChatMapper.toDetails(chat),
       members: chat.members.map((m) => ({
         id: m.user.id,
-        name: m.user.name,
+        username: m.user.username,
         nickname: m.user.nickname,
         avatarUrl: m.user.avatarUrl,
       })),
@@ -135,13 +135,13 @@ export class ChatsService {
         const otherUser = chat.otherUser.user;
         if (otherUser) {
           avatarUrl = otherUser.avatarUrl || null;
-          name = otherUser.name;
+          name = otherUser.username;
 
           otherUserData = {
             id: otherUser.id,
             avatarUrl: otherUser.avatarUrl,
             nickname: otherUser.nickname,
-            name: otherUser.name,
+            username: otherUser.username,
           };
         }
       }
@@ -236,7 +236,7 @@ export class ChatsService {
       avatarUrl: otherUser.avatarUrl,
       anotherMember: {
         id: otherUser.id,
-        name: otherUser.name,
+        username: otherUser.username,
         nickname: otherUser.nickname,
         avatarUrl: otherUser.avatarUrl,
       },
@@ -312,7 +312,7 @@ export class ChatsService {
       type: 'user',
       user: {
         id: user.id,
-        name: user.name,
+        username: user.username,
         nickname: user.nickname,
         avatarUrl: user.avatarUrl || undefined,
       },
@@ -362,7 +362,7 @@ export class ChatsService {
       return {
         id: chat.id,
         name: isPrivate
-          ? otherUser?.name || 'Private Chat'
+          ? otherUser?.username || 'Private Chat'
           : chat.name || 'Group Chat',
         avatarUrl: isPrivate ? otherUser?.avatarUrl : chat.avatarUrl,
         isPrivate,
@@ -378,7 +378,7 @@ export class ChatsService {
         anotherMember: otherUser
           ? {
               id: otherUser.id,
-              name: otherUser.name,
+              username: otherUser.username,
               nickname: otherUser.nickname,
               avatarUrl: otherUser.avatarUrl,
             }
@@ -401,7 +401,7 @@ export class ChatsService {
     const { chat, memberIds } = await this.chatRepo.manager.transaction(
       async (manager) => {
         const chat = manager.create(Chat, {
-          name: dto.name,
+          username: dto.username,
           owner: owner,
           type: dto.type || 'private',
           visibility: dto.visibility,
@@ -492,7 +492,7 @@ export class ChatsService {
       chatId,
       newMember: {
         id: user.id,
-        name: user.name,
+        username: user.username,
         nickname: user.nickname,
         avatarUrl: user.avatarUrl,
       },

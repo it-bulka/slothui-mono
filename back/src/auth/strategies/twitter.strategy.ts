@@ -21,7 +21,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     const user = await this.authService.validateTwitterUser({
       twitterId: profile.id,
       nickname: profile.displayName,
-      name: profile.username,
+      username: profile.username,
       avatarUrl: profile.profileUrl || profile.photos?.[0]?.value,
       email: profile.emails?.[0].value, // might be, but not usually
     });

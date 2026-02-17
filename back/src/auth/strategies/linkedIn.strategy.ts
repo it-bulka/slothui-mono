@@ -39,7 +39,7 @@ export class LinkedInStrategy extends PassportStrategy(Strategy, 'linkedin') {
     const user = await this.authService.validateOAuthUser({
       email: email,
       nickname: profile.displayName || email.split('@')[0],
-      name,
+      username: name,
       avatarUrl,
     });
 

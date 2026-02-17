@@ -20,7 +20,7 @@ export class AppService implements OnModuleInit {
       const admin = this.userRepo.create({
         email: process.env.ADMIN_EMAIL,
         password: process.env.ADMIN_PASSWORD,
-        name: process.env.ADMIN_NAME,
+        username: process.env.ADMIN_NAME,
         nickname: process.env.ADMIN_NICKNAME,
         role: RolesEnum.ADMIN,
       });

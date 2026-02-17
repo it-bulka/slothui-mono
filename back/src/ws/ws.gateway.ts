@@ -125,7 +125,7 @@ export class WsGateway
     );
     const chat = await this.chatsService.create({
       members: clearIds,
-      name: body.name,
+      username: body.username,
       ownerId: client.data.user.id,
       type: body.type,
       visibility: body.visibility,

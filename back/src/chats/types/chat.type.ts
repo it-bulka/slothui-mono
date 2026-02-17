@@ -3,7 +3,7 @@ export type ChatVisibility = 'private' | 'public';
 
 export interface ChatMemberDTO {
   id: string;
-  name: string;
+  username: string;
   nickname: string;
   avatarUrl?: string;
 }

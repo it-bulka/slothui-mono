@@ -50,9 +50,9 @@ export class AuthService {
       user: {
         id: user.id,
         nickname: user.nickname,
-        username: user.name,
+        username: user.username,
         avatarUrl: user.avatarUrl,
-        bio: user.description,
+        bio: user.bio,
       },
       stats: {
         followersCount: 0,
@@ -168,15 +168,15 @@ export class AuthService {
   async validateOAuthUser({
     email,
     nickname,
-    name,
+    username,
     avatarUrl,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { email: string }) {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & { email: string }) {
     let user = await this.userService.findByEmail(email);
     if (!user) {
       user = await this.userService.create({
         email,
         nickname,
-        name,
+        username,
         avatarUrl,
         password: null,
       });
@@ -188,15 +188,15 @@ export class AuthService {
   async validateGoogleUser({
     email,
     nickname,
-    name,
+    username,
     avatarUrl,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { email: string }) {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & { email: string }) {
     let user = await this.userService.findByEmail(email);
     if (!user) {
       user = await this.userService.create({
         email,
         nickname,
-        name,
+        username,
         avatarUrl,
         password: null,
       });
@@ -208,16 +208,18 @@ export class AuthService {
   async validateInstagramUser({
     instagramId,
     nickname,
-    name,
+    username,
     avatarUrl,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & { instagramId: string }) {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
+    instagramId: string;
+  }) {
     let user = await this.userService.findByInstagramId(instagramId);
     if (!user) {
       user = await this.userService.createWithProviderId({
         providerName: 'instagram',
         providerId: instagramId,
         nickname,
-        name,
+        username,
         avatarUrl,
       });
     }
@@ -228,10 +230,10 @@ export class AuthService {
   async validateTwitterUser({
     twitterId,
     nickname,
-    name,
+    username,
     avatarUrl,
     email,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
     twitterId: string;
     email?: string;
   }) {
@@ -241,7 +243,7 @@ export class AuthService {
         providerName: 'twitter',
         providerId: twitterId,
         nickname,
-        name,
+        username,
         avatarUrl,
         email,
       });
@@ -253,10 +255,10 @@ export class AuthService {
   async validateGithubUser({
     githubId,
     nickname,
-    name,
+    username,
     avatarUrl,
     email,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
     githubId: string;
     email?: string;
   }) {
@@ -266,7 +268,7 @@ export class AuthService {
         providerName: 'github',
         providerId: githubId,
         nickname,
-        name,
+        username,
         avatarUrl,
         email,
       });
@@ -278,9 +280,9 @@ export class AuthService {
   async validateTelegramUser({
     telegramId,
     nickname,
-    name,
+    username,
     avatarUrl,
-  }: Pick<User, 'name' | 'nickname' | 'avatarUrl'> & {
+  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
     telegramId: string;
   }) {
     let user = await this.userService.findByTelegramId(telegramId);
@@ -289,7 +291,7 @@ export class AuthService {
         providerName: 'telegram',
         providerId: telegramId,
         nickname,
-        name,
+        username,
         avatarUrl,
       });
     }

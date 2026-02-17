@@ -14,6 +14,7 @@ export class CloudinaryService implements OnModuleInit {
       cloud_name: this.configService.getOrThrow('CLOUDINARY_CLOUD_NAME'),
       api_key: this.configService.getOrThrow('CLOUDINARY_API_KEY'),
       api_secret: this.configService.getOrThrow('CLOUDINARY_API_SECRET'),
+      timeout: 60000,
     });
   }
 
@@ -29,6 +30,13 @@ export class CloudinaryService implements OnModuleInit {
       resource_type: 'auto',
       public_id: this.generateUniqueFileName(file.originalname),
     });
+  }
+
+  async uploadFileBase64(
+    base64: string,
+    folder: string,
+  ): Promise<UploadApiResponse> {
+    return cloudinary.uploader.upload(base64, { folder, timeout: 60000 });
   }
 
   async uploadFileStream(

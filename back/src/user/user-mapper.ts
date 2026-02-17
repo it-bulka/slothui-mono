@@ -5,10 +5,11 @@ export class UserMapper {
   static toResponse(user: UserResponse & Record<string, any>): UserResponse {
     return {
       id: user.id,
-      name: user.name,
+      username: user.username,
       nickname: user.nickname,
       role: user.role,
       email: user.email,
+      bio: user.bio,
       avatarUrl: user.avatarUrl,
     };
   }

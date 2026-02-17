@@ -22,7 +22,7 @@ export class TelegramStrategy extends PassportStrategy(Strategy, 'telegram') {
     const user = await this.authService.validateTelegramUser({
       telegramId: profile.id,
       nickname: profile.displayName,
-      name: profile.username || profile.displayName,
+      username: profile.username || profile.displayName,
       avatarUrl: profile.photo_url || profile.photos?.[0]?.value,
     });
 

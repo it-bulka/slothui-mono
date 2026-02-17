@@ -1,7 +1,7 @@
 export interface EventParticipant {
   id: string;
   avatar: string;
-  name: string;
+  username: string;
 }
 
 export type EventParticipants = {
@@ -26,7 +26,7 @@ export interface EventResponseDto {
   location?: Location | null;
   organizer: {
     id: string;
-    name: string;
+    username: string;
     nickname: string;
     avatar?: string | null;
   };

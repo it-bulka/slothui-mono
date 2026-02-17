@@ -38,7 +38,7 @@ export class EventsService {
       ...created,
       organizer: {
         id: organizer.id,
-        name: organizer.name,
+        username: organizer.username,
         nickname: organizer.nickname,
         avatarUrl: organizer.avatarUrl,
       },
@@ -79,7 +79,7 @@ export class EventsService {
         'event.createdAt AS createdAt',
         `json_build_object(
            'id', organizer.id,
-           'name', organizer.name,
+           'username', organizer.username,
            'nickname', organizer.nickname,
            'avatar', organizer.avatar
          ) AS organizer`,
@@ -121,7 +121,7 @@ export class EventsService {
         'event.createdAt AS createdAt',
         `json_build_object(
            'id', organizer.id,
-           'name', organizer.name,
+           'username', organizer.username,
            'avatar', organizer."avatarUrl"
          ) AS organizer`,
       ])
@@ -202,7 +202,7 @@ export class EventsService {
       location: event.location,
       organizer: {
         id: event.organizer.id,
-        name: event.organizer.name,
+        username: event.organizer.username,
         avatar: event.organizer.avatarUrl,
         nickname: event.organizer.nickname,
       },

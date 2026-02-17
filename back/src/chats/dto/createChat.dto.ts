@@ -16,7 +16,7 @@ export class CreateChatDto {
   @ValidateIf((o: CreateChatDto) => o.members && o.members.length > 2)
   @IsString()
   @IsNotEmpty()
-  name?: string;
+  username?: string;
 
   @IsString({ message: 'should be set to "private" or "group"' })
   @IsNotEmpty({ message: 'required' })

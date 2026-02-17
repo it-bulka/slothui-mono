@@ -217,7 +217,12 @@ export class PollsService {
     const qb = this.voteRepo
       .createQueryBuilder('vote')
       .leftJoin('vote.user', 'user')
-      .addSelect(['user.id', 'user.name', 'user.nickname', 'user.avatarUrl'])
+      .addSelect([
+        'user.id',
+        'user.username',
+        'user.nickname',
+        'user.avatarUrl',
+      ])
       .where('vote.pollId IN (:...ids)', { ids: pollIds })
       .andWhere('vote.user IS NOT NULL')
       .orderBy('vote.createdAt', 'DESC');
@@ -235,7 +240,7 @@ export class PollsService {
         acc[item.id] = [
           {
             id: item.user.id,
-            username: item.user.name,
+            username: item.user.username,
             nickname: item.user.nickname,
             avatarUrl: item.user.avatarUrl,
           },
