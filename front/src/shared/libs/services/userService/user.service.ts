@@ -4,8 +4,7 @@ import type {
   PaginatedResponse,
   ProfileAnalyticsDto,
   UserShort,
-  UserWithStats,
-  OtherUserWithStats, UpdateUserDto
+  OtherUserWithStats, UpdateUserDto, IAuthResponse
 } from '../../../types';
 
 const USERS_API = '/api/users';
@@ -38,9 +37,19 @@ export class UserService {
   }
 
   /** GET /api/users/me/profile  for current user */
-  async getMyProfileData(): Promise<UserWithStats> {
-    return await this.http.request<UserWithStats>(
+  async getMyProfileData(): Promise<Omit<IAuthResponse, 'token'>> {
+    return await this.http.request<Omit<IAuthResponse, 'token'>>(
       `${USERS_API}/me/profile`,
+    );
+  }
+
+  /** POST /api/users/me/change-password */
+  async changePassword(dto: {oldPassword: string, newPassword: string}): Promise<void> {
+    return await this.http.request<void>(
+      `${USERS_API}/me/change-password`,
+      {
+        body: { oldPassword: dto.oldPassword, newPassword: dto.newPassword }
+      }
     );
   }
 

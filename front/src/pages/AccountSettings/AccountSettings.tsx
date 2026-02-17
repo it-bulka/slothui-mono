@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button, Input, Typography, List } from '@/shared/ui';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
+import { useAuthUserSelector } from '@/entities';
+import { ChangePasswordFormLazy } from '@/features';
 
 const sessions = [
   "1", "2"
@@ -8,26 +10,25 @@ const sessions = [
 
 const AccountSettings = () => {
   const [isChangePassOpen, setChangePassOpen] = useState(false)
+  const authUser = useAuthUserSelector()
+
+  if(!authUser) return null
+
+  const isLocalProvider = authUser?.linkedProviders.find(item => item.provider === 'local')
   return (
     <SubSettingsWrapper title="Account Settings">
       <>
-        <Input name="phone" label="Phone number" />
-        <Input name="email" label="Email" />
-
-        <Button
-          className="w-full"
-          onClick={()=> setChangePassOpen(prev => !prev)}
-        >
-          {isChangePassOpen ? "Hide Password Form" : "Change password"}
-        </Button>
-        {isChangePassOpen && (
-          <form className="flex flex-col gap-4">
-            <Input name="pass" label="Existed password" />
-            <Input name="pass-new" label="New password" />
-            <Input name="pass-new-rep" label="Repeat New password" />
-            <Button className="ml-auto">Confirm</Button>
-          </form>
+        {authUser.email && <Input name="email" label="Email" value={authUser.email} readOnly />}
+        {isLocalProvider && (
+          <Button
+            className="w-full"
+            onClick={()=> setChangePassOpen(prev => !prev)}
+          >
+            {isChangePassOpen ? "Hide Password Form" : "Change password"}
+          </Button>
         )}
+
+        {isChangePassOpen && <ChangePasswordFormLazy />}
         <Typography bold>Active sessions:</Typography>
         <List topBorder={false}>
           {sessions.map((session) => (

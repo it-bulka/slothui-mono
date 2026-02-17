@@ -19,6 +19,7 @@ export const loginUserExtra = (builder: ActionReducerMapBuilder<AuthUserState>) 
         nickname: user.nickname,
         email: user.email,
         avatarUrl: user.avatarUrl,
+        linkedProviders: action.payload.linkedProviders,
         postsCount: stats.postsCount || 0,
         followersCount: stats.followersCount || 0,
         followeesCount: stats.followeesCount || 0,

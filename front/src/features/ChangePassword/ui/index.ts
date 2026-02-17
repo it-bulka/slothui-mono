@@ -1,0 +1,1 @@
+export { ChangePasswordFormLazy } from './ChangePasswordForm/ChangePasswordFormLazy.tsx';

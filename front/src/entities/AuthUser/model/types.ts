@@ -9,6 +9,8 @@ export interface UserState {
   postsCount: number
   followersCount: number
   followeesCount: number
+  // providers
+  linkedProviders: { provider: string, providerId: string }[];
 }
 export interface AuthUserState {
   data: UserState | null;
