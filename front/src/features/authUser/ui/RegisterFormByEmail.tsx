@@ -27,7 +27,7 @@ export const RegisterForm = () => {
 
   const onSubmit = useCallback(async (data: RegisterFormData) => {
     registerUser({
-      name: data.username,
+      username: data.username,
       email: data.email,
       password: data.password,
       nickname: data.nickname,

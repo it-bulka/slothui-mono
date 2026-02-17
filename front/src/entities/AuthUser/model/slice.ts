@@ -3,6 +3,7 @@ import type { AuthUserState, UserState } from './types.ts';
 import { loginUserExtra } from './login/login.extra.ts';
 import { registerUserExtra } from './register/register.extra.ts';
 import { logoutExtra } from './logout/logout.extra.ts';
+import { updateProfileExtra } from './updateProfile/updateProfile.extra.ts';
 
 const initialState: AuthUserState = {
   data: null,
@@ -29,6 +30,7 @@ export const authUserSlice = createSlice({
     registerUserExtra(builder);
     loginUserExtra(builder);
     logoutExtra(builder);
+    updateProfileExtra(builder);
   }
 });
 

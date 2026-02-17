@@ -13,7 +13,7 @@ type FriendPage = {
 export type FriendEntity = {
   id: string;
   src?: string | null
-  name: string
+  username: string
   nickname: string
 
   isFollowee: boolean

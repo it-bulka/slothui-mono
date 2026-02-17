@@ -8,7 +8,7 @@ export type IAuthResponse = {
 export interface RegisterUserArgs {
   email: string;
   password: string;
-  name: string;
+  username: string;
   nickname: string;
   avatar?: FileList;
 }

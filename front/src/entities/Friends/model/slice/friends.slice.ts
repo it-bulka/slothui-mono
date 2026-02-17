@@ -75,7 +75,7 @@ export const friendsSlice = createSlice({
       friendsAdapter.upsertOne(state, {
         id: user.id,
         src: user.avatarUrl,
-        name: user.username,
+        username: user.username,
         nickname: user.nickname,
 
         isFollower: relation.isFollower,

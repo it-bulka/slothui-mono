@@ -1,7 +1,7 @@
 export type FriendDto = {
   id: string;
   src: string
-  name: string
+  username: string
   nickname: string
 
   isFollowee: boolean

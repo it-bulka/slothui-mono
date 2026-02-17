@@ -3,7 +3,7 @@ import ArrowUpRightSvg from '@/shared/assets/images/general/arrow-up-right.svg?r
 
 interface ParticipantsProps {
   participantsCount?: number
-  participants: {id: string; name: string; avatar?: string}[];
+  participants: {id: string; username: string; avatar?: string}[];
 }
 
 export const Participants = ({ participants, participantsCount }: ParticipantsProps) => {
@@ -15,9 +15,9 @@ export const Participants = ({ participants, participantsCount }: ParticipantsPr
       </Typography>
 
       <List className="max-h-[400px] overflow-y-scroll py-4 relative">
-        {participants?.map(({id, name, avatar}, index) => (
+        {participants?.map(({id, username, avatar}, index) => (
           <List.Item key={id} btnIcon={ArrowUpRightSvg}>
-            <AvatarWithInfo size="md" src={avatar} name={name} position={(index + 1).toString()} />
+            <AvatarWithInfo size="md" src={avatar} name={username} position={(index + 1).toString()} />
           </List.Item>
         ))}
         {participantsCount && participantsCount > participants.length && (

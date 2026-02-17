@@ -1,7 +1,7 @@
 export interface IUser {
   id: string
   email: string,
-  name: string,
+  username: string,
   nickname: string,
   avatarUrl: string | null,
 }

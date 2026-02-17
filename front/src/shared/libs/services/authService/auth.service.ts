@@ -9,14 +9,14 @@ export class AuthService {
   async registerByPassword({
     email,
     password,
-    name,
+    username,
     nickname,
     avatar, // FileList | undefined
   }: RegisterUserArgs): Promise<IAuthResponse> {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
-    formData.append('name', name);
+    formData.append('username', username);
     formData.append('nickname', nickname);
 
     if (avatar && avatar.length > 0) {

@@ -11,7 +11,7 @@ export interface EventCardProps {
   date: string
   location?: string
   organizer: {
-    name: string
+    username: string
     avatar?: string
   }
   participantsCount?: number
@@ -41,8 +41,8 @@ export const EventCard = memo(({
     >
       <Card.Header className="flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
-          <Avatar src={organizer.avatar || AvatarDefault} name={organizer.name} size="sm" />
-          <Typography bold>{organizer.name}</Typography>
+          <Avatar src={organizer.avatar || AvatarDefault} name={organizer.username} size="sm" />
+          <Typography bold>{organizer.username}</Typography>
         </div>
         <Typography type={TypographyTypes.BLOCK_TITLE} className="text-gray-400">{date}</Typography>
       </Card.Header>

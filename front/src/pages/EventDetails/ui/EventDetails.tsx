@@ -17,13 +17,13 @@ const EventDetailsPage = () => {
         date="2025-11-12"
         location="Київ, UNIT.City"
         position={[7878,99.9]}
-        organizer={{ name: 'Iv Li', avatar: '/avatars/ivli.png' }}
+        organizer={{ username: 'Iv Li', avatar: '/avatars/ivli.png' }}
       />
         <Participants
           participantsCount={57}
           participants={[
-              { id: '1', name: 'jkjkjkj', avatar: '/avatars/jkjkjkj.png' },
-              { id: '1', name: 'jkjkjkj', avatar: '/avatars/jkjkjkj.png' },
+              { id: '1', username: 'jkjkjkj', avatar: '/avatars/jkjkjkj.png' },
+              { id: '1', username: 'jkjkjkj', avatar: '/avatars/jkjkjkj.png' },
           ]}
         />
     </div>

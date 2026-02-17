@@ -14,7 +14,7 @@ export interface EventDTO {
   organizer: {
     id: string;
     avatar?: string;
-    name: string;
+    username: string;
     nickname: string;
   }
   participantsCount: number

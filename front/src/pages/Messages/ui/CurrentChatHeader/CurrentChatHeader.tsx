@@ -10,7 +10,7 @@ export const CurrentChatHeader = memo(() => {
     <div className="border-style-b px-6 py-4">
       <AvatarWithInfo
         src={chat.anotherMember?.avatarUrl || chat.avatarUrl}
-        name={chat.anotherMember?.name || chat.name}
+        name={chat.anotherMember?.username || chat.name}
         position={chat.anotherMember?.nickname ? `@${chat.anotherMember?.nickname}` : ''}
       />
     </div>

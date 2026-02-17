@@ -12,7 +12,8 @@ export type {
   UserProfileStatsDto,
   UserWithStats,
   OtherUserWithStats,
-  ProfileAnalyticsDto
+  ProfileAnalyticsDto,
+  UpdateUserDto
 } from './user.types.ts';
 export type { CommentsPaginated, Comment } from './comments.type.ts';
 export type { PostWithAttachmentsDto, PostBaseDTO } from './posts.types.ts';

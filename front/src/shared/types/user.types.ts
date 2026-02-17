@@ -30,3 +30,12 @@ export interface ProfileAnalyticsDto {
   percent: number    // +8.3%
   period: 'month'
 }
+
+// update
+export interface UpdateUserDto {
+  username?: string
+  nickname?: string
+  bio?: string | null
+  avatar?: File
+  removeAvatar?: boolean
+}

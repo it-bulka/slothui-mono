@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 // TODO: extend User interface
 interface User {
   id: string;
-  name: string;
+  username: string;
   nickname: string;
 }
 

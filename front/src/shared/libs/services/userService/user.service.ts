@@ -5,25 +5,12 @@ import type {
   ProfileAnalyticsDto,
   UserShort,
   UserWithStats,
-  OtherUserWithStats
+  OtherUserWithStats, UpdateUserDto
 } from '../../../types';
 
 const USERS_API = '/api/users';
 export class UserService {
   constructor(private readonly http: HttpService) {}
-  async updateUser(id: string, name: string, file?: File): Promise<UserDTO> {
-    const fd = new FormData();
-    fd.append('name', name);
-    if (file) fd.append('avatar', file);
-
-    return await this.http.request<UserDTO>(
-      `${USERS_API}/${id}`,
-      {
-        method: 'PATCH',
-        body: fd,
-      },
-    );
-  }
 
   async listUsers(): Promise<UserDTO[]> {
     const res = await this.http.request<{ items: UserDTO[] }>(USERS_API);
@@ -61,6 +48,27 @@ export class UserService {
   async getProfileData(id: string): Promise<OtherUserWithStats> {
     return await this.http.request<OtherUserWithStats>(
       `${USERS_API}/${id}/profile`,
+    );
+  }
+
+    /** PATCH /api/users/me/profile/update  -> update current user profile data */
+  async updateProfileData(data: UpdateUserDto): Promise<UserShort> {
+    const keys = Object.keys(data);
+    if (!keys.length) throw new Error('No data for updating');
+    const fd = new FormData();
+
+    if (data.username) fd.append('username', data.username);
+    if (data.nickname) fd.append('nickname', data.nickname);
+    if ('bio' in data)  fd.append('bio', data.bio ?? '');
+    if (data.removeAvatar) fd.append('removeAvatar', String(data.removeAvatar));
+    if (data.avatar) fd.append('avatar', data.avatar);
+
+    return await this.http.request<UserShort>(
+      `${USERS_API}/me/profile/update`,
+      {
+        method: 'PATCH',
+        body: fd,
+      },
     );
   }
 

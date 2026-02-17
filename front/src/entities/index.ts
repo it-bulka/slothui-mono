@@ -8,6 +8,7 @@ export {
   logout,
   useAuthUserSelector,
   useLogout,
+  useUpdateProfile,
   authUserActions
 } from './AuthUser';
 

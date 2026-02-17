@@ -42,7 +42,7 @@ export const useAddOptimisticReply = () => {
         author: {
           id: 'user.id',
           nickname: 'user.nickname',
-          username: 'user.name',
+          username: 'user.username',
           avatarUrl: 'user.avatarUrl',
         },
         isLoading: true

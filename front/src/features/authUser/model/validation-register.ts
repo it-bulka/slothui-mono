@@ -1,20 +1,10 @@
 import { z } from 'zod';
-import { nicknameSchema } from './schemas';
+import { avatarSchema, nicknameSchema, usernameSchema } from '@/shared/schemas';
 
 export const registerSchema = z.object({
-  username: z.string().min(3, 'Username is too short'),
+  username: usernameSchema,
   nickname: nicknameSchema,
-  avatar: z
-    .custom<FileList>((val) => val instanceof FileList, { message: 'Invalid file' })
-    .optional()
-    .refine(
-      (files) => !files ||  files[0]?.size < 2 * 1024 * 1024, // < 2MB
-      { message: 'File size must be less than 2MB' }
-    )
-    .refine(
-      (files) => !files ||  ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(files[0]?.type),
-      { message: 'Only .jpg and .png are allowed' }
-    ),
+  avatar: avatarSchema,
   email: z.string().email('Invalid email'),
   password: z.string().min(6, 'At least 6 characters').max(10, 'Password is too long. It should not be more than 10 symbols'),
   confirmPassword: z.string()

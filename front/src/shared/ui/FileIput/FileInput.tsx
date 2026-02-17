@@ -14,16 +14,31 @@ interface FileInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'onChang
   value?: unknown
 }
 
-const Previews = ({ previews }: { previews: string[]}) => {
+const Previews = ({
+  previews,
+  onItemClick,
+  withDelete = false
+}: {
+  previews: string[],
+  onItemClick?: (idx: number) => void
+  withDelete?: boolean
+}) => {
   return (
     <div className="flex gap-2 mt-2">
       {previews.map((url, idx) => (
-        <img
-          key={idx}
-          src={url}
-          alt="preview"
-          className="w-20 h-20 object-cover rounded border"
-        />
+        <div key={idx} className="w-20 h-20 rounded border overflow-hidden relative">
+          {withDelete && (
+            <button
+              onClick={() => { onItemClick?.(idx)}}
+              className={"absolute top-0 right-0 py-0.5 px-1 bg-black/50 text-white text-bold rounded-xs hover:bg-black/70"}
+              type="button"
+            >
+              x
+            </button>
+          )}
+
+          <img src={url} alt="preview" loading="lazy" className={"object-cover block w-full h-full"}/>
+        </div>
       ))}
     </div>
   )
@@ -44,12 +59,13 @@ export function FileInput({
   const [fileNames, setFileNames] = useState<string>('')
   const [previews, setPreviews] = useState<string[]>(defaultPreview ? [defaultPreview] : [])
   const [errors, setErrors] = useState<string[]>([])
+  const [files, setFiles] = useState<File[]>([])
 
   const { value: _val, ...inputProps } = props
 
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     const files = (e.target as HTMLInputElement).files
-    if (!files) return
+    if (!files || !files.length) return
 
     let selectedFiles = Array.from(files)
     const newErrors: string[] = []
@@ -71,6 +87,7 @@ export function FileInput({
     }
 
     setErrors(newErrors)
+    setFiles(selectedFiles)
     setFileNames(selectedFiles.map(f => f.name).join(', '))
 
     const urls = selectedFiles
@@ -85,6 +102,28 @@ export function FileInput({
     onChange?.(dataTransfer.files)
   }
 
+  const handleRemove = (index: number) => {
+    console.log('handleRemove', index)
+    const newFiles = files.filter((_, i) => i !== index)
+
+    const dt = new DataTransfer()
+    newFiles.forEach(f => dt.items.add(f))
+    setFiles(newFiles)
+
+    let newPreviews = newFiles.map(url => URL.createObjectURL(url))
+    if(!newPreviews.length && defaultPreview) {
+      newPreviews = [defaultPreview]
+    } else {
+      newPreviews = []
+    }
+
+    previews.forEach(url => URL.revokeObjectURL(url))
+    setPreviews(newPreviews)
+    console.log('handleRemove', { newPreviews, newFiles: newFiles.length })
+
+    onChange?.(dt.files)
+  }
+
   useEffect(() => {
     return () => {
       previews.forEach(url => URL.revokeObjectURL(url))
@@ -95,7 +134,7 @@ export function FileInput({
     <div className="flex flex-col gap-2">
       {label && <label className="text-sm font-medium">{label}</label>}
 
-      {previews.length === 1 && <Previews previews={previews}/>}
+      {previews.length === 1 && <Previews previews={previews} onItemClick={handleRemove} withDelete={!!files.length} />}
 
       <div className="relative w-full flex flex-col gap-2">
         <input
@@ -130,7 +169,7 @@ export function FileInput({
         </ul>
       )}
 
-      {previews.length > 1 && <Previews previews={previews}/>}
+      {previews.length > 1 && <Previews previews={previews} onItemClick={handleRemove} withDelete={!!files.length}/>}
     </div>
   )
 }

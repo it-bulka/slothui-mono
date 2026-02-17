@@ -15,7 +15,7 @@ export const UserEventContent = ({ userId }: { userId: string }) => {
       description={item.description}
       date={item.date}
       location={item.location}
-      organizer={{ name: item.organizer.name, avatar: item.organizer.avatar }}
+      organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
       participantsCount={item.participantsCount || 0}
       actions={(
         <SubscribeEventButton eventId={item.id} />
