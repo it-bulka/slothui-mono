@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { Injectable } from '@nestjs/common';
 import { GoogleConfig } from '../config';
 import { AuthJwtUser } from '../types/jwt.types';
+import { AuthProvider } from '../../user/types/authProviders.type';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -34,11 +35,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       );
     }
 
-    const user = await this.authService.validateGoogleUser({
+    const user = await this.authService.validateOAuthUser({
       email: email,
       nickname: email.split('@')[0],
       username: name,
       avatarUrl: profile.photos?.[0].value,
+      providerId: profile.id,
+      provider: AuthProvider.GOOGLE,
     });
 
     return { id: user.id, role: user.role };

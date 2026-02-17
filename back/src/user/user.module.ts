@@ -6,10 +6,11 @@ import { User } from './entities/user.entity';
 import { FollowerModule } from '../follower/follower.module';
 import { PostsModule } from '../posts/posts.module';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { UserAccount } from './entities/userAccount.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserAccount]),
     FollowerModule,
     PostsModule,
     CloudinaryModule,

@@ -3,6 +3,7 @@ import { Strategy, Profile } from 'passport-github2';
 import { PassportStrategy } from '@nestjs/passport';
 import { GithubConfig } from '../config';
 import { AuthService } from '../auth.service';
+import { AuthProvider } from '../../user/types/authProviders.type';
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
@@ -30,8 +31,9 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
       );
     }
 
-    const user = await this.authService.validateGithubUser({
-      githubId: profile.id,
+    const user = await this.authService.validateOAuthUser({
+      provider: AuthProvider.GITHUB,
+      providerId: profile.id,
       nickname: profile.displayName,
       username: name,
       avatarUrl: profile.profileUrl || profile.photos?.[0]?.value,

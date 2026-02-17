@@ -3,6 +3,7 @@ import { Strategy, Profile } from 'passport-linkedin-oauth2';
 import { PassportStrategy } from '@nestjs/passport';
 import { LinkedInConfig } from '../config';
 import { AuthService } from '../auth.service';
+import { AuthProvider } from '../../user/types/authProviders.type';
 
 @Injectable()
 export class LinkedInStrategy extends PassportStrategy(Strategy, 'linkedin') {
@@ -41,6 +42,8 @@ export class LinkedInStrategy extends PassportStrategy(Strategy, 'linkedin') {
       nickname: profile.displayName || email.split('@')[0],
       username: name,
       avatarUrl,
+      provider: AuthProvider.LINKED_IN,
+      providerId: profile.id,
     });
 
     return { id: user.id, role: user.role };

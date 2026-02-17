@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/user.dto';
 import { AuthJwtUser } from '../auth/types/jwt.types';
-import { In, type FindOptionsWhere } from 'typeorm';
+import { In } from 'typeorm';
 import { UserShortDTO } from './dto/user-response.dto';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { FollowerService } from '../follower/follower.service';
@@ -21,19 +21,23 @@ import {
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ConfigService } from '@nestjs/config';
+import { UserAccount } from './entities/userAccount.entity';
+import { AuthProvider } from './types/authProviders.type';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    @InjectRepository(UserAccount)
+    private readonly userAccountRepo: Repository<UserAccount>,
     private readonly followerService: FollowerService,
     private readonly postsService: PostsService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly configService: ConfigService,
   ) {}
 
-  async create(
+  async createLocalProvider(
     createUserDto: Omit<CreateUserDto, 'password'> & {
       avatarUrl?: string;
       password: string | null;
@@ -49,7 +53,16 @@ export class UserService {
     if (existingUser) throw new ConflictException(`User already exists`);
 
     const user = this.userRepo.create(createUserDto);
-    return await this.userRepo.save(user);
+    await this.userRepo.save(user);
+
+    const account = this.userAccountRepo.create({
+      user: { id: user.id },
+      provider: AuthProvider.LOCAL,
+      providerId: user.id,
+    });
+    await this.userAccountRepo.save(account);
+
+    return user;
   }
 
   async updateProfileData(
@@ -60,7 +73,7 @@ export class UserService {
     if (!keys.length) {
       throw new BadRequestException('No data to update');
     }
-    console.log('userId', userId, 'dto', dto);
+
     if (!userId) throw new BadRequestException(`NO userId`);
     const user = await this.userRepo.findOneBy({ id: userId });
     if (!user) throw new BadRequestException(`User not found`);
@@ -91,12 +104,6 @@ export class UserService {
     const PROJECT_FOLDER: string =
       this.configService.getOrThrow('CLOUDINARY_PROJECT');
 
-    /*const uploaded = await this.cloudinaryService.uploadFile(
-      newAvatarFile,
-      `${PROJECT_FOLDER}/avatars`,
-    );
-*/
-
     const PATH = `${PROJECT_FOLDER}/avatar`;
     let uploaded: Awaited<
       ReturnType<typeof this.cloudinaryService.uploadFileBase64>
@@ -125,33 +132,45 @@ export class UserService {
     return await this.cloudinaryService.deleteFile(prevAvatarPublicId);
   }
 
-  async createWithProviderId(
-    createUserDto: Pick<CreateUserDto, 'nickname' | 'username'> & {
-      avatarUrl?: string;
-      providerId: string;
-      providerName: 'instagram' | 'twitter' | 'github' | 'telegram';
-      email?: string;
-    },
-  ) {
-    const { providerName, providerId, nickname, avatarUrl, username, email } =
-      createUserDto;
-
-    if (!providerId) throw new BadRequestException('ProviderId is required');
-
-    const existingUser = await this.userRepo.findOne({
-      where: { [`${providerName}Id`]: providerId },
+  async findOrCreateOAuthUser(dto: {
+    provider: AuthProvider;
+    providerId: string;
+    email?: string;
+    username: string;
+    nickname: string;
+    avatarUrl?: string;
+  }) {
+    const account = await this.userAccountRepo.findOne({
+      where: { provider: dto.provider, providerId: dto.providerId },
+      relations: ['user'],
     });
 
-    if (existingUser) throw new ConflictException(`User already exists`);
+    if (account) return account.user;
 
-    const user = this.userRepo.create({
-      [`${providerName}Id`]: providerId,
-      avatarUrl,
-      nickname,
-      username,
-      email,
+    let user: User | null = null;
+
+    if (dto.email) {
+      user = await this.userRepo.findOne({ where: { email: dto.email } });
+    }
+
+    if (!user) {
+      user = this.userRepo.create({
+        username: dto.username,
+        nickname: dto.nickname,
+        email: dto.email,
+        avatarUrl: dto.avatarUrl,
+      });
+      await this.userRepo.save(user);
+    }
+
+    const newAccount = this.userAccountRepo.create({
+      user: { id: user.id },
+      provider: dto.provider,
+      providerId: dto.providerId,
     });
-    return await this.userRepo.save(user);
+
+    await this.userAccountRepo.save(newAccount);
+    return user;
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -160,26 +179,16 @@ export class UserService {
     });
   }
 
-  async findByInstagramId(id: string): Promise<User | null> {
-    return await this.userRepo.findOne({
-      where: { instagramId: id },
+  async findByProvider(
+    provider: AuthProvider,
+    providerId: string,
+  ): Promise<User | null> {
+    const account = await this.userAccountRepo.findOne({
+      where: { provider, providerId },
+      relations: ['user'],
     });
-  }
 
-  async findByGithub(id: string, email?: string): Promise<User | null> {
-    const query: FindOptionsWhere<User>[] = [{ githubId: id }];
-    if (email) {
-      query.push({ email });
-    }
-    return await this.userRepo.findOne({
-      where: query,
-    });
-  }
-
-  async findByTelegramId(id: string): Promise<User | null> {
-    return await this.userRepo.findOne({
-      where: { telegramId: id },
-    });
+    return account?.user || null;
   }
 
   async findOne(
@@ -357,5 +366,12 @@ export class UserService {
       ...profile,
       relation: { isFollower, isFollowee },
     };
+  }
+
+  async getProviders(userId: string) {
+    return await this.userAccountRepo.find({
+      where: { user: { id: userId } },
+      select: ['provider', 'providerId'],
+    });
   }
 }

@@ -42,17 +42,16 @@ export class AuthController {
     @Body() createUserDto: CreateUserDto,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    const user = await this.userService.create(createUserDto);
+    const user = await this.userService.createLocalProvider(createUserDto);
 
-    const { accessToken, refreshToken, profile } = await this.authService.login(
-      {
+    const { accessToken, refreshToken, profile, linkedProviders } =
+      await this.authService.login({
         id: user.id,
         role: user.role,
-      },
-    );
+      });
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
-    return { profile, accessToken };
+    return { profile, accessToken, linkedProviders };
   }
 
   @UseGuards(LocalAuthGuard)
@@ -62,12 +61,11 @@ export class AuthController {
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    const { accessToken, refreshToken, profile } = await this.authService.login(
-      req.user,
-    );
+    const { accessToken, refreshToken, profile, linkedProviders } =
+      await this.authService.login(req.user);
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
-    return { profile, token: accessToken };
+    return { profile, token: accessToken, linkedProviders };
   }
 
   @UseGuards(RefreshJwtAuthGuard)

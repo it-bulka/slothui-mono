@@ -19,6 +19,7 @@ import { Post } from '../../posts/entities/post.entity';
 import { PostLike } from '../../posts/entities/postLike.entity';
 import { PostSave } from '../../posts/entities/postSave.entity';
 import { Event } from '../../events/entity/event.entity';
+import { UserAccount } from './userAccount.entity';
 
 @Entity()
 export class User {
@@ -40,17 +41,8 @@ export class User {
   @Column({ type: 'varchar', unique: true, nullable: true })
   email?: string;
 
-  @Column({ type: 'varchar', unique: true, nullable: true })
-  instagramId?: string;
-
-  @Column({ type: 'varchar', unique: true, nullable: true })
-  twitterId?: string;
-
-  @Column({ type: 'varchar', unique: true, nullable: true })
-  githubId?: string;
-
-  @Column({ type: 'varchar', unique: true, nullable: true })
-  telegramId?: string;
+  @OneToMany(() => UserAccount, (acc) => acc.user)
+  accounts: UserAccount[];
 
   @Column({ type: 'enum', enum: RolesEnum, default: RolesEnum.USER })
   role: RolesEnum;

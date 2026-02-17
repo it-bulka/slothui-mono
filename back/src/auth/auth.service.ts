@@ -14,6 +14,7 @@ import * as argon2 from 'argon2';
 import { User } from '../user/entities/user.entity';
 import { UserProfileDto } from '../user/dto/user-profile.dto';
 import { CreateUserDto } from '../user/dto/user.dto';
+import { AuthProvider } from '../user/types/authProviders.type';
 
 @Injectable()
 export class AuthService {
@@ -41,8 +42,9 @@ export class AuthService {
     profile: UserProfileDto;
     accessToken: string;
     refreshToken: string;
+    linkedProviders: { provider: string; providerId: string }[];
   }> {
-    const user = await this.userService.create(dto);
+    const user = await this.userService.createLocalProvider(dto);
     const { accessToken, refreshToken } =
       await this.generateTokensAndSave(user);
 
@@ -60,19 +62,26 @@ export class AuthService {
         postsCount: 0,
       },
     };
-    return { accessToken, refreshToken, profile };
+    return {
+      accessToken,
+      refreshToken,
+      profile,
+      linkedProviders: [{ provider: AuthProvider.LOCAL, providerId: user.id }],
+    };
   }
 
   async login(user: AuthJwtUser): Promise<{
     profile: UserProfileDto;
     accessToken: string;
     refreshToken: string;
+    linkedProviders: { provider: string; providerId: string }[];
   }> {
     const { accessToken, refreshToken } =
       await this.generateTokensAndSave(user);
 
     const profile = await this.userService.getProfileData(user.id);
-    return { accessToken, refreshToken, profile };
+    const providers = await this.userService.getProviders(user.id);
+    return { accessToken, refreshToken, profile, linkedProviders: providers };
   }
 
   private async generateTokensAndSave(user: User | AuthJwtUser) {
@@ -170,133 +179,21 @@ export class AuthService {
     nickname,
     username,
     avatarUrl,
-  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & { email: string }) {
-    let user = await this.userService.findByEmail(email);
-    if (!user) {
-      user = await this.userService.create({
-        email,
-        nickname,
-        username,
-        avatarUrl,
-        password: null,
-      });
-    }
-
-    return user;
-  }
-
-  async validateGoogleUser({
-    email,
-    nickname,
-    username,
-    avatarUrl,
-  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & { email: string }) {
-    let user = await this.userService.findByEmail(email);
-    if (!user) {
-      user = await this.userService.create({
-        email,
-        nickname,
-        username,
-        avatarUrl,
-        password: null,
-      });
-    }
-
-    return user;
-  }
-
-  async validateInstagramUser({
-    instagramId,
-    nickname,
-    username,
-    avatarUrl,
+    providerId,
+    provider,
   }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
-    instagramId: string;
-  }) {
-    let user = await this.userService.findByInstagramId(instagramId);
-    if (!user) {
-      user = await this.userService.createWithProviderId({
-        providerName: 'instagram',
-        providerId: instagramId,
-        nickname,
-        username,
-        avatarUrl,
-      });
-    }
-
-    return user;
-  }
-
-  async validateTwitterUser({
-    twitterId,
-    nickname,
-    username,
-    avatarUrl,
-    email,
-  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
-    twitterId: string;
     email?: string;
+    provider: AuthProvider;
+    providerId: string;
   }) {
-    let user = await this.userService.findByInstagramId(twitterId);
-    if (!user) {
-      user = await this.userService.createWithProviderId({
-        providerName: 'twitter',
-        providerId: twitterId,
-        nickname,
-        username,
-        avatarUrl,
-        email,
-      });
-    }
-
-    return user;
-  }
-
-  async validateGithubUser({
-    githubId,
-    nickname,
-    username,
-    avatarUrl,
-    email,
-  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
-    githubId: string;
-    email?: string;
-  }) {
-    let user = await this.userService.findByGithub(githubId, email);
-    if (!user) {
-      user = await this.userService.createWithProviderId({
-        providerName: 'github',
-        providerId: githubId,
-        nickname,
-        username,
-        avatarUrl,
-        email,
-      });
-    }
-
-    return user;
-  }
-
-  async validateTelegramUser({
-    telegramId,
-    nickname,
-    username,
-    avatarUrl,
-  }: Pick<User, 'username' | 'nickname' | 'avatarUrl'> & {
-    telegramId: string;
-  }) {
-    let user = await this.userService.findByTelegramId(telegramId);
-    if (!user) {
-      user = await this.userService.createWithProviderId({
-        providerName: 'telegram',
-        providerId: telegramId,
-        nickname,
-        username,
-        avatarUrl,
-      });
-    }
-
-    return user;
+    return await this.userService.findOrCreateOAuthUser({
+      provider,
+      providerId,
+      nickname,
+      username,
+      avatarUrl,
+      email,
+    });
   }
 
   buildRedirectUrl(

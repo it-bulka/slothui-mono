@@ -25,9 +25,9 @@ export class UserController {
 
   @Get('me/profile')
   async getProfile(@Request() req: AuthRequest) {
-    const user = await this.userService.findOne(req.user.id);
-    if (!user) return null;
-    return UserMapper.toResponse(user);
+    const profile = await this.userService.getProfileData(req.user.id);
+    const providers = await this.userService.getProviders(req.user.id);
+    return { profile, linkedProviders: providers };
   }
 
   @Patch('me/profile/update')
@@ -37,7 +37,6 @@ export class UserController {
     @Request() req: AuthRequest,
     @UploadedFile() avatar?: Express.Multer.File,
   ) {
-    console.log('profile/update', dto);
     const user = await this.userService.updateProfileData(req.user.id, {
       ...dto,
       avatar,

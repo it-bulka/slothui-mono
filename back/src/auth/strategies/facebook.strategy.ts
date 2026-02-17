@@ -3,6 +3,7 @@ import { Strategy, Profile } from 'passport-facebook';
 import { PassportStrategy } from '@nestjs/passport';
 import { FacebookConfig } from '../config';
 import { AuthService } from '../auth.service';
+import { AuthProvider } from '../../user/types/authProviders.type';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
@@ -36,7 +37,9 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     const avatarUrl =
       (profile.photos?.[0] && profile.photos[0].value) || undefined;
 
-    const user = await this.authService.validateGoogleUser({
+    const user = await this.authService.validateOAuthUser({
+      provider: AuthProvider.FACEBOOK,
+      providerId: profile.id,
       email: email,
       nickname: profile.displayName || email.split('@')[0],
       username: name,
