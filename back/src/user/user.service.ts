@@ -3,6 +3,7 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,6 +24,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ConfigService } from '@nestjs/config';
 import { UserAccount } from './entities/userAccount.entity';
 import { AuthProvider } from './types/authProviders.type';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -373,5 +375,27 @@ export class UserService {
       where: { user: { id: userId } },
       select: ['provider', 'providerId'],
     });
+  }
+
+  async changePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const user = await this.validatePassword(userId, oldPassword);
+
+    user.password = newPassword;
+    await this.userRepo.save(user);
+  }
+
+  async validatePassword(userId: string, password: string) {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) throw new UnauthorizedException(`User not found`);
+    if (!user.password) throw new UnauthorizedException(`Invalid credentials`);
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch)
+      throw new UnauthorizedException('Invalid credentials');
+    return user;
   }
 }

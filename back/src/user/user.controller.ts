@@ -6,9 +6,12 @@ import {
   Query,
   Param,
   Patch,
+  Post,
   UseInterceptors,
   Body,
   UploadedFile,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -17,6 +20,7 @@ import { UserMapper } from './user-mapper';
 import { SearchUsersQueryDto } from './dto/search-user.query';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ChangePasswordDto } from './dto/changePassword';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -43,6 +47,19 @@ export class UserController {
     });
     if (!user) return null;
     return UserMapper.toResponse(user);
+  }
+
+  @Post('me/change-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async changePassword(
+    @Body() dto: ChangePasswordDto,
+    @Request() req: AuthRequest,
+  ) {
+    await this.userService.changePassword(
+      req.user.id,
+      dto.oldPassword,
+      dto.newPassword,
+    );
   }
 
   @Get()

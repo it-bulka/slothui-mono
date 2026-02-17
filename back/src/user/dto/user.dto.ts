@@ -1,7 +1,7 @@
-import { IsString, IsEmail, MinLength } from 'class-validator';
+import { IsString, IsEmail } from 'class-validator';
+import { IsStrongPassword } from '../../common/validators/is-strong-password.decorator';
 export class CreateUserDto {
-  @IsString()
-  @MinLength(6)
+  @IsStrongPassword()
   password: string;
 
   @IsString()
