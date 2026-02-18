@@ -60,10 +60,15 @@ export class AuthService {
     linkedProviders: { provider: string; providerId: string }[];
   }> {
     const user = await this.userService.createLocalProvider(dto);
-    const { accessToken, refreshToken } = await this.generateTokensAndSave(
-      user,
-      req,
-    );
+    const { accessToken, refreshToken } = await this.generateToken(user);
+
+    await this.sessionService.ensureSession({
+      userId: user.id,
+      refreshToken,
+      ip: getReqIP(req),
+      userAgent: req.headers['user-agent'] || 'unknown',
+      deviceId: dto.deviceId,
+    });
 
     const profile: UserProfileDto = {
       user: {
@@ -89,6 +94,7 @@ export class AuthService {
 
   async login(
     user: AuthJwtUser,
+    deviceId: string,
     req: Request,
   ): Promise<{
     profile: UserProfileDto;
@@ -96,26 +102,34 @@ export class AuthService {
     refreshToken: string;
     linkedProviders: { provider: string; providerId: string }[];
   }> {
-    const { accessToken, refreshToken } = await this.generateTokensAndSave(
-      user,
-      req,
-    );
+    const { accessToken, refreshToken } = await this.generateToken(user);
+
+    await this.sessionService.ensureSession({
+      userId: user.id,
+      refreshToken,
+      ip: getReqIP(req),
+      userAgent: req.headers['user-agent'] || 'unknown',
+      deviceId,
+    });
 
     const profile = await this.userService.getProfileData(user.id);
     const providers = await this.userService.getProviders(user.id);
     return { accessToken, refreshToken, profile, linkedProviders: providers };
   }
 
-  private async generateTokensAndSave(user: User | AuthJwtUser, req: Request) {
-    const { accessToken, refreshToken } = await this.generateToken(user);
-    await this.sessionService.createSession(
+  async updateRefreshToken(user: AuthJwtUser, currentRefreshToken?: string) {
+    if (!currentRefreshToken)
+      throw new UnauthorizedException(`Bad credentials`);
+    const { accessToken, refreshToken: newRefreshToken } =
+      await this.generateToken(user);
+
+    await this.sessionService.rotateRefreshToken(
       user.id,
-      refreshToken,
-      getReqIP(req),
-      req.headers['user-agent'] || 'unknown',
+      currentRefreshToken,
+      newRefreshToken,
     );
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken: newRefreshToken };
   }
 
   async generateToken(user: AuthJwtUser) {

@@ -33,6 +33,7 @@ import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { getRefreshTokenFromReq } from '../common/utils/getRefreshTokenFromReq';
 
 @Controller('auth')
 export class AuthController {
@@ -56,6 +57,7 @@ export class AuthController {
           id: user.id,
           role: user.role,
         },
+        createUserDto.deviceId,
         req,
       );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
@@ -67,13 +69,14 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
+    @Body('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
     const { accessToken, refreshToken, profile, linkedProviders } =
-      await this.authService.login(req.user, req);
-    this.authService.attachRefreshTokenToCookie(res, refreshToken);
+      await this.authService.login(req.user, deviceId, req);
 
+    this.authService.attachRefreshTokenToCookie(res, refreshToken);
     return { profile, token: accessToken, linkedProviders };
   }
 
@@ -83,10 +86,10 @@ export class AuthController {
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    const { accessToken, refreshToken } = await this.authService.login(
-      req.user,
-      req,
-    );
+    const currentRefreshToken = getRefreshTokenFromReq(req);
+
+    const { accessToken, refreshToken } =
+      await this.authService.updateRefreshToken(req.user, currentRefreshToken);
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
     return { token: accessToken };
@@ -96,7 +99,7 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
   async logout(@Request() req: AuthRequest, @Response() res: ExpressResponse) {
-    const refreshToken = req.cookies['refresh_token'] as string | undefined;
+    const refreshToken = getRefreshTokenFromReq(req);
     const userId = req.user.id;
 
     if (refreshToken) {
@@ -114,10 +117,11 @@ export class AuthController {
   @Get('google/callback')
   async googleCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(FacebookAuthGuard)
@@ -128,10 +132,11 @@ export class AuthController {
   @Get('facebook/callback')
   async facebookCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(InstagramAuthGuard)
@@ -142,10 +147,11 @@ export class AuthController {
   @Get('instagram/callback')
   async instagramCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(TwitterAuthGuard)
@@ -156,10 +162,11 @@ export class AuthController {
   @Get('twitter/callback')
   async twitterCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(LinkedInAuthGuard)
@@ -170,10 +177,11 @@ export class AuthController {
   @Get('linkedin/callback')
   async linkedInCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(GithubAuthGuard)
@@ -184,10 +192,11 @@ export class AuthController {
   @Get('github/callback')
   async githubCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   @UseGuards(TelepassAuthGuard)
@@ -199,23 +208,27 @@ export class AuthController {
   @Get('telegram/callback')
   async telegramCallback(
     @Query('state') state: string,
+    @Query('deviceId') deviceId: string,
     @Request() req: AuthRequest,
     @Response() res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state });
+    await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
   async _handleOAuthRedirect({
     req,
     res,
     state,
+    deviceId,
   }: {
     req: AuthRequest;
     res: ExpressResponse;
+    deviceId: string;
     state: string;
   }) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user,
+      deviceId,
       req,
     );
     const redirectUrl = this.authService.buildRedirectUrl(state, accessToken);
