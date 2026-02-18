@@ -9,7 +9,8 @@ export {
   useMessagesService,
   useCommentsService,
   useFriendsService,
-  useUpdateToken
+  useUpdateToken,
+  useSessionsService
 } from './context';
 export { getServices } from './getServices/getServices.ts';
 export type { UserStories, StoryDTO } from './storiesService/stories.type.tsx';

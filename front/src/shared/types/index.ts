@@ -20,3 +20,4 @@ export type { PostWithAttachmentsDto, PostBaseDTO } from './posts.types.ts';
 export type { FriendDto } from './friends.type.ts';
 export type { EventsPayload } from './events.types.ts';
 export type { RegisterUserArgs, IAuthResponse } from './auth.types.ts';
+export type { UserSessionDto } from './sessions.types.ts';

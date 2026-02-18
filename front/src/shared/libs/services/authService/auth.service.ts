@@ -1,9 +1,11 @@
 import { HttpService } from '../httpService/http.service.ts';
 import { API_BASE } from '@/shared/constants';
 import type { RegisterUserArgs, IAuthResponse } from '../../../types/auth.types.ts';
+import { getDeviceId } from '../../../libs';
 
 const AUTH_PATH = '/api/auth';
 export class AuthService {
+  private deviceId = getDeviceId();
   constructor(private readonly http: HttpService) {}
 
   async registerByPassword({
@@ -22,6 +24,7 @@ export class AuthService {
     if (avatar && avatar.length > 0) {
       formData.append('avatar', avatar[0]);
     }
+    formData.append('deviceId', this.deviceId);
     return await this.http.request(`${AUTH_PATH}/register`, {
       method: 'POST',
       body: formData,
@@ -32,7 +35,7 @@ export class AuthService {
   async loginByPassword({ email, password }: { email: string, password: string }): Promise<IAuthResponse> {
     return await this.http.request(`${AUTH_PATH}/login`, {
       method: 'POST',
-      body: { email, password },
+      body: { email, password, deviceId: this.deviceId },
       credentials: 'include'
     })
   }
@@ -42,31 +45,31 @@ export class AuthService {
   }
 
   async loginWithGoogle() {
-    window.location.href = `${API_BASE}${AUTH_PATH}/google/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/google/login?deviceId=${this.deviceId}`;
   }
 
   async loginWithFacebook() {
-    window.location.href = `${API_BASE}${AUTH_PATH}/facebook/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/facebook/login?deviceId=${this.deviceId}`
   }
 
   async loginWithTwitter() {
-    window.location.href = `${API_BASE}${AUTH_PATH}/twitter/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/twitter/login?deviceId=${this.deviceId}`
   }
 
   async loginWithLinkedin(){
-    window.location.href = `${API_BASE}${AUTH_PATH}/linkedin/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/linkedin/login?deviceId=${this.deviceId}`
   }
 
   async loginWithInstagram() {
-    window.location.href = `${API_BASE}${AUTH_PATH}/instagram/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/instagram/login?deviceId=${this.deviceId}`
   }
 
   async loginWithGithub() {
-    window.location.href = `${API_BASE}${AUTH_PATH}/github/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/github/login?deviceId=${this.deviceId}`
   }
 
   async loginWithTelegram(){
-    window.location.href = `${API_BASE}${AUTH_PATH}/telegram/login`
+    window.location.href = `${API_BASE}${AUTH_PATH}/telegram/login?deviceId=${this.deviceId}`
   }
 
   async forgotPassword({ email }: { email: string }) {

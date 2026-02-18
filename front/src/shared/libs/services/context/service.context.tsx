@@ -14,6 +14,7 @@ import {
   NotificationsCountersService
 } from '../notificationsCountersService/notificationsCounters.service.ts';
 import { PollService } from '../pollService/poll.service.ts';
+import { SessionsService } from '../sessionsService/sessions.service.ts';
 
 interface IServices {
   http: HttpService
@@ -29,6 +30,7 @@ interface IServices {
   poll:  PollService
   friends:  FriendsService
   notificationsCounters:  NotificationsCountersService
+  sessions:  SessionsService
 }
 export interface CtxProps {
   services:  IServices;

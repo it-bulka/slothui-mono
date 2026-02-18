@@ -8,3 +8,4 @@ export { storeTokenToLocalStorage } from './token/storeTokenToLocalStorage/store
 export { deleteTokenToLocalStorage } from './token/deleteTokenLocalStorage/deleteTokenLocalStorage.tsx';
 export { addUniqueIds } from './addUniqueIds/addIniqueIds.ts';
 export { prependUniqueIds } from './prependUniqueIds/prependUniqueIds.ts';
+export { getDeviceId } from './getDeviceId/getDeviceId.tsx';

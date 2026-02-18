@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { Button, Input, Typography, List } from '@/shared/ui';
+import { Button, Input } from '@/shared/ui';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
 import { useAuthUserSelector } from '@/entities';
-import { ChangePasswordFormLazy } from '@/features';
-
-const sessions = [
-  "1", "2"
-]
+import { ChangePasswordFormLazy, Sessions } from '@/features';
 
 const AccountSettings = () => {
   const [isChangePassOpen, setChangePassOpen] = useState(false)
@@ -29,14 +25,7 @@ const AccountSettings = () => {
         )}
 
         {isChangePassOpen && <ChangePasswordFormLazy />}
-        <Typography bold>Active sessions:</Typography>
-        <List topBorder={false}>
-          {sessions.map((session) => (
-            <List.Item btnText="stop session" key={session}>
-              {session}
-            </List.Item>
-          ))}
-        </List>
+        <Sessions />
         <Button className="w-full" variant="secondary">Delete account</Button>
       </>
     </SubSettingsWrapper>

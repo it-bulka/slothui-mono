@@ -13,6 +13,7 @@ import { FriendsService } from '../friendsService/friends.service.ts';
 import {
   NotificationsCountersService
 } from '../notificationsCountersService/notificationsCounters.service.ts';
+import { SessionsService } from '../sessionsService/sessions.service.ts';
 import { TokenManager } from '../tokenManager/TokenManager.ts';
 
 export const createServices = () => {
@@ -36,5 +37,6 @@ export const createServices = () => {
     poll: new PollService(httpService),
     friends: new FriendsService(httpService),
     notificationsCounters: new NotificationsCountersService(httpService),
+    sessions: new SessionsService(httpService),
   }
 }

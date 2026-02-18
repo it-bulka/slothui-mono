@@ -11,3 +11,4 @@ export { usePostsService } from './usePostsService.tsx';
 export { useFriendsService } from './useFriendsService.ts';
 export { useNotificationsCountersService } from './useNotificationsCountersService.tsx';
 export { useUpdateToken } from './useUpdateToken.ts';
+export { useSessionsService } from './useSessionsService.tsx';
