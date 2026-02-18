@@ -45,15 +45,19 @@ export class AuthController {
   @UseInterceptors(FileInterceptor('avatar'))
   async registerByLogin(
     @Body() createUserDto: CreateUserDto,
+    @Request() req: ExpressRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
     const user = await this.userService.createLocalProvider(createUserDto);
 
     const { accessToken, refreshToken, profile, linkedProviders } =
-      await this.authService.login({
-        id: user.id,
-        role: user.role,
-      });
+      await this.authService.login(
+        {
+          id: user.id,
+          role: user.role,
+        },
+        req,
+      );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
     return { profile, accessToken, linkedProviders };
@@ -67,7 +71,7 @@ export class AuthController {
     @Response({ passthrough: true }) res: ExpressResponse,
   ) {
     const { accessToken, refreshToken, profile, linkedProviders } =
-      await this.authService.login(req.user);
+      await this.authService.login(req.user, req);
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
     return { profile, token: accessToken, linkedProviders };
@@ -81,6 +85,7 @@ export class AuthController {
   ) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user,
+      req,
     );
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
@@ -90,9 +95,15 @@ export class AuthController {
   @UseGuards(RefreshJwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
-  async logout(@Request() req: AuthRequest) {
-    await this.authService.logout(req.user.id);
-    return;
+  async logout(@Request() req: AuthRequest, @Response() res: ExpressResponse) {
+    const refreshToken = req.cookies['refresh_token'] as string | undefined;
+    const userId = req.user.id;
+
+    if (refreshToken) {
+      await this.authService.logout(userId, refreshToken);
+    }
+
+    res.clearCookie('refresh_token');
   }
 
   @UseGuards(GoogleAuthGuard)
@@ -205,6 +216,7 @@ export class AuthController {
   }) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user,
+      req,
     );
     const redirectUrl = this.authService.buildRedirectUrl(state, accessToken);
     this.authService.attachRefreshTokenToCookie(res, refreshToken);

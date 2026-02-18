@@ -14,7 +14,6 @@ import type { StringValue } from 'ms';
 import { Inject } from '@nestjs/common';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigService, ConfigType } from '@nestjs/config';
-import * as argon2 from 'argon2';
 import { User } from '../user/entities/user.entity';
 import { UserProfileDto } from '../user/dto/user-profile.dto';
 import { CreateUserDto } from '../user/dto/user.dto';
@@ -22,6 +21,8 @@ import { AuthProvider } from '../user/types/authProviders.type';
 import { PasswordResetService } from '../password-reset/password-reset.service';
 import { Request } from 'express';
 import { MailService } from '../mailer/mailer.service';
+import { SessionService } from '../session/session.service';
+import { getReqIP } from '../common/utils/getReqIP';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +36,7 @@ export class AuthService {
     private readonly passwordResetService: PasswordResetService,
     private readonly configService: ConfigService,
     private readonly mailService: MailService,
+    private readonly sessionService: SessionService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -48,15 +50,20 @@ export class AuthService {
     return user;
   }
 
-  async registerByLogin(dto: CreateUserDto): Promise<{
+  async registerByLogin(
+    dto: CreateUserDto,
+    req: Request,
+  ): Promise<{
     profile: UserProfileDto;
     accessToken: string;
     refreshToken: string;
     linkedProviders: { provider: string; providerId: string }[];
   }> {
     const user = await this.userService.createLocalProvider(dto);
-    const { accessToken, refreshToken } =
-      await this.generateTokensAndSave(user);
+    const { accessToken, refreshToken } = await this.generateTokensAndSave(
+      user,
+      req,
+    );
 
     const profile: UserProfileDto = {
       user: {
@@ -80,24 +87,33 @@ export class AuthService {
     };
   }
 
-  async login(user: AuthJwtUser): Promise<{
+  async login(
+    user: AuthJwtUser,
+    req: Request,
+  ): Promise<{
     profile: UserProfileDto;
     accessToken: string;
     refreshToken: string;
     linkedProviders: { provider: string; providerId: string }[];
   }> {
-    const { accessToken, refreshToken } =
-      await this.generateTokensAndSave(user);
+    const { accessToken, refreshToken } = await this.generateTokensAndSave(
+      user,
+      req,
+    );
 
     const profile = await this.userService.getProfileData(user.id);
     const providers = await this.userService.getProviders(user.id);
     return { accessToken, refreshToken, profile, linkedProviders: providers };
   }
 
-  private async generateTokensAndSave(user: User | AuthJwtUser) {
+  private async generateTokensAndSave(user: User | AuthJwtUser, req: Request) {
     const { accessToken, refreshToken } = await this.generateToken(user);
-    const hashedRefreshToken = await argon2.hash(refreshToken);
-    await this.userService.updateRefreshToken(user, hashedRefreshToken);
+    await this.sessionService.createSession(
+      user.id,
+      refreshToken,
+      getReqIP(req),
+      req.headers['user-agent'] || 'unknown',
+    );
 
     return { accessToken, refreshToken };
   }
@@ -116,16 +132,15 @@ export class AuthService {
     userId: string,
     refreshToken: string,
   ): Promise<AuthJwtUser> {
-    const user = await this.userService.findOne(userId);
-    if (!user || !user.hashedRefreshToken) {
-      throw new UnauthorizedException('Invalid Refresh Token');
-    }
-    const isMatch = await argon2.verify(user.hashedRefreshToken, refreshToken);
-    if (!isMatch) {
+    const session = await this.sessionService.validateRefreshToken(
+      userId,
+      refreshToken,
+    );
+    if (!session || !session.user) {
       throw new UnauthorizedException('Invalid Refresh Token');
     }
 
-    return { id: user.id, role: user.role };
+    return { id: session.user.id, role: session.user.role };
   }
 
   getBearerToken(authHeader: string | undefined): string {
@@ -180,8 +195,8 @@ export class AuthService {
     });
   }
 
-  async logout(userId: string) {
-    await this.userService.deleteRefreshToken(userId);
+  async logout(userId: string, rawRefreshToken: string) {
+    await this.sessionService.invalidateSession(userId, rawRefreshToken);
   }
 
   async validateOAuthUser({

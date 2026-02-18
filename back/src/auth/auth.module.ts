@@ -32,6 +32,7 @@ import {
 } from './strategies';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailerModule } from '../mailer/mailer.module';
+import { SessionModule } from '../session/session.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { MailerModule } from '../mailer/mailer.module';
     ConfigModule.forFeature(refreshJwtConfig),
     PasswordResetModule,
     MailerModule,
+    SessionModule,
   ],
   controllers: [AuthController],
   providers: [

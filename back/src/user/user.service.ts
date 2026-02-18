@@ -9,7 +9,6 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/user.dto';
-import { AuthJwtUser } from '../auth/types/jwt.types';
 import { In } from 'typeorm';
 import { UserShortDTO } from './dto/user-response.dto';
 import { PaginatedResponse } from '../common/types/pagination.type';
@@ -206,26 +205,6 @@ export class UserService {
     if (options.throwErrorIfNotExist && !user)
       throw new BadRequestException(`User with ID ${id} does not exist`);
     return user;
-  }
-
-  async updateRefreshToken(user: AuthJwtUser, token: string): Promise<void> {
-    const result = await this.userRepo.update(
-      { id: user.id },
-      { hashedRefreshToken: token },
-    );
-    if (result.affected === 0) {
-      throw new NotFoundException('User not found');
-    }
-  }
-
-  async deleteRefreshToken(userId: string): Promise<void> {
-    const result = await this.userRepo.update(
-      { id: userId },
-      { hashedRefreshToken: null },
-    );
-    if (result.affected === 0) {
-      throw new NotFoundException('User not found');
-    }
   }
 
   async findByIds(

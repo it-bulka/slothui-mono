@@ -28,6 +28,7 @@ import { PollsModule } from './polls/polls.module';
 import { CommentsModule } from './comments/comments.module';
 import { PasswordResetModule } from './password-reset/password-reset.module';
 import { MailerModule } from './mailer/mailer.module';
+import { SessionModule } from './session/session.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { MailerModule } from './mailer/mailer.module';
     CommentsModule,
     PasswordResetModule,
     MailerModule,
+    SessionModule,
   ],
   controllers: [],
   providers: [AppService],

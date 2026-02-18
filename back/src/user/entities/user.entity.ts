@@ -22,6 +22,7 @@ import { PostSave } from '../../posts/entities/postSave.entity';
 import { Event } from '../../events/entity/event.entity';
 import { UserAccount } from './userAccount.entity';
 import { PasswordResetToken } from '../../password-reset/entity/password-reset.entity';
+import { UserSession } from '../../session/entity/userSession.entity';
 
 @Entity()
 export class User {
@@ -58,11 +59,11 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ type: 'text', nullable: true })
-  hashedRefreshToken: string | null;
-
   @OneToMany(() => PasswordResetToken, (token) => token.user)
   resetTokens: PasswordResetToken[];
+
+  @OneToMany(() => UserSession, (session) => session.user)
+  sessions: UserSession[];
 
   @OneToMany(() => Message, (message) => message.author)
   messages: Message[];
