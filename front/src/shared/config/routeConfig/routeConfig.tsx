@@ -20,7 +20,11 @@ export enum AppRoutes {
   USER = 'user',
   AUTH = 'auth',
 
-  NOT_FOUND = 'not_found'
+  NOT_FOUND = 'not_found',
+
+  // AUTH
+  FORGOT_PASSWORD = 'forgot_password',
+  RESET_PASSWORD = 'reset_password'
 }
 
 export const UserRelativePaths = {
@@ -30,6 +34,7 @@ export const UserRelativePaths = {
 export const AuthRelativePaths = {
   login: 'login',
   register: 'register',
+  forgot_password: 'forgot_password',
 }
 
 export const getHomePage = () => '/'
@@ -57,6 +62,8 @@ export const getEventsDetailsPage = (id: string) => `/events/${id}`
 export const getAuthLayout = () => `/auth`
 export const getLoginPage = () => `/auth/login`
 export const getRegisterPage = () => `/auth/register`
+export const getForgotPasswordPage = () => `/auth/forgot-password`
+export const getResetPasswordPage = () => `/auth/reset-password`
 
 export const getNotFoundPage = () => `/not-found`
 
@@ -80,5 +87,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.CHATS]: getChatsPage(),
   //auth
   [AppRoutes.AUTH]: getAuthLayout(),
+  [AppRoutes.FORGOT_PASSWORD]: getForgotPasswordPage(),
+  [AppRoutes.RESET_PASSWORD]: getResetPasswordPage(),
   [AppRoutes.NOT_FOUND]: getNotFoundPage()
 }

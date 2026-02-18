@@ -8,13 +8,17 @@ import classnames from 'classnames';
 interface AuthFormProps {
   formTitle: string;
   form: ReactNode
-  oAuthTitle: string;
+  oAuthTitle?: string;
+  withOAuth?: boolean;
+  additionalBlock?: ReactNode;
 }
 
 export const AuthForm = ({
   formTitle,
   oAuthTitle,
   form,
+  withOAuth = true,
+  additionalBlock
 }: AuthFormProps) => {
   const error = useAuthUserErrorSelector()
   const isLoading = useAuthUserLoadingSelector()
@@ -26,10 +30,15 @@ export const AuthForm = ({
       </Typography>
       {form}
       {error && <Typography color='error'>{error}</Typography>}
-      <Typography className="my-4 text-center" bold type={TypographyTypes.SUBTITLE} variant="h4">
-        {oAuthTitle}
-      </Typography>
-      <SocialBtnsOauth />
+      {withOAuth && (
+        <>
+          <Typography className="my-4 text-center" bold type={TypographyTypes.SUBTITLE} variant="h4">
+            {oAuthTitle || 'OR by social media'}
+          </Typography>
+          <SocialBtnsOauth />
+        </>
+      )}
+      {additionalBlock || null}
     </div>
   )
 }

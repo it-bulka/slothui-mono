@@ -1,0 +1,1 @@
+export { type ResetPasswordFormData, resetPasswordSchema } from './schema/resetPasswordSchema.tsx';

@@ -1,0 +1,1 @@
+export { type ForgotPasswordFormData, forgotPasswordSchema } from './schema/forgotPasswordSchema.tsx';

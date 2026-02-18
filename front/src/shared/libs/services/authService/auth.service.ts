@@ -68,4 +68,20 @@ export class AuthService {
   async loginWithTelegram(){
     window.location.href = `${API_BASE}${AUTH_PATH}/telegram/login`
   }
+
+  async forgotPassword({ email }: { email: string }) {
+    return await this.http.request(`${AUTH_PATH}/forgot-password`, {
+      method: 'POST',
+      body: { email },
+      credentials: 'include'
+    })
+  }
+
+  async resetPassword({ password, token }: { password: string, token: string }) {
+    return await this.http.request(`${AUTH_PATH}/reset-password`, {
+      method: 'POST',
+      body: { password, token },
+      credentials: 'include'
+    })
+  }
 }

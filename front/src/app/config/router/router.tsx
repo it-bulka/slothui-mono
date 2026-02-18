@@ -18,6 +18,8 @@ import {
   ChatsPage,
   MyFriendsSuggestionsPage,
   MyEventsPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
   NotFound
 } from '@/pages';
 import { ErrorBoundary } from '@/shared/ui';
@@ -134,6 +136,14 @@ export const router = createBrowserRouter([
       {
         path: AuthRelativePaths.register,
         element: <RegisterPage />
+      },
+      {
+        path: RoutePaths.forgot_password,
+        element: <ForgotPasswordPage />
+      },
+      {
+        path: RoutePaths.reset_password,
+        element: <ResetPasswordPage />
       },
     ]
   },

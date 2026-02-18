@@ -16,3 +16,5 @@ export { NotFound } from './NotFound/NotFound.tsx';
 export { ChatsPage } from './Chats';
 export { MyFriendsSuggestionsPage } from './MyFriendsSuggestions';
 export { MyEventsPage } from './MyEvents';
+export { ForgotPasswordPage } from './ForgotPassword';
+export { ResetPasswordPage } from './ResetPassword';

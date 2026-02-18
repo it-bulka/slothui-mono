@@ -39,3 +39,5 @@ export {
 export { OpenChatWithUserButton } from './OpenChatWithUser';
 export { UserSearchToolbar } from './user-search';
 export { ChangePasswordFormLazy } from './ChangePassword';
+export { ForgotPasswordForm } from './forgotPassword';
+export { ResetPasswordForm } from './ResetPassword';
