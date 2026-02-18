@@ -4,17 +4,20 @@ import {
   Get,
   Body,
   UseGuards,
-  Request,
   Response,
   HttpCode,
   Query,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { UserService } from '../user/user.service';
 import { HttpStatus } from '@nestjs/common';
 import { AuthRequest } from '../common/types/user.types';
-import { Response as ExpressResponse } from 'express';
+import {
+  Response as ExpressResponse,
+  Request as ExpressRequest,
+} from 'express';
 import {
   FacebookAuthGuard,
   LocalAuthGuard,
@@ -28,6 +31,8 @@ import {
 } from './guards';
 import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -205,5 +210,20 @@ export class AuthController {
     this.authService.attachRefreshTokenToCookie(res, refreshToken);
 
     res.redirect(redirectUrl);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+    @Request() req: ExpressRequest,
+  ) {
+    await this.authService.forgotPassword(dto.email, req);
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    await this.authService.resetPassword(dto.token, dto.password);
   }
 }

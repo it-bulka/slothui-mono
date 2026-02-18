@@ -30,6 +30,8 @@ import {
   GithubStrategy,
   TelegramStrategy,
 } from './strategies';
+import { PasswordResetModule } from '../password-reset/password-reset.module';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import {
     UserModule,
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),
+    PasswordResetModule,
+    MailerModule,
   ],
   controllers: [AuthController],
   providers: [

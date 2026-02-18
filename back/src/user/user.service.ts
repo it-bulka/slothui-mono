@@ -388,6 +388,14 @@ export class UserService {
     await this.userRepo.save(user);
   }
 
+  async updatePassword(userId: string, newPassword: string) {
+    const user = await this.findOne(userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    user.password = newPassword;
+    await this.userRepo.save(user);
+  }
+
   async validatePassword(userId: string, password: string) {
     const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) throw new UnauthorizedException(`User not found`);

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { AuthJwtPayload, AuthJwtUser } from './types/jwt.types';
@@ -9,12 +13,15 @@ import * as ms from 'ms';
 import type { StringValue } from 'ms';
 import { Inject } from '@nestjs/common';
 import refreshJwtConfig from './config/refresh-jwt.config';
-import { ConfigType } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import * as argon2 from 'argon2';
 import { User } from '../user/entities/user.entity';
 import { UserProfileDto } from '../user/dto/user-profile.dto';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { AuthProvider } from '../user/types/authProviders.type';
+import { PasswordResetService } from '../password-reset/password-reset.service';
+import { Request } from 'express';
+import { MailService } from '../mailer/mailer.service';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +32,9 @@ export class AuthService {
     private readonly refreshJwtConfiguration: ConfigType<
       typeof refreshJwtConfig
     >,
+    private readonly passwordResetService: PasswordResetService,
+    private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -204,5 +214,28 @@ export class AuthService {
     const url = new URL(redirectUrl);
     url.searchParams.set('token', accessToken);
     return url.toString();
+  }
+
+  async forgotPassword(email: string, req: Request) {
+    const user = await this.userService.findByEmail(email);
+    if (!user) return; // anti-enumeration
+
+    const token = await this.passwordResetService.createResetToken(
+      user.id,
+      req.ip,
+      req.headers['user-agent'],
+    );
+
+    const link = `${this.configService.getOrThrow('FRONT_ORIGIN')}/${this.configService.getOrThrow('FRONT_RESET_PASSWORD_PATH')}?token=${token}`;
+
+    await this.mailService.sendResetPassword(email, link);
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const record = await this.passwordResetService.validateResetToken(token);
+    if (!record) throw new BadRequestException('Invalid or expired token');
+
+    await this.userService.updatePassword(record.user.id, newPassword);
+    await this.passwordResetService.markTokenUsed(record.id);
   }
 }

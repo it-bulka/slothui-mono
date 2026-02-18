@@ -26,6 +26,8 @@ import { EventEmitterModule } from './event-emitter/event-emitter.module';
 import { EventsModule } from './events/events.module';
 import { PollsModule } from './polls/polls.module';
 import { CommentsModule } from './comments/comments.module';
+import { PasswordResetModule } from './password-reset/password-reset.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -73,6 +75,8 @@ import { CommentsModule } from './comments/comments.module';
     EventsModule,
     PollsModule,
     CommentsModule,
+    PasswordResetModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [AppService],

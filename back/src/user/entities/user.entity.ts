@@ -6,6 +6,7 @@ import {
   BeforeInsert,
   OneToMany,
   ManyToMany,
+  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RolesEnum } from '../../common/types/roles.types';
@@ -20,6 +21,7 @@ import { PostLike } from '../../posts/entities/postLike.entity';
 import { PostSave } from '../../posts/entities/postSave.entity';
 import { Event } from '../../events/entity/event.entity';
 import { UserAccount } from './userAccount.entity';
+import { PasswordResetToken } from '../../password-reset/entity/password-reset.entity';
 
 @Entity()
 export class User {
@@ -58,6 +60,9 @@ export class User {
 
   @Column({ type: 'text', nullable: true })
   hashedRefreshToken: string | null;
+
+  @OneToMany(() => PasswordResetToken, (token) => token.user)
+  resetTokens: PasswordResetToken[];
 
   @OneToMany(() => Message, (message) => message.author)
   messages: Message[];
@@ -100,6 +105,7 @@ export class User {
   participatingEvents: Event[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
       this.password = await bcrypt.hash(this.password, 10);
