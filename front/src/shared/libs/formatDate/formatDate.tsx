@@ -1,9 +1,10 @@
+const language = navigator.language || 'uk-UA'
 export const formatDate = (
   iso: string,
   options?: Intl.DateTimeFormatOptions
 ) => {
   return new Intl.DateTimeFormat(
-    undefined, // locale  auto
+    language,
     {
       year: 'numeric',
       month: 'short',

@@ -5,6 +5,7 @@ import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.
 import { useNavigate } from 'react-router';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { memo } from 'react';
+import { formatDate } from '@/shared/libs';
 
 export const EventInfo = memo(({id}: {id: string}) => {
   const eventsService = useEventsService();
@@ -25,7 +26,7 @@ export const EventInfo = memo(({id}: {id: string}) => {
       id={eventData.id}
       title={eventData.title}
       description={eventData.description}
-      date={eventData.date}
+      date={formatDate(eventData.date)}
       location={eventData.location}
       position={[7878,99.9]}
       organizer={eventData.organizer}

@@ -2,6 +2,7 @@ import { EventCard, useEventsHomeSelect } from '@/entities';
 import { SubscribeEventButton } from '@/features';
 import { Typography } from '@/shared/ui';
 import { memo } from 'react';
+import { formatDate } from '@/shared/libs';
 
 export const HomeEventContent = memo(() => {
   const { items: events } = useEventsHomeSelect()
@@ -14,7 +15,7 @@ export const HomeEventContent = memo(() => {
       key={item.id}
       title={item.title}
       description={item.description}
-      date={item.date}
+      date={formatDate(item.date)}
       location={item.location}
       organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
       participantsCount={item.participantsCount || 0}

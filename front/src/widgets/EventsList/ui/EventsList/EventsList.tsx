@@ -1,6 +1,7 @@
 import { EventCard } from '@/entities';
 import { SubscribeEventButton } from '@/features';
 import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.ts';
+import { formatDate } from '@/shared/libs';
 
 export const EventsList = ({ events, withActions }: { events: EventDTO[], withActions?: boolean }) => {
   return events.map((item) => (
@@ -9,7 +10,7 @@ export const EventsList = ({ events, withActions }: { events: EventDTO[], withAc
       key={item.id}
       title={item.title}
       description={item.description}
-      date={item.date}
+      date={formatDate(item.date)}
       location={item.location}
       organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
       participantsCount={item.participantsCount || 0}
