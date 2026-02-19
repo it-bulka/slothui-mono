@@ -1,46 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { getServices } from '@/shared/libs/services';
-import {
-  currentChatReducer,
-  chatsReducer,
-  usersSuggestionsReducer,
-  authUserReducer,
-  messageReducer,
-  commentsReducer,
-  postsReducer,
-  replyTargetReducer,
-  friendsReducer,
-  storiesReducer,
-  eventsReducer,
-  notificationsCountersReducer,
-  usersProfilesReducer,
-  analyticsReducer,
-  authUserActions
-} from '@/entities';
-import { postComposerReducer } from '@/features/PostComposer';
-import { ErrorHelper } from '@/shared/libs';
-import { deleteTokenToLocalStorage } from '@/shared/libs';
+import { authUserActions } from '@/entities';
+import { deleteTokenToLocalStorage, ErrorHelper } from '@/shared/libs';
+import { rootReducer } from './appReducer.ts';
 
 const services = getServices();
 
 export const store = configureStore({
-  reducer: {
-    currentChat: currentChatReducer,
-    chats: chatsReducer,
-    authUser: authUserReducer,
-    usersSuggestions: usersSuggestionsReducer,
-    messages: messageReducer,
-    comments: commentsReducer,
-    posts: postsReducer,
-    postComposer: postComposerReducer,
-    replyTarget: replyTargetReducer,
-    friends: friendsReducer,
-    stories: storiesReducer,
-    events: eventsReducer,
-    notificationsCounters: notificationsCountersReducer,
-    usersProfiles: usersProfilesReducer,
-    analytics: analyticsReducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {

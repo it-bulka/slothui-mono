@@ -9,7 +9,8 @@ export {
   useAuthUserSelector,
   useLogout,
   useUpdateProfile,
-  authUserActions
+  authUserActions,
+  deleteProfileThunk
 } from './AuthUser';
 
 export { EventCard } from './Event';

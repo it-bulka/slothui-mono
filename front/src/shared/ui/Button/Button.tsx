@@ -10,6 +10,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: BtnSizes
   className?: string
   type?: 'button' | 'submit' | 'reset'
+  fullWidth?: boolean
+  position?: 'left' | 'right'
 }
 
 export const Button = ({
@@ -20,6 +22,8 @@ export const Button = ({
   className,
   type = 'button',
   disabled = false,
+  fullWidth = false,
+  position,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   return (
@@ -28,7 +32,7 @@ export const Button = ({
       type={type}
       {...rest}
       disabled={disabled}
-      className={twMerge(classNames(`${cls[variant]} ${cls[size]} ${cls.active} ${cls.btn} relative`, { [cls.disabled]: disabled}, [className]))}
+      className={twMerge(classNames(`${cls[variant]} ${cls[size]} ${cls.active} ${cls.btn} relative`, { [cls.disabled]: disabled, [cls.full]: fullWidth}, [cls[position], className]))}
     >
       {children}
     </button>

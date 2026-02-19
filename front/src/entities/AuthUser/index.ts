@@ -9,6 +9,7 @@ export {
   useAuthUserIdSelector,
   selectAuthUser
 } from './model/selectors/userSelector.tsx';
-export { useRegisterUser, useLogout, useUpdateProfile } from './model/hooks';
+export { useRegisterUser, useLogout, useUpdateProfile, useDeleteProfile } from './model/hooks';
 export { logout } from './model/logout/logout.thunk.ts';
 export { authUserActions } from './model/slice.ts';
+export { deleteProfileThunk } from './model';

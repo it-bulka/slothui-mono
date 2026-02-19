@@ -32,3 +32,15 @@
 .active:active:not(.link) {
   box-shadow: inset 0 6px 0 rgba(0, 0, 0, 0.5);
 }
+
+.full {
+  @apply block w-full;
+}
+
+.left {
+  @apply mr-auto;
+}
+
+.right {
+  @apply ml-auto;
+}

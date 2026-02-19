@@ -1,0 +1,1 @@
+export { deleteProfileThunk } from './deleteProfile/deleteProfile.thunk.ts';

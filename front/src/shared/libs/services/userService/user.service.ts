@@ -60,7 +60,7 @@ export class UserService {
     );
   }
 
-    /** PATCH /api/users/me/profile/update  -> update current user profile data */
+    /** PATCH /api/users/me/profile  -> update current user profile data */
   async updateProfileData(data: UpdateUserDto): Promise<UserShort> {
     const keys = Object.keys(data);
     if (!keys.length) throw new Error('No data for updating');
@@ -73,10 +73,20 @@ export class UserService {
     if (data.avatar) fd.append('avatar', data.avatar);
 
     return await this.http.request<UserShort>(
-      `${USERS_API}/me/profile/update`,
+      `${USERS_API}/me/profile`,
       {
         method: 'PATCH',
         body: fd,
+      },
+    );
+  }
+
+  async deleteProfile(): Promise<void> {
+    await this.http.request<UserShort>(
+      `${USERS_API}/me/profile`,
+      {
+        method: 'DELETE',
+        credentials: 'include'
       },
     );
   }

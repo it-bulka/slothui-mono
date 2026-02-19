@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Input } from '@/shared/ui';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
 import { useAuthUserSelector } from '@/entities';
-import { ChangePasswordFormLazy, Sessions } from '@/features';
+import { ChangePasswordFormLazy, Sessions, DeleteAccountButton } from '@/features';
 
 const AccountSettings = () => {
   const [isChangePassOpen, setChangePassOpen] = useState(false)
@@ -26,7 +26,7 @@ const AccountSettings = () => {
 
         {isChangePassOpen && <ChangePasswordFormLazy />}
         <Sessions />
-        <Button className="w-full" variant="secondary">Delete account</Button>
+        <DeleteAccountButton />
       </>
     </SubSettingsWrapper>
   )
