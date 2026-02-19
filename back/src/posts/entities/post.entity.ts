@@ -20,7 +20,10 @@ export class Post {
 
   //TODO: add poll later
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   author: User;
 
   @OneToMany(() => PostLike, (like) => like.post)

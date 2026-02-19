@@ -7,11 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  Delete,
   UseInterceptors,
   Body,
   UploadedFile,
   HttpCode,
   HttpStatus,
+  Response,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -21,6 +23,7 @@ import { SearchUsersQueryDto } from './dto/search-user.query';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ChangePasswordDto } from './dto/changePassword';
+import { Response as ExpressResponse } from 'express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -34,7 +37,18 @@ export class UserController {
     return { profile, linkedProviders: providers };
   }
 
-  @Patch('me/profile/update')
+  @Delete('me/profile')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteProfile(
+    @Request() req: AuthRequest,
+    @Response({ passthrough: true }) res: ExpressResponse,
+  ) {
+    await this.userService.deleteUser(req.user.id);
+    res.clearCookie('refresh_token');
+    return;
+  }
+
+  @Patch('me/profile')
   @UseInterceptors(FileInterceptor('avatar'))
   async updateProfile(
     @Body() dto: ProfileUpdateDto,

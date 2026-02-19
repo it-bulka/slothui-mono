@@ -111,8 +111,23 @@ export class CloudinaryService implements OnModuleInit {
     return thumbnailUrl;
   }
 
+  getResourceType(publicId: string): 'image' | 'video' | 'raw' {
+    const extension = publicId.split('.').pop()?.toLowerCase();
+
+    if (!extension) return 'raw';
+
+    const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+    const videoExts = ['mp4', 'mov', 'avi', 'webm', 'mkv'];
+
+    if (imageExts.includes(extension)) return 'image';
+    if (videoExts.includes(extension)) return 'video';
+
+    return 'raw';
+  }
+
   async deleteFile(publicId: string) {
-    await cloudinary.uploader.destroy(publicId, { resource_type: 'auto' });
+    const resource_type = this.getResourceType(publicId) || 'auto';
+    await cloudinary.uploader.destroy(publicId, { resource_type });
   }
 
   async deleteMany(publicIds: { publicId: string }[]) {

@@ -385,4 +385,13 @@ export class UserService {
       throw new UnauthorizedException('Invalid credentials');
     return user;
   }
+
+  async deleteUser(userId: string) {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) throw new BadRequestException(`User not found`);
+    if (user.avatarPublicId) {
+      await this.deleteAvatar(user.avatarPublicId);
+    }
+    await this.userRepo.delete(userId);
+  }
 }
