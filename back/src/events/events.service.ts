@@ -248,7 +248,7 @@ export class EventsService {
   async getParticipantsCursor(
     eventId: string,
     { pageSize = 10, cursor }: { pageSize?: number; cursor?: string } = {},
-  ): Promise<PaginatedResponse<EventParticipant>> {
+  ): Promise<PaginatedResponse<EventParticipant> & { totalCount: number }> {
     const eventExists = await this.eventsRepo.exists({
       where: { id: eventId },
     });
@@ -262,7 +262,8 @@ export class EventsService {
       .select([
         'participant.id AS id',
         'participant.avatarUrl AS avatar',
-        'participant.name AS name',
+        'participant.username AS username',
+        'participant.nickname AS nickname',
       ])
       .innerJoin(
         'participant.participatingEvents',
@@ -280,10 +281,22 @@ export class EventsService {
       cursorField: 'id',
       limit: pageSize,
     });
+
+    const totalCount = await this.userRepo
+      .createQueryBuilder('participant')
+      .innerJoin(
+        'participant.participatingEvents',
+        'event',
+        'event.id = :eventId',
+        { eventId },
+      )
+      .getCount();
+
     return {
       items: resultItems,
       hasMore,
       nextCursor,
+      totalCount: Number(totalCount),
     };
   }
 }
