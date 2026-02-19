@@ -64,8 +64,8 @@ export class EventsService {
   }
 
   /** GET /api/events/:id/participants?cursor&limit=50 */
-  async listEventParticipants(eventId: string, cursor?: string): Promise<PaginatedResponse<EventParticipant>> {
-    const res = await this.http.request<PaginatedResponse<EventParticipant>>(
+  async listEventParticipants(eventId: string, cursor?: string | null): Promise<PaginatedResponse<EventParticipant> & { totalCount: number}> {
+    const res = await this.http.request<PaginatedResponse<EventParticipant> & { totalCount: number}>(
       `/api/events/${eventId}/participants`,
       { params: { cursor, limit: 50 } },
     );

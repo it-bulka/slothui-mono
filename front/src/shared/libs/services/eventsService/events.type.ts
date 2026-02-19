@@ -1,7 +1,7 @@
 export interface EventParticipant {
   id: string;
   avatar?: string;
-  name: string;
+  username: string;
   nickname: string;
 }
 
