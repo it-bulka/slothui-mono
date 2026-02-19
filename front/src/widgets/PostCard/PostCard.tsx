@@ -6,7 +6,6 @@ import { PostComments } from '../PostCommentsThread';
 import type { Attachment } from '@/shared/types';
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 type BaseProps = {
   postId: string;
@@ -22,6 +21,7 @@ type WithAuthor =  BaseProps & {
   userName: string;
   userPosition: string
   userId: string
+  profileLink: string
 }
 
 type WithoutAuthor = BaseProps & {
@@ -46,7 +46,7 @@ export const PostCard = ({
     <Card>
       {("withOutAuthor" in rest)  ? null : (
         <Card.Header>
-          <Link to={getUserPage(rest.userId)}>
+          <Link to={rest.profileLink}>
             <AvatarWithInfo src={rest.avatarSrc} position={rest.userPosition} name={rest.userName} />
           </Link>
         </Card.Header>

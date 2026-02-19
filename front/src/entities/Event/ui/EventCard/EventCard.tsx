@@ -1,8 +1,8 @@
-import { memo, type ReactNode } from 'react'
+import { memo, type ReactNode, type MouseEventHandler } from 'react'
 import { Avatar, Card, Typography, TypographyTypes, AppLink } from '@/shared/ui'
 import AvatarDefault from '@/shared/assets/images/default/avatar-default.png'
 import { getEventsDetailsPage } from '@/shared/config';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 
 export interface EventCardProps {
   id: string
@@ -14,6 +14,7 @@ export interface EventCardProps {
     username: string
     avatar?: string
   }
+  profileLink?: string
   participantsCount?: number
   onClick?: (id: string) => void
   actions?: ReactNode,
@@ -28,9 +29,14 @@ export const EventCard = memo(({
   organizer,
   participantsCount = 0,
   onClick,
-  actions
+  actions,
+  profileLink
 }: EventCardProps) => {
   const navigate = useNavigate()
+  const onAvatarClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.stopPropagation()
+    navigate(getEventsDetailsPage(id))
+  }
   return (
     <Card
       onClick={() => {
@@ -40,7 +46,15 @@ export const EventCard = memo(({
       className="cursor-pointer hover:shadow-md transition-shadow duration-200"
     >
       <Card.Header className="flex items-center justify-between border-b border-gray-100 pb-3">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative">
+          {profileLink && (
+            <Link
+              to={profileLink}
+              onClick={onAvatarClick}
+              className={'absolute top-0 left-0 right-0 bottom-0'}
+            />
+          )}
+
           <Avatar src={organizer.avatar || AvatarDefault} name={organizer.username} size="sm" />
           <Typography bold>{organizer.username}</Typography>
         </div>

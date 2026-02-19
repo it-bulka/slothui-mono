@@ -9,6 +9,7 @@ import { memo, useEffect, useCallback } from 'react';
 import { useAuthUserSelector } from '@/entities';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useIsPostCreating } from '@/features/PostComposer';
+import { getMyPostsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 export const MyFeedContent = memo(() => {
   const userId = useAuthUserSelector()?.id;
@@ -47,6 +48,7 @@ export const MyFeedContent = memo(() => {
         <PostCard
           postId={post.id}
           key={post.id}
+          profileLink={getMyPostsPage()}
           userId={post.author?.id}
           userName={post.author?.nickname}
           userPosition={post.author?.nickname}

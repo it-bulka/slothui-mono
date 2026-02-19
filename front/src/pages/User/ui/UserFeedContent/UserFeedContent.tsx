@@ -2,8 +2,11 @@ import { useProfilePostsSelector, useProfileFeedStateSelector, useFetchPostsByUs
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { Typography } from '@/shared/ui';
 import { useEffect } from 'react';
+import { getMyPostsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 
 export const UserFeedContent = ({ userId }: { userId: string }) => {
+  const currentUserId = useAuthUserIdSelector()
   const posts = useProfilePostsSelector(userId);
   const { isLoading, hasMore } = useProfileFeedStateSelector(userId);
   const { fetchPosts } = useFetchPostsByUser()
@@ -16,19 +19,23 @@ export const UserFeedContent = ({ userId }: { userId: string }) => {
 
   if(!posts?.length) return <Typography bold>No any posts yet</Typography>
 
-  return posts.map((post) => (
-    <PostCard
-      postId={post.id}
-      key={post.id}
-      userName={post.author?.nickname}
-      userPosition={post.author?.nickname}
-      avatarSrc={post.author?.avatarUrl}
-      userId={post.author?.id}
-      file={post.attachments?.file}
-      video={post.attachments?.video}
-      audio={post.attachments?.audio}
-      images={post.attachments?.images}
-      text={post?.text || ''}
-    />
-  ))
+  return posts.map((post) => {
+    const isMe = currentUserId === post.author.id
+    return (
+      <PostCard
+        postId={post.id}
+        key={post.id}
+        profileLink={isMe ? getMyPostsPage() : getUserPage(post.author.id)}
+        userName={post.author?.nickname}
+        userPosition={post.author?.nickname}
+        avatarSrc={post.author?.avatarUrl}
+        userId={post.author?.id}
+        file={post.attachments?.file}
+        video={post.attachments?.video}
+        audio={post.attachments?.audio}
+        images={post.attachments?.images}
+        text={post?.text || ''}
+      />
+    )
+  })
 }

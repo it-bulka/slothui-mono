@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 import { Follower } from './entity/follower.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
@@ -26,6 +30,8 @@ export class FollowerService {
     needConfirmation: boolean = false,
   ) {
     const ids = [currentUserId, followeeId];
+    if (currentUserId === followeeId)
+      throw new ConflictException('User cannot follow themselves');
     const users = await this.userRepo.find({
       where: { id: In(ids) },
     });
