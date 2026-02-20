@@ -5,3 +5,4 @@ export const postsAdapter = createEntityAdapter<PostWithAttachmentsUI, string>({
   selectId: post => post.id,
   sortComparer: false, // backend sorts
 })
+

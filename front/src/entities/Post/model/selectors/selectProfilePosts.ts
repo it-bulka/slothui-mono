@@ -1,15 +1,22 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/app/config';
+import { selectPostEntities } from './adapterSelectors.ts';
 
 const selectProfilePostIds = (
   state: RootState,
-  userId: string
-) => state.posts.profile[userId]?.ids ?? [];
+  userId?: string
+) => state.posts.profile[userId || '']?.ids ?? [];
 
 export const selectProfilePosts = createSelector(
   [
     selectProfilePostIds,
-    (state: RootState) => state.posts.entities,
+    selectPostEntities,
   ],
-  (ids, entities) => ids.map(id => entities[id]!)
+  (ids, entities) => {
+    console.log('selectProfilePosts', { ids, entities })
+    return ids.map(id => {
+      console.log('entities[id]', entities[id])
+      return entities[id]
+    }).filter(Boolean);
+  },
 );

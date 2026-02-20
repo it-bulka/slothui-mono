@@ -31,8 +31,9 @@ export const appReducer = combineReducers({
 });
 
 export const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: AnyAction) => {
-  if (action.type === 'logout' || deleteProfileThunk.fulfilled.match(action)) {
+  if (action.type === 'logout/rejected' || action.type === 'logout/fulfilled' || deleteProfileThunk.fulfilled.match(action)) {
     // state = undefined → all slice come back to initialState
+    console.log('logout in rootReducer');
     state = undefined;
   }
 

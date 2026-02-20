@@ -5,8 +5,8 @@ import { useCallback } from 'react';
 export const useFetchPostsByUser = () => {
   const dispatch = useAppDispatch();
 
-  const fetchPosts = useCallback(({userId, cursor}: { userId: string, cursor?: string | null }) => {
-    dispatch(fetchPostsByUserThunk({ userId, cursor}))
+  const fetchPosts = useCallback(({userId }: { userId: string }) => {
+    dispatch(fetchPostsByUserThunk({ userId }))
   }, [dispatch]);
 
   return { fetchPosts };

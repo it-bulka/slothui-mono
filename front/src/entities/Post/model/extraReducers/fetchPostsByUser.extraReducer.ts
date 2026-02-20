@@ -16,5 +16,6 @@ export const fetchPostsByUserExtraReducer = (builder: ActionReducerMapBuilder<Po
 
     state.profile[userId].hasMore = hasMore;
     state.profile[userId].nextCursor = nextCursor;
+    state.profile[userId].lastFetchedAt = Date.now();
   });
 }

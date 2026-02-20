@@ -7,6 +7,7 @@ export type FeedState = {
   error?: string
   hasMore: boolean
   nextCursor?: string | null
+  lastFetchedAt?: number // Date.now()
 }
 
 export type PostWithAttachmentsUI = PostWithAttachmentsDto & {
