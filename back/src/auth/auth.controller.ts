@@ -98,7 +98,11 @@ export class AuthController {
   @UseGuards(RefreshJwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
-  async logout(@Request() req: AuthRequest, @Response() res: ExpressResponse) {
+  async logout(
+    @Request() req: AuthRequest,
+    @Response({ passthrough: true }) res: ExpressResponse,
+  ) {
+    if (req.method === 'OPTIONS') return;
     const refreshToken = getRefreshTokenFromReq(req);
     const userId = req.user.id;
 
@@ -107,6 +111,7 @@ export class AuthController {
     }
 
     res.clearCookie('refresh_token');
+    return;
   }
 
   @UseGuards(GoogleAuthGuard)

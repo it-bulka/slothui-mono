@@ -224,7 +224,7 @@ export class SessionService {
     for (const session of sessions) {
       const isMatch =
         !!session.hashedRefreshToken &&
-        (await argon2.verify(token, session.hashedRefreshToken));
+        (await argon2.verify(session.hashedRefreshToken, token));
 
       if (isMatch) return session;
     }
