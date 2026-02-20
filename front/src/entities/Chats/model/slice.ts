@@ -12,6 +12,9 @@ export const chatSlice = createSlice({
     chatsLoaded: (state, action: PayloadAction<PaginatedResponse<Chat>>) => {
       chatAdapter.addMany(state, action.payload.items);
     },
+    setActiveChatId: (state, action: PayloadAction<string | null>) => {
+      state.activeChatId = action.payload;
+    },
     addChat: (state, action: PayloadAction<Chat>) => {
       chatAdapter.upsertOne(state, action.payload);
     },

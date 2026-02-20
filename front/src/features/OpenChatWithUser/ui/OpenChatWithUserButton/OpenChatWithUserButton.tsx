@@ -19,6 +19,7 @@ export const OpenChatWithUserButton = memo(({ userId }: { userId: string}) => {
       const data  = await chatService.findChatByMember(userId);
       if (data.id) {
         dispatch(chatsActions.addChat(data))
+        dispatch(chatsActions.setActiveChatId(data.id))
         navigate(getMessagesWithUserPage(data.id));
         return
       }
