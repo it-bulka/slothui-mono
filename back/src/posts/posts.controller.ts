@@ -28,11 +28,12 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async getMany(@Query() q: GetPostsQueryDto) {
+  async getMany(@Query() q: GetPostsQueryDto, @Request() req: AuthRequest) {
     return await this.postsService.getMany({
       cursor: q.cursor,
       limit: Number(q.limit) || 100,
-      userId: q.userId,
+      targetUserId: q.userId,
+      userId: req.user.id,
     });
   }
 
@@ -45,6 +46,7 @@ export class PostsController {
       cursor: q.cursor,
       limit: Number(q.limit) || 50,
       userId: req.user.id,
+      onlyMe: true,
     });
   }
 

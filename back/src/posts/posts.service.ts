@@ -11,6 +11,7 @@ import { PostSave } from './entities/postSave.entity';
 import { EntityManager } from 'typeorm';
 import { PollsService } from '../polls/polls.service';
 import { CreatePostCommand } from './dto/createPost.dto';
+import { GetPostsParams } from './getPostParams';
 
 @Injectable()
 export class PostsService {
@@ -25,52 +26,55 @@ export class PostsService {
     private readonly pollsService: PollsService,
   ) {}
 
-  async getMany({
-    limit,
-    cursor,
-    userId,
-  }: {
-    userId: string;
-    limit: number;
-    cursor?: string | null;
-  }): Promise<PostPaginatedRes> {
+  async getMany(params: GetPostsParams): Promise<PostPaginatedRes> {
+    const {
+      userId,
+      targetUserId,
+      friendsIds,
+      onlyMe,
+      cursor,
+      limit = 20,
+      random,
+    } = params;
     const qb = this.postRepo.createQueryBuilder('post');
 
     if (cursor) {
       const cursorDate = new Date(cursor);
-      qb.where('post.createdAt < :lastSentAt', { lastSentAt: cursorDate });
+      qb.where('post.createdAt < :cursor', { cursor: cursorDate });
     }
 
+    // filters
+    if (onlyMe && userId) {
+      qb.andWhere('post.authorId = :me', { me: userId });
+    } else if (targetUserId) {
+      qb.andWhere('post.authorId = :target', { target: targetUserId });
+    } else if (friendsIds?.length) {
+      qb.andWhere('post.authorId IN (:...friends)', { friends: friendsIds });
+    }
+
+    // isLiked / isSaved for currentUser
     if (userId) {
       qb.addSelect(
-        `
-        EXISTS (
-          SELECT 1
-          FROM post_like pl
-          WHERE pl."postId" = post.id
-            AND pl."userId" = :userId
-        )
-        `,
+        `EXISTS (
+        SELECT 1 FROM post_like pl
+        WHERE pl."postId" = post.id AND pl."userId" = :userId
+      )`,
         'isLiked',
       )
         .addSelect(
-          `
-        EXISTS (
-          SELECT 1
-          FROM post_save ps
-          WHERE ps."postId" = post.id
-            AND ps."userId" = :userId
-        )
-        `,
+          `EXISTS (
+        SELECT 1 FROM post_save ps
+        WHERE ps."postId" = post.id AND ps."userId" = :userId
+      )`,
           'isSaved',
         )
         .setParameter('userId', userId);
     }
 
-    qb.leftJoinAndSelect('post.author', 'author')
-      .orderBy('post.createdAt', 'DESC')
-      .addOrderBy('post.id', 'DESC')
-      .take(limit + 1);
+    if (random) qb.orderBy('RANDOM()');
+    else qb.orderBy('post.createdAt', 'DESC').addOrderBy('post.id', 'DESC');
+
+    qb.leftJoinAndSelect('post.author', 'author').take(limit + 1);
 
     const { entities: posts, raw } = await qb.getRawAndEntities<{
       isLiked: boolean;
@@ -80,22 +84,19 @@ export class PostsService {
     const hasMore = posts.length > limit;
     const visiblePosts = posts.slice(0, limit);
     const lastPost = visiblePosts[visiblePosts.length - 1];
-
     const postIds = visiblePosts.map((p) => p.id);
 
+    // include attachments & polls
     const attachments = await this.attachmentService.getMany('post', postIds);
     const groupedAttachments =
       this.attachmentService.groupByTypeAndParentId(attachments);
-    console.log('post ids:', postIds);
-    const polls = await this.pollsService.getMany('post', postIds, userId);
-    console.log(
-      'poll parentIds:',
-      polls.map((p) => p.parentId),
-    );
 
+    const polls = targetUserId
+      ? await this.pollsService.getMany('post', postIds, targetUserId)
+      : [];
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
-    const postWithExtras: PostDto[] = visiblePosts.map((post, index) => ({
+    const items: PostDto[] = visiblePosts.map((post, index) => ({
       id: post.id,
       author: UserMapper.toResponse(post.author),
       text: post.text,
@@ -108,11 +109,7 @@ export class PostsService {
 
     const nextCursor = lastPost ? lastPost.createdAt.toISOString() : undefined;
 
-    return {
-      items: postWithExtras,
-      hasMore,
-      nextCursor,
-    };
+    return { items, hasMore, nextCursor };
   }
 
   async getById({
