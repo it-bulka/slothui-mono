@@ -1,14 +1,16 @@
 import { Button, AvatarWithInfo } from '@/shared/ui';
 import ExitSvg from '@/shared/assets/images/general/exit.svg?react'
-import AvatarImg from '@/mock/images/avatar.png'
 import { memo } from 'react';
 import { useLogout } from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 
 export const UserAuth = memo(() => {
   const { logout } = useLogout()
+  const authUser = useAuthUserSelector()
+  if(!authUser) return null;
   return (
     <div className="flex items-center">
-      <AvatarWithInfo src={AvatarImg} name={'name'} position={"position"} className="grow"/> //TODO: add name
+      <AvatarWithInfo src={authUser.avatarUrl} name={`@${authUser.nickname}`} position={authUser.username} className="grow"/>
       <Button
         className={"p-4 text-gray-g1 w-[40px]"}
         variant="transparent"
