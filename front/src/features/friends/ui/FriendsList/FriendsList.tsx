@@ -36,7 +36,7 @@ export const FriendsList = memo(({
           <AvatarWithInfo
             src={friend.src}
             position={friend.nickname}
-            name={friend.name}
+            name={friend.username}
             className="grow"
           />
           {renderActions?.(friend)}
