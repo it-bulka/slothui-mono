@@ -77,11 +77,15 @@ export class UserController {
   }
 
   @Get()
-  async searchUsers(@Query() q: SearchUsersQueryDto) {
+  async searchUsers(
+    @Query() q: SearchUsersQueryDto,
+    @Request() req: AuthRequest,
+  ) {
     return await this.userService.search({
       search: q.search,
       limit: q.limit,
       cursor: q.cursor,
+      currentUserId: req.user.id,
     });
   }
 

@@ -263,6 +263,7 @@ export class UserService {
     cursor?: string | null;
     limit?: number;
     search: string;
+    currentUserId?: string;
   }): Promise<PaginatedResponse<UserShortDTO>> {
     const limit = q.limit || 50;
     const trimmedSearch = q.search?.trim().replace(/^@/, '');
@@ -275,15 +276,21 @@ export class UserService {
 
     const qb = this.userRepo
       .createQueryBuilder('u')
-      .where('u.nickname ILIKE :search', { search: `%${trimmedSearch}%` })
+      .where('(u.nickname ILIKE :search OR u.username ILIKE :search)', {
+        search: `%${trimmedSearch}%`,
+      })
       .select([
         'u.id AS id',
-        'u.name AS username',
+        'u.username AS username',
         'u.nickname AS nickname',
         'u.avatarUrl AS avatarUrl',
       ])
       .orderBy('u.id', 'ASC')
       .take(limit + 1);
+
+    if (q.currentUserId) {
+      qb.andWhere('u.id != :currentUserId', { currentUserId: q.currentUserId });
+    }
 
     if (q.cursor) {
       qb.andWhere('u.id > :cursor', { cursor: q.cursor });
