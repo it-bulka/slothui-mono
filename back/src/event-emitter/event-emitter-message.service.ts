@@ -14,9 +14,9 @@ export class EventEmitterMessageService {
     return this.msgEvent$.asObservable();
   }
 
-  onMsgCreated(msg: MessageResponseDto) {
+  onNewMessage(msg: MessageResponseDto) {
     this.msgEvent$.next({
-      ev: MessageServerEvents.CREATED,
+      ev: MessageServerEvents.NEW,
       data: msg,
       meta: { local: true },
     });

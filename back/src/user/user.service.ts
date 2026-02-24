@@ -356,6 +356,15 @@ export class UserService {
     };
   }
 
+  async getUserBrief(userId: string): Promise<UserShortDTO> {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      select: ['id', 'nickname', 'username', 'avatarUrl'],
+    });
+    if (!user) throw new BadRequestException(`User not found`);
+    return user;
+  }
+
   async getProviders(userId: string) {
     return await this.userAccountRepo.find({
       where: { user: { id: userId } },

@@ -1,7 +1,7 @@
 export enum ChatRequestEvents {
   CREATE = 'chat:create',
   REMOVE_MEMBER = 'chat:removeMemberRequest',
-  LEAVE = 'chat:leave',
+  LEAVE = 'chat:leave', // user close chat
   JOIN = 'chat:join',
   DELETE = 'chat:delete',
   ENTER = 'chat:enter', // user open chat

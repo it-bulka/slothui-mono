@@ -75,9 +75,7 @@ export class MessagesController {
       poll: dto.poll,
     });
 
-    this.msgEmitterService.onMsgCreated(msg);
-    this.notificationEmitter.onNewMsg(msg);
-
+    this.msgEmitterService.onNewMessage(msg);
     return msg;
   }
 }

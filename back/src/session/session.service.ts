@@ -177,10 +177,6 @@ export class SessionService {
         let isCurrent = false;
 
         if (currentRefreshToken && s.hashedRefreshToken) {
-          console.log('hashedRefreshToken', {
-            hashedRefreshToken: s.hashedRefreshToken,
-            currentRefreshToken,
-          });
           try {
             isCurrent = await argon2.verify(
               s.hashedRefreshToken,

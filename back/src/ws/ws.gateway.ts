@@ -13,7 +13,7 @@ import {
   MessageRequestEvents,
   MessageServerEvents,
 } from './types/message.events';
-import { Socket, Server } from 'socket.io';
+import { Server } from 'socket.io';
 import { MessagesService } from '../messages/messages.service';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { ChatsService } from '../chats/chats.service';
@@ -23,7 +23,7 @@ import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { MsgEmitterType } from '../event-emitter/type/msgEmitter.type';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import {
@@ -32,6 +32,7 @@ import {
 } from '../event-emitter/type/notification.type';
 import { OpenedChatsTracker } from '../messages/opened-chats-tracker.service';
 import { UnreadBufferService } from '../messages/unread-buffer.service';
+import { WS_PREFIXES } from '../common/consts/ws-prefixes';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -66,15 +67,17 @@ export class WsGateway
 
   onModuleInit() {
     this.msgEvent$
+      .pipe(tap((event) => console.log('inside tap', event)))
       .pipe(filter((event) => event.meta?.local))
       .subscribe((event) => {
         // TODO: add redis later
         switch (event.ev) {
           // MESSAGES SERVER
-          case MessageServerEvents.CREATED:
+          case MessageServerEvents.NEW:
+            console.log('MessageServerEvents.NEW', event.ev);
             this.server
-              .to(event.data.chatId)
-              .except(event.data.authorId)
+              .to(WS_PREFIXES.setChatPrefix(event.data.chatId))
+              //.except(event.data.authorId)
               .emit(event.ev, event.data);
             break;
           default:
@@ -110,9 +113,11 @@ export class WsGateway
     }, 1000);
   }
 
-  handleConnection(client: Socket) {
-    console.log('handleConnection', client.id);
-    console.log('rooms', this.server.sockets.adapter.rooms);
+  async handleConnection(client: SocketWithUser) {
+    console.log('WS connect', client.id, client.handshake.auth);
+    console.log('client.data.user.id', client.data.user.id);
+
+    await this.wsService.activateAllUserChatsRooms(client.data.user.id, client);
   }
 
   @SubscribeMessage(ChatRequestEvents.CREATE)

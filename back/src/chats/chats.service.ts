@@ -50,6 +50,13 @@ export class ChatsService {
     return chat;
   }
 
+  async getAllUserChatsIds(userId: string): Promise<{ chatId: string }[]> {
+    return await this.chatMemberRepo.find({
+      where: { userId },
+      select: { chatId: true },
+    });
+  }
+
   async getChatDetails(
     chatId: string,
     userId: string,

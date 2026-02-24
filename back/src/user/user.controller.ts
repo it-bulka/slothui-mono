@@ -96,4 +96,9 @@ export class UserController {
       req.user.id,
     );
   }
+
+  @Get(':userId')
+  async getUserBrief(@Param('userId') userId: string) {
+    return await this.userService.getUserBrief(userId);
+  }
 }

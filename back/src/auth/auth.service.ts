@@ -41,6 +41,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
+
     if (!user) throw new UnauthorizedException(`User not found`);
     if (!user.password) throw new UnauthorizedException(`Invalid credentials`);
 

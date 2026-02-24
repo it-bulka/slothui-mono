@@ -4,12 +4,21 @@ import { ChatServerEvents } from './types/chat.events';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { AuthService } from '../auth/auth.service';
 import { ChatDetailsDTO } from '../chats/types/chat.type';
+import { WS_PREFIXES } from '../common/consts/ws-prefixes';
+import { ChatsService } from '../chats/chats.service';
 
 @Injectable()
 export class WsService {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly chatsService: ChatsService,
+  ) {}
   configUserRoomName(userId: string) {
-    return `user:${userId}`;
+    return WS_PREFIXES.setUserPrefix(userId);
+  }
+
+  configChatRoomName(chatId: string) {
+    return WS_PREFIXES.setChatPrefix(chatId);
   }
 
   getAllUserSocketIds(server: Server, userId: string) {
@@ -46,6 +55,16 @@ export class WsService {
     await socket.join(this.configUserRoomName(userId));
   }
 
+  async addToChatRoom(chatId: string, socket: Socket) {
+    const chatRoom = this.configChatRoomName(chatId);
+    await socket.join(chatRoom);
+  }
+
+  async deleteFromChatRoom(chatId: string, socket: Socket) {
+    const chatRoom = this.configChatRoomName(chatId);
+    await socket.leave(chatRoom);
+  }
+
   async createRoomWithMembers(
     server: Server,
     membersIds: string[],
@@ -65,7 +84,7 @@ export class WsService {
 
     await Promise.all(
       allSockets.map(async (socket) => {
-        await socket.join(chat.id);
+        await this.addToChatRoom(chat.id, socket);
         socket.emit(ChatServerEvents.CREATED, chat);
       }),
     );
@@ -75,18 +94,27 @@ export class WsService {
     server.use((socket, next) => {
       void (async () => {
         try {
-          const authHeader = socket.handshake.headers['authorization'];
-          const token = this.authService.getBearerToken(authHeader);
+          const token = socket.handshake.auth?.token as string;
+          if (!token) throw new Error('Token missing');
           const user = await this.authService.validateAccessToken(token);
           (socket as SocketWithUser).data.user = user;
           await this.addUserToPersonalRoom(user.id, socket);
           next();
         } catch (err) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          console.log('error', err.message);
           next(err instanceof Error ? err : new Error(String(err)));
         }
       })();
     });
+  }
+
+  // //
+
+  async activateAllUserChatsRooms(userId: string, socket: Socket) {
+    const chatsIds = await this.chatsService.getAllUserChatsIds(userId);
+    const fns = chatsIds.map(({ chatId }) => {
+      return this.addToChatRoom(chatId, socket);
+    });
+
+    await Promise.all(fns);
   }
 }
