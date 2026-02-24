@@ -4,7 +4,6 @@ export enum MessageRequestEvents {
 }
 export enum MessageServerEvents {
   NEW = 'msg:new',
-  NOTIFICATION = 'msg:notification',
   CREATED = 'msg:created',
   UPDATED = 'msg:updated',
   DELETED = 'msg:deleted',

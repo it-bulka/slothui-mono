@@ -3,6 +3,8 @@ export {
   useFetchSearchedChats,
   useFetchMyChats,
   useUserChatStateSelect,
-  useActiveChatDataSelector
+  useActiveChatDataSelector,
+  useSetActiveChatId
 } from './hooks';
 export { chatsActions } from './slice.ts';
+export { selectActiveChatId } from './selectors/useActiveChatId.tsx';

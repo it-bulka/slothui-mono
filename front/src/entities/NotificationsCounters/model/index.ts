@@ -1,4 +1,4 @@
-export { notificationsCountersReducer } from './slice/notificationsCounters.slice.ts';
+export { notificationsCountersReducer, notificationsCountersActions } from './slice/notificationsCounters.slice.ts';
 export {
   useNewFollowersCountSelect,
   useUnreadMessagesByChatSelect,

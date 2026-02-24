@@ -103,7 +103,6 @@ export function FileInput({
   }
 
   const handleRemove = (index: number) => {
-    console.log('handleRemove', index)
     const newFiles = files.filter((_, i) => i !== index)
 
     const dt = new DataTransfer()
@@ -119,7 +118,6 @@ export function FileInput({
 
     previews.forEach(url => URL.revokeObjectURL(url))
     setPreviews(newPreviews)
-    console.log('handleRemove', { newPreviews, newFiles: newFiles.length })
 
     onChange?.(dt.files)
   }

@@ -7,12 +7,11 @@ import {
   MessageRequestEvents,
   MessageServerEvents
 } from './message.events.ts';
-import type { MessageDto, PaginatedResponse, MessageNotification } from '../../../types';
+import type { MessageDto, PaginatedResponse } from '../../../types';
 import { filter } from 'rxjs';
 
 export class MessagesService {
   private readonly message$ = new Subject<MessageDto>();
-  private readonly msgNotification$ = new Subject<MessageNotification>();
   private readonly typing$ = new Subject<{ chatId: string; user: string; isTyping: boolean }>();
 
   private socket: Socket | undefined;
@@ -31,6 +30,7 @@ export class MessagesService {
     this.registerEvents()
 
     this.wsService.$reconnected.subscribe(() => {
+      console.log('socket - reconnect - message service')
       this.socket = this.wsService.socket;
       this.offEvents()
       this.registerEvents()
@@ -41,15 +41,14 @@ export class MessagesService {
     /* events from Server → Subject */
     const socket = this.socket
     if(!socket) throw this.wsService.callNoConnectionError()
-    socket.on(MessageServerEvents.NOTIFICATION,         (m: MessageNotification) => this.msgNotification$.next(m));
     socket.on(MessageServerEvents.NEW,         (m: MessageDto) => this.message$.next(m));
     socket.on(MessageServerEvents.TYPING,      (t) => this.typing$.next(t));
+
   }
 
   private offEvents() {
     const socket = this.socket
     if(!socket) return;
-    socket.off(MessageServerEvents.NOTIFICATION)
     socket.off(MessageServerEvents.NEW)
     socket.off(MessageServerEvents.TYPING)
   }
@@ -110,19 +109,8 @@ export class MessagesService {
   /*                         ---- Observables ----                      */
   /* ------------------------------------------------------------------ */
 
-  // global
-  onMsgNotification(): Observable<MessageNotification> {
-    return this.msgNotification$.pipe(
-      shareReplay(1)
-    );
-  }
-
-  // local
-  onMessage(chatId: string | null): Observable<MessageDto> {
-    return this.message$.pipe(
-      filter(t => t.chatId === chatId),
-      shareReplay(1)
-    );
+  onNewMessage(): Observable<MessageDto> {
+    return this.message$.asObservable()
   }
 
   onTyping(chatId: string | null): Observable<{ chatId: string; user: string; isTyping: boolean }> {

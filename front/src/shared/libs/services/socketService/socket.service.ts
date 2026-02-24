@@ -38,7 +38,7 @@ export class SocketService {
     }
     this.isConnecting = true;
 
-    const ws = io(location.origin, {
+    const ws = io(import.meta.env.VITE_API_BASE, {
       path: '/ws',
       transports: ['websocket'],      // pure WS
       auth: { token: this.token },
@@ -52,13 +52,14 @@ export class SocketService {
     });
 
     this.socket = ws;
-
-    ws.on('reconnected', (err) => {
+    console.log('this.socket = ', this.socket);
+    ws.on('reconnect', (err) => {
       console.log('[ws] reconnected', err)
       this.$reconnected.next(true);
     });
     ws.on('reconnect_error', (err) => console.warn('[ws] reconnect error', err));
     ws.on('error',           (err) => console.error('[ws] error', err));
+    ws.on('disconnect', (r) => console.log('[ws] disconnect', r))
 
     // wait for connection
     await new Promise<void>((resolve, reject) => {
@@ -76,6 +77,10 @@ export class SocketService {
 
     this.isConnecting = false;
     return this.socket!;
+  }
+
+  disconnect() {
+    this.socket?.disconnect()
   }
 
   private waitForConnection(timeoutMs = CONNECTION_TIMEOUT): Promise<void> {
@@ -101,17 +106,31 @@ export class SocketService {
   }
 
   private updateAuthHandshake() {
-    if (this.socket?.connected) {
-      this.socket.off()
-      this.socket.disconnect();
+    if(!this.socket) {
       this.connect().catch((err) => console.log(err));
+      return;
     }
+    if(!this.token) {
+      console.error('[ws] No token for updating handshake');
+      return;
+    }
+
+    if (this.socket?.connected) this.socket.disconnect();
+    this.socket.auth = { token: this.token }
+    this.socket.connect()
   }
 
   private updateToken(newToken: string | null) {
+    if (this.token === newToken) return;
+
     this.token = newToken;
-    if(!newToken) return;
-    this.updateAuthHandshake()
+    if (!newToken) return;
+
+    if (!this.socket) {
+      this.connect().catch((err) => console.log(err));
+    } else {
+      this.updateAuthHandshake();
+    }
   }
 
   onConnected(callback: () => void) {

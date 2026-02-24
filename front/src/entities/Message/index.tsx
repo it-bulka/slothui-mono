@@ -1,1 +1,1 @@
-export { useUpdatePollInMessage } from './model';
+export { useUpdatePollInMessage, messagesAction } from './model';

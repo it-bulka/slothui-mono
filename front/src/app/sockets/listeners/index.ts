@@ -1,0 +1,1 @@
+export { initMessageBatcher } from './message-batcher.listener.tsx';

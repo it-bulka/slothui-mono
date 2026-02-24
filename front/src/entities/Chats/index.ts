@@ -12,5 +12,7 @@ export {
   chatsActions,
   useFetchMyChats,
   useUserChatStateSelect,
-  useActiveChatDataSelector
+  useActiveChatDataSelector,
+  selectActiveChatId,
+  useSetActiveChatId
 } from './model';

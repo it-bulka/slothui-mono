@@ -15,13 +15,14 @@ export const notificationsCountersSlice = createSlice({
   name: 'notificationsCounters',
   initialState,
   reducers: {
-    incrementUnreadMessage: (state, action: { payload: { chatId: string } }) => {
-      const { chatId } = action.payload;
+    incrementUnreadMessage: (state, action: { payload: { chatId: string, count: number } }) => {
+      const { chatId, count = 0 } = action.payload;
 
+      if(!chatId) return
       state.unreadMessagesByChat[chatId] =
-        (state.unreadMessagesByChat[chatId] ?? 0) + 1;
+        (state.unreadMessagesByChat[chatId] ?? 0) + count;
 
-      state.unreadMessagesTotal += 1;
+      state.unreadMessagesTotal += count;
     },
     unreadBatchReceived: (
       state,

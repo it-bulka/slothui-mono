@@ -10,7 +10,8 @@ export {
   useLogout,
   useUpdateProfile,
   authUserActions,
-  deleteProfileThunk
+  deleteProfileThunk,
+  selectAuthUserId
 } from './AuthUser';
 
 export { EventCard } from './Event';
@@ -41,6 +42,8 @@ export {
   useFetchMyChats,
   useUserChatStateSelect,
   useActiveChatDataSelector,
+  selectActiveChatId,
+  useSetActiveChatId,
   chatsActions
 } from './Chats';
 
@@ -102,7 +105,8 @@ export {
   selectFollowingsByUser,
   fetchFollowersThunk,
   fetchFollowingsThunk,
-  type FriendEntity
+  type FriendEntity,
+  friendsActions
 } from './Friends';
 
 export {
@@ -134,7 +138,8 @@ export {
   notificationsCountersReducer,
   useNewFollowersCountSelect,
   useUnreadMessagesByChatSelect,
-  useUnreadMessagesTotalSelect
+  useUnreadMessagesTotalSelect,
+  notificationsCountersActions
 } from './NotificationsCounters';
 export { useFetchFriendsSuggestions } from './Friends';
 export {

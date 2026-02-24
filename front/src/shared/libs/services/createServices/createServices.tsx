@@ -15,6 +15,7 @@ import {
 } from '../notificationsCountersService/notificationsCounters.service.ts';
 import { SessionsService } from '../sessionsService/sessions.service.ts';
 import { TokenManager } from '../tokenManager/TokenManager.ts';
+import { AuthorCache } from '../authorsCach/AuthorsCache.ts';
 
 export const createServices = () => {
   const tokenManager = new TokenManager();
@@ -32,10 +33,11 @@ export const createServices = () => {
     events: new EventsService(httpService),
     stories: new StoriesService(httpService),
     messages: new MessagesService(httpService, socketService),
+    authors: new AuthorCache(httpService),
     comments: new CommentsService(httpService, socketService),
     posts: new PostsService(httpService),
     poll: new PollService(httpService),
-    friends: new FriendsService(httpService),
+    friends: new FriendsService(httpService, socketService),
     notificationsCounters: new NotificationsCountersService(httpService),
     sessions: new SessionsService(httpService),
   }

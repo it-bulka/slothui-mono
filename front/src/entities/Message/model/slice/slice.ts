@@ -45,13 +45,17 @@ const messageSlice = createSlice({
       state.loadingByChat[chatId] = false;
     },
 
-    messageReceived: (state, action: PayloadAction<MessageDto>) => {
-      const msg = action.payload;
-      messagesAdapter.upsertOne(state, msg);
+    addMessage: (state, action: PayloadAction<{chatId: string, message: MessageDto}>) => {
+      const { chatId, message } = action.payload;
+      messagesAdapter.upsertOne(state, message);
 
-      if (!state.idsByChat[msg.chatId]) state.idsByChat[msg.chatId] = [];
-      if (!state.idsByChat[msg.chatId].includes(msg.id)) {
-        state.idsByChat[msg.chatId].push(msg.id);
+      if (!state.idsByChat[chatId]) {
+        state.idsByChat[chatId] = [message.id]
+        return;
+      }
+
+      if (!state.idsByChat[chatId].includes(message.id)) {
+        state.idsByChat[chatId] = [message.id, ...state.idsByChat[chatId]];
       }
     },
 
@@ -66,13 +70,13 @@ const messageSlice = createSlice({
       delete state.idsByChat[chatId];
       delete state.loadingByChat[chatId];
       delete state.hasMoreByChat[chatId];
-    },
+    }
   },
   extraReducers: (builder) => {
     fetchMessagesByChatExtraReducer(builder)
     sendMessageExtraReducer(builder)
     updateMessagePollExtraReducer(builder)
-  },
+  }
 });
 
 export const messagesAction = messageSlice.actions;

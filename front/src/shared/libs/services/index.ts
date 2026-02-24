@@ -15,4 +15,5 @@ export {
 export { getServices } from './getServices/getServices.ts';
 export type { UserStories, StoryDTO } from './storiesService/stories.type.tsx';
 export { MessagesService } from './messagesService/messages.service.ts';
+export { FriendsService } from './friendsService/friends.service.ts';
 export type { GetCommentDto, EditedCommentDTO, EditCommentDto, GetReplyDto } from './commentsService/comments.type.ts';

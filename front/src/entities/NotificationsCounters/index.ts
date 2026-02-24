@@ -2,5 +2,6 @@ export {
   notificationsCountersReducer,
   useNewFollowersCountSelect,
   useUnreadMessagesByChatSelect,
-  useUnreadMessagesTotalSelect
+  useUnreadMessagesTotalSelect,
+  notificationsCountersActions
 } from './model';

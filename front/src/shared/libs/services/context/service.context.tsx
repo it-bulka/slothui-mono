@@ -15,8 +15,9 @@ import {
 } from '../notificationsCountersService/notificationsCounters.service.ts';
 import { PollService } from '../pollService/poll.service.ts';
 import { SessionsService } from '../sessionsService/sessions.service.ts';
+import { AuthorCache } from '@/shared/libs/services/authorsCach/AuthorsCache.ts';
 
-interface IServices {
+export interface IServices {
   http: HttpService
   socket: SocketService
   chat:  ChatService
@@ -25,6 +26,7 @@ interface IServices {
   events: EventsService
   stories: StoriesService
   messages:  MessagesService
+  authors: AuthorCache
   comments:  CommentsService
   posts:  PostsService
   poll:  PollService

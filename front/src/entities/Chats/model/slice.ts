@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { PaginatedResponse } from '@/shared/types';
+import type { PaginatedResponse, LastMessage } from '@/shared/types';
 import { chatAdapter } from './chat.adapter.ts';
 import type { Chat } from './types/chat.type.ts';
 import { fetchMyChatsExtraReducer, searchChatsExtraReducer } from './extraReducer';
@@ -23,6 +23,14 @@ export const chatSlice = createSlice({
     },
     closeChat: (state) => {
       state.activeChatId = null;
+    },
+    updateLastMessage: (state, action: PayloadAction<{chatId: string, msg: LastMessage}>) => {
+      chatAdapter.updateOne(state, {
+        id: action.payload.chatId,
+        changes: {
+          lastMessage: action.payload.msg
+        }
+      })
     }
   },
   extraReducers: (builder) => {

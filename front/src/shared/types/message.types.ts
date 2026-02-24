@@ -1,6 +1,7 @@
 import type { RawGroupedAttachment, GroupedAttachment } from './attachments.types.ts'
 import type { Geo } from './geo.types.ts'
 import type { Poll } from './poll.types.ts'
+import type { UserShort } from './user.types.ts';
 
 export type MessageBase = {
   chatId: string;
@@ -40,10 +41,7 @@ export type MessageNotification = {
   id: string;
   chatId: string;
   text: string;
-  from: {
-    id: string;
-    avatarUrl: string;
-    author: string;
-  };
   isAttachment: boolean;
 }
+
+export type Author = UserShort

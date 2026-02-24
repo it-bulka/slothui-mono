@@ -5,15 +5,17 @@ export interface UserDTO {
   avatarUrl: string;
 }
 
+export type LastMessage = {
+  id: string;
+  text: string;
+  createdAt: string;
+}
+
 export interface ChatDTO {
   id: string;
   name: string;
   avatarUrl?: string;
-  lastMessage?: {
-    id: string;
-    text: string;
-    createdAt: string;
-  }
+  lastMessage?: LastMessage;
   anotherMember?: UserDTO;
   isMember?: boolean;
   updatedAt: string;
