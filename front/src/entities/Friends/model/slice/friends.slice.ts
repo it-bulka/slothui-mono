@@ -12,6 +12,7 @@ import {
   markNewFollowersSeenExtraReducer
 } from '../extraReducers';
 import { fetchUserProfileDataThunk } from '../../../UsersProfiles';
+import { removeFriendFromList } from '../helpers';
 
 export const initialState = friendsAdapter.getInitialState<FriendsState>({
   entities: {},
@@ -56,6 +57,22 @@ export const friendsSlice = createSlice({
           ids.push(relatedUserId);
         }
       }
+    },
+    removeFollowee: (state, action: PayloadAction<{userId: string, followeeToRemoveId: string}>) => {
+      removeFriendFromList({
+        state,
+        userId: action.payload.userId,
+        friendId: action.payload.followeeToRemoveId,
+        listType: 'followingsByUser',
+      });
+    },
+    removeFollower: (state, action: PayloadAction<{userId: string, followerToRemoveId: string}>) => {
+      removeFriendFromList({
+        state,
+        userId: action.payload.userId,
+        friendId: action.payload.followerToRemoveId,
+        listType: 'followersByUser',
+      });
     }
   },
   extraReducers: (builder) => {

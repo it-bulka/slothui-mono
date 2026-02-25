@@ -30,7 +30,6 @@ export class MessagesService {
     this.registerEvents()
 
     this.wsService.$reconnected.subscribe(() => {
-      console.log('socket - reconnect - message service')
       this.socket = this.wsService.socket;
       this.offEvents()
       this.registerEvents()

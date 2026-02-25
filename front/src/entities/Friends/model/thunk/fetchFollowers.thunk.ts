@@ -16,4 +16,14 @@ export const fetchFollowers = createAsyncThunk<
     const errMsg = extra.extractErrorMessage(e, 'Failed to fetch followers');
     return rejectWithValue(errMsg);
   }
-});
+},
+{
+  condition: ({ userId }, { getState }) => {
+    const feed = getState().friends.followersByUser[userId || ''];
+    const lastFetched = feed?.lastFetchedAt;
+    if (!lastFetched) return true;
+
+    return Date.now() - lastFetched > 5 * 60 * 1000;
+  }
+}
+);

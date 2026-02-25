@@ -10,7 +10,6 @@ export const fetchFollowings = createAsyncThunk<
 >(
   'friends/fetchFollowings',
   async ({ cursor, userId }, { rejectWithValue, extra }) => {
-    console.log('fetchFollowings userId:', userId)
     try {
       return await extra.services.friends.getFollowings({ cursor, userId });
     } catch (e) {

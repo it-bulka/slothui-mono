@@ -13,10 +13,6 @@ export const selectProfilePosts = createSelector(
     selectPostEntities,
   ],
   (ids, entities) => {
-    console.log('selectProfilePosts', { ids, entities })
-    return ids.map(id => {
-      console.log('entities[id]', entities[id])
-      return entities[id]
-    }).filter(Boolean);
+    return ids.map(id => entities[id]).filter(Boolean);
   },
 );

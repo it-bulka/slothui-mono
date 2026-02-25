@@ -1,0 +1,1 @@
+export { removeFriendFromList } from './removeFriendFromList.ts';

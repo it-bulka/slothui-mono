@@ -14,7 +14,7 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
         ids: [],
         isLoading: false,
         hasMore: true,
-        followersLastSeenAt: 0
+        followersLastSeenAt: 0,
       }
 
       state.followersByUser[userId].isLoading = true
@@ -37,6 +37,7 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
       page.isLoading = false
       page.nextCursor = nextCursor
       page.followersLastSeenAt = followersLastViewedAt
+      page.lastFetchedAt = Date.now()
     })
 
     .addCase(fetchFollowers.rejected, (state, action) => {

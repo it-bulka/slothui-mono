@@ -1,12 +1,31 @@
 import { HttpService } from '../httpService/http.service.ts';
-import type { PaginatedResponse } from '@/shared/types';
-import type { FriendDto } from '@/shared/types';
+import type {
+  NewFriendNotification,
+  FriendDto,
+  PaginatedResponse,
+} from '../../../types';
+import { Subject, Observable } from 'rxjs';
+import { Socket } from 'socket.io-client';
+import { SocketService } from '../socketService/socket.service.ts';
+import { type FollowersUpdateData, FriendsServerEvents } from './friends.events.ts';
 
 export class FriendsService {
   private BASE_URL = '/api/friends';
+
+  private readonly followersNew$ = new Subject<NewFriendNotification>();
+  private readonly followersUpdate$ = new Subject<FollowersUpdateData>();
+
+  private socket: Socket | undefined;
+
   constructor(
     private readonly http: HttpService,
-  ) {}
+    private readonly wsService: SocketService
+  ) {
+    wsService.onConnected(() => {
+      this.socket = wsService.socket
+      this.init()
+    })
+  }
 
   /** GET /api/friends/followers */
   async getFollowers({ cursor, userId }: { cursor?: string | null, userId?: string } = {}): Promise<PaginatedResponse<FriendDto> & { followersLastViewedAt: number }> {
@@ -80,5 +99,46 @@ export class FriendsService {
         method: 'POST',
       },
     );
+  }
+
+  /* ------------------------------------------------------------------ */
+    /*                         ---- Websocket ----                      */
+  /* ------------------------------------------------------------------ */
+
+  private init() {
+    this.registerEvents()
+
+    this.wsService.$reconnected.subscribe(() => {
+      this.socket = this.wsService.socket;
+      this.offEvents()
+      this.registerEvents()
+    })
+  }
+
+  private registerEvents(){
+    /* events from Server → Subject */
+    const socket = this.socket
+    if(!socket) throw this.wsService.callNoConnectionError()
+    socket.on(FriendsServerEvents.NEW_FOLLOWER,         (m: NewFriendNotification) => this.followersNew$.next(m));
+    socket.on(FriendsServerEvents.UPDATE_FOLLOWERS,     (m: FollowersUpdateData) => this.followersUpdate$.next(m));
+  }
+
+  private offEvents() {
+    const socket = this.socket
+    if(!socket) return;
+    socket.off(FriendsServerEvents.NEW_FOLLOWER)
+  }
+
+  /* ------------------------------------------------------------------ */
+  /*                         ---- Observables ----                      */
+  /* ------------------------------------------------------------------ */
+
+  // global
+  onNewFollower(): Observable<NewFriendNotification> {
+    return this.followersNew$.asObservable();
+  }
+
+  onFollowersUpdate(): Observable<FollowersUpdateData> {
+    return this.followersUpdate$.asObservable();
   }
 }

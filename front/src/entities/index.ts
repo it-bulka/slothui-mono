@@ -106,7 +106,8 @@ export {
   fetchFollowersThunk,
   fetchFollowingsThunk,
   type FriendEntity,
-  friendsActions
+  friendsActions,
+  resentFriendsActions
 } from './Friends';
 
 export {

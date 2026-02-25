@@ -8,6 +8,7 @@ type FriendPage = {
   error?: string
 
   followersLastSeenAt?: number
+  lastFetchedAt?: number | null;
 }
 
 export type FriendEntity = {

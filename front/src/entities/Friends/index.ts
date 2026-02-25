@@ -29,3 +29,4 @@ export {
   fetchFollowers as  fetchFollowersThunk,
   fetchFollowings as fetchFollowingsThunk,
 } from './model/thunk';
+export { friendsActions, resentFriendsActions } from './model';

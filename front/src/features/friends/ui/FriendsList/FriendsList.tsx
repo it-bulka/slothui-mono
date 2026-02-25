@@ -3,6 +3,8 @@ import { AvatarWithInfo, List, Typography } from '@/shared/ui';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
 import type { FriendEntity } from '@/entities';
+import { Link } from 'react-router';
+import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 interface FriendsListProps {
   friends: FriendEntity[];
@@ -33,12 +35,13 @@ export const FriendsList = memo(({
             new
           </Typography>
           }
-          <AvatarWithInfo
-            src={friend.src}
-            position={friend.nickname}
-            name={friend.username}
-            className="grow"
-          />
+          <Link to={getUserPage(friend.id)} className="grow">
+            <AvatarWithInfo
+              src={friend.src}
+              position={friend.nickname}
+              name={friend.username}
+            />
+          </Link>
           {renderActions?.(friend)}
         </li>
       })}

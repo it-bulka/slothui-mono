@@ -9,3 +9,12 @@ export type FriendDto = {
 
   createdAt: string; // ISO
 }
+
+// NOTIFICATION
+
+export type NewFriendNotification = {
+  id: string;
+  avatarUrl: string
+  username: string
+  nickname: string
+}
