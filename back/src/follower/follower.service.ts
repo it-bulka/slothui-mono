@@ -11,6 +11,7 @@ import { FriendDto } from './dto/follower.dto';
 import { User } from '../user/entities/user.entity';
 import { FollowersViewed } from './entity/followersViewed.entity';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
+import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
 
 @Injectable()
 export class FollowerService {
@@ -22,6 +23,7 @@ export class FollowerService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
     private readonly notificationEmitter: EventEmitterNotificationService,
+    private readonly followerEmitter: EventEmitterFollowersService,
   ) {}
 
   async followUser(
@@ -56,6 +58,11 @@ export class FollowerService {
           followee: { id: currentUserId },
         },
       ],
+      relations: ['follower'],
+      select: {
+        id: true,
+        follower: { id: true },
+      },
     });
 
     if (relations.some((r) => r.follower.id === currentUserId)) {
@@ -78,6 +85,11 @@ export class FollowerService {
       following.follower,
     );
 
+    this.followerEmitter.onNewFollower(
+      following.followee.id,
+      following.follower,
+    );
+
     return {
       id: followee.id,
       src: followee.avatarUrl,
@@ -90,11 +102,13 @@ export class FollowerService {
     };
   }
 
-  async deleteFollower(followerId: string, followedUserId: string) {
+  async deleteFollower(actorId: string, targetId: string) {
     await this.followerRepo.delete({
-      follower: { id: followerId },
-      followee: { id: followedUserId },
+      follower: { id: actorId },
+      followee: { id: targetId },
     });
+
+    this.followerEmitter.onFollowersUpdate(actorId, targetId);
   }
 
   async confirmFollower(currentUserId: string, followerId: string) {
@@ -131,6 +145,7 @@ export class FollowerService {
       where: {
         followee: { id: userId },
       },
+      relations: { follower: true },
       order: {
         createdAt: 'DESC',
       },
@@ -177,10 +192,7 @@ export class FollowerService {
   }) {
     const query: FindManyOptions<Follower> = {
       where: { follower: { id: userId } },
-      relations: {
-        follower: true,
-        followee: true,
-      },
+      relations: { followee: true },
       order: { createdAt: 'DESC' },
       take: limit + 1,
     };

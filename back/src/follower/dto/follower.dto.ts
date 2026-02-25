@@ -12,3 +12,10 @@ export type FriendDto = {
   isFollowing: boolean;
   isFollower: boolean;
 };
+
+export type NewFriendNotification = {
+  id: string;
+  avatarUrl?: string | null;
+  username: string;
+  nickname: string;
+};

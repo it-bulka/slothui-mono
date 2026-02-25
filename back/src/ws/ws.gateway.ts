@@ -23,7 +23,7 @@ import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
 import { Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { MsgEmitterType } from '../event-emitter/type/msgEmitter.type';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import {
@@ -33,6 +33,9 @@ import {
 import { OpenedChatsTracker } from '../messages/opened-chats-tracker.service';
 import { UnreadBufferService } from '../messages/unread-buffer.service';
 import { WS_PREFIXES } from '../common/consts/ws-prefixes';
+import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
+import { FriendEmitterType } from '../event-emitter/type/followersEmitter.type';
+import { FollowersServerEvents } from './types/followers.events';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -48,6 +51,7 @@ export class WsGateway
 {
   @WebSocketServer() server: Server;
   private msgEvent$: Observable<MsgEmitterType>;
+  private followersEvent$: Observable<FriendEmitterType>;
   private notificationEvent$: Observable<NotificationEmitterType>;
 
   private interval: NodeJS.Timeout;
@@ -58,26 +62,25 @@ export class WsGateway
     private readonly chatsService: ChatsService,
     private readonly msgEmitterService: EventEmitterMessageService,
     private readonly notificationEmitterService: EventEmitterNotificationService,
+    private readonly followersEmitterService: EventEmitterFollowersService,
     private readonly openedChatsTracker: OpenedChatsTracker,
     private readonly unreadBufferService: UnreadBufferService,
   ) {
     this.msgEvent$ = msgEmitterService.getEvent();
     this.notificationEvent$ = notificationEmitterService.getEvent();
+    this.followersEvent$ = followersEmitterService.getEvent();
   }
 
   onModuleInit() {
     this.msgEvent$
-      .pipe(tap((event) => console.log('inside tap', event)))
       .pipe(filter((event) => event.meta?.local))
       .subscribe((event) => {
         // TODO: add redis later
         switch (event.ev) {
           // MESSAGES SERVER
           case MessageServerEvents.NEW:
-            console.log('MessageServerEvents.NEW', event.ev);
             this.server
               .to(WS_PREFIXES.setChatPrefix(event.data.chatId))
-              //.except(event.data.authorId)
               .emit(event.ev, event.data);
             break;
           default:
@@ -91,8 +94,29 @@ export class WsGateway
         switch (event.ev) {
           case NotificationEvent.FRIEND_REQUEST:
           case NotificationEvent.FRIEND_CONFIRMATION:
-          case NotificationEvent.MSG_NEW:
             this.server.to(event.meta.userId).emit(event.ev, event.data);
+            break;
+          default:
+            return;
+        }
+      });
+
+    this.followersEvent$
+      .pipe(filter((event) => event.meta?.local))
+      .subscribe((event) => {
+        switch (event.ev) {
+          case FollowersServerEvents.NEW:
+            this.server
+              .to(this.wsService.configUserRoomName(event.meta.userId))
+              .emit(event.ev, event.data);
+            break;
+          case FollowersServerEvents.UPDATE:
+            this.server
+              .to(this.wsService.configUserRoomName(event.data.actorId))
+              .emit(event.ev, event.data);
+            this.server
+              .to(this.wsService.configUserRoomName(event.data.targetId))
+              .emit(event.ev, event.data);
             break;
           default:
             return;
