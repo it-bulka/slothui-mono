@@ -1,4 +1,13 @@
-import { type FormEvent, type InputHTMLAttributes , type ReactNode, useEffect, useId, useState } from 'react'
+import {
+  type FormEvent,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type KeyboardEventHandler,
+  useCallback,
+  useEffect,
+  useId,
+  useState
+} from 'react'
 import { type IRegister } from '@/api/types/forms'
 import classnames from 'classnames'
 import {type FieldValues } from 'react-hook-form'
@@ -27,6 +36,8 @@ export interface InputProps<T extends FieldValues | undefined = undefined>
   error?: string
   accept?: string
   readOnly?: boolean
+  onEnter?: () => void
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined
 }
 
 // <T extends FieldValues | undefined = undefined>
@@ -49,6 +60,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   error,
   register,
   readOnly,
+  onEnter,
+  onKeyDown,
   ...props
 }, ref) => {
   const [value, setValue] = useState<InputVal>(inputValue ?? defaultValue ?? '')
@@ -72,6 +85,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   const addendumClickHandler = () => {
     onAddendumClick?.(setInputValue)
   }
+
+  const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useCallback((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onEnter?.()
+    }
+    onKeyDown?.(e)
+  }, [onEnter, onKeyDown])
 
   useEffect(() => {
     setValue(inputValue || '')
@@ -119,6 +140,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
           )}
           ref={ref}
           readOnly={readOnly}
+          onKeyDown={onKeyDownHandler}
         />
         {addendum && <button type="button" onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
       </div>
