@@ -1,5 +1,6 @@
 import { Input } from '@/shared/ui';
 import { useDraftMessageText } from '@/features/MessageComposer';
+import { useSendMessage } from '@/features/send-message/model';
 import { type RefObject, memo, useCallback } from 'react';
 import { useMessagesService } from '@/shared/libs/services';
 import { useActiveChatId, useSelectIsMessageSending } from '@/entities';
@@ -14,6 +15,7 @@ export const MessageInputText = memo(({
   const msgService = useMessagesService()
   const isMsgSending = useSelectIsMessageSending()
   const activeChatId = useActiveChatId()
+  const { sendMsg } = useSendMessage()
 
   const onFocus = useCallback(() => {
     if(!activeChatId) return
@@ -37,6 +39,7 @@ export const MessageInputText = memo(({
       onBlur={onBlur}
       aria-readonly={isMsgSending}
       readOnly={isMsgSending}
+      onEnter={sendMsg}
     />
   )
 })
