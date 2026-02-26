@@ -1,4 +1,4 @@
-import { type FormEvent, type HTMLAttributes, type ReactNode, useEffect, useId, useState } from 'react'
+import { type FormEvent, type InputHTMLAttributes , type ReactNode, useEffect, useId, useState } from 'react'
 import { type IRegister } from '@/api/types/forms'
 import classnames from 'classnames'
 import {type FieldValues } from 'react-hook-form'
@@ -8,8 +8,8 @@ import { forwardRef } from 'react';
 type InputVal = string | undefined
 type InputSetter = <T>(a: T) => void
 
-interface InputProps<T extends FieldValues | undefined = undefined>
-  extends HTMLAttributes<HTMLInputElement>,
+export interface InputProps<T extends FieldValues | undefined = undefined>
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'name'>,
     IRegister<T> {
   className?: string
   type?: string
@@ -120,7 +120,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
           ref={ref}
           readOnly={readOnly}
         />
-        {addendum && <button onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
+        {addendum && <button type="button" onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
       </div>
       {error && (
         <p role="alert" className={'px-3 text-red-500 text-[0.7em] absolute'}>

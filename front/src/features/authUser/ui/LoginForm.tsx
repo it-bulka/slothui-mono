@@ -11,8 +11,8 @@ import { getHomePage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useUpdateToken } from '@/shared/libs/services';
 
 const inputs = [
-  { name: 'email', placeholder: '@my_email@gmail.com' },
-  { name: 'password', placeholder: 'password' },
+  { name: 'email', placeholder: '@my_email@gmail.com', type: 'text' },
+  { name: 'password', placeholder: 'password', type: 'password' },
 ] as const
 
 export const LoginForm = () => {
@@ -37,13 +37,14 @@ export const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-2"
     >
-      {inputs.map(({ name, placeholder }) => (
+      {inputs.map(({ name, placeholder, type }) => (
         <AuthInput<LoginFormData>
           key={name}
           name={name}
           label={name}
           placeholder={placeholder}
           control={control}
+          type={type}
         />
       ))}
       <Button type="submit" className="min-w-[50%] ml-auto">

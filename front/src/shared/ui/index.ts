@@ -50,3 +50,4 @@ export { EventDateTimePicker } from './EventDateTimePicker';
 export { ToolbarWrapper } from './ToolbarWrapper';
 export { LinkBlock } from './LinkBlock';
 export { NewFriendToast } from './NewFriendToast';
+export { PasswordInput } from './PasswordInput';

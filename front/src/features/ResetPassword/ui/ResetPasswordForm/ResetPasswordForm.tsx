@@ -1,11 +1,16 @@
 import { Button } from '@/shared/ui';
 import { type ResetPasswordFormData, resetPasswordSchema } from '../../model';
-import { ResetPasswordInput } from '../ResetPasswordInput/ResetPasswordInput.tsx';
 import { useForm } from 'react-hook-form';
 import { useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuthService } from '@/shared/libs/services';
 import { toast } from 'react-toastify'
+import { AuthInput } from '@/features/authUser/ui/AuthInput.tsx';
+
+const inputs = [
+  { name: 'password', placeholder: 'New password', type: 'password' },
+  { name: 'confirmPassword', placeholder: 'Repeat New password', type: 'password' },
+] as const
 
 export const ResetPasswordForm = ({ token, onSuccess }: { token?: string | null, onSuccess?: () => void }) => {
   const { control, handleSubmit, formState } = useForm<ResetPasswordFormData>({
@@ -28,8 +33,17 @@ export const ResetPasswordForm = ({ token, onSuccess }: { token?: string | null,
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(submitHandler)}>
-      <ResetPasswordInput control={control} name="password" label="New password" />
-      <ResetPasswordInput control={control} name="confirmPassword" label="Repeat New password" />
+      {inputs.map(({ name, placeholder, type }) => (
+        <AuthInput<ResetPasswordFormData>
+          key={name}
+          name={name}
+          label={name}
+          placeholder={placeholder}
+          control={control}
+          type={type}
+        />
+      ))}
+
       <Button className="ml-auto" type="submit" disabled={!formState.isDirty}>Confirm</Button>
     </form>
   )
