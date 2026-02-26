@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Input, type InputProps } from '../../Input/Input.tsx'
-import { memo } from 'react';
+import { forwardRef } from 'react';
 
-export const PasswordInput = memo((props: InputProps) => {
+export const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const eyeIcon = (
@@ -19,6 +19,7 @@ export const PasswordInput = memo((props: InputProps) => {
 
   return (
     <Input
+      ref={ref}
       {...props}
       type={isVisible ? 'text' : 'password'}
       autoComplete="current-password"
