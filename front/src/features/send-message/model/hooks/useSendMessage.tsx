@@ -1,6 +1,6 @@
 import type { Message } from '@/shared/types';
 import { sendMessage } from '@/entities/Message/model';
-import { useDraftMessageExtras, useDraftMessageText } from '@/features/MessageComposer';
+import { useDraftMessageExtras, useDraftMessageText } from '@/features/DraftMessage';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useActiveChatId } from '@/entities';
 import { useCallback } from 'react';

@@ -25,6 +25,7 @@ export {
   useSelectIsMessageSending,
   useChatMetaSelect
 } from './Message/model';
+export { MessageComposer } from './Message';
 
 export { Typing } from './Typing';
 

@@ -8,7 +8,7 @@ import {
   useDraftMessageExtras,
   useDraftMessageText,
   withDraftMessageProvider
-} from '@/features/MessageComposer';
+} from '@/features/DraftMessage';
 import { useCreatePost } from '@/entities';
 import { toast } from 'react-toastify';
 import { mapDraftToCreatePost } from './model';

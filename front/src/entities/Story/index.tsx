@@ -1,1 +1,1 @@
-export { Story } from './ui/Story/Story.tsx';
+export { Story, type StoryProps } from './ui/Story/Story.tsx';

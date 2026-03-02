@@ -2,13 +2,13 @@ import { MessageInput } from '@/widgets';
 import { Typography, TypographyTypes } from '@/shared/ui';
 import { useRef, useEffect, useCallback } from 'react';
 import { useCurrentChat, useManageActiveChatId } from './model';
-import { MessageComposer } from '@/features';
 import { useInfiniteScroll } from '@/shared/hooks';
 import {
   useMessagesByChatSelect,
   useChatMetaSelect,
   Typing,
   useFetchMessagesByChat,
+  MessageComposer
 } from '@/entities';
 import { useParams } from 'react-router';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';

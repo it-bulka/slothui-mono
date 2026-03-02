@@ -2,7 +2,7 @@ import { StoryImage } from '../StoryImage/StoryImage';
 import { StoryVideo } from '../StoryVideo/StoryVideo';
 import type { ReactNode } from 'react';
 
-interface StoryProps {
+export interface StoryProps {
   id: string;
   url: string;
   type: 'image' | 'video';

@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 import { DraftExtras } from '@/features';
-import { withDraftMessageProvider } from '@/features/MessageComposer';
+import { withDraftMessageProvider } from '@/features/DraftMessage';
 import { MessageInputText } from './ui/MessageInputText/MessageInputText.tsx';
 import { MessageActions } from './ui/MessageActions/MessageActions.tsx';
 import { useMessageInputPopup } from './model';
@@ -34,7 +34,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             ref={setPopupWrapperRef}
             {...getFloatingProps()}
             style={floatingStyle}
-            className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100"
+            className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100 z-[999999]"
           >
            <DraftExtras />
           </div>

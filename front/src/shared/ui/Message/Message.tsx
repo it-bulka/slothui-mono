@@ -1,8 +1,9 @@
 import { type PropsWithChildren, memo } from 'react';
 import cls from './Message.module.css'
 import classnames from 'classnames';
-import { Typography, TypographyTypes } from '@/shared/ui';
 import { twMerge } from 'tailwind-merge';
+import { Typography, TypographyTypes } from '@/shared/ui';
+
 
 export interface MessageProps {
   isFirst?: boolean;

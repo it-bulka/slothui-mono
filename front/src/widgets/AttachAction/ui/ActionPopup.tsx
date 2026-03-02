@@ -14,9 +14,9 @@ import {
 } from '@/features';
 
 import { ActionButton } from '@/shared/ui';
-import { useDraftMessageExtras } from '@/features/MessageComposer';
+import { useDraftMessageExtras } from '@/features/DraftMessage';
 import { useCallback } from 'react';
-import type { DraftAttachmentType } from '@/features/MessageComposer/model/types';
+import type { DraftAttachmentType } from 'src/features/DraftMessage/model/types';
 import { GeoDraftProvider } from '@/features/CreateGeolocation/model';
 import type { GeoData } from '@/features/CreateGeolocation/model/types/geo.types.tsx';
 

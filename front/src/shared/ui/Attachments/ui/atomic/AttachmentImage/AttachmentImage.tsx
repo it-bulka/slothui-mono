@@ -11,11 +11,11 @@ type IAttachmentImage = Pick<Attachment, 'url' | 'originalName'> & {
 }
 export const AttachmentImage = ({ url, originalName, className, imgClass, onClick, additionalComp }: IAttachmentImage) => {
   return (
-    <div className={className} onClick={onClick}>
+    <div className={`relative ${className}`} onClick={onClick}>
       <img
         src={url}
         alt={originalName || 'image'}
-        className={twMerge(classnames("w-full h-full object-cover", [imgClass]))} />
+        className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))} />
       {additionalComp}
     </div>
   );

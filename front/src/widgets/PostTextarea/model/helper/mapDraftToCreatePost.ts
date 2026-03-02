@@ -1,5 +1,5 @@
 import type { CreatePostDTO } from '@/shared/libs/services/postsService/posts.types';
-import type { SubmitPayload } from '@/features/MessageComposer';
+import type { SubmitPayload } from '@/features/DraftMessage';
 
 export function mapDraftToCreatePost(
   text: string,

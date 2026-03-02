@@ -1,5 +1,5 @@
 import { Input } from '@/shared/ui';
-import { useDraftMessageText } from '@/features/MessageComposer';
+import { useDraftMessageText } from '@/features/DraftMessage';
 import { useSendMessage } from '@/features/send-message/model';
 import { type RefObject, memo, useCallback } from 'react';
 import { useMessagesService } from '@/shared/libs/services';

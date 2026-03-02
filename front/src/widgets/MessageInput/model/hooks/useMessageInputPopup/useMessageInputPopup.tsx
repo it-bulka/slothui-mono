@@ -1,5 +1,5 @@
 import { usePopup } from '@/shared/hooks';
-import { useDraftMessageExtras } from '@/features/MessageComposer';
+import { useDraftMessageExtras } from '@/features/DraftMessage';
 import { useEffect, useMemo } from 'react';
 
 export const useMessageInputPopup = () => {

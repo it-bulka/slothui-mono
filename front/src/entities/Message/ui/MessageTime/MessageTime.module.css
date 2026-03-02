@@ -1,0 +1,9 @@
+@reference "../../../../app/styles/tailwind.css";
+.absolute {
+    @apply absolute bottom-1 right-1;
+}
+
+
+.onMedia {
+    @apply bg-black/30 text-white px-1 py-[2px] rounded z-[999999];
+}

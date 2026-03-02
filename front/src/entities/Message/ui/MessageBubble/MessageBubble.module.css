@@ -1,0 +1,11 @@
+.message {
+  @apply relative max-w-[60%] w-[fit-content] min-w-[80px];
+}
+
+.message.max {
+  @apply w-[60%];
+}
+
+.message.self {
+  @apply ml-auto;
+}
