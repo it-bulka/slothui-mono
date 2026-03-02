@@ -12,7 +12,7 @@ import type { SubmitPayload } from '../../draft-to-payload.ts';
 // NO text. Too much rerenders. So just extras.
 interface DraftMessageExtrasType {// attachments
   attachments: MessageDraft['attachments'];
-  addAttachments: (type: DraftAttachmentType, files: File[]) => void;
+  addAttachments: (type: DraftAttachmentType, files: File[]) => null | string;
   removeAttachment: (fileId: string) => void;
   groupedDraftAttachments: DraftGroupedAttachments;
   // geo

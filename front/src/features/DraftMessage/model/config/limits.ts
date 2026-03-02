@@ -3,7 +3,7 @@ export const MESSAGE_LIMITS = {
   maxTotalSizeMb: 100,
 
   byType: {
-    images: 10,
+    images: 5,
     video: 3,
     audio: 1,
     file: 5,

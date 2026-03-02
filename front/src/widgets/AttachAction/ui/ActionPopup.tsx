@@ -19,13 +19,18 @@ import { useCallback } from 'react';
 import type { DraftAttachmentType } from 'src/features/DraftMessage/model/types';
 import { GeoDraftProvider } from '@/features/CreateGeolocation/model';
 import type { GeoData } from '@/features/CreateGeolocation/model/types/geo.types.tsx';
+import { toast } from 'react-toastify'
 
 //TODO: remove to widgets
 export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) => {
   const { addAttachments, setGeo, setPoll, setEvent } = useDraftMessageExtras()
 
   const onFilesSelected = useCallback((type: DraftAttachmentType)=> (files: File[]) => {
-    addAttachments(type, files);
+    const error = addAttachments(type, files);
+    if(error) {
+      toast.error(error);
+      return
+    }
     onBtnClick?.();
   }, [addAttachments, onBtnClick]);
 

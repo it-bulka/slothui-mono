@@ -36,6 +36,7 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
         tempUrl: createTempUrl(file)
       }))
     ]));
+    return null
   }, [attachments]);
 
   const removeAttachment = (id: string) => {
