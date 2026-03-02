@@ -1,0 +1,21 @@
+@reference "../../../../../app/styles/tailwind.css";
+
+.stack {
+    @apply relative w-[200px] h-[200px] inline-block;
+}
+
+.btn {
+    @apply absolute w-[200px] h-[200px] rounded-xl overflow-hidden  block shadow-lg origin-bottom-left transition-transform;
+}
+
+.img {
+    @apply w-full h-full object-cover;
+}
+
+.restBadge {
+    @apply absolute inset-0 flex items-center justify-center z-[999] pointer-events-none;
+}
+
+.restBadgeInner {
+    @apply bg-black/80 text-white text-sm font-semibold px-2 py-1 rounded-full pointer-events-none;
+}

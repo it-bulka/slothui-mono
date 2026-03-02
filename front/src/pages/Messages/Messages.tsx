@@ -78,7 +78,7 @@ const Messages = () => {
         </div>
       </div>
       {typing && <Typing name={typing.userName} />}
-      <MessageInput className="sticky bottom-0 left-0 px-6 py-4"/>
+      <MessageInput className="sticky bottom-0 left-0 px-6 py-4 z-[9999999]"/>
     </div>
   )
 }

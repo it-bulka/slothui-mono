@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { MediaAttachmentsModal } from '@/shared/ui';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import type { GroupedAttachment } from '@/shared/types';
+import cls from './MediaStack.module.css'
 
 type MediaItem = GroupedAttachment['images' | 'video'][number];
 interface MediaStackProps {
@@ -21,11 +22,11 @@ export const MediaStack = ({ media }: MediaStackProps) => {
   }, [open]);
 
   return (
-    <div className="relative w-[220px] h-[220px] inline-block">
+    <div className={cls.stack}>
       {visible.map((item, index) => (
         <button
           key={item.id}
-          className="absolute w-full h-full rounded-xl overflow-hidden block"
+          className={cls.btn}
           style={{
             transform: `rotate(${index * -5}deg) translate(${index * 8}px, ${index * 4}px)`,
             zIndex: 10 - index
@@ -35,14 +36,14 @@ export const MediaStack = ({ media }: MediaStackProps) => {
           <img
             src={item.url}
             alt={item.originalName}
-            className="w-full h-full object-cover"
+            className={cls.img}
           />
         </button>
       ))}
 
       {rest > 0 && (
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-semibold rounded-xl">
-          +{rest}
+        <div className={cls.restBadge}>
+          <span className={cls.restBadgeInner}>+{rest} more</span>
         </div>
       )}
 
