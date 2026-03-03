@@ -25,9 +25,10 @@ export class CloudinaryService implements OnModuleInit {
   }
 
   async uploadFile(file: Express.Multer.File, folder: string) {
+    const resource_type = this.getUploadResourceType(file);
     return await cloudinary.uploader.upload(file.path, {
       folder,
-      resource_type: 'auto',
+      resource_type,
       public_id: this.generateUniqueFileName(file.originalname),
     });
   }
@@ -43,9 +44,11 @@ export class CloudinaryService implements OnModuleInit {
     file: Express.Multer.File,
     folder: string,
   ): Promise<UploadApiResponse> {
+    const resource_type = this.getUploadResourceType(file);
+
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
-        { folder },
+        { folder, resource_type },
         (error, result) => {
           if (error) {
             return reject(
@@ -111,7 +114,7 @@ export class CloudinaryService implements OnModuleInit {
     return thumbnailUrl;
   }
 
-  getResourceType(publicId: string): 'image' | 'video' | 'raw' {
+  getResourceTypeByPublicId(publicId: string): 'image' | 'video' | 'raw' {
     const extension = publicId.split('.').pop()?.toLowerCase();
 
     if (!extension) return 'raw';
@@ -125,8 +128,19 @@ export class CloudinaryService implements OnModuleInit {
     return 'raw';
   }
 
+  getUploadResourceType(file: Express.Multer.File): 'image' | 'video' | 'raw' {
+    if (file.mimetype.startsWith('image/')) return 'image';
+    if (
+      file.mimetype.startsWith('video/') ||
+      file.mimetype.startsWith('audio/')
+    )
+      return 'video';
+
+    return 'raw';
+  }
+
   async deleteFile(publicId: string) {
-    const resource_type = this.getResourceType(publicId) || 'auto';
+    const resource_type = this.getResourceTypeByPublicId(publicId) || 'auto';
     await cloudinary.uploader.destroy(publicId, { resource_type });
   }
 

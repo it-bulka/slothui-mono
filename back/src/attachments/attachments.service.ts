@@ -155,12 +155,12 @@ export class AttachmentsService {
     }
 
     if (files.file) {
-      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
+      const uploadedFile = await this.cloudinaryService.uploadFilesStream(
         files.file,
         'posts/file',
       );
 
-      uploadedAudio.forEach(({ file, result }) => {
+      uploadedFile.forEach(({ file, result }) => {
         if (!result) return;
 
         attachmentsToSave.push({
@@ -179,12 +179,12 @@ export class AttachmentsService {
     }
 
     if (files.video) {
-      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
+      const uploadedVideo = await this.cloudinaryService.uploadFilesStream(
         files.video,
         `${PROJECT_FOLDER}/posts/video`,
       );
 
-      uploadedAudio.forEach(({ file, result }) => {
+      uploadedVideo.forEach(({ file, result }) => {
         if (!result) return;
 
         const thumbnailUrl = this.cloudinaryService.generateThumbnailUrl(

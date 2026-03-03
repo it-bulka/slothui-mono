@@ -26,6 +26,8 @@ import { UnreadBufferService } from './unread-buffer.service';
 import { MessageResponseDto } from './dto/message.dto';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { PollMapperToPollResult } from '../polls/pollMapToPollResult';
+import { DataSource, EntityManager } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 
 @Injectable()
 export class MessagesService {
@@ -39,6 +41,8 @@ export class MessagesService {
     private readonly pollsService: PollsService,
     private readonly unreadBufferService: UnreadBufferService,
     private readonly openedChatsTracker: OpenedChatsTracker,
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
   ) {}
 
   async getList({
@@ -96,10 +100,15 @@ export class MessagesService {
     };
   }
 
-  async create({ chatId, authorId, text }: CreateMessageBaseDto) {
+  async create(
+    { chatId, authorId, text }: CreateMessageBaseDto,
+    manager?: EntityManager,
+  ) {
     await this.chatsService.assertUserChatAccess(chatId, authorId);
 
-    const msg = this.messageRepo.create({
+    const repo = manager ? manager.getRepository(Message) : this.messageRepo;
+
+    const msg = repo.create({
       chat: { id: chatId },
       text,
       authorId,
@@ -113,18 +122,27 @@ export class MessagesService {
     authorId,
     files,
   }: CreateMessageDtoWithFiles) {
-    const msg = await this.create({ chatId, authorId, text });
+    return this.dataSource.transaction(async (manager) => {
+      const msg = await this.create({ chatId, authorId, text }, manager);
 
-    const savedFiles = await this.attachmentService.saveAttachments(
-      files,
-      'message',
-      msg.id,
-    );
-    const groupedFiles = this.attachmentService.groupByType(savedFiles);
-    return MessageMapper.toResponce({
-      ...msg,
-      chatId: msg.chat.id,
-      attachments: groupedFiles,
+      const savedFiles = await this.attachmentService.saveAttachments(
+        files,
+        'message',
+        msg.id,
+      );
+
+      if ((!text || !text.trim()) && savedFiles.length === 0) {
+        throw new BadRequestException(
+          'Message must contain text or attachments',
+        );
+      }
+
+      const groupedFiles = this.attachmentService.groupByType(savedFiles);
+      return MessageMapper.toResponce({
+        ...msg,
+        chatId: msg.chat.id,
+        attachments: groupedFiles,
+      });
     });
   }
 
