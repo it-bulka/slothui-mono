@@ -13,18 +13,21 @@ export const AttachmentList = <T,>({ list, showAll = false, renderItem, limit = 
   const visible = showAllItems ? list : list.slice(0, limit);
   const hiddenCount = list.length - limit;
   const isMore = !showAllItems && hiddenCount > 0
+  const isExceedLimit = list.length > limit
 
   return (
     <div className="attachments-docs">
       {visible.map(renderItem)}
 
-      <Button
-        className="ml-auto"
-        variant="link"
-        onClick={() => setShowAllItems(isMore)}
-      >
-        {isMore ? `+${hiddenCount} more` : 'show less'}
-      </Button>
+      {isExceedLimit && (
+        <Button
+          className="ml-auto"
+          variant="link"
+          onClick={() => setShowAllItems(isMore)}
+        >
+          {isMore ? `+${hiddenCount} more` : 'show less'}
+        </Button>
+      )}
     </div>
   );
 };
