@@ -24,9 +24,9 @@ export const MessageComposer = ({ msg, isFirst, isAuthor, time }: Props) => {
   if ('attachments' in msg && (msg.attachments?.images?.length || msg.attachments?.video?.length)) {
     content = <MediaMessage msg={msg} time={time} />;
   } else if ('attachments' in msg && msg.attachments?.audio?.length) {
-    content = <AudioMessage msg={msg} time={time} />;
+    content = <AudioMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
   } else if ('attachments' in msg && msg.attachments?.file?.length) {
-    content = <FileMessage msg={msg} time={time} />;
+    content = <FileMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
   } else if ('poll' in msg && msg.poll) {
     content = <PollMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
   } else if ('story' in msg && msg.story) {

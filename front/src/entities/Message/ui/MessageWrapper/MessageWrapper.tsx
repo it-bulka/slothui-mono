@@ -8,6 +8,7 @@ interface MessageWrapperProps {
   as?: ElementType;
   isAuthor: boolean;
   isFirst?: boolean;
+  className?: string;
 }
 
 export const MessageWrapper = ({
@@ -15,6 +16,7 @@ export const MessageWrapper = ({
    as: Tag = 'div',
    isFirst = false,
    isAuthor = false,
+   className,
 }: MessageWrapperProps) => {
   return (
     <Tag
@@ -22,7 +24,7 @@ export const MessageWrapper = ({
            [cls.self]: isAuthor,
            [cls.other]: !isAuthor,
            [cls.first]: isFirst,
-         }))}
+         }, [className]))}
     >
       {children}
     </Tag>

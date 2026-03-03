@@ -1,12 +1,20 @@
 import type { MessageWithAttachmentsDto } from '@/shared/types/message.dto.ts';
 import { DocumentsList } from '@/shared/ui';
 import { MessageTime } from '../../MessageTime/MessageTime.tsx';
+import { MessageWrapper } from '../../MessageWrapper/MessageWrapper.tsx';
 
-export const FileMessage = ({ msg, time }: { msg: MessageWithAttachmentsDto, time: string }) => {
+interface FileMessageProps {
+  msg: MessageWithAttachmentsDto
+  time: string
+  isAuthor: boolean;
+  isFirst?: boolean;
+}
+
+export const FileMessage = ({ msg, time, isAuthor, isFirst }: FileMessageProps) => {
   return (
-    <div className="space-y-2">
+    <MessageWrapper className="space-y-2" isAuthor={isAuthor} isFirst={isFirst}>
       <DocumentsList list={msg.attachments.file} limit={4}/>
       <MessageTime time={time} />
-    </div>
+    </MessageWrapper>
   );
 };
