@@ -27,8 +27,15 @@ export const usePaginationRestore = ({
   }, [loading, hasMore, msgs, onLoadMore, isAtBottom])
 
   const startIndex = useMemo(() => {
-    const startIndex = msgs.findIndex(m => m.id === restoreIdRef.current) ;
-    startPointRef.current = startPointRef.current + (startIndex * -1) // * -1  cause go to the top
+    if (isAtBottom) return startPointRef.current
+    if (!restoreIdRef.current) return startPointRef.current
+
+    const index = msgs.findIndex(m => m.id === restoreIdRef.current)
+    if (index !== -1) {
+      startPointRef.current -= index
+    }
+    restoreIdRef.current = null
+
     return startPointRef.current
   }, [msgs, isAtBottom])
 
