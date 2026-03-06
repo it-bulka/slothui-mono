@@ -1,0 +1,7 @@
+.badge {
+    @apply flex flex-col items-center opacity-0 invisible transition-opacity duration-100 z-[999999];
+}
+
+.visible {
+    @apply opacity-100 visible;
+}

@@ -20,7 +20,7 @@ export const MessageBubble = ({
         [cls.self]: isAuthor,
         [cls.other]: !isAuthor,
         [cls.max]: !!maxWidth
-      }))}
+      }, ['px-6']))}
     >
       {children}
     </div>

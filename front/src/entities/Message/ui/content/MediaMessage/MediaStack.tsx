@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { MediaAttachmentsModal } from '@/shared/ui';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import type { GroupedAttachment } from '@/shared/types';
@@ -10,8 +10,15 @@ interface MediaStackProps {
 }
 
 export const MediaStack = ({ media }: MediaStackProps) => {
-  const visible = media.slice(0, 3);
-  const rest = media.length - 3;
+  const { visible, rest, mt } = useMemo(() => {
+    const isMultiple = media.length > 1;
+
+    return {
+      visible: media.slice(0, 3),
+      rest: media.length - 3,
+      mt: isMultiple ? 10 + (4 * (media.length - 1)) : 0
+    }
+  }, [media])
 
   const { isOpen, open, close } = useModalControl();
   const [clickedIndex, setClickedIndex] = useState(0);
@@ -22,7 +29,10 @@ export const MediaStack = ({ media }: MediaStackProps) => {
   }, [open]);
 
   return (
-    <div className={cls.stack}>
+    <div
+      className={cls.stack}
+      style={{ marginTop: mt}}
+    >
       {visible.map((item, index) => (
         <button
           key={item.id}

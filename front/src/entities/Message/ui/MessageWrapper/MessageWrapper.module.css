@@ -1,7 +1,7 @@
 @reference "../../../../app/styles/tailwind.css";
 
 .message {
-    @apply px-[14px] py-[10px] rounded-2xl my-1 break-words;
+    @apply relative px-[14px] py-[10px] rounded-2xl break-words;
 }
 
 .message.self {

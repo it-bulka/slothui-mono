@@ -1,5 +1,6 @@
+@reference "tailwindcss";
 .message {
-  @apply relative max-w-[60%] w-[fit-content] min-w-[80px];
+  @apply max-w-[60%] w-[fit-content] min-w-[80px] py-1;
 }
 
 .message.max {

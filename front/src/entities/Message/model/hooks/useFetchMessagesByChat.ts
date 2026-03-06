@@ -6,7 +6,7 @@ export const useFetchMessagesByChat = () => {
   const dispatch = useAppDispatch();
 
   const fetchMessagesByChat = useCallback((arg: { chatId: string, cursor?: string | null}) => {
-    dispatch(fetchMessagesByChatThunk(arg))
+    return dispatch(fetchMessagesByChatThunk(arg))
   }, [dispatch]);
 
   return { fetchMessagesByChat}
