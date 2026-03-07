@@ -14,7 +14,7 @@ export const MediaMessage = ({ msg, time }: MediaMessageProps) => {
   ];
 
   return (
-    <div className="relative inline-block max-w-[260px]">
+    <div className="relative inline-block" >
       <MediaStack media={media} />
 
       <MessageTime time={time} position="absolute" variant="onMedia" />

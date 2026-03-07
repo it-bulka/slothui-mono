@@ -5,3 +5,4 @@ export { useUnreadMessages } from './hooks/useUnreadMessages.tsx';
 export { usePaginationRestore } from './hooks/usePaginationRestore.tsx';
 export { useMessageRow, type MessagesVirtuosoContext } from './hooks/useMessageRow.tsx';
 export { useLoadMessages } from './hooks/useLoadMessages.tsx';
+export { useChatScrollState } from './hooks/useChatScrollState.tsx';

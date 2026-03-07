@@ -1,7 +1,7 @@
-import { Virtuoso } from 'react-virtuoso'
+import { Virtuoso, type ListRange } from 'react-virtuoso'
 import { useChatMetaSelect } from '@/entities'
 import { Typography } from '@/shared/ui'
-import { useRef, useMemo, memo } from 'react'
+import { useRef, useMemo, memo, useCallback } from 'react'
 import type { VirtuosoHandle } from 'react-virtuoso'
 import {
   useScrollToBottom,
@@ -10,7 +10,8 @@ import {
   useCurrentChat,
   useMessageRow,
   type MessagesVirtuosoContext,
-  useLoadMessages
+  useLoadMessages,
+  useChatScrollState
 } from '../../model'
 import { NewMsgAmountBadge } from '../NewMsgAmountBadge/NewMsgAmountBadge'
 import type { MessageDto } from '@/shared/types';
@@ -34,9 +35,10 @@ export const MessageList = memo(({
 
   const {
     isAtBottom,
-    newMessagesCount,
-    handleBottomChange
-  } = useUnreadMessages(reversedMsgs)
+    handleBottomChange,
+    initRenderScrollDown
+  } = useChatScrollState(reversedMsgs.length)
+  const newMessagesCount = useUnreadMessages(reversedMsgs, isAtBottom)
 
   const { startIndex, handleStartReached } = usePaginationRestore({
     msgs: reversedMsgs,
@@ -49,23 +51,39 @@ export const MessageList = memo(({
   const scrollToBottom = useScrollToBottom(virtuosoRef, reversedMsgs)
   const row = useMessageRow()
 
+  const handleRangeChanged = useCallback((range: ListRange) => {
+    if (initRenderScrollDown.current) return
+
+    if (range.startIndex === startIndex) {
+      handleStartReached()
+    }
+  }, [startIndex, handleStartReached])
+
+  const context = useMemo(() => ({
+    msgs: reversedMsgs,
+    authUserId,
+    firstItemIndex: startIndex
+  }), [reversedMsgs, authUserId, startIndex])
+
+  const followOutput = useMemo(() => {
+    return isAtBottom ? 'smooth' : false
+  }, [isAtBottom])
+
   return (
     <div className="relative bg-underground-secondary grow">
       <Virtuoso<MessageDto, MessagesVirtuosoContext>
         ref={virtuosoRef}
         data={reversedMsgs}
-        initialTopMostItemIndex={0}
+        alignToBottom
         firstItemIndex={startIndex} // in virtual list, overscanTop
-        followOutput={isAtBottom ? 'smooth' : false}
+        initialTopMostItemIndex={reversedMsgs.length - 1} // show last el on mount
+        followOutput={followOutput}
         itemContent={row}
-        computeItemKey={(_index, msg) => msg.id}
-        context={{ msgs: reversedMsgs, authUserId, firstItemIndex: startIndex }}
+        context={context}
         atBottomStateChange={handleBottomChange}
-        rangeChanged={(range) => {
-          if(range.startIndex !== startIndex) return
-          handleStartReached()
-        }}
+        rangeChanged={handleRangeChanged}
         className="scrollbar-hide"
+        increaseViewportBy={{ top: 800, bottom: 0 }}
       />
 
       <div className="absolute bottom-6 right-6 pointer-events-none">

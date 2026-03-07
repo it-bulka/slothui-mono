@@ -29,35 +29,36 @@ export const MediaStack = ({ media }: MediaStackProps) => {
   }, [open]);
 
   return (
-    <div
-      className={cls.stack}
-      style={{ marginTop: mt}}
-    >
-      {visible.map((item, index) => (
-        <button
-          key={item.id}
-          className={cls.btn}
-          style={{
-            transform: `rotate(${index * -5}deg) translate(${index * 8}px, ${index * 4}px)`,
-            zIndex: 10 - index
-          }}
-          onClick={handlePreviewClick(index)}
-        >
-          <img
-            src={item.url}
-            alt={item.originalName}
-            className={cls.img}
-          />
-        </button>
-      ))}
+    <div style={{ paddingTop: mt}}>
+      <div className={cls.stack}>
+        {visible.map((item, index) => (
+          <button
+            key={item.id}
+            className={cls.btn}
+            style={{
+              transform: `rotate(${index * -5}deg) translate(${index * 8}px, ${index * 4}px)`,
+              zIndex: 10 - index
+            }}
+            onClick={handlePreviewClick(index)}
+          >
+            <img
+              src={item.url}
+              alt={item.originalName}
+              className={cls.img}
+              loading="lazy"
+            />
+          </button>
+        ))}
 
-      {rest > 0 && (
-        <div className={cls.restBadge}>
-          <span className={cls.restBadgeInner}>+{rest} more</span>
-        </div>
-      )}
+        {rest > 0 && (
+          <div className={cls.restBadge}>
+            <span className={cls.restBadgeInner}>+{rest} more</span>
+          </div>
+        )}
 
-      <MediaAttachmentsModal isOpen={isOpen} onClose={close} list={media} startIndex={clickedIndex} />
+        <MediaAttachmentsModal isOpen={isOpen} onClose={close} list={media} startIndex={clickedIndex} />
+
+      </div>
     </div>
   );
 };

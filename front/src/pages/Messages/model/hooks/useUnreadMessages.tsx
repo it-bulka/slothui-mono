@@ -1,8 +1,10 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
-import type { MessageDto } from '@/shared/types';
+import { useEffect, useMemo, useRef } from 'react'
+import type { MessageDto } from '@/shared/types'
 
-export const useUnreadMessages = (msgs: MessageDto[]) => {
-  const [isAtBottom, setIsAtBottom] = useState(true)
+export const useUnreadMessages = (
+  msgs: MessageDto[],
+  isAtBottom: boolean
+) => {
   const lastSeenIdRef = useRef<string | null>(null)
 
   useEffect(() => {
@@ -21,13 +23,5 @@ export const useUnreadMessages = (msgs: MessageDto[]) => {
     return msgs.length - index - 1
   }, [msgs, isAtBottom])
 
-  const handleBottomChange = (atBottom: boolean) => {
-    setIsAtBottom(atBottom)
-  }
-
-  return {
-    isAtBottom,
-    newMessagesCount,
-    handleBottomChange
-  }
+  return newMessagesCount
 }

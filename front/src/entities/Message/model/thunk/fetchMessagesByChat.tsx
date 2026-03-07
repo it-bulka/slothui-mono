@@ -12,7 +12,6 @@ export const fetchMessagesByChatThunk = createAsyncThunk<
   'message/fetchByChat',
   async (arg, thunkAPI) => {
     const { rejectWithValue, extra } = thunkAPI
-    console.log('msg - fetchMessagesByChatThunk', arg)
     try {
       const messagesService = extra.services.messages
       const res = await messagesService.fetchMessagesByChat(arg)
