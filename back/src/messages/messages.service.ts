@@ -12,6 +12,7 @@ import {
   CreateMessageDto,
   CreateMessageDtoWithEvent,
   CreateMessageDtoWithFiles,
+  CreateMessageDtoWithGeo,
   CreateMessageDtoWithPoll,
   CreateMessageDtoWithStory,
 } from './dto/createMessage.dto';
@@ -28,6 +29,7 @@ import { PaginatedResponse } from '../common/types/pagination.type';
 import { PollMapperToPollResult } from '../polls/pollMapToPollResult';
 import { DataSource, EntityManager } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { GeoMessageService } from '../geo-message/geo-message.service';
 
 @Injectable()
 export class MessagesService {
@@ -39,6 +41,7 @@ export class MessagesService {
     private readonly storiesService: StoriesService,
     private readonly eventsService: EventsService,
     private readonly pollsService: PollsService,
+    private readonly geoService: GeoMessageService,
     private readonly unreadBufferService: UnreadBufferService,
     private readonly openedChatsTracker: OpenedChatsTracker,
     @InjectDataSource()
@@ -87,12 +90,16 @@ export class MessagesService {
 
     const polls = await this.pollsService.getMany('message', msgsIds, userId);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
+
+    const geos = await this.geoService.getManyByMessageIds(msgsIds);
+    const groupedGeos = this.geoService.groupByMessageId(geos);
     return {
       items: visibleItems.map((item) => {
         return MessageMapper.toResponce({
           ...item,
           attachments: groupedAttachments.get(item.id),
           poll: groupedPolls.get(item.id),
+          geo: groupedGeos.get(item.id),
         });
       }),
       hasMore,
@@ -226,6 +233,29 @@ export class MessagesService {
     });
   }
 
+  async createWithGeo({
+    chatId,
+    text,
+    authorId,
+    geo,
+  }: CreateMessageDtoWithGeo) {
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
+
+    const msg = this.messageRepo.create({
+      chat: { id: chatId },
+      text,
+      authorId,
+    });
+    const savedMsg = await this.messageRepo.save(msg);
+
+    const savedGeo = await this.geoService.createGeoMessage(geo, savedMsg.id);
+
+    return MessageMapper.toResponce({
+      ...savedMsg,
+      geo: { position: savedGeo.position, locationName: savedGeo.locationName },
+    });
+  }
+
   async createWithExtra(dto: CreateMessageDto) {
     let msg: Message | MessageResponseDto;
     if ('files' in dto && dto.files) {
@@ -236,6 +266,8 @@ export class MessagesService {
       msg = await this.createWithEvent(dto);
     } else if ('poll' in dto && dto.poll) {
       msg = await this.createWithPoll(dto);
+    } else if ('geo' in dto && dto.geo) {
+      msg = await this.createWithGeo(dto);
     } else {
       if (dto.text.trim() === '') {
         throw new BadRequestException(`Invalid message format for ${dto.text}`);

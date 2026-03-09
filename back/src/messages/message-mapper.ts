@@ -3,6 +3,7 @@ import {
   MessageWithAttachmentsResponseDto,
   MessageWithPollResponseDto,
   MessageBaseResponseDto,
+  MessageWithGeoResponseDto,
 } from './dto/message.dto';
 import { MessageWithOptionals } from './dto/message.dto';
 
@@ -28,6 +29,13 @@ export class MessageMapper {
         ...base,
         poll: msg.poll,
       } satisfies MessageWithPollResponseDto;
+    }
+
+    if (msg.geo) {
+      return {
+        ...base,
+        geo: msg.geo,
+      } satisfies MessageWithGeoResponseDto;
     }
 
     return base;

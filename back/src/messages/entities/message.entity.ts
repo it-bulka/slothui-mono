@@ -60,7 +60,7 @@ export class Message {
   eventIdHistory: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  forwardSourceType: 'message' | 'post' | 'event' | 'story' | null;
+  forwardSourceType: 'message' | 'post' | 'event' | 'story' | 'geo' | null;
 
   @Column({ type: 'varchar', nullable: true })
   forwardSourceId: string | null;

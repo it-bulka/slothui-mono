@@ -18,9 +18,10 @@ import { Express } from 'express';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
-import { ParseCreateMsgPollPipe } from './pipe/parseCreateMsgPoll.pipe';
 import { normalizeFiles } from '../common/utils/normalizeFiles';
 import { GetMessagesQuery } from './dto/getMessages.dto';
+import { CreateGeoMessageDto } from '../geo-message/dto/createGeoMessage.dto';
+import { ParseCreateMsgPipe } from './pipe/parseCreateMsg.pipe';
 
 @UseGuards(JwtAuthGuard)
 @Controller('chats/:chatId/messages')
@@ -63,7 +64,12 @@ export class MessagesController {
       file?: Express.Multer.File[];
       video?: Express.Multer.File[];
     },
-    @Body(ParseCreateMsgPollPipe) dto: { text: string; poll?: CreatePollDto },
+    @Body(ParseCreateMsgPipe)
+    dto: {
+      text: string;
+      poll?: CreatePollDto;
+      geo?: CreateGeoMessageDto;
+    },
     @Request() req: AuthRequest,
   ) {
     const files = normalizeFiles(rowFiles);
@@ -73,6 +79,7 @@ export class MessagesController {
       authorId: req.user.id,
       chatId: chatId,
       poll: dto.poll,
+      geo: dto.geo,
     });
 
     this.msgEmitterService.onNewMessage(msg);

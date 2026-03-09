@@ -15,6 +15,7 @@ import { EventsModule } from '../events/events.module';
 import { PollsModule } from '../polls/polls.module';
 import { OpenedChatsTracker } from './opened-chats-tracker.service';
 import { UnreadBufferService } from './unread-buffer.service';
+import { GeoMessageModule } from '../geo-message/geo-message.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UnreadBufferService } from './unread-buffer.service';
     forwardRef(() => StoriesModule),
     EventsModule,
     PollsModule,
+    GeoMessageModule,
   ],
   controllers: [MessagesController],
   providers: [MessagesService, OpenedChatsTracker, UnreadBufferService],

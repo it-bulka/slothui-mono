@@ -29,6 +29,7 @@ import { CommentsModule } from './comments/comments.module';
 import { PasswordResetModule } from './password-reset/password-reset.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SessionModule } from './session/session.module';
+import { GeoMessageModule } from './geo-message/geo-message.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { SessionModule } from './session/session.module';
     PasswordResetModule,
     MailerModule,
     SessionModule,
+    GeoMessageModule,
   ],
   controllers: [],
   providers: [AppService],

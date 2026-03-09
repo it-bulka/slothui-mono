@@ -1,6 +1,7 @@
 import { IsUUID, IsString } from 'class-validator';
 import { Files } from '../../attachments/types/attachments.type';
 import { CreatePollDto } from '../../polls/dto/createPoll.dto';
+import { CreateGeoMessageDto } from '../../geo-message/dto/createGeoMessage.dto';
 
 export class CreateMessageBaseDto {
   @IsUUID()
@@ -29,9 +30,14 @@ export class CreateMessageDtoWithPoll extends CreateMessageBaseDto {
   poll: CreatePollDto;
 }
 
+export class CreateMessageDtoWithGeo extends CreateMessageBaseDto {
+  geo: CreateGeoMessageDto;
+}
+
 export type CreateMessageDto =
   | CreateMessageBaseDto
   | CreateMessageDtoWithFiles
   | CreateMessageDtoWithStory
   | CreateMessageDtoWithEvent
-  | CreateMessageDtoWithPoll;
+  | CreateMessageDtoWithPoll
+  | CreateMessageDtoWithGeo;
