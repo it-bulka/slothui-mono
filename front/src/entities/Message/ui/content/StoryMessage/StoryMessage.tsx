@@ -1,17 +1,13 @@
-import { SharedInfo } from '@/entities/Message/ui/SharedInfo/SharedInfo.tsx';
+import { SharedInfo } from '../../SharedInfo/SharedInfo.tsx';
 import { StoryMessagePreview } from './StoryMessagePreview.tsx';
 import type { MessageWithStoryDto } from '@/shared/types/message.dto.ts';
-import { MessageTime } from '@/entities/Message/ui/MessageTime/MessageTime.tsx';
+import { MessageTime } from '../../MessageTime/MessageTime.tsx';
 import { MessageWrapper } from '../../MessageWrapper/MessageWrapper.tsx';
+import type { MessageComponent } from '../../../model';
 
-interface StoryMessageProps {
-  msg: MessageWithStoryDto,
-  time: string
-  isAuthor: boolean;
-  isFirst?: boolean;
-}
-
-export const StoryMessage = ({ msg, time, isAuthor, isFirst }: StoryMessageProps) => {
+export const StoryMessage = ({
+  msg, time, isAuthor, isFirst
+}: MessageComponent<MessageWithStoryDto>) => {
   return (
     <>
       <SharedInfo />

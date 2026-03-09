@@ -1,13 +1,9 @@
 import type { MessageWithAttachmentsDto } from '@/shared/types/message.dto.ts';
 import { MessageTime } from '../../MessageTime/MessageTime.tsx';
 import { MediaStack } from './MediaStack';
+import type { MessageComponent } from '../../../model';
 
-interface MediaMessageProps {
-  msg: MessageWithAttachmentsDto;
-  time: string;
-}
-
-export const MediaMessage = ({ msg, time }: MediaMessageProps) => {
+export const MediaMessage = ({ msg, time }: MessageComponent<MessageWithAttachmentsDto>) => {
   const media = [
     ...(msg.attachments?.images || []),
     ...(msg.attachments?.video || [])

@@ -3,8 +3,9 @@ import { SharedInfo } from '../../SharedInfo/SharedInfo.tsx';
 import { MsgEventPreview } from './MsgEventPreview.tsx';
 import type { MessageWithEventDto } from '@/shared/types/message.dto.ts';
 import { MessageTime } from '../../MessageTime/MessageTime.tsx';
+import type { MessageComponent } from '../../../model';
 
-export const EventMessage = ({ msg, time }: { msg: MessageWithEventDto, time: string }) => {
+export const EventMessage = ({ msg, time }: MessageComponent<MessageWithEventDto>) => {
   if (!msg.event) {
     return (
       <>

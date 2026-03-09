@@ -11,38 +11,36 @@ import {
   GeoMessage
 } from "../content";
 
-interface Props {
-  msg: MessageDto;
-  isAuthor: boolean;
-  isFirst?: boolean;
-  time: string;
+import { getMessageType } from '../../model';
+import type { MessageRegistry, MessageComponent } from '../../model';
+
+
+const messageConfig: MessageRegistry  = {
+  media: { component: MediaMessage, fullWidth: false },
+  audio: { component: AudioMessage, fullWidth: false },
+  file: { component: FileMessage, fullWidth: false },
+  poll: { component: PollMessage, fullWidth: true },
+  geo: { component: GeoMessage, fullWidth: true },
+  event: { component: EventMessage, fullWidth: true },
+  story: { component: StoryMessage, fullWidth: false },
+  text: { component: TextMessage, fullWidth: false }
 }
 
-export const MessageComposer = ({ msg, isFirst, isAuthor, time }: Props) => {
-
-  let content;
-
-  if ('attachments' in msg && (msg.attachments?.images?.length || msg.attachments?.video?.length)) {
-    content = <MediaMessage msg={msg} time={time} />;
-  } else if ('attachments' in msg && msg.attachments?.audio?.length) {
-    content = <AudioMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
-  } else if ('attachments' in msg && msg.attachments?.file?.length) {
-    content = <FileMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
-  } else if ('poll' in msg && msg.poll) {
-    content = <PollMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
-  } else if ('story' in msg && msg.story) {
-    content =  <StoryMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
-  } else if ('event' in msg && msg.event) {
-    content = <EventMessage msg={msg} time={time} />;
-  } else if ('geo' in msg && msg.geo) {
-    content = <GeoMessage msg={msg} time={time} />;
-  } else {
-    content = <TextMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
-  }
+export const MessageComposer = ({
+  msg, isFirst, isAuthor, time
+}: MessageComponent<MessageDto>) => {
+  const type = getMessageType(msg);
+  const { component: Component, fullWidth } = messageConfig[type];
 
   return (
-    <MessageBubble isAuthor={isAuthor}>
-      {content}
+    <MessageBubble isAuthor={isAuthor} maxWidth={fullWidth}>
+      <Component
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        msg={msg as any}
+        time={time}
+        isFirst={isFirst}
+        isAuthor={isAuthor}
+      />
     </MessageBubble>
   );
 };

@@ -1,13 +1,9 @@
 import { MapView } from '@/entities';
 import { MessageTime } from '@/entities/Message/ui/MessageTime/MessageTime.tsx';
 import type { MessageWithGeoDto } from '@/shared/types/message.dto.ts';
+import type { MessageComponent } from '@/entities/Message/model';
 
-interface GeoMessageProps {
-  time: string
-  msg: MessageWithGeoDto
-}
-
-export const GeoMessage = ({ msg, time }: GeoMessageProps) => {
+export const GeoMessage = ({ msg, time }: MessageComponent<MessageWithGeoDto>) => {
   if(!msg.geo) return null;
   return (
     <div className="relative inline-block">
