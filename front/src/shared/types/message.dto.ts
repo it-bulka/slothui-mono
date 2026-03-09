@@ -2,6 +2,7 @@ import type { GroupedAttachment } from './attachments.types.ts';
 import type { PollDto, PollResultDto } from './poll.dto.ts';
 import type { StoryDTO } from '../libs/services';
 import type { UserShort } from './user.types.ts';
+import type { Geo } from '@/shared/types/geo.types.ts';
 
 export type MessageBaseDto = {
   id: string;
@@ -23,6 +24,10 @@ export type MessageWithStoryDto = MessageBaseDto & {
   story: StoryDTO & { user: UserShort };
 };
 
+export type MessageWithGeoDto = MessageBaseDto & {
+  geo: Geo;
+};
+
 export type MessageWithEventDto = MessageBaseDto & {
   event: {
     description: string;
@@ -38,4 +43,5 @@ export type MessageDto =
   | MessageWithAttachmentsDto
   | MessageWithPollDto
   | MessageWithStoryDto
+  | MessageWithGeoDto
   | MessageWithEventDto;

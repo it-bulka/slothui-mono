@@ -7,7 +7,8 @@ import {
   FileMessage,
   PollMessage,
   StoryMessage,
-  EventMessage
+  EventMessage,
+  GeoMessage
 } from "../content";
 
 interface Props {
@@ -33,6 +34,8 @@ export const MessageComposer = ({ msg, isFirst, isAuthor, time }: Props) => {
     content =  <StoryMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
   } else if ('event' in msg && msg.event) {
     content = <EventMessage msg={msg} time={time} />;
+  } else if ('geo' in msg && msg.geo) {
+    content = <GeoMessage msg={msg} time={time} />;
   } else {
     content = <TextMessage msg={msg} time={time} isFirst={isFirst} isAuthor={isAuthor} />;
   }
