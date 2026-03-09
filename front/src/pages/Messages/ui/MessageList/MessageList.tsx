@@ -57,7 +57,7 @@ export const MessageList = memo(({
     if (range.startIndex === startIndex) {
       handleStartReached()
     }
-  }, [startIndex, handleStartReached])
+  }, [startIndex, handleStartReached, initRenderScrollDown])
 
   const context = useMemo(() => ({
     msgs: reversedMsgs,
