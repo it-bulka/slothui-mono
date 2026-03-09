@@ -1,4 +1,4 @@
-import { Input } from '@/shared/ui';
+import { Textarea } from '@/shared/ui';
 import { useDraftMessageText } from '@/features/DraftMessage';
 import { useSendMessage } from '@/features/send-message/model';
 import { type RefObject, memo, useCallback } from 'react';
@@ -28,13 +28,13 @@ export const MessageInputText = memo(({
   }, [activeChatId, msgService])
 
   return (
-    <Input
+    <Textarea
       name="comment"
       placeholder={"Write your message.."}
       className={className}
-      ref={inputRef as RefObject<HTMLInputElement>}
+      ref={inputRef as RefObject<HTMLTextAreaElement>}
       value={text}
-      onChange={(val) => setText(val as string)}
+      onChange={(e) => setText(e.currentTarget.value)}
       onFocus={onFocus}
       onBlur={onBlur}
       aria-readonly={isMsgSending}

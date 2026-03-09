@@ -87,7 +87,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   }
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useCallback((e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       onEnter?.()
     }
@@ -102,7 +102,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
     <div className={wrapperClass}>
       <div
         className={twMerge(
-          classnames(`relative flex rounded-3xl border border-gray-g4 py-2 px-3 input bg-white`, [className], {
+          classnames('flex input-wrapper', [className], {
             'flex-row-reverse': addendumLeft,
             'input-padding': !addendumFull,
             'mt-2': !!label

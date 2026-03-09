@@ -24,7 +24,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
         ref={anchorRef}
         {...getReferenceProps()}
       >
-        <MessageInputText className="grow max-w-[400px] mr-2" />
+        <MessageInputText />
         <MessageActions />
       </div>
 
