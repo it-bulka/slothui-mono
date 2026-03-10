@@ -1,36 +1,28 @@
-import type { PollFullResult } from '../../model/types';
-import { List, Typography, AvatarWithInfo } from '@/shared/ui';
-import { memo } from 'react';
-import type { UserShort } from '@/shared/types';
+import { memo } from 'react';import { PollOptionResult } from './PollOptionResult.tsx';
+import type { PollAnswerEntity } from '@/entities/Poll/model/type/pollDetails.state.ts';
 
-type PollResultProps = PollFullResult & { className?: string };
+type PollResultProps = {
+  options: PollAnswerEntity[]
+  anonymous: boolean
+  className?: string
+  pollId: string
+}
 
-export const PollResulFull = memo(({ options, className, anonymous }: PollResultProps) => {
-  return (
-    <div className={className}>
-      {options.map((option) => (
-        <div key={option.id}>
-          <Typography bold className="border-b-2 border-gray-g1 bg-gray-g2">{option.value}</Typography>
-          <Typography className="flex justify-between">
-            <span>{option.voters.length} votes</span>
-            <span>{option.percentage}%</span>
-          </Typography>
-          {anonymous || (
-            <List>
-              {option.voters?.map((voter: UserShort) => (
-                <AvatarWithInfo
-                  src={voter.avatarUrl}
-                  name={voter.nickname}
-                  position={voter.username}
-                  key={voter.nickname}
-                />
-              ))}
-            </List>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-})
-
-PollResulFull.displayName = 'PollResultFull';
+export const PollResultFull = memo(
+  ({ options, anonymous, className, pollId }: PollResultProps) => {
+    return (
+      <div className={className}>
+        {options.map((option) => (
+          <PollOptionResult
+            key={option.id}
+            option={option}
+            anonymous={anonymous}
+            pollId={pollId}
+            answerId={option.id}
+          />
+        ))}
+      </div>
+    )
+  }
+)
+PollResultFull.displayName = 'PollResultFull';

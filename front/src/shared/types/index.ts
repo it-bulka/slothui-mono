@@ -1,6 +1,6 @@
 export type { NonNullableFields } from './common.types.ts';
 export type { Poll } from './poll.types.ts'
-export type { PollVotesUpdateDto, PollResultDto } from './poll.dto.ts';
+export type { PollVotesUpdateDto, PollResultDto, VoterDetails } from './poll.dto.ts';
 export type { Message, MessageNotification, Author } from './message.types.ts';
 export type { Geo } from './geo.types.ts';
 export type { GroupedAttachment, Attachment, RawAttachmentType, AttachmentType, AttachmentMetadata, RawGroupedAttachment } from './attachments.types.ts';

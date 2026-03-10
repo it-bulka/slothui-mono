@@ -5,6 +5,7 @@ export type PollAnswerDto = {
   index: number // for sorting, not for logic
   votes?: number
   voters?: string[]
+  nextCursor?: string // voters
 }
 
 export type PollBaseDto = {
@@ -29,10 +30,12 @@ export type MultipleChoicePollDto = PollBaseDto & {
 
 export type PollDto = SingleChoicePollDto | MultipleChoicePollDto
 
+// ANSWERS
+export type VoterDetails = UserShort
 export type PollAnswerResultDto = PollAnswerDto & {
   votes: number
   percentage: number
-  voters: UserShort[]
+  voters: VoterDetails[]
 }
 
 export type SingleChoicePollResultDto = Omit<SingleChoicePollDto, 'answers'> & {

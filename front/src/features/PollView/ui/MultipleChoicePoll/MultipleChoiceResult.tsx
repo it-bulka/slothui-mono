@@ -14,7 +14,7 @@ export const MultipleChoiceResult = memo(({
 }: MultipleChoiceResultProps) => {
   const id = useId()
   return (
-    <PollResultWrapper options={poll.answers} anonymous={poll.anonymous}>
+    <PollResultWrapper pollId={poll.id}>
       <form className={cls.form}>
         {poll.anonymous && <AnonymousTitle />}
         <Typography bold type={TypographyTypes.BLOCK_TITLE}>{poll.question}</Typography>

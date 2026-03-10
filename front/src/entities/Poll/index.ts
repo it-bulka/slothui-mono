@@ -1,2 +1,2 @@
 export { answerPollThunk } from './model/thunk/answerPoll.thunk.tsx';
-export { getPollMode } from './model';
+export { getPollMode, pollDetailsReducer, useFetchMorePollVoters, selectAnswerVoters } from './model';
