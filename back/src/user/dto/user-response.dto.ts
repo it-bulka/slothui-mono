@@ -10,4 +10,5 @@ export interface UserShortDTO {
   username: string;
   nickname: string;
   avatarUrl?: string;
+  email?: string;
 }

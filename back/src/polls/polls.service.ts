@@ -13,6 +13,7 @@ import { PallParentType } from './types/poll.type';
 import { EntityManager } from 'typeorm';
 import { PollResultDto, PollVoter } from './dto/poll.dto';
 import { PollAnswerDto } from './dto/poll.dto';
+import { UserShortDTO } from '../user/dto/user-response.dto';
 
 @Injectable()
 export class PollsService {
@@ -126,48 +127,62 @@ export class PollsService {
     pollId: string,
     currentUserId: string,
   ): Promise<PollResultDto | null> {
-    const { entities: pollsEntities, raw: pollsRaw } = await this.pollRepo
-      .createQueryBuilder('poll')
-      .leftJoinAndSelect('poll.answers', 'answer')
-      .leftJoin(
-        (qb) =>
-          qb
-            .from(PollVote, 'vote')
-            .select('vote.pollId', 'pollId')
-            .addSelect('vote.answerId', 'answerId')
-            .addSelect('COALESCE(COUNT(vote.id), 0)', 'votes')
-            .groupBy('vote.pollId')
-            .addGroupBy('vote.answerId'),
-        'voteStats',
-        '"voteStats"."answerId" = "answer"."id" AND "voteStats"."pollId" = "poll"."id"',
-      )
-      .addSelect('COALESCE("voteStats"."votes", 0)', 'votes')
-      .where('poll.id = :pollId', { pollId }) // тільки один poll
-      .getRawAndEntities<{ votes: string; answer_id: string }>();
-
-    const poll = pollsEntities[0];
+    const poll = await this.pollRepo.findOne({
+      where: { id: pollId },
+      relations: ['answers'],
+    });
     if (!poll) return null;
 
-    const votesByAnswerId = this._buildVotesByAnswerId(pollsRaw);
-
-    const [groupedUserAnswerIds, groupedVotersPreview] = await Promise.all([
-      this.getGroupedAnswersIdsByPoll([poll.id], currentUserId),
-      this.getVotersPreview([poll.id], 3),
-    ]);
-
-    const totalPollVotes = poll.answers.reduce((sum, a) => {
-      const answerVotes = votesByAnswerId.get(a.id) || 0;
-      return sum + answerVotes;
-    }, 0);
-
-    const answers: PollAnswerDto[] = this._mapAnswersToDto(
-      poll,
-      votesByAnswerId,
-      totalPollVotes,
-      groupedVotersPreview,
+    const votesByAnswerId = new Map<string, number>();
+    const userVoteIds = await this.getGroupedAnswersIdsByPoll(
+      [poll.id],
+      currentUserId,
     );
 
-    const userVote = groupedUserAnswerIds[poll.id];
+    const answers: PollAnswerDto[] = await Promise.all(
+      poll.answers.map(async (answer) => {
+        // total votes
+        const votesCount = await this.voteRepo.count({
+          where: { answer: { id: answer.id } },
+        });
+        votesByAnswerId.set(answer.id, votesCount);
+
+        if (poll.anonymous) {
+          return {
+            id: answer.id,
+            index: answer.index,
+            value: answer.value,
+            votes: votesCount,
+            percentage: 0, // optional, можна рахуємо нижче
+            voters: [],
+            nextCursor: null,
+            hasMore: false,
+          };
+        }
+
+        // preview
+        const { voters, nextCursor, hasMore } = await this._getVotersForAnswer(
+          poll.id,
+          answer.id,
+          10,
+        );
+        const totalPollVotes = await this.voteRepo.count({
+          where: { poll: { id: poll.id } },
+        });
+        return {
+          id: answer.id,
+          index: answer.index,
+          value: answer.value,
+          votes: votesCount,
+          percentage: totalPollVotes
+            ? Math.round((votesCount / totalPollVotes) * 100)
+            : 0, // можна по totalPollVotes
+          voters,
+          nextCursor,
+          hasMore,
+        };
+      }),
+    );
 
     return {
       id: poll.id,
@@ -177,8 +192,11 @@ export class PollsService {
       parentType: poll.parentType,
       parentId: poll.parentId,
       answers,
-      votesCount: totalPollVotes,
-      userVote,
+      votesCount: Array.from(votesByAnswerId.values()).reduce(
+        (a, b) => a + b,
+        0,
+      ),
+      userVote: userVoteIds[poll.id] ?? [],
     };
   }
 
@@ -188,69 +206,47 @@ export class PollsService {
   async getGroupedAnswersIdsByPoll(pollIds: string[], userId: string) {
     if (!pollIds.length) return {};
 
-    const userAnswerIdsRaw = await this.voteRepo
+    const raw = await this.voteRepo
       .createQueryBuilder('vote')
       .select(['vote.answerId', 'vote.pollId'])
       .where('vote.pollId IN (:...pollIds)', { pollIds })
       .andWhere('vote.userId = :userId', { userId })
       .getRawMany<{ answerId: string; pollId: string }>();
 
-    const groupedUserAnswerIds = userAnswerIdsRaw.reduce(
-      (acc, item) => {
-        if (acc[item.pollId]) {
-          acc[item.pollId].push(item.answerId);
-          return acc;
-        }
-
-        acc[item.pollId] = [item.answerId];
+    return raw.reduce(
+      (acc, { pollId, answerId }) => {
+        acc[pollId] = [...(acc[pollId] || []), answerId];
         return acc;
       },
-      {} as Record<string, string[]>, // Record<pollId, answerId[]>
+      {} as Record<string, string[]>,
     );
-
-    return groupedUserAnswerIds;
   }
 
-  async getVotersPreview(pollIds: string[], limit?: number) {
-    if (!pollIds.length) return {};
+  async getVotersPreview(
+    pollIds: string[],
+    limit = 3,
+  ): Promise<Record<string, PollVoter[]>> {
+    const result: Record<string, PollVoter[]> = {};
 
-    const qb = this.voteRepo
-      .createQueryBuilder('vote')
-      .leftJoin('vote.user', 'user')
-      .addSelect([
-        'user.id',
-        'user.username',
-        'user.nickname',
-        'user.avatarUrl',
-      ])
-      .where('vote.pollId IN (:...ids)', { ids: pollIds })
-      .andWhere('vote.user IS NOT NULL')
-      .orderBy('vote.createdAt', 'DESC');
-
-    if (limit) {
-      qb.limit(3);
-    }
-
-    const votersPreview = await qb.getMany();
-
-    const groupedVotersPreview = votersPreview.reduce(
-      (acc, item) => {
-        if (!item.user) return acc;
-
-        acc[item.id] = [
-          {
-            id: item.user.id,
-            username: item.user.username,
-            nickname: item.user.nickname,
-            avatarUrl: item.user.avatarUrl,
-          },
-        ];
-        return acc;
-      },
-      {} as Record<string, PollVoter[]>, // Record<pollId, PollVoter>
+    await Promise.all(
+      pollIds.map(async (pollId) => {
+        const answers = await this.answerRepo.find({
+          where: { poll: { id: pollId } },
+        });
+        await Promise.all(
+          answers.map(async (answer) => {
+            const { voters } = await this._getVotersForAnswer(
+              pollId,
+              answer.id,
+              limit,
+            );
+            result[answer.id] = voters;
+          }),
+        );
+      }),
     );
 
-    return groupedVotersPreview;
+    return result;
   }
 
   groupedByParentId(polls: PollResultDto[]) {
@@ -318,6 +314,29 @@ export class PollsService {
     return updatedPollData;
   }
 
+  async getDetails(pollId: string, currentUserId: string) {
+    return this.getOnePoll(pollId, currentUserId);
+  }
+
+  async getVoters(
+    pollId: string,
+    answerId: string,
+    limit = 20,
+    cursor?: string | null,
+  ): Promise<{
+    items: UserShortDTO[];
+    nextCursor?: string | null;
+    hasMore: boolean;
+  }> {
+    const { voters, nextCursor, hasMore } = await this._getVotersForAnswer(
+      pollId,
+      answerId,
+      limit,
+      cursor,
+    );
+    return { items: voters, nextCursor, hasMore };
+  }
+
   // helpers
   private _buildVotesByAnswerId(raw: { answer_id: string; votes: string }[]) {
     const map = new Map<string, number>();
@@ -339,23 +358,42 @@ export class PollsService {
     );
   }
 
-  private _mapAnswersToDto(
-    poll: Poll,
-    votesByAnswerId: Map<string, number>,
-    totalVotes: number,
-    votersPreview: Record<string, PollVoter[]>,
-  ): PollAnswerDto[] {
-    return poll.answers.map((answer) => {
-      const votes = votesByAnswerId.get(answer.id) ?? 0;
+  private async _getVotersForAnswer(
+    pollId: string,
+    answerId: string,
+    limit: number,
+    cursor?: string | null,
+  ): Promise<{
+    voters: PollVoter[];
+    nextCursor?: string | null;
+    hasMore: boolean;
+  }> {
+    let qb = this.voteRepo
+      .createQueryBuilder('vote')
+      .leftJoinAndSelect('vote.user', 'user')
+      .where('vote.pollId = :pollId', { pollId })
+      .andWhere('vote.answerId = :answerId', { answerId })
+      .orderBy('vote.createdAt', 'ASC');
 
-      return {
-        id: answer.id,
-        index: answer.index,
-        value: answer.value,
-        votes,
-        percentage: totalVotes ? Math.round((votes / totalVotes) * 100) : 0,
-        voters: poll.anonymous ? [] : (votersPreview[answer.id] ?? []),
-      };
-    });
+    if (cursor) {
+      qb = qb.andWhere('vote.createdAt > :cursor', {
+        cursor: new Date(cursor),
+      });
+    }
+
+    const votes = await qb.take(limit + 1).getMany(); // +1 для hasMore
+
+    const hasMore = votes.length > limit;
+    const voters = votes.slice(0, limit).map((v) => ({
+      id: v.user!.id,
+      username: v.user!.username,
+      nickname: v.user!.nickname,
+      avatarUrl: v.user!.avatarUrl,
+      email: v.user!.email,
+    }));
+
+    const nextCursor = hasMore ? votes[limit].createdAt.toISOString() : null;
+
+    return { voters, nextCursor, hasMore };
   }
 }
