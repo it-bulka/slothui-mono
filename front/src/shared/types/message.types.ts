@@ -21,17 +21,21 @@ export type Message = MessageBase
 
 // to send
 export type MessageBaseToSend = {
-  text: string;
+  text?: string;
 };
 
 export  type MsgWithAttachmentsToSend = MessageBaseToSend & { attachments: RawGroupedAttachment }
 export  type MsgWithStoryToSend = MessageBaseToSend & { storyId: string }
+export  type MsgWithEventToSend = MessageBaseToSend & { eventId: string }
+export  type MsgWithPostToSend = MessageBaseToSend & { postId: string }
 export  type MsgWithGeoToSend = MessageBaseToSend & { geo: string }
 export  type MsgWithPollToSend = MessageBaseToSend & { poll: string }
 
 export type MessageToSend = MessageBaseToSend
   | MsgWithAttachmentsToSend
   | MsgWithStoryToSend
+  | MsgWithEventToSend
+  | MsgWithPostToSend
   | MsgWithGeoToSend
   | MsgWithPollToSend
 

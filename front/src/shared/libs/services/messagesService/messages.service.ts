@@ -58,7 +58,10 @@ export class MessagesService {
   /** POST /api/chats/:id/messages  MessageToSend */
   async sendMessage(msg: MessageToSend & { chatId: string }): Promise<void> {
     const fd = new FormData();
-    fd.append('text', msg.text);
+
+    if('text' in msg && msg.text) {
+      fd.append('text', msg.text);
+    }
 
     if('geo' in msg && msg.geo) {
       fd.append('geo',JSON.stringify(msg.geo));
@@ -88,6 +91,14 @@ export class MessagesService {
 
     if('storyId' in msg && msg.storyId) {
       fd.append('storyId', msg.storyId);
+    }
+
+    if('eventId' in msg && msg.eventId) {
+      fd.append('eventId', msg.eventId);
+    }
+
+    if('postId' in msg && msg.postId) {
+      fd.append('postId', msg.postId);
     }
 
     // TODO: check, should be FormData

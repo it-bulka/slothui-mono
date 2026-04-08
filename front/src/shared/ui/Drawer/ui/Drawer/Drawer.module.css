@@ -1,0 +1,18 @@
+@reference "../../../../../app/styles/tailwind.css";
+
+.drawer {
+    @apply fixed inset-0 flex items-end opacity-0 pointer-events-none z-[-1];
+}
+
+.opened {
+    @apply opacity-100 pointer-events-auto;
+    z-index: var(--z-index-modal);
+}
+
+.sheet {
+    @apply fixed left-[2vw] w-[96vw] p-[15px] touch-none;
+    height: calc(100vh + 100px);
+    border-radius: 12px 12px 0;
+    z-index: var(--z-index-modal);
+    background: var(--color-light-bg);
+}
