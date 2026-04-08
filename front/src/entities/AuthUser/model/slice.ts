@@ -6,11 +6,13 @@ import { logoutExtra } from './logout/logout.extra.ts';
 import { updateProfileExtra } from './updateProfile/updateProfile.extra.ts';
 import { deleteProfileExtra } from './deleteProfile/deleteProfile.extra.ts';
 import { unfollowExtraReducer } from './extraReducers/unfollow.extra.ts';
+import { initAuthUserExtra } from './init/initAuthUser.extra.ts';
 
 const initialState: AuthUserState = {
   data: null,
   isToken: false,
   isLoading: false,
+  isInitialized: false,
   error: null
 };
 
@@ -24,8 +26,11 @@ export const authUserSlice = createSlice({
     clearUser(state) {
       state.data = null;
     },
-    logoutLocal:() => {
-      return initialState
+    setInitialized(state) {
+      state.isInitialized = true;
+    },
+    logoutLocal: () => {
+      return { ...initialState, isInitialized: true };
     },
     increaseFollowersCount: (state) => {
       if(!state.data) return
@@ -45,6 +50,7 @@ export const authUserSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    initAuthUserExtra(builder);
     registerUserExtra(builder);
     loginUserExtra(builder);
     logoutExtra(builder);

@@ -11,7 +11,8 @@ export {
   useUpdateProfile,
   authUserActions,
   deleteProfileThunk,
-  selectAuthUserId
+  selectAuthUserId,
+  initAuthUser
 } from './AuthUser';
 
 export { EventCard } from './Event';

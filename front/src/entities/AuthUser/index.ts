@@ -12,4 +12,4 @@ export {
 export { useRegisterUser, useLogout, useUpdateProfile, useDeleteProfile } from './model/hooks';
 export { logout } from './model/logout/logout.thunk.ts';
 export { authUserActions } from './model/slice.ts';
-export { deleteProfileThunk, selectAuthUserId } from './model';
+export { deleteProfileThunk, selectAuthUserId, initAuthUser } from './model';

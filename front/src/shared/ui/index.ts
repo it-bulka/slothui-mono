@@ -41,7 +41,7 @@ export {
 } from './Attachments';
 export { MessageToast } from './Toast';
 export { ReplyComment } from './ReplyComment';
-export { Skeleton } from './Skeleton';
+export { Skeleton, InitPageLoader } from './Skeleton';
 export { ScrollableBlock } from './ScrollableBlock';
 export { SearchSuggestionsList } from './SearchSuggestionsList';
 export { Divider } from './Divider/Divider.tsx';
@@ -51,3 +51,6 @@ export { ToolbarWrapper } from './ToolbarWrapper';
 export { LinkBlock } from './LinkBlock';
 export { NewFriendToast } from './NewFriendToast';
 export { PasswordInput } from './PasswordInput';
+export { Portal } from './Portal/Portal.tsx';
+export { Overlay } from './Overlay/Overlay.tsx';
+export { Drawer } from './Drawer';

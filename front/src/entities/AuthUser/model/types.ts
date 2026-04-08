@@ -16,5 +16,6 @@ export interface AuthUserState {
   data: UserState | null;
   isToken: boolean;
   isLoading: boolean;
+  isInitialized: boolean;
   error: string | null;
 }
