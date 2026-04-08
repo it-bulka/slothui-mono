@@ -22,6 +22,11 @@ export const UserRightSidebar = () => {
         followingCount={data.followeesCount}
         followersCount={data.followersCount}
         postsCount={data.postsCount}
+        hrefs={{
+          posts: `/users/${userId}`,
+          followers: `/users/${userId}/friends?type=followers`,
+          following: `/users/${userId}/friends?type=followings`,
+        }}
       />
 
       {data.description && (

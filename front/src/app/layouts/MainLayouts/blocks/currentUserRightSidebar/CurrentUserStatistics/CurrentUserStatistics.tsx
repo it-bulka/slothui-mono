@@ -32,6 +32,11 @@ export const CurrentUserStatistics = memo(() => {
     followingCount={user.followeesCount || 0}
     followersCount={user.followersCount || 0}
     postsCount={user.postsCount || 0}
+    hrefs={{
+      posts: '/me/posts',
+      followers: '/friends?type=followers',
+      following: '/friends?type=followings',
+    }}
   />
 })
 
