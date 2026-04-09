@@ -48,12 +48,13 @@ const PostTextareaRaw = memo(({ className }: PostTextarea) => {
   }
 
   return (
-    <div className={twMerge("flex flex-wrap bg-white", className)}>
+    <div className={twMerge("flex flex-wrap bg-white rounded", className)}>
       <button className="w-6 h-6 text-svg-primary">
         <AttachSvg className="w-5 h-5"/>
       </button>
       <textarea
-        className="grow"
+        className="grow resize-none overflow-y-auto max-h-[100px] focus:outline-none"
+        rows={3}
         placeholder="What’s on your mind right now?"
         ref={inputRef}
         onChange={e => setText(e.target.value)}

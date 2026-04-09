@@ -8,7 +8,11 @@ export const AddPostPanel = memo(() => {
   return (
     <>
       <AddPostBtn onClick={() => setPostTextarea(prev => !prev)} active={!isPostTextarea} />
-      {isPostTextarea && <PostTextarea className="basis-full py-6 absolute top-full left-0 w-full"/>}
+      {isPostTextarea && (
+        <div className="absolute top-full left-0 right-0 z-[var(--z-index-modal)] bg-underground-primary border-b border-gray-g3 px-8 py-4 shadow-theme">
+          <PostTextarea />
+        </div>
+      )}
     </>
   )
 })

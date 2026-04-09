@@ -11,4 +11,5 @@ export { SharePost } from './SharePost';
 export { EventsList } from './EventsList';
 export { NavigationSearchBar } from './NavigationSearchBar';
 export { NavBar } from './NavBar/NavBar.tsx';
+export { AddPostPanel } from './AddPostPanel';
 export { UserRightSidebar } from './UserRightSidebar';

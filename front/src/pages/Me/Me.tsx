@@ -1,33 +1,21 @@
-import { Feed, PostTextarea } from '@/widgets';
-import { AddPostBtn } from '@/features';
-import { useState } from 'react';
+import { Feed, AddPostPanel } from '@/widgets';
 import { MyFeedContent } from './ui/MyFeedContent/MyFeedContent.tsx';
 import { AppLink } from '@/shared/ui';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 const Me = () => {
-  const [isPostTextarea, setPostTextarea] = useState(false);
-
   return (
     <>
       <Feed
         header={(
-        <div className={"toolbar"}>
-          <AddPostBtn
-            onClick={() => setPostTextarea(prev => !prev)}
-            active={!isPostTextarea}
-            className="ml-auto"
-          />
-          {isPostTextarea && <PostTextarea className="basis-full py-6"/>}
-        </div>
+          <div className={"toolbar relative"}>
+            <AddPostPanel />
+            <AppLink to={RoutePaths.my_events} className="ml-auto">Go to Events</AppLink>
+          </div>
         )}>
-        <>
-          <AppLink to={RoutePaths.my_events} className="ml-auto">Go to Events</AppLink>
-          <MyFeedContent />
-        </>
+        <MyFeedContent />
       </Feed>
     </>
-
   )
 }
 
