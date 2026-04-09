@@ -39,6 +39,8 @@
     --color-light-bg: #E7E8EC;
     --color-dark-bg: #A8ACB7;
 
+    --shadow-color: rgba(108, 111, 122, 0.25);
+
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;
 
@@ -83,6 +85,7 @@
     --color-light-bg: #17233B;
     --color-dark-bg: #1F2A44;
     --color-scrollbar-thumb: #5F7CFF;
+    --shadow-color: rgba(26, 43, 74, 0.45);
 }
 
 @layer basis {
@@ -337,6 +340,10 @@
 
     .scroll-fade-bottom {
         position: relative;
+    }
+
+    .shadow-theme {
+        box-shadow: 0 4px 12px var(--shadow-color);
     }
 
     .scroll-fade-bottom::after {
