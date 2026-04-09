@@ -4,3 +4,5 @@ export { usePrefetch } from './usePrefetch/usePrefetch.tsx';
 export { useHandleCopy } from './useHandleCopy/useHandleCopy.tsx';
 export { usePopup } from './usePopup/usePopup.tsx';
 export { useInfiniteScroll } from './useInfiniteScroll/useInfiniteScroll.ts';
+export { useTheme } from './useTheme/useTheme.ts';
+export type { Theme } from './useTheme/useTheme.ts';

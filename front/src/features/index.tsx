@@ -43,4 +43,5 @@ export { ForgotPasswordForm } from './forgotPassword';
 export { ResetPasswordForm } from './ResetPassword';
 export { Sessions } from './Sessions';
 export { DeleteAccountButton } from './DeleteAccount';
+export { ThemeToggleAction } from './ThemeToggleAction/ThemeToggleAction.tsx';
 

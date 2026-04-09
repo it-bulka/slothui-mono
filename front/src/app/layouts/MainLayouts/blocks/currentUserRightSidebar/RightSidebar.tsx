@@ -1,5 +1,5 @@
 import { AvatarWithStatus } from '@/shared/ui';
-import { NotificationAction, MessageAction, SettingAction } from '@/features';
+import { NotificationAction, MessageAction, SettingAction, ThemeToggleAction } from '@/features';
 import { FriendSuggestions } from '@/entities';
 import { ProfileActivity, UpcomingEvents } from '@/widgets';
 import { CurrentUserStatistics } from './CurrentUserStatistics/CurrentUserStatistics.tsx';
@@ -18,6 +18,7 @@ export const RightSidebar = () => {
           className={"mr-auto"}
         />
 
+        <ThemeToggleAction />
         <NotificationAction />
         <MessageAction />
         <SettingAction />
