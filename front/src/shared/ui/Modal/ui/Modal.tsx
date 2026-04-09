@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { createContext, useContext } from 'react';
 import { useModal } from '../../../hooks/useModal/useModal.tsx';
 import { Portal } from '../../Portal/Portal.tsx';
 import { Overlay } from '../../Overlay/Overlay.tsx';
@@ -6,9 +7,17 @@ import classnames from 'classnames';
 import cls from './Modal.module.css'
 import { twMerge } from 'tailwind-merge';
 
+interface ModalContextValue {
+  close: () => void;
+}
+const ModalContext = createContext<ModalContextValue>({ close: () => {} });
+// eslint-disable-next-line react-refresh/only-export-components
+export const useModalContext = () => useContext(ModalContext);
+
 type ModalPosition = 'top left' | 'center'
 export interface ModalProps {
   className?: string
+  overlayClassName?: string
   isOpen?: boolean
   onClose?: () => void
   position?: ModalPosition
@@ -27,6 +36,7 @@ const positionToMap: Record<ModalPosition, string> = {
 
 export const Modal = ({
   className,
+  overlayClassName,
   isOpen,
   onClose,
   children,
@@ -46,16 +56,18 @@ export const Modal = ({
         { [cls.opened]: isShown, [cls.isClosing]: isClosing },
         [className])}
       >
-        <Overlay onClick={closeHandler} />
-        <div
-          className={twMerge(classnames(
-            cls.content,
-            "min-w-[400px] w-[70%] max-w-[1000px]",
-            { "w-fit": fit },
-            [positionToMap[position]]))}
-        >
-          { typeof children === 'function' ? children(closeHandler) : children }
-        </div>
+        <Overlay onClick={closeHandler} className={overlayClassName} />
+        <ModalContext.Provider value={{ close: closeHandler }}>
+          <div
+            className={twMerge(classnames(
+              cls.content,
+              "min-w-[400px] w-[70%] max-w-[1000px]",
+              { "w-fit": fit },
+              [positionToMap[position]]))}
+          >
+            { typeof children === 'function' ? children(closeHandler) : children }
+          </div>
+        </ModalContext.Provider>
       </div>
     </Portal>
   )

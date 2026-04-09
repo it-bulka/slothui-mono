@@ -52,8 +52,9 @@ export const MediaGrid = ({ list, showAll }: MediaGridProps) => {
   return (
     <>
       <div className={css.grid}>
-        {visible.map((item, idx) =>
-          !showAll && idx === LIMIT - 1 && hiddenCount > 0 ? (
+        {visible.map((item, idx) => {
+          const itemClass = idx === 0 ? css.itemFirst : css.item;
+          return !showAll && idx === LIMIT - 1 && hiddenCount > 0 ? (
             <MoreItem
               key={item.id}
               item={item}
@@ -61,9 +62,9 @@ export const MediaGrid = ({ list, showAll }: MediaGridProps) => {
               onClick={handlePreviewClick(idx)}
             />
           ) : (
-            renderMediaItem(item, css.item, handlePreviewClick(idx))
+            renderMediaItem(item, itemClass, handlePreviewClick(idx))
           )
-        )}
+        })}
       </div>
 
       <MediaAttachmentsModal isOpen={isOpen} onClose={close} list={list} startIndex={clickedIndex} />

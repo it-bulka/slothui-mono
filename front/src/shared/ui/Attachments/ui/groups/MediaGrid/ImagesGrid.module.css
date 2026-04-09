@@ -1,23 +1,32 @@
 .grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
 }
 
-.item:first-child {
+.itemFirst {
+    grid-column: 1 / -1;
+    position: relative;
+}
+
+.itemFirst img,
+.itemFirst video {
     width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    display: block;
 }
 
 .item {
-    width: 30%;
-    max-height: 150px;
-    position: relative
+    position: relative;
 }
 
-.item image {
+.item img,
+.item video {
     width: 100%;
+    max-height: 150px;
     object-fit: cover;
+    display: block;
 }
 .moreWrapper {
     position: relative;

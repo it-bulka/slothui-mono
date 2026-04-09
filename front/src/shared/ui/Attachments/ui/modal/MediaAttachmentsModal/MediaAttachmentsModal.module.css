@@ -1,0 +1,40 @@
+.overlay {
+    opacity: 0.85 !important;
+}
+
+/* Main slide */
+.mainSlide {
+    height: 100% !important;
+    width: 100%;
+}
+
+.mainItem {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mainSlide img,
+.mainSlide video {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    display: block;
+}
+
+/* Thumb slide */
+.thumbItem {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.thumbItem img,
+.thumbItem video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

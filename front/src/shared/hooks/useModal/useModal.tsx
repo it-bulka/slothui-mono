@@ -70,6 +70,11 @@ export const useModal = ({
       }, 1)
 
       window.addEventListener('keydown', onKeyDown)
+    } else {
+      enableBodyScroll()
+      setIsMounted(false)
+      setIsShown(false)
+      setIsClosing(false)
     }
 
     return () => {

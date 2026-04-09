@@ -17,11 +17,10 @@ export const CreateEventModal = memo(({ isOpen, onClose }: CreateEventModalProps
   }, [onClose, handleCreateEvent])
 
   return (
-    <Modal isOpen={isOpen} onClose={close}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalCard title="Create event" onClose={onClose}>
         <EventCreateForm onCreateEvent={(e) => {
           onCreateEvent?.(e)
-          close()
         }}/>
       </ModalCard>
     </Modal>
