@@ -4,7 +4,7 @@ import type { DraftEvent } from '@/features/CreateEvent/model/types/event.type.t
 
 export const DraftEventProvider = ({
   children, onEventCreate
-}: { children: ReactNode, onEventCreate: (event: DraftEvent) => void }) => {
+}: { children: ReactNode, onEventCreate: (event: DraftEvent) => Promise<boolean> }) => {
   return (
     <DraftEventContext.Provider value={{ handleCreateEvent: onEventCreate }}>
       {children}

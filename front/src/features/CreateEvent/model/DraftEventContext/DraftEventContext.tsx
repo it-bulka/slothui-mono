@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import type { DraftEvent } from '../types/event.type.ts';
 
 interface IDraftEventContext {
-  handleCreateEvent: (event: DraftEvent) => void;
+  handleCreateEvent: (event: DraftEvent) => Promise<boolean>;
 }
 
 export const DraftEventContext = createContext<IDraftEventContext | undefined>(undefined)

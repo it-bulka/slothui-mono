@@ -10,7 +10,7 @@ import classnames from 'classnames';
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string;
-  error?: boolean;
+  error?: string;
   onEnter?: () => void; // дія при Enter без Shift
 }
 
@@ -66,7 +66,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
 
         {error && (
-          <p role="alert" className={'px-3 text-red-500 text-[0.7em] absolute'}>
+          <p role="alert" className={'px-3 text-red-500 text-[0.7em] absolute -bottom-5 left-0'}>
             {error}
           </p>
         )}

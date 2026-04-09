@@ -15,12 +15,12 @@ export const ModalCard = ({
 }: PropsWithChildren<ModalCardProps>) => {
   const { close } = useModalContext();
   return (
-    <Card max={max}>
-      <Card.Header className="flex">
+    <Card max={max} className="flex flex-col max-h-[90vh] overflow-hidden">
+      <Card.Header className="flex shrink-0">
         <Typography className="grow" bold type={TypographyTypes.BLOCK_TITLE}>{title}</Typography>
         <CloseButton onClick={close} />
       </Card.Header>
-      <Card.Body>
+      <Card.Body className="overflow-y-auto flex-1 scrollbar-themed">
         {children}
       </Card.Body>
     </Card>

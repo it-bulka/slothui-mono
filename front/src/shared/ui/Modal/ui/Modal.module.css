@@ -8,7 +8,7 @@
     opacity: 0;
     display: flex;
     justify-content: center;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .content {
@@ -17,9 +17,6 @@
     transition: 0.7s transform;
     z-index: var(--z-index-modal-content);
     pointer-events: none;
-
-    max-height: 85vh;
-    overflow: auto;
     margin: auto;
 }
 .content.center {

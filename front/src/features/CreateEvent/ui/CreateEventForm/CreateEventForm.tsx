@@ -1,5 +1,6 @@
-import { useState, memo, useMemo } from 'react'
+import { useState, memo, useMemo, useRef, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
@@ -7,11 +8,11 @@ import {
   Typography,
   Input,
   CheckboxInput,
-  FormField,
   Textarea,
   EventDateTimePicker
 } from '@/shared/ui';
 import type { DraftEvent } from '../../model/types/event.type.ts';
+import { draftEventSchema } from '../../model/schemas/draftEvent.schema.ts';
 
 type FormValues = DraftEvent
 
@@ -35,22 +36,31 @@ export const EventCreateForm = memo(({
     return tomorrow
   }, [])
 
-  const { handleSubmit, watch, setValue, control } = useForm<FormValues>({
+  const { handleSubmit, watch, setValue, control, formState: { errors, isSubmitted } } = useForm<FormValues>({
+    resolver: zodResolver(draftEventSchema),
     defaultValues: {
       isOnline: false,
       date: tomorrow
     }
   })
-  const [marker, setMarker] = useState<[number, number] | null>(null)
 
+  const [marker, setMarker] = useState<[number, number] | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const isOnline = watch('isOnline')
+  const hasErrors = Object.keys(errors).length > 0
+
+  useEffect(() => {
+    if (!isSubmitted || !hasErrors) return
+    const firstInvalid = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')
+    firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [errors, isSubmitted, hasErrors])
 
   const onSubmit = (data: FormValues) => {
     onCreateEvent?.(data)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form-default">
+    <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="form-default">
       <Controller
         control={control}
         name="title"
@@ -61,6 +71,7 @@ export const EventCreateForm = memo(({
             name={field.name}
             value={field.value}
             onChange={field.onChange}
+            error={errors.title?.message}
           />
         )}
       />
@@ -81,13 +92,14 @@ export const EventCreateForm = memo(({
         control={control}
         name="description"
         render={({ field }) => (
-          <FormField label="Description">
+          <div className="pb-5">
             <Textarea
               {...field}
               placeholder="Shortly about event..."
               className="textarea"
+              error={errors.description?.message}
             />
-          </FormField>
+          </div>
         )}
       />
 
@@ -104,7 +116,6 @@ export const EventCreateForm = memo(({
           </CheckboxInput>
         )}
       />
-
 
       {!isOnline && (
         <>
@@ -153,7 +164,7 @@ export const EventCreateForm = memo(({
         </>
       )}
 
-      <Button type="submit" className="form-btn">
+      <Button type="submit" className="form-btn" disabled={isSubmitted && hasErrors}>
         Create event
       </Button>
     </form>

@@ -226,6 +226,15 @@
     }
 
     /* FORM */
+    .scrollbar-themed {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+        &::-webkit-scrollbar { width: 4px; height: 4px; }
+        &::-webkit-scrollbar-track { background: var(--color-scrollbar-track); border-radius: 2px; }
+        &::-webkit-scrollbar-thumb { background-color: var(--color-scrollbar-thumb); border-radius: 4px; }
+        &::-webkit-scrollbar-thumb:hover { background-color: var(--color-blue-b1); }
+    }
+
     .form-default {
         @apply flex flex-col gap-2;
     }
