@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-    /* === COLORS === */
-    --color-gray-g1: #475569;
-    --color-gray-g2: #94A3B8;
-    --color-gray-g3: #E2E8F0;
-    --color-gray-g4: #CBD5E1;
+    /* === COLORS (light theme defaults) === */
+    --color-gray-g1: #6C6F7A;          /* text-secondary */
+    --color-gray-g2: #A8ACB7;          /* text-muted */
+    --color-gray-g3: #E7E8EC;          /* borders / bg-tertiary */
+    --color-gray-g4: #E7E8EC;          /* borders */
 
-    --color-white: #FFFFFF;
-    --color-light-l1: #EEF2FF;
-    --color-light-l2: #F1F5F9;
-    --color-light-l3: #F8FAFC;
+    --color-white: #FAFAFC;            /* bg-primary */
+    --color-light-l1: #EEF0FF;         /* accent-contrast */
+    --color-light-l2: #F1F1F6;         /* bg-secondary */
+    --color-light-l3: #FAFAFC;         /* bg-primary */
 
-    --color-blue-b1: #4F46E5;
-    --color-blue-b2: #A5B4FC;
-    --color-blue-b3: #C7D2FE;
-    --color-blue-b4: #E0E7FF;
+    --color-blue-b1: #6366F1;          /* accent */
+    --color-blue-b2: #C7D2FF;          /* accent-light */
+    --color-blue-b3: #C7D2FF;          /* accent-light */
+    --color-blue-b4: #EEF0FF;          /* accent-contrast */
 
-    --color-dark: #1E293B;
+    --color-dark: #1A1C20;             /* text-primary */
     --color-green-g1: #22C55E;
     --color-green-g2: #15803D;
 
@@ -26,7 +26,7 @@
     --color-svg-third: var(--color-blue-b1);
 
     --color-underground-primary: var(--color-white);
-    --color-underground-secondary: var(--color-light-l3);
+    --color-underground-secondary: var(--color-light-l2);
 
     --color-overlay: var(--color-gray-g4);
 
@@ -36,8 +36,8 @@
     --color-scrollbar-thumb: var(--color-blue-b3);
     --color-scrollbar-track: transparent;
 
-    --color-light-bg: #CBD5E1;
-    --color-dark-bg: #94A3B8;
+    --color-light-bg: #E7E8EC;
+    --color-dark-bg: #A8ACB7;
 
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;
@@ -51,6 +51,38 @@
     /* === MODAL === */
     --modal-y-shift: -75.2%;
     --modal-scale: 0.2;
+}
+
+/* === DARK THEME OVERRIDES === */
+[data-theme="dark"] {
+    --color-gray-g1: #94A3B8;
+    --color-gray-g2: #64748B;
+    --color-gray-g3: #1F2A44;
+    --color-gray-g4: #1F2A44;
+
+    --color-white: #0B1221;
+    --color-light-l1: #17233B;
+    --color-light-l2: #111A2E;
+    --color-light-l3: #0B1221;
+
+    --color-blue-b1: #5F7CFF;
+    --color-blue-b2: #3A507A;
+    --color-blue-b3: #2A3F6F;
+    --color-blue-b4: #1A2B4A;
+
+    --color-dark: #F8FAFC;
+
+    --color-green-g1: #4ADE80;
+    --color-green-g2: #22C55E;
+
+    --color-underground-primary: #111A2E;
+    --color-underground-secondary: #0B1221;
+
+    --color-overlay: #000000;
+    --color-auth-form: #17233B;
+    --color-light-bg: #17233B;
+    --color-dark-bg: #1F2A44;
+    --color-scrollbar-thumb: #5F7CFF;
 }
 
 @layer basis {
