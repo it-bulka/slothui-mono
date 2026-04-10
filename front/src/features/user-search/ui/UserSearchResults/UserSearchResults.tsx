@@ -32,7 +32,7 @@ export const UserSearchResults = ({ list, className, isLoading }: UserSearchResu
         <List.Item
           key={user.id}
           btnIcon={ArrowUpSvg}
-          onClick={() => navigate(getUserPage(user.id))}
+          onRowClick={() => navigate(getUserPage(user.id))}
         >
           <AvatarWithInfo
             src={user.avatarUrl}
