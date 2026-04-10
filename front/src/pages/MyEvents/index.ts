@@ -1,1 +1,1 @@
-export { MyEventsPage } from './ui/MyEventsPage.async.ts';
+export { MyEventsPage } from './ui/MyEventsPage.async.tsx';
