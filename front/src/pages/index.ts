@@ -1,4 +1,4 @@
-export { HomePage } from './Home/ui/Home.async.ts';
+export { HomePage } from './Home/ui/Home.async.tsx';
 export { MessagesPage } from './Messages/Messages.async.tsx';
 export { FriendsPage } from '@/pages/Friends/Friends.async.tsx';
 export { UserPage } from './User/ui/User.async.tsx';
