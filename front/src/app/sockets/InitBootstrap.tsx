@@ -1,13 +1,20 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
 import { initAuthUser, authUserActions } from '@/entities';
-import { LOCAL_STORAGE_TOKEN_KEY } from '@/shared/constants';
+import { TokenManager } from '@/shared/libs/services/tokenManager/TokenManager.ts';
 
 export const InitBootstrap = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)) {
+    const params = new URLSearchParams(window.location.search);
+    const oauthToken = params.get('token');
+    if (oauthToken) {
+      new TokenManager().setToken(oauthToken);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    if (new TokenManager().getToken()) {
       dispatch(initAuthUser());
     } else {
       dispatch(authUserActions.setInitialized());
