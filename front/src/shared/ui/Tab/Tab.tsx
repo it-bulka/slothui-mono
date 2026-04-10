@@ -1,4 +1,4 @@
-import { useState, useCallback, type MouseEvent, useLayoutEffect, type ReactNode, memo, useId } from 'react';
+import { useState, useCallback, useEffect, type MouseEvent, useLayoutEffect, type ReactNode, memo, useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 import cls from "./Tab.module.css"
 import classnames from 'classnames';
@@ -24,7 +24,13 @@ export const Tab = memo(({
   animated = true,
 }: TabProps) => {
   const [underlinePosition, setUnderlinePosition] = useState({ left: 0, top: 0, width: 0 });
-  const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex || 0);
+  const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex ?? 0);
+
+  useEffect(() => {
+    if (activeTabIndex !== undefined && activeTabIndex !== activeElId) {
+      setActiveElId(activeTabIndex);
+    }
+  }, [activeTabIndex]);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const id = useId()
 
