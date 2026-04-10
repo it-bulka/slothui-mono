@@ -13,5 +13,6 @@ export type NavbarListType = {
   Icon: FC<SVGProps<SVGSVGElement>>,
   title: string,
   key: NavbarLinkType,
-  href: string
+  href: string,
+  end?: boolean
 }[]

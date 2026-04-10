@@ -12,7 +12,7 @@ import { useNavbarCounts } from './model/hooks/useNavbarCounts.ts';
 import type { NavbarListType } from './model/types';
 
 const navLinks: NavbarListType = [
-  { Icon: FeedSvg, title: 'Feed', key: 'feed', href: RoutePaths.home },
+  { Icon: FeedSvg, title: 'Feed', key: 'feed', href: RoutePaths.home, end: true },
   { Icon: SubscrptionSvg, title: 'Chats', key: 'chats', href: RoutePaths.chats },
   { Icon: StoriesSvg, title: 'My Posts', key: 'posts', href: RoutePaths.my_posts },
   { Icon: ApiSvg, title: 'My Events', key: 'events', href: RoutePaths.my_events },
@@ -27,13 +27,14 @@ export const NavBar = ({ className }: { className?: string }) => {
   return (
     <>
       <div className={twMerge("flex flex-col justify-start", className)}>
-        {navLinks.map(({Icon, title, key, href }) => {
+        {navLinks.map(({Icon, title, key, href, end }) => {
           return <NavbarLink
             Icon={Icon}
             title={title}
             key={key}
             href={href}
             count={counts[key]}
+            end={end}
           />
         })}
       </div>
