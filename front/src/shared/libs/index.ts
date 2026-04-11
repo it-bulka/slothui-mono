@@ -9,3 +9,4 @@ export { deleteTokenToLocalStorage } from './token/deleteTokenLocalStorage/delet
 export { addUniqueIds } from './addUniqueIds/addIniqueIds.ts';
 export { prependUniqueIds } from './prependUniqueIds/prependUniqueIds.ts';
 export { getDeviceId } from './getDeviceId/getDeviceId.tsx';
+export { formatBadgeCount } from './formatBadgeCount/formatBadgeCount';

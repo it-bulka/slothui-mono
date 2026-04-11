@@ -20,6 +20,8 @@ export enum AppRoutes {
   USER = 'user',
   AUTH = 'auth',
 
+  NOTIFICATIONS = 'notifications',
+
   NOT_FOUND = 'not_found',
 
   // AUTH
@@ -65,6 +67,8 @@ export const getRegisterPage = () => `/auth/register`
 export const getForgotPasswordPage = () => `/auth/forgot-password`
 export const getResetPasswordPage = () => `/auth/reset-password`
 
+export const getNotificationsPage = () => '/notifications'
+
 export const getNotFoundPage = () => `/not-found`
 
 export const RoutePaths: Record<AppRoutes, string> = {
@@ -85,6 +89,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.SETTINGS_PRIVACY]: getSettingsPrivacyPage(),
   [AppRoutes.EVENT_DETAILS]: getEventsDetailsPage(":id"),
   [AppRoutes.CHATS]: getChatsPage(),
+  [AppRoutes.NOTIFICATIONS]: getNotificationsPage(),
   //auth
   [AppRoutes.AUTH]: getAuthLayout(),
   [AppRoutes.FORGOT_PASSWORD]: getForgotPasswordPage(),

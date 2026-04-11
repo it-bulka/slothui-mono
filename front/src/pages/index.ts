@@ -18,3 +18,4 @@ export { MyFriendsSuggestionsPage } from './MyFriendsSuggestions';
 export { MyEventsPage } from './MyEvents';
 export { ForgotPasswordPage } from './ForgotPassword';
 export { ResetPasswordPage } from './ResetPassword';
+export { NotificationsPage } from './NotificationsPage/ui/NotificationsPage.async';

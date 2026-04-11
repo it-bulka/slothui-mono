@@ -13,6 +13,7 @@ import { FriendsService } from '../friendsService/friends.service.ts';
 import {
   NotificationsCountersService
 } from '../notificationsCountersService/notificationsCounters.service.ts';
+import { NotificationsService } from '../notificationsService/notifications.service.ts';
 import { PollService } from '../pollService/poll.service.ts';
 import { SessionsService } from '../sessionsService/sessions.service.ts';
 import { AuthorCache } from '@/shared/libs/services/authorsCach/AuthorsCache.ts';
@@ -32,6 +33,7 @@ export interface IServices {
   poll:  PollService
   friends:  FriendsService
   notificationsCounters:  NotificationsCountersService
+  notifications: NotificationsService
   sessions:  SessionsService
 }
 export interface CtxProps {

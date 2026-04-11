@@ -6,6 +6,7 @@ export type NavbarLinkType =
   | 'posts'
   | 'events'
   | 'friends'
+  | 'notifications'
   | 'settings'
   | 'help'
 
