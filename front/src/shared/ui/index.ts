@@ -54,3 +54,4 @@ export { PasswordInput } from './PasswordInput';
 export { Portal } from './Portal/Portal.tsx';
 export { Overlay } from './Overlay/Overlay.tsx';
 export { Drawer } from './Drawer';
+export { OverlayBadge } from './OverlayBadge/OverlayBadge';
