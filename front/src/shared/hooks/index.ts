@@ -6,3 +6,4 @@ export { usePopup } from './usePopup/usePopup.tsx';
 export { useInfiniteScroll } from './useInfiniteScroll/useInfiniteScroll.ts';
 export { useTheme } from './useTheme/useTheme.ts';
 export type { Theme } from './useTheme/useTheme.ts';
+export { useTypeTab } from './useTypeTab/useTypeTab.ts';

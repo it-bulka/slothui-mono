@@ -22,6 +22,11 @@ export enum AppRoutes {
 
   NOTIFICATIONS = 'notifications',
 
+  // ACTIVITY
+  ACTIVITY = 'activity',
+  LIKED = 'liked',
+  SAVED = 'saved',
+
   NOT_FOUND = 'not_found',
 
   // AUTH
@@ -69,6 +74,10 @@ export const getResetPasswordPage = () => `/auth/reset-password`
 
 export const getNotificationsPage = () => '/notifications'
 
+export const getActivityPage = () => '/activity'
+export const getLikedPage = () => '/activity/liked'
+export const getSavedPage = () => '/activity/saved'
+
 export const getNotFoundPage = () => `/not-found`
 
 export const RoutePaths: Record<AppRoutes, string> = {
@@ -90,6 +99,9 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.EVENT_DETAILS]: getEventsDetailsPage(":id"),
   [AppRoutes.CHATS]: getChatsPage(),
   [AppRoutes.NOTIFICATIONS]: getNotificationsPage(),
+  [AppRoutes.ACTIVITY]: getActivityPage(),
+  [AppRoutes.LIKED]: getLikedPage(),
+  [AppRoutes.SAVED]: getSavedPage(),
   //auth
   [AppRoutes.AUTH]: getAuthLayout(),
   [AppRoutes.FORGOT_PASSWORD]: getForgotPasswordPage(),

@@ -8,6 +8,8 @@ export {
   useFetchSubscribedEvents,
   useFetchEventsByUser,
   useFetchUpcomingEvents,
-  useCreateEvent
+  useCreateEvent,
+  useSelectLikedEvents,
+  useSelectSavedEvents,
 } from './hooks';
-export { fetchAllEventsThunk } from './thunk';
+export { fetchAllEventsThunk, fetchLikedEventsThunk, fetchSavedEventsThunk } from './thunk';

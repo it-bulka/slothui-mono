@@ -6,7 +6,7 @@ import ApiSvg from '@/shared/assets/images/sidebar/4.api.svg?react'
 import SubscrptionSvg from '@/shared/assets/images/sidebar/5.subscrption.svg?react'
 import SettingsSvg from '@/shared/assets/images/sidebar/6.settings.svg?react'
 import HelpSvg from '@/shared/assets/images/sidebar/7.help.svg?react'
-import NotificationSvg from '@/shared/assets/images/sidebar/notification.svg?react'
+import ActivitySvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { twMerge } from 'tailwind-merge';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useNavbarCounts } from './model/hooks/useNavbarCounts.ts';
@@ -18,7 +18,7 @@ const navLinks: NavbarListType = [
   { Icon: StoriesSvg, title: 'My Posts', key: 'posts', href: RoutePaths.my_posts },
   { Icon: ApiSvg, title: 'My Events', key: 'events', href: RoutePaths.my_events },
   { Icon: FriendsSvg, title: 'Friends', key: 'friends', href: `${RoutePaths.friends}?type=followers` },
-  { Icon: NotificationSvg, title: 'Notifications', key: 'notifications', href: RoutePaths.notifications },
+  { Icon: ActivitySvg, title: 'Activity', key: 'activity', href: RoutePaths.activity },
   { Icon: SettingsSvg, title: 'Settings', key: 'settings', href: RoutePaths.settings },
   { Icon: HelpSvg, title: 'Help & Support', key: 'help', href: RoutePaths.home }, // TODO: add path for support or change
 ]

@@ -21,6 +21,9 @@ import {
   ForgotPasswordPage,
   ResetPasswordPage,
   NotificationsPage,
+  ActivityPage,
+  LikedPage,
+  SavedPage,
   NotFound
 } from '@/pages';
 import { ErrorBoundary } from '@/shared/ui';
@@ -62,6 +65,9 @@ export const router = createBrowserRouter([
           { path: RoutePaths.event_details, element: <EventDetailsPage /> },
           { path: RoutePaths.chats, element: <ChatsPage /> },
           { path: RoutePaths.notifications, element: <NotificationsPage /> },
+          { path: RoutePaths.activity, element: <ActivityPage /> },
+          { path: RoutePaths.liked, element: <LikedPage /> },
+          { path: RoutePaths.saved, element: <SavedPage /> },
           { path: RoutePaths.not_found, element: <NotFound /> }
         ]
       },

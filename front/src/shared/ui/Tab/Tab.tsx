@@ -12,6 +12,7 @@ interface TabProps {
   tabClassName?: string
   onTabChange?: (index: ActiveTabIndex) => void
   animated?: boolean
+  scrollableTabs?: boolean
 }
 
 export const Tab = memo(({
@@ -22,6 +23,7 @@ export const Tab = memo(({
   tabClassName,
   onTabChange,
   animated = true,
+  scrollableTabs = false,
 }: TabProps) => {
   const [underlinePosition, setUnderlinePosition] = useState({ left: 0, top: 0, width: 0 });
   const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex ?? 0);
@@ -61,24 +63,38 @@ export const Tab = memo(({
     })
   }, [activeElId, setRect, id, setIsFirstRender]);
 
+  const tabButtons = (
+    <>
+      {tabs?.map((tab, index) => (
+        <button
+          onClick={onActiveElClick(index, checkActive(index))}
+          className={twMerge("border-style-b shrink-0 grow px-6 py-5", tabClassName)}
+          id={`${id}-${index}`}
+          key={`${id}-${index}`}
+        >
+          {tab}
+        </button>
+      ))}
+
+      <div
+        className={classnames("fixed h-[1px] bg-blue-b1 transition-[width,left,top] will-change-transform -translate-y-full", { "duration-500": !isFirstRender })}
+        style={{ width: underlinePosition.width, left: underlinePosition.left, top: underlinePosition.top }}/>
+    </>
+  )
+
   return (
     <>
-      <div className="flex justify-stretch cursor-children">
-        {tabs?.map((tab, index) => (
-          <button
-            onClick={onActiveElClick(index, checkActive(index))}
-            className={twMerge("border-style-b grow px-6 py-5", tabClassName)}
-            id={`${id}-${index}`}
-            key={id}
-          >
-            {tab}
-          </button>
-        ))}
-
-        <div
-          className={classnames("fixed h-[1px] bg-blue-b1 transition-[width,left,top] will-change-transform -translate-y-full", { "duration-500": !isFirstRender })}
-          style={{ width: underlinePosition.width, left: underlinePosition.left, top: underlinePosition.top }}/>
-      </div>
+      {scrollableTabs ? (
+        <nav className="overflow-x-auto scrollbar-none">
+          <div className="flex min-w-max cursor-children">
+            {tabButtons}
+          </div>
+        </nav>
+      ) : (
+        <div className="flex justify-stretch cursor-children">
+          {tabButtons}
+        </div>
+      )}
 
       {
         animated ? (

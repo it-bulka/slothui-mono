@@ -134,7 +134,11 @@ export {
   useFetchSubscribedEvents,
   useFetchEventsByUser,
   useCreateEvent,
-  fetchAllEventsThunk
+  useSelectLikedEvents,
+  useSelectSavedEvents,
+  fetchAllEventsThunk,
+  fetchLikedEventsThunk,
+  fetchSavedEventsThunk,
 } from './Event/model';
 
 export {

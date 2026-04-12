@@ -103,4 +103,20 @@ export class EventsService {
       { method: 'POST' },
     );
   }
+
+  /** GET /api/events/liked?cursor&limit=50 */
+  async getLikedEvents({ cursor }: { cursor?: string | null }): Promise<PaginatedResponse<EventDTO>> {
+    return this.http.request<PaginatedResponse<EventDTO>>(
+      `/api/events/liked`,
+      { params: { cursor, limit: 50 } },
+    );
+  }
+
+  /** GET /api/events/saved?cursor&limit=50 */
+  async getSavedEvents({ cursor }: { cursor?: string | null }): Promise<PaginatedResponse<EventDTO>> {
+    return this.http.request<PaginatedResponse<EventDTO>>(
+      `/api/events/saved`,
+      { params: { cursor, limit: 50 } },
+    );
+  }
 }

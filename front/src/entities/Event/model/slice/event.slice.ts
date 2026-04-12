@@ -10,7 +10,9 @@ import {
   createEventExtraReducer,
   subscribeEventExtraReducer,
   unsubscribeEventExtraReducer,
-  fetchMyEventsExtraReducer
+  fetchMyEventsExtraReducer,
+  fetchLikedEventsExtraReducer,
+  fetchSavedEventsExtraReducer,
 } from '../extraReducers';
 
 const initialState = eventsAdapter.getInitialState<EventsState>({
@@ -30,6 +32,18 @@ const initialState = eventsAdapter.getInitialState<EventsState>({
     nextCursor: null,
   },
   upcoming: {
+    ids: [],
+    isLoading: false,
+    hasMore: true,
+    nextCursor: null,
+  },
+  liked: {
+    ids: [],
+    isLoading: false,
+    hasMore: true,
+    nextCursor: null,
+  },
+  saved: {
     ids: [],
     isLoading: false,
     hasMore: true,
@@ -56,6 +70,8 @@ const eventsSlice = createSlice({
     createEventExtraReducer(builder)
     subscribeEventExtraReducer(builder)
     unsubscribeEventExtraReducer(builder)
+    fetchLikedEventsExtraReducer(builder)
+    fetchSavedEventsExtraReducer(builder)
   },
 })
 

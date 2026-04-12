@@ -11,3 +11,5 @@ export { createEventExtraReducer } from './createEvent.extraReducer.ts';
 export { unsubscribeEventExtraReducer } from './unsubscribeEvent.extraReducer.ts';
 export { subscribeEventExtraReducer } from './subscribeEvent.extraReducer.ts';
 export { fetchMyEventsExtraReducer } from './fetchMyEvents.extraReducer.ts';
+export { fetchLikedEventsExtraReducer } from './fetchLikedEvents.extraReducer.ts';
+export { fetchSavedEventsExtraReducer } from './fetchSavedEvents.extraReducer.ts';

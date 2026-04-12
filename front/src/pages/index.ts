@@ -19,3 +19,6 @@ export { MyEventsPage } from './MyEvents';
 export { ForgotPasswordPage } from './ForgotPassword';
 export { ResetPasswordPage } from './ResetPassword';
 export { NotificationsPage } from './NotificationsPage/ui/NotificationsPage.async';
+export { ActivityPage } from './ActivityPage/ui/ActivityPage.async';
+export { LikedPage } from './LikedPage/ui/LikedPage.async';
+export { SavedPage } from './SavedPage/ui/SavedPage.async';
