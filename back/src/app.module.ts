@@ -30,6 +30,7 @@ import { PasswordResetModule } from './password-reset/password-reset.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SessionModule } from './session/session.module';
 import { GeoMessageModule } from './geo-message/geo-message.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { GeoMessageModule } from './geo-message/geo-message.module';
     MailerModule,
     SessionModule,
     GeoMessageModule,
+    NotificationsModule,
   ],
   controllers: [],
   providers: [AppService],

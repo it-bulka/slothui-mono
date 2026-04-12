@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Subject } from 'rxjs';
-import { NotificationEmitterType } from './type/notification.type';
+import {
+  NotificationEmitterType,
+  NotificationEvent,
+} from './type/notification.type';
 import { UserResponse } from '../user/dto/user-response.dto';
-import { NotificationEvent } from './type/notification.type';
+import { NotificationResponseDto } from '../notifications/dto/notification-response.dto';
 
 @Injectable()
 export class EventEmitterNotificationService {
@@ -25,6 +28,17 @@ export class EventEmitterNotificationService {
       ev: NotificationEvent.FRIEND_CONFIRMATION,
       data: followee,
       meta: { local: true, userId: followerId },
+    });
+  }
+
+  emitNewNotification(
+    recipientId: string,
+    notification: NotificationResponseDto,
+  ) {
+    this.event$.next({
+      ev: NotificationEvent.NEW_NOTIFICATION,
+      data: notification,
+      meta: { local: true, userId: recipientId },
     });
   }
 }
