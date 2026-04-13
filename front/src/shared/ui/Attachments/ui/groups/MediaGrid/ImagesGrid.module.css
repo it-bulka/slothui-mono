@@ -12,7 +12,7 @@
 .itemFirst img,
 .itemFirst video {
     width: 100%;
-    max-height: 300px;
+    max-height: 220px;
     object-fit: cover;
     display: block;
 }
@@ -24,9 +24,20 @@
 .item img,
 .item video {
     width: 100%;
-    max-height: 150px;
+    max-height: 110px;
     object-fit: cover;
     display: block;
+}
+
+/* 3+ items — second row present, halve heights */
+.gridCompact .itemFirst img,
+.gridCompact .itemFirst video {
+    max-height: 150px;
+}
+
+.gridCompact .item img,
+.gridCompact .item video {
+    max-height: 75px;
 }
 .moreWrapper {
     position: relative;
