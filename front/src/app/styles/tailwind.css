@@ -2,22 +2,22 @@
 
 @theme {
     /* === COLORS (light theme defaults) === */
-    --color-gray-g1: #6C6F7A;          /* text-secondary */
-    --color-gray-g2: #A8ACB7;          /* text-muted */
-    --color-gray-g3: #E7E8EC;          /* borders / bg-tertiary */
-    --color-gray-g4: #E7E8EC;          /* borders */
+    --color-gray-g1: #64748B;          /* text-secondary */
+    --color-gray-g2: #94A3B8;          /* text-muted */
+    --color-gray-g3: #E2E8F0;          /* borders / bg-tertiary */
+    --color-gray-g4: #CBD5E1;          /* borders */
 
-    --color-white: #FAFAFC;            /* bg-primary */
-    --color-light-l1: #EEF0FF;         /* accent-contrast */
-    --color-light-l2: #F1F1F6;         /* bg-secondary */
-    --color-light-l3: #FAFAFC;         /* bg-primary */
+    --color-white: #F8FAFC;            /* bg-primary */
+    --color-light-l1: #EEF2FF;         /* accent-contrast */
+    --color-light-l2: #FFFFFF;         /* bg-secondary */
+    --color-light-l3: #F1F5F9;         /* bg-primary */
 
     --color-blue-b1: #6366F1;          /* accent */
-    --color-blue-b2: #C7D2FF;          /* accent-light */
-    --color-blue-b3: #C7D2FF;          /* accent-light */
-    --color-blue-b4: #EEF0FF;          /* accent-contrast */
+    --color-blue-b2: #C7D2FE;          /* accent-light */
+    --color-blue-b3: #E0E7FF;          /* accent-light */
+    --color-blue-b4: #EEF2FF;          /* accent-contrast */
 
-    --color-dark: #1A1C20;             /* text-primary */
+    --color-dark: #0F172A;             /* text-primary */
     --color-green-g1: #22C55E;
     --color-green-g2: #15803D;
 
@@ -39,7 +39,10 @@
     --color-light-bg: #E7E8EC;
     --color-dark-bg: #A8ACB7;
 
-    --shadow-color: rgba(108, 111, 122, 0.25);
+    --radius-main: 1.5rem;
+    --color-card-gradient: linear-gradient(90deg, #6366F1, #8B5CF6, #EC4899);
+
+    --shadow-color: rgba(15, 23, 42, 0.06);
 
     /* === FONTS === */
     --font-sans: "PlusJakartaSan", sans-serif;
@@ -59,33 +62,33 @@
 [data-theme="dark"] {
     --color-gray-g1: #94A3B8;
     --color-gray-g2: #64748B;
-    --color-gray-g3: #1F2A44;
-    --color-gray-g4: #1F2A44;
+    --color-gray-g3: rgba(255, 255, 255, 0.06);
+    --color-gray-g4: rgba(255, 255, 255, 0.08);
 
-    --color-white: #0B1221;
-    --color-light-l1: #17233B;
-    --color-light-l2: #111A2E;
-    --color-light-l3: #0B1221;
+    --color-white: #0B1120;
+    --color-light-l1: #172036;
+    --color-light-l2: #111827;
+    --color-light-l3: #1E293B;
 
-    --color-blue-b1: #5F7CFF;
-    --color-blue-b2: #3A507A;
-    --color-blue-b3: #2A3F6F;
-    --color-blue-b4: #1A2B4A;
+    --color-blue-b1: #818CF8;
+    --color-blue-b2: rgba(129, 140, 248, 0.18);
+    --color-blue-b3: rgba(129, 140, 248, 0.12);
+    --color-blue-b4: rgba(129, 140, 248, 0.08);
 
     --color-dark: #F8FAFC;
 
     --color-green-g1: #4ADE80;
     --color-green-g2: #22C55E;
 
-    --color-underground-primary: #111A2E;
-    --color-underground-secondary: #0a101e;
+    --color-underground-primary: #111827;
+    --color-underground-secondary: #0B1120;
 
     --color-overlay: #000000;
-    --color-auth-form: #17233B;
-    --color-light-bg: #17233B;
-    --color-dark-bg: #1F2A44;
-    --color-scrollbar-thumb: #5F7CFF;
-    --shadow-color: rgba(26, 43, 74, 0.45);
+    --color-auth-form: #172036;
+    --color-light-bg: #172036;
+    --color-dark-bg: rgba(255, 255, 255, 0.08);
+    --color-scrollbar-thumb: #818CF8;
+    --shadow-color: rgba(0, 0, 0, 0.35);
 }
 
 @layer basis {
@@ -106,6 +109,27 @@
     svg {
         @apply fill-current stroke-current;
     }
+
+    /* === react-h5-audio-player START === */
+    .rhap_container {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    .rhap_progress-filled,
+    .rhap_progress-indicator {
+        background: var(--color-blue-b1) !important;
+    }
+    .rhap_progress-bar {
+        background: var(--color-gray-g3) !important;
+    }
+    .rhap_time {
+        color: var(--color-gray-g1) !important;
+        font-size: 0.7rem !important;
+    }
+    .rhap_button-clear {
+        color: var(--color-dark) !important;
+    }
+    /* === react-h5-audio-player END === */
 
     /* === react-select START === */
     .rs__control {
@@ -343,7 +367,11 @@
     }
 
     .shadow-theme {
-        box-shadow: 0 4px 12px var(--shadow-color);
+        box-shadow: 0 8px 30px var(--shadow-color);
+    }
+
+    .shadow-theme-lg {
+        box-shadow: 0 20px 50px var(--shadow-color);
     }
 
     .scroll-fade-bottom::after {
@@ -352,11 +380,177 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 40px; /* висота градієнта */
+        height: 40px;
         pointer-events: none;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); /* якщо фон світлий */
-        /* Для темного фону: background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.4)); */
+        background: linear-gradient(to bottom, transparent, var(--color-white));
         z-index: 10;
+    }
+
+    /* ======================================
+       LAYOUT
+       ====================================== */
+
+    .page-surface {
+        background:
+            radial-gradient(circle at top right, rgba(99, 102, 241, 0.06), transparent 30%),
+            var(--color-white);
+    }
+
+    .sidebar-surface {
+        background: linear-gradient(180deg, var(--color-light-l2), var(--color-white));
+    }
+
+    /* ======================================
+       PREMIUM CARD
+       ====================================== */
+
+    .card-premium {
+        background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l2) 0%, var(--color-blue-b3) 100%);
+        border: 1px solid var(--color-gray-g3);
+        border-radius: var(--radius-main);
+        box-shadow: 0 8px 24px var(--shadow-color);
+        overflow: hidden;
+        position: relative;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card-premium:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px var(--shadow-color);
+    }
+
+    .card-premium::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        background: var(--color-card-gradient);
+    }
+
+    /* ======================================
+       NAV LINKS
+       ====================================== */
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        transition: background .2s, color .2s;
+        color: var(--color-gray-g1);
+        width: 100%;
+    }
+
+    .nav-link:hover {
+        background: var(--color-light-l3);
+        color: var(--color-dark);
+    }
+
+    .nav-link-active {
+        background: var(--color-blue-b4);
+        color: var(--color-blue-b1);
+    }
+
+    /* ======================================
+       BUTTONS
+       ====================================== */
+
+    .btn-soft {
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        transition: background .2s, color .2s;
+        background: var(--color-blue-b4);
+        color: var(--color-blue-b1);
+    }
+
+    .btn-soft:hover {
+        background: var(--color-blue-b1);
+        color: #fff;
+    }
+
+    .btn-ghost {
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.75rem;
+        transition: background .2s;
+    }
+
+    .btn-ghost:hover {
+        background: var(--color-light-l3);
+    }
+
+    /* ======================================
+       TABS
+       ====================================== */
+
+    .tab-modern {
+        padding: 0.5rem 1.25rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: background .2s, color .2s;
+        color: var(--color-gray-g1);
+    }
+
+    .tab-modern:hover {
+        background: var(--color-light-l3);
+    }
+
+    .tab-modern-active {
+        background: var(--color-blue-b4);
+        color: var(--color-blue-b1);
+    }
+
+    /* ======================================
+       MEDIA
+       ====================================== */
+
+    .media-modern {
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid var(--color-gray-g3);
+    }
+
+    /* ======================================
+       ACTION BAR
+       ====================================== */
+
+    .action-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--color-gray-g3);
+    }
+
+    .action-btn {
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        transition: background .2s, color .2s;
+        color: var(--color-gray-g1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+    }
+
+    .action-btn:hover {
+        background: var(--color-light-l3);
+        color: var(--color-blue-b1);
+    }
+
+    /* ======================================
+       SCROLLBAR NONE
+       ====================================== */
+
+    .scrollbar-none {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
     }
 }
 

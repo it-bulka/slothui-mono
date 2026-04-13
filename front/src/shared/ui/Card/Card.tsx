@@ -45,7 +45,7 @@ export const Card = ({ children, className, max = false, onClick }: PropsWithChi
     <CardContext.Provider value={{ hasHeader, hasFooter }}>
       <div
         onClick={onClick}
-        className={twMerge(classnames('rounded-2xl shadow-theme bg-white', {'w-full': max}, className))}
+        className={twMerge(classnames('card-premium', {'w-full': max}, className))}
       >
         {children}
       </div>

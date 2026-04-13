@@ -15,17 +15,11 @@ export const NavbarLink = ({title, href, Icon, count, end }: NavLinkProps) => {
       <NavLink
         to={href}
         end={end}
-        className={({ isActive }) =>
-          `flex items-center p-3 w-full rounded-xl transition-colors ${
-            isActive
-              ? 'bg-blue-b4 text-blue-b1'
-              : 'hover:bg-light-l1'
-          }`
-        }
+        className={({ isActive }) => `nav-link${isActive ? ' nav-link-active' : ''}`}
       >
         {({ isActive }) => (
           <>
-            <Icon className={`w-[24px] h-[24px] pr-2 shrink-0 ${isActive ? 'text-blue-b1' : 'text-gray-g2'}`} />
+            <Icon className={`w-[24px] h-[24px] shrink-0 ${isActive ? 'text-blue-b1' : 'text-gray-g2'}`} />
             <p className='grow font-bold'>{title}</p>
             {!count || <Badge>{count}</Badge>}
           </>

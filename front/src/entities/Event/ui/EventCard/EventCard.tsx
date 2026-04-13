@@ -43,7 +43,7 @@ export const EventCard = memo(({
         onClick?.(id)
         navigate(getEventsDetailsPage(id))
       }}
-      className="cursor-pointer hover:shadow-md transition-shadow duration-200"
+      className="cursor-pointer"
     >
       <Card.Header className="flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2 relative">

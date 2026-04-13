@@ -36,9 +36,17 @@ export const PostContent = ({text, file, audio, video = [], images = [] }: PostC
   return (
     <>
       {!!(paragraphs?.length) && <TextBlock paragraphs={paragraphs} />}
-      {!!(video?.length || images?.length) && <MediaGrid list={[...images,  ...video]} />}
-      {!!audio?.length && <AudioList list={audio} />}
-      {!!file?.length && <DocumentsList list={file} />}
+      {!!(video?.length || images?.length) && (
+        <div className="media-modern">
+          <MediaGrid list={[...images, ...video]} />
+        </div>
+      )}
+      {!!audio?.length && (
+        <AudioList list={audio} />
+      )}
+      {!!file?.length && (
+        <DocumentsList list={file} />
+      )}
     </>
   )
 }

@@ -9,7 +9,7 @@ export const RightSidebar = () => {
   const userData = useAuthUserSelector()
   if(!userData) return <p>No auth user</p>;
   return (
-    <div className="border-style-l">
+    <div className="border-style-l bg-light-l2 h-full">
       <div className={"px-6 py-5 flex justify-end gap-2 text-svg-secondary"}>
         <AvatarWithStatus
           src={userData?.avatarUrl}

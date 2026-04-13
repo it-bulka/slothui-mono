@@ -8,6 +8,7 @@ type AttachmentAudioProps = Pick<Attachment, 'url' | 'originalName'> & {
   size?: number;
   additionalComp?: ReactNode
 }
+
 export const AttachmentAudio = ({ url, originalName, size }: AttachmentAudioProps) => {
   const formatSize = useCallback((bytes?: number) => {
     if (!bytes) return '';
@@ -17,35 +18,65 @@ export const AttachmentAudio = ({ url, originalName, size }: AttachmentAudioProp
   }, []);
 
   return (
-    <div className="attachment-audio flex flex-col gap-1 p-2 ">
-      <div className="flex align-bottom gap-1">
-        <p className="text-sm font-medium grow">{originalName ? shortenMiddle(originalName) : 'Audio file'}</p>
+    <div className="flex flex-col gap-1">
+      {/* title + size — outside border */}
+      <div className="flex items-baseline gap-2 px-1">
+        <p className="text-sm font-semibold grow truncate" style={{ color: 'var(--color-dark)' }}>
+          {originalName ? shortenMiddle(originalName) : 'Audio file'}
+        </p>
         {size && (
-          <span className="text-xs text-gray-500">{formatSize(size)}</span>
+          <span className="text-xs shrink-0" style={{ color: 'var(--color-gray-g1)' }}>
+            {formatSize(size)}
+          </span>
         )}
+        <a
+          href={url}
+          download
+          className="text-sm shrink-0 text-gray-g1 hover:text-blue-b1 transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
+          ↓
+        </a>
       </div>
 
-      <div className="flex justify-center items-center gap-2 bg-gray-g2 rounded-sm">
+      {/* player — inside border */}
+      <div
+        className="rounded-lg overflow-hidden"
+        style={{ background: 'var(--color-light-l3)', border: '1px solid var(--color-gray-g3)' }}
+      >
         <AudioPlayer
           src={url}
           showJumpControls={false}
           customVolumeControls={[]}
+          customAdditionalControls={[]}
           layout="horizontal-reverse"
           style={{
-            height: '40px',
+            background: 'transparent',
             border: 'none',
-            backgroundColor: 'transparent',
-            fontSize: '0.75rem',
-            padding: '0',
             boxShadow: 'none',
+            padding: '3px 12px',
+            fontSize: '0.7rem',
+            color: 'var(--color-dark)',
           }}
           customIcons={{
-            play: <span className="text-sm flex items-center justify-center">▶</span>,
-            pause: <span className="text-sm flex items-center justify-center">❚❚</span>,
+            play: (
+              <span
+                className="flex items-center justify-center w-7 h-7 rounded-full text-xs"
+                style={{ background: 'var(--color-blue-b1)', color: '#fff' }}
+              >
+                ▶
+              </span>
+            ),
+            pause: (
+              <span
+                className="flex items-center justify-center w-7 h-7 rounded-full text-xs"
+                style={{ background: 'var(--color-blue-b1)', color: '#fff' }}
+              >
+                ❚❚
+              </span>
+            ),
           }}
-          customAdditionalControls={[]}
         />
-        <a key="download" href={url} download="audio.mp3" className="w-[20px] flex justify-center items-center">⤓</a>
       </div>
     </div>
   );
