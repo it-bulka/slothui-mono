@@ -12,7 +12,7 @@ type Props = {
 
 export const CommentThread = ({ commentIds, postId, onSeeRepliesClick }: Props) => {
   return (
-    <div className="mt-4 bg-gray-50 rounded-xl p-4 space-y-4">
+    <div className="mt-3 pt-3 border-t border-gray-g3 space-y-3">
       {commentIds.map((id) => (
         <CommentItem key={id} commentId={id}>
           <>

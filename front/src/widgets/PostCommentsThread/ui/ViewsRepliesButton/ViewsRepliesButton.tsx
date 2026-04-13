@@ -26,10 +26,10 @@ export const ViewsRepliesButton = ({ parentId, onClick }: { parentId: string, on
             .unwrap()
             .then(() => onClick?.())
         }}
-        className="block text-[75%] opacity-90 translate-y-1/2"
+        className="mt-1 ml-1 text-xs font-medium text-blue-b1 hover:underline transition-colors disabled:opacity-50"
         disabled={loading}
       >
-        {(loading && !error) ? 'Loading...' : `View replies: ${count}`}
+        {(loading && !error) ? 'Loading…' : `↩ View replies (${count})`}
       </button>
     )
   }
