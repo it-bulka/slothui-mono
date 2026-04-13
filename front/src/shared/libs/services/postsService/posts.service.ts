@@ -99,13 +99,13 @@ export class PostsService {
     return this.http.request(`${this.BASE_URL}/${postId}/like`, { method: 'DELETE' });
   }
 
-  /** POST /api/posts/:postId/save */
+  /** PUT /api/posts/:postId/saves */
   async savePost(postId: string): Promise<void> {
-    return this.http.request(`${this.BASE_URL}/${postId}/save`, { method: 'POST' });
+    return this.http.request(`${this.BASE_URL}/${postId}/saves`, { method: 'PUT' });
   }
 
-  /** DELETE /api/posts/:postId/save */
+  /** DELETE /api/posts/:postId/saves */
   async unsavePost(postId: string): Promise<void> {
-    return this.http.request(`${this.BASE_URL}/${postId}/save`, { method: 'DELETE' });
+    return this.http.request(`${this.BASE_URL}/${postId}/saves`, { method: 'DELETE' });
   }
 }

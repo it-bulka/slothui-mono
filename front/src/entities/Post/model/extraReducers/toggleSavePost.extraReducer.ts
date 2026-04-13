@@ -16,8 +16,12 @@ export const toggleSavePostExtraReducer = (builder: ActionReducerMapBuilder<Post
     .addCase(toggleSavePostThunk.fulfilled, (state, action) => {
       const post = state.entities[action.meta.arg.postId];
       if (post) {
-        state.saves.ids.push(post.id);
-        post.isTogglingSave = false
+        if (action.meta.arg.saved) {
+          state.saves.ids = state.saves.ids.filter(id => id !== post.id);
+        } else if (!state.saves.ids.includes(post.id)) {
+          state.saves.ids.push(post.id);
+        }
+        post.isTogglingSave = false;
       }
     })
     .addCase(toggleSavePostThunk.rejected, (state, action) => {

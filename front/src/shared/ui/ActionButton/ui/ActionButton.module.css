@@ -25,3 +25,7 @@
 .icon.secondary {
   @apply w-[24px] h-[24px];
 }
+
+.icon.active {
+  @apply fill-svg-third stroke-svg-third;
+}

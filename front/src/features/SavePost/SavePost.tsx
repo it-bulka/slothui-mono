@@ -7,7 +7,7 @@ export const SavePost = memo(({ className, postId }: { className: string, postId
   const { isSaved } = usePostSaveSelect(postId);
   const { toggleSavePost } = useToggleSavePost()
   return (
-    <ActionButton Icon={SaveSvg} className={className} onClick={() => toggleSavePost({ postId, saved: isSaved })}/>
+    <ActionButton Icon={SaveSvg} className={className} isActive={isSaved} onClick={() => toggleSavePost({ postId, saved: isSaved })}/>
   )
 })
 
