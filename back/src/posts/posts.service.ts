@@ -231,6 +231,52 @@ export class PostsService {
     });
   }
 
+  async getSavedPosts(
+    userId: string,
+    params: { cursor?: string; limit?: number },
+  ): Promise<PostPaginatedRes> {
+    const { cursor, limit = 50 } = params;
+
+    const qb = this.postSaveRepo
+      .createQueryBuilder('save')
+      .innerJoinAndSelect('save.post', 'post')
+      .innerJoinAndSelect('post.author', 'author')
+      .where('save.userId = :userId', { userId });
+
+    if (cursor) {
+      qb.andWhere('post.createdAt < :cursor', { cursor: new Date(cursor) });
+    }
+
+    qb.orderBy('post.createdAt', 'DESC')
+      .addOrderBy('post.id', 'DESC')
+      .take(limit + 1);
+
+    const saves = await qb.getMany();
+
+    const hasMore = saves.length > limit;
+    const visibleSaves = saves.slice(0, limit);
+    const postIds = visibleSaves.map((s) => s.post.id);
+
+    const attachments = await this.attachmentService.getMany('post', postIds);
+    const groupedAttachments =
+      this.attachmentService.groupByTypeAndParentId(attachments);
+
+    const items: PostDto[] = visibleSaves.map((save) => ({
+      id: save.post.id,
+      author: UserMapper.toResponse(save.post.author),
+      text: save.post.text,
+      isLiked: false,
+      isSaved: true,
+      commentsCount: save.post.commentsCount,
+      attachments: groupedAttachments.get(save.post.id),
+    }));
+
+    const lastPost = visibleSaves[visibleSaves.length - 1]?.post;
+    const nextCursor = lastPost ? lastPost.createdAt.toISOString() : undefined;
+
+    return { items, hasMore, nextCursor };
+  }
+
   async createPostText(
     dto: { text: string; authorId: string },
     manager?: EntityManager,

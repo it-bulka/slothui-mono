@@ -50,6 +50,17 @@ export class PostsController {
     });
   }
 
+  @Get('/saved')
+  async getSavedPosts(
+    @Query() q: GetMyPostsQueryDto,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.postsService.getSavedPosts(req.user.id, {
+      cursor: q.cursor,
+      limit: Number(q.limit) || 50,
+    });
+  }
+
   @Get(':id')
   async getOne(@Param('id') id: string, @Request() req: AuthRequest) {
     return await this.postsService.getById({ postId: id, userId: req.user.id });
