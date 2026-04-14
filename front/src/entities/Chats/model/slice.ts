@@ -31,7 +31,16 @@ export const chatSlice = createSlice({
           lastMessage: action.payload.msg
         }
       })
-    }
+    },
+    markChatsStale: (state) => {
+      state.needsRefetch = true;
+    },
+    markChatsFresh: (state) => {
+      state.needsRefetch = false;
+    },
+    removeChat: (state, action: PayloadAction<string>) => {
+      chatAdapter.removeOne(state, action.payload);
+    },
   },
   extraReducers: (builder) => {
     fetchMyChatsExtraReducer(builder);

@@ -24,6 +24,7 @@ export const initialChatState = chatAdapter.getInitialState<ChatState>({
   hasMore: true,
   isLoading: false,
   searchResults: [],
+  needsRefetch: false,
 });
 
 export const {

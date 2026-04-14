@@ -6,10 +6,12 @@ export const selectUserChatsState = createSelector(
   (state: RootState) => state.chats.error,
   (state: RootState) => state.chats.hasMore,
   (state: RootState) => state.chats.nextCursor,
-  (isLoading, error, hasMore, nextCursor) => ({
+  (state: RootState) => state.chats.needsRefetch,
+  (isLoading, error, hasMore, nextCursor, needsRefetch) => ({
     isLoading,
     error,
     hasMore,
     nextCursor,
+    needsRefetch,
   })
 );

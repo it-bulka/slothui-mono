@@ -3,7 +3,7 @@ import { type Chat } from '../model/types/chat.type.ts';
 import { ChatRow } from './ChatRow.tsx';
 import { useGoToChat } from '@/entities/Chats/model/hooks/useGoToChat.tsx';
 
-export const Chats = ({ chats, className }: { chats: Chat[], className?: string}) => {
+export const Chats = ({ chats, className }: { chats: Chat[], className?: string }) => {
  const { goToChat } = useGoToChat()
 
   return (

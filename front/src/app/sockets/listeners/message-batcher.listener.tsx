@@ -1,6 +1,7 @@
 import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
 import type { AppStore } from '../../config';
 import { selectActiveChatId, messagesAction, chatsActions, notificationsCountersActions } from '@/entities';
+import { selectChatById } from '@/entities/Chats/model/chat.adapter.ts';
 import { toast } from 'react-toastify'
 import { MessageToast } from '@/shared/ui';
 import { msgToNotification } from '@/shared/mappers';
@@ -34,6 +35,12 @@ async function handleInactiveChatMessage (
 ) {
   const lastMsg = message;
   if (!lastMsg) return;
+
+  const chatExists = !!selectChatById(store.getState(), chatId);
+  if (!chatExists) {
+    store.dispatch(chatsActions.markChatsStale());
+  }
+
   try {
     const author = await services.authors.fetchIfMissing(lastMsg.authorId);
     const notification = msgToNotification(lastMsg);

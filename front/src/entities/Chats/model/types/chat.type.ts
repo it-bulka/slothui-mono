@@ -9,4 +9,5 @@ export interface ChatState extends EntityState<Chat, string>{
   isLoading: boolean,
   error?: string | null
   searchResults: string[]
+  needsRefetch: boolean
 }

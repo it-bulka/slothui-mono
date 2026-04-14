@@ -9,6 +9,7 @@ import type { PaginatedResponse } from '@/shared/types';
 export class ChatService {
   /** Multicast streams */
   private readonly chatCreated$ = new Subject<ChatDTO>();
+  private readonly chatDeleted$ = new Subject<{ chatId: string }>();
   private readonly membersUpdated$ = new Subject<{ chatId: string; members: string[] }>();
   private socket: Socket | undefined;
 
@@ -100,6 +101,7 @@ export class ChatService {
     const socket = this.socket
     if(!socket) throw this.wsService.callNoConnectionError()
     socket.on(ChatServerEvents.CREATED,        (c: ChatDTO) => this.chatCreated$.next(c));
+    socket.on(ChatServerEvents.DELETED,        (d: { chatId: string }) => this.chatDeleted$.next(d));
     socket.on(ChatServerEvents.MEMBERS_UPDATED, (u) => this.membersUpdated$.next(u));
   }
 
@@ -107,6 +109,7 @@ export class ChatService {
     const socket = this.socket
     if(!socket) return;
     socket.off(ChatServerEvents.CREATED)
+    socket.off(ChatServerEvents.DELETED)
     socket.off(ChatServerEvents.MEMBERS_UPDATED)
   }
 
@@ -139,8 +142,16 @@ export class ChatService {
     return this.chatCreated$.asObservable();
   }
 
+  onChatDeleted() {
+    return this.chatDeleted$.asObservable();
+  }
+
   onMembersUpdated() {
     return this.membersUpdated$.asObservable();
+  }
+
+  async deleteChat(chatId: string): Promise<void> {
+    await this.http.request<void>(`/api/chats/${chatId}`, { method: 'DELETE' });
   }
 
 }
