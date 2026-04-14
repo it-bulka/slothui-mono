@@ -9,8 +9,9 @@ export type FriendDto = {
   username: string;
   nickname: string;
 
-  isFollowing: boolean;
+  isFollowee: boolean;
   isFollower: boolean;
+  createdAt: string;
 };
 
 export type NewFriendNotification = {

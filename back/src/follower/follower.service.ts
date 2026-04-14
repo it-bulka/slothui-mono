@@ -176,8 +176,8 @@ export class FollowerService {
       confirmed,
       items: followers,
       nextCursor,
-      followersLastSeenAt,
-      hasMore: followers.length > limit,
+      followersLastViewedAt: followersLastSeenAt,
+      hasMore: !!nextCursor,
     };
   }
 
@@ -260,7 +260,8 @@ export class FollowerService {
       username: u.username,
       nickname: u.nickname,
       isFollower: false,
-      isFollowing: false,
+      isFollowee: false,
+      createdAt: u.createdAt.toISOString(),
     }));
 
     return { items, nextCursor };

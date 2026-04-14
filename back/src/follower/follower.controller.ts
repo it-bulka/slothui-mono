@@ -71,6 +71,12 @@ export class FollowerController {
     await this.followerService.deleteFollower(req.user.id, userId);
   }
 
+  @Post('followers/markSeen')
+  async markFollowersSeen(@Request() req: AuthRequest) {
+    await this.followerService.markFollowersView(req.user.id);
+    return Date.now();
+  }
+
   @Get('followers')
   async getFollowers(
     @Query('userId') userId: string,
@@ -117,7 +123,7 @@ export class FollowerController {
   }
 
   private mapToFriendDto(f: Follower, currentUserId: string): FriendDto {
-    const isFollowing = f.followerId === currentUserId;
+    const isFollowee = f.followerId === currentUserId;
     const isFollower = f.followeeId === currentUserId;
 
     const user = isFollower ? f.follower : f.followee;
@@ -128,7 +134,8 @@ export class FollowerController {
       username: user.username,
       nickname: user.nickname,
       isFollower,
-      isFollowing,
+      isFollowee,
+      createdAt: f.createdAt.toISOString(),
     };
   }
 }
