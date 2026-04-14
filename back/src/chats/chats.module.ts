@@ -6,9 +6,14 @@ import { Chat } from './entities/chat.entity';
 import { UserModule } from '../user/user.module';
 import { User } from '../user/entities/user.entity';
 import { ChatMember } from './entities/chatMember.entity';
+import { EventEmitterModule } from '../event-emitter/event-emitter.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Chat, User, ChatMember]), UserModule],
+  imports: [
+    TypeOrmModule.forFeature([Chat, User, ChatMember]),
+    UserModule,
+    EventEmitterModule,
+  ],
   controllers: [ChatsController],
   providers: [ChatsService],
   exports: [ChatsService],

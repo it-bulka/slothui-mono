@@ -36,6 +36,7 @@ import { WS_PREFIXES } from '../common/consts/ws-prefixes';
 import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
 import { FriendEmitterType } from '../event-emitter/type/followersEmitter.type';
 import { FollowersServerEvents } from './types/followers.events';
+import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -53,6 +54,10 @@ export class WsGateway
   private msgEvent$: Observable<MsgEmitterType>;
   private followersEvent$: Observable<FriendEmitterType>;
   private notificationEvent$: Observable<NotificationEmitterType>;
+  private chatDeletedEvent$: Observable<{
+    chatId: string;
+    memberIds: string[];
+  }>;
 
   private interval: NodeJS.Timeout;
 
@@ -63,12 +68,14 @@ export class WsGateway
     private readonly msgEmitterService: EventEmitterMessageService,
     private readonly notificationEmitterService: EventEmitterNotificationService,
     private readonly followersEmitterService: EventEmitterFollowersService,
+    private readonly chatEmitterService: EventEmitterChatService,
     private readonly openedChatsTracker: OpenedChatsTracker,
     private readonly unreadBufferService: UnreadBufferService,
   ) {
     this.msgEvent$ = msgEmitterService.getEvent();
     this.notificationEvent$ = notificationEmitterService.getEvent();
     this.followersEvent$ = followersEmitterService.getEvent();
+    this.chatDeletedEvent$ = chatEmitterService.getDeletedEvent();
   }
 
   onModuleInit() {
@@ -122,6 +129,15 @@ export class WsGateway
             return;
         }
       });
+
+    this.chatDeletedEvent$
+      .pipe(filter((e) => !!e))
+      .subscribe(({ chatId, memberIds }) => {
+        memberIds.forEach((userId) => {
+          const room = this.wsService.configUserRoomName(userId);
+          this.server.to(room).emit(ChatServerEvents.DELETED, { chatId });
+        });
+      });
   }
   afterInit(server: Server) {
     this.wsService.authMiddleware(server);
@@ -172,17 +188,8 @@ export class WsGateway
     @ConnectedSocket() client: SocketWithUser,
     @MessageBody() body: { chatId: string },
   ) {
-    const deletedChat = await this.chatsService.deleteChatByOwner(
-      client.data.user.id,
-      body.chatId,
-    );
-    await this.wsService.traversAllSockets(
-      this.server,
-      new Set(deletedChat.memberIds),
-      (socket) => {
-        socket.emit(ChatServerEvents.DELETED, { chatId: deletedChat.id });
-      },
-    );
+    await this.chatsService.deleteChatByOwner(client.data.user.id, body.chatId);
+    // broadcast is handled automatically via EventEmitterChatService subscription
   }
 
   @SubscribeMessage(ChatRequestEvents.JOIN)

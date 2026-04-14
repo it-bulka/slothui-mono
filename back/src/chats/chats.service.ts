@@ -22,6 +22,7 @@ import { User } from '../user/entities/user.entity';
 import { ChatMember } from './entities/chatMember.entity';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
+import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
 
 @Injectable()
 export class ChatsService {
@@ -33,6 +34,7 @@ export class ChatsService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
     private readonly userService: UserService,
+    private readonly eventEmitterChatService: EventEmitterChatService,
   ) {}
 
   private async getChatEntity(chatId: string): Promise<Chat> {
@@ -547,7 +549,14 @@ export class ChatsService {
 
   async deleteChatByOwner(userId: string, chatId: string) {
     const chat = await this.getChatEntity(chatId);
-    if (chat.ownerId !== userId) throw new ForbiddenException();
+
+    if (chat.type === 'private') {
+      const isMember = await this.isUserChatMember(chatId, userId);
+      if (!isMember) throw new ForbiddenException();
+    } else {
+      if (chat.ownerId !== userId) throw new ForbiddenException();
+    }
+
     const memberIds = (
       await this.chatMemberRepo.find({
         where: { chatId: chat.id },
@@ -556,7 +565,8 @@ export class ChatsService {
     ).map((x) => x.userId);
 
     await this.chatRepo.remove(chat);
-    return { id: chat.id, memberIds };
+    this.eventEmitterChatService.onChatDeleted(chatId, memberIds);
+    return { id: chatId, memberIds };
   }
 
   async markChatAsRead(chatId: string, userId: string) {
