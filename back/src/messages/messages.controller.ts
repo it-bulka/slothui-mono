@@ -69,6 +69,9 @@ export class MessagesController {
       text: string;
       poll?: CreatePollDto;
       geo?: CreateGeoMessageDto;
+      postId?: string;
+      storyId?: string;
+      eventId?: string;
     },
     @Request() req: AuthRequest,
   ) {
@@ -80,7 +83,10 @@ export class MessagesController {
       chatId: chatId,
       poll: dto.poll,
       geo: dto.geo,
-    });
+      postId: dto.postId,
+      storyId: dto.storyId,
+      eventId: dto.eventId,
+    } as any);
 
     this.msgEmitterService.onNewMessage(msg);
     return msg;

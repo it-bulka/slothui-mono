@@ -34,10 +34,15 @@ export class CreateMessageDtoWithGeo extends CreateMessageBaseDto {
   geo: CreateGeoMessageDto;
 }
 
+export class CreateMessageDtoWithPost extends CreateMessageBaseDto {
+  postId: string;
+}
+
 export type CreateMessageDto =
   | CreateMessageBaseDto
   | CreateMessageDtoWithFiles
   | CreateMessageDtoWithStory
   | CreateMessageDtoWithEvent
   | CreateMessageDtoWithPoll
-  | CreateMessageDtoWithGeo;
+  | CreateMessageDtoWithGeo
+  | CreateMessageDtoWithPost;

@@ -16,6 +16,7 @@ import { PollsModule } from '../polls/polls.module';
 import { OpenedChatsTracker } from './opened-chats-tracker.service';
 import { UnreadBufferService } from './unread-buffer.service';
 import { GeoMessageModule } from '../geo-message/geo-message.module';
+import { PostsModule } from '../posts/posts.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GeoMessageModule } from '../geo-message/geo-message.module';
     EventsModule,
     PollsModule,
     GeoMessageModule,
+    PostsModule,
   ],
   controllers: [MessagesController],
   providers: [MessagesService, OpenedChatsTracker, UnreadBufferService],

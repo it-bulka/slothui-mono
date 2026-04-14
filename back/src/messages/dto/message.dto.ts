@@ -23,14 +23,33 @@ export type MessageWithGeoResponseDto = MessageBaseResponseDto & {
   geo: GeoDtoResponse;
 };
 
+export type PostSummaryDto = {
+  id: string;
+  text?: string;
+  authorId: string;
+  authorName: string;
+  createdAt: string;
+  coverUrl?: string;
+  mediaCount: number;
+  fileCount: number;
+  audioCount: number;
+  pollQuestion?: string;
+};
+
+export type MessageWithPostResponseDto = MessageBaseResponseDto & {
+  post: PostSummaryDto;
+};
+
 export type MessageResponseDto =
   | MessageBaseResponseDto
   | MessageWithAttachmentsResponseDto
   | MessageWithPollResponseDto
-  | MessageWithGeoResponseDto;
+  | MessageWithGeoResponseDto
+  | MessageWithPostResponseDto;
 
 export type MessageWithOptionals = Message & {
   attachments?: GroupedAttachment;
   poll?: PollResultDto;
   geo?: GeoDtoResponse;
+  post?: PostSummaryDto;
 };

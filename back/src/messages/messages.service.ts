@@ -14,17 +14,21 @@ import {
   CreateMessageDtoWithFiles,
   CreateMessageDtoWithGeo,
   CreateMessageDtoWithPoll,
+  CreateMessageDtoWithPost,
   CreateMessageDtoWithStory,
 } from './dto/createMessage.dto';
 import { AttachmentsService } from '../attachments/attachments.service';
 import { MessageMapper } from './message-mapper';
 import { StoriesService } from '../stories/stories.service';
 import { EventsService } from '../events/events.service';
+import { PostsService } from '../posts/posts.service';
+import { Post } from '../posts/entities/post.entity';
+import { GroupedAttachment } from '../attachments/types/attachments.type';
 import { PollsService } from '../polls/polls.service';
 import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
 import { OpenedChatsTracker } from './opened-chats-tracker.service';
 import { UnreadBufferService } from './unread-buffer.service';
-import { MessageResponseDto } from './dto/message.dto';
+import { MessageResponseDto, PostSummaryDto } from './dto/message.dto';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { PollMapperToPollResult } from '../polls/pollMapToPollResult';
 import { DataSource, EntityManager } from 'typeorm';
@@ -41,6 +45,7 @@ export class MessagesService {
     private readonly storiesService: StoriesService,
     private readonly eventsService: EventsService,
     private readonly pollsService: PollsService,
+    private readonly postsService: PostsService,
     private readonly geoService: GeoMessageService,
     private readonly unreadBufferService: UnreadBufferService,
     private readonly openedChatsTracker: OpenedChatsTracker,
@@ -93,13 +98,45 @@ export class MessagesService {
 
     const geos = await this.geoService.getManyByMessageIds(msgsIds);
     const groupedGeos = this.geoService.groupByMessageId(geos);
+
+    const postIds = visibleItems
+      .filter(
+        (item) => item.forwardSourceType === 'post' && item.forwardSourceId,
+      )
+      .map((item) => item.forwardSourceId as string);
+
+    const posts = await this.postsService.findManyByIds(postIds);
+    const postsById = new Map(posts.map((p) => [p.id, p]));
+
+    const postAttachments = await this.attachmentService.getMany(
+      'post',
+      postIds,
+    );
+    const postAttachmentsGrouped =
+      this.attachmentService.groupByTypeAndParentId(postAttachments);
+
+    const pollQuestions =
+      await this.pollsService.findPollQuestionsByPostIds(postIds);
+
     return {
       items: visibleItems.map((item) => {
+        const post =
+          item.forwardSourceType === 'post' && item.forwardSourceId
+            ? postsById.get(item.forwardSourceId)
+            : undefined;
+
         return MessageMapper.toResponce({
           ...item,
           attachments: groupedAttachments.get(item.id),
           poll: groupedPolls.get(item.id),
           geo: groupedGeos.get(item.id),
+          post: post
+            ? this.buildPostSummaryDto(
+                post,
+                postAttachmentsGrouped.get(post.id),
+                pollQuestions.get(post.id),
+              )
+            : undefined,
         });
       }),
       hasMore,
@@ -256,6 +293,76 @@ export class MessagesService {
     });
   }
 
+  async createWithPost({
+    chatId,
+    text,
+    authorId,
+    postId,
+  }: CreateMessageDtoWithPost) {
+    await this.chatsService.assertUserChatAccess(chatId, authorId);
+
+    const post = await this.postsService.findById(postId);
+    if (!post) {
+      throw new NotFoundException(`Post with id ${postId} not found`);
+    }
+
+    const msg = this.messageRepo.create({
+      chat: { id: chatId },
+      text,
+      authorId,
+      forwardSourceType: 'post',
+      forwardSourceId: post.id,
+    });
+    const saved = await this.messageRepo.save(msg);
+
+    const postAtts = await this.attachmentService.getMany('post', [post.id]);
+    const postAttsGrouped =
+      this.attachmentService.groupByTypeAndParentId(postAtts);
+    const pollQuestionsMap = await this.pollsService.findPollQuestionsByPostIds(
+      [post.id],
+    );
+
+    return MessageMapper.toResponce({
+      ...saved,
+      post: this.buildPostSummaryDto(
+        post,
+        postAttsGrouped.get(post.id),
+        pollQuestionsMap.get(post.id),
+      ),
+    });
+  }
+
+  private buildPostSummaryDto(
+    post: Post,
+    attachments: GroupedAttachment | undefined,
+    pollQuestion: string | undefined,
+  ): PostSummaryDto {
+    const images = attachments?.images ?? [];
+    const video = attachments?.video ?? [];
+    const files = attachments?.file ?? [];
+    const audio = attachments?.audio ?? [];
+
+    let coverUrl: string | undefined;
+    if (images.length > 0) {
+      coverUrl = images[0].url;
+    } else if (video.length > 0) {
+      coverUrl = video[0].metadata?.thumbnailUrl ?? video[0].url;
+    }
+
+    return {
+      id: post.id,
+      text: post.text || undefined,
+      authorId: post.author.id,
+      authorName: post.author.nickname || post.author.username,
+      createdAt: post.createdAt.toISOString(),
+      coverUrl,
+      mediaCount: images.length + video.length,
+      fileCount: files.length,
+      audioCount: audio.length,
+      pollQuestion,
+    };
+  }
+
   async createWithExtra(dto: CreateMessageDto) {
     let msg: Message | MessageResponseDto;
     if ('files' in dto && dto.files) {
@@ -268,6 +375,8 @@ export class MessagesService {
       msg = await this.createWithPoll(dto);
     } else if ('geo' in dto && dto.geo) {
       msg = await this.createWithGeo(dto);
+    } else if ('postId' in dto && dto.postId) {
+      msg = await this.createWithPost(dto);
     } else {
       if (dto.text.trim() === '') {
         throw new BadRequestException(`Invalid message format for ${dto.text}`);

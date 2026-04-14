@@ -396,4 +396,17 @@ export class PollsService {
 
     return { voters, nextCursor, hasMore };
   }
+
+  async findPollQuestionsByPostIds(
+    postIds: string[],
+  ): Promise<Map<string, string>> {
+    if (!postIds.length) return new Map();
+    const polls = await this.pollRepo
+      .createQueryBuilder('poll')
+      .select(['poll.parentId', 'poll.question'])
+      .where('poll.parentType = :type', { type: 'post' })
+      .andWhere('poll.parentId IN (:...ids)', { ids: postIds })
+      .getMany();
+    return new Map(polls.map((p) => [p.parentId, p.question]));
+  }
 }

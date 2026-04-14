@@ -4,6 +4,7 @@ import {
   MessageWithPollResponseDto,
   MessageBaseResponseDto,
   MessageWithGeoResponseDto,
+  MessageWithPostResponseDto,
 } from './dto/message.dto';
 import { MessageWithOptionals } from './dto/message.dto';
 
@@ -36,6 +37,13 @@ export class MessageMapper {
         ...base,
         geo: msg.geo,
       } satisfies MessageWithGeoResponseDto;
+    }
+
+    if (msg.post) {
+      return {
+        ...base,
+        post: msg.post,
+      } satisfies MessageWithPostResponseDto;
     }
 
     return base;

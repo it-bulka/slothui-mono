@@ -429,4 +429,19 @@ export class PostsService {
       },
     });
   }
+
+  async findById(postId: string): Promise<Post | null> {
+    return await this.postRepo.findOne({
+      where: { id: postId },
+      relations: ['author'],
+    });
+  }
+
+  async findManyByIds(postIds: string[]): Promise<Post[]> {
+    if (!postIds.length) return [];
+    return await this.postRepo.find({
+      where: postIds.map((id) => ({ id })),
+      relations: ['author'],
+    });
+  }
 }
