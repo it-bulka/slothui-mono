@@ -7,6 +7,7 @@ export {
   useRegisterUser,
   logout,
   useAuthUserSelector,
+  useAuthUserIdSelector,
   useLogout,
   useUpdateProfile,
   authUserActions,
@@ -107,6 +108,7 @@ export {
   selectFollowingsByUser,
   fetchFollowersThunk,
   fetchFollowingsThunk,
+  useMarkNewFollowersSeen,
   type FriendEntity,
   friendsActions,
   resentFriendsActions

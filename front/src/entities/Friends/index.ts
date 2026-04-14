@@ -12,7 +12,8 @@ export {
   useFetchFriendsSuggestions,
   useFriendByIdSelect,
   useFollowersStateSelect,
-  useFolloweeStateSelect
+  useFolloweeStateSelect,
+  useMarkNewFollowersSeen
 } from './model/hooks';
 export {
   selectFollowersStateByUser,

@@ -5,7 +5,7 @@ import {
 } from '@/entities';
 import { FriendsList } from '../FriendsList/FriendsList.tsx';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { memo } from 'react';
 import { useFriendActions } from '@/features/friends';
@@ -22,6 +22,10 @@ export const FolloweeTab = memo(({
 
   const { hasMore, isLoading, error, nextCursor } = useFolloweeStateSelect(userId);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFollowingsThunk({ userId, cursor: null }));
+  }, [dispatch, userId]);
 
   const loadMore = useCallback(() => {
     if (!hasMore || isLoading) return;

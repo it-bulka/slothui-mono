@@ -1,11 +1,14 @@
 import {
   useFollowersWithNewOnTopSelect,
   useFollowersStateSelect,
-  fetchFollowersThunk, useNewFollowersIdsSelect
+  fetchFollowersThunk,
+  fetchFollowingsThunk,
+  useNewFollowersIdsSelect,
+  useMarkNewFollowersSeen,
 } from '@/entities';
 import { FriendsList } from '../FriendsList/FriendsList.tsx';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { memo } from 'react';
 import { useFriendActions } from '@/features/friends';
@@ -23,6 +26,13 @@ export const FollowersTab = memo(({
 
   const { hasMore, isLoading, error, nextCursor } = useFollowersStateSelect(userId);
   const dispatch = useAppDispatch();
+  const { markSeen } = useMarkNewFollowersSeen();
+
+  useEffect(() => {
+    dispatch(fetchFollowersThunk({ userId, cursor: null }));
+    dispatch(fetchFollowingsThunk({ userId, cursor: null }));
+    markSeen();
+  }, [dispatch, userId]);
 
   const loadMore = useCallback(() => {
     if (!hasMore || isLoading) return;

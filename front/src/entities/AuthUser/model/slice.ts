@@ -6,6 +6,7 @@ import { logoutExtra } from './logout/logout.extra.ts';
 import { updateProfileExtra } from './updateProfile/updateProfile.extra.ts';
 import { deleteProfileExtra } from './deleteProfile/deleteProfile.extra.ts';
 import { unfollowExtraReducer } from './extraReducers/unfollow.extra.ts';
+import { followExtraReducer } from './extraReducers/follow.extra.ts';
 import { initAuthUserExtra } from './init/initAuthUser.extra.ts';
 
 const initialState: AuthUserState = {
@@ -57,6 +58,7 @@ export const authUserSlice = createSlice({
     updateProfileExtra(builder);
     deleteProfileExtra(builder);
     unfollowExtraReducer(builder);
+    followExtraReducer(builder);
   }
 });
 

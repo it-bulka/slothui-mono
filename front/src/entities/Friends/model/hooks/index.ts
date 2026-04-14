@@ -15,3 +15,4 @@ export { useSuggestedFriendsSelect } from './useSuggestedFriendsSelect.ts';
 export { useNewFollowersIdsSelect } from './useNewFollowersIdsSelect.ts';
 export { useFollowersWithNewOnTopSelect } from './useFollowersWithNewOnTopSelect.ts';
 export { useFriendByIdSelect } from './useFriendByIdSelect.ts';
+export { useMarkNewFollowersSeen } from './useMarkNewFollowersSeen.ts';
