@@ -10,7 +10,8 @@ import {
   createPostExtraReducer,
   toggleLikePostExtraReducer,
   toggleSavePostExtraReducer,
-  fetchMyPostsExtraReducer
+  fetchMyPostsExtraReducer,
+  fetchPostByIdExtraReducer
 } from '../extraReducers';
 import { mockPostsState } from '@/mock/data';
 
@@ -76,6 +77,7 @@ const postsSlice = createSlice({
     createPostExtraReducer(builder);
     toggleLikePostExtraReducer(builder);
     toggleSavePostExtraReducer(builder);
+    fetchPostByIdExtraReducer(builder);
   },
 })
 

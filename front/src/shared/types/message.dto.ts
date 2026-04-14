@@ -38,10 +38,28 @@ export type MessageWithEventDto = MessageBaseDto & {
   };
 };
 
+export type PostSummaryDto = {
+  id: string;
+  text?: string;
+  authorId: string;
+  authorName: string;
+  createdAt: string;
+  coverUrl?: string;
+  mediaCount: number;
+  fileCount: number;
+  audioCount: number;
+  pollQuestion?: string;
+};
+
+export type MessageWithPostDto = MessageBaseDto & {
+  post: PostSummaryDto;
+};
+
 export type MessageDto =
   | MessageBaseDto
   | MessageWithAttachmentsDto
   | MessageWithPollDto
   | MessageWithStoryDto
   | MessageWithGeoDto
-  | MessageWithEventDto;
+  | MessageWithEventDto
+  | MessageWithPostDto;

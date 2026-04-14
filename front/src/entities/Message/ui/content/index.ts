@@ -6,3 +6,4 @@ export { TextMessage } from './TextMessage/TextMessage.tsx';
 export { StoryMessage } from './StoryMessage/StoryMessage.tsx';
 export { EventMessage } from './EventMessage/EventMessage.tsx';
 export { GeoMessage } from './GeoMessage/GeoMessage.tsx';
+export { PostMessage } from './PostMessage/PostMessage.tsx';

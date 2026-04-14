@@ -8,7 +8,8 @@ import {
   PollMessage,
   StoryMessage,
   EventMessage,
-  GeoMessage
+  GeoMessage,
+  PostMessage
 } from "../content";
 
 import { getMessageType } from '../../model';
@@ -23,6 +24,7 @@ const messageConfig: MessageRegistry  = {
   geo: { component: GeoMessage, fullWidth: true },
   event: { component: EventMessage, fullWidth: true },
   story: { component: StoryMessage, fullWidth: false },
+  post: { component: PostMessage, fullWidth: true },
   text: { component: TextMessage, fullWidth: false }
 }
 

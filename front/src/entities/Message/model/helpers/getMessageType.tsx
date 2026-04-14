@@ -7,6 +7,7 @@ type MessageType =
   | "story"
   | "event"
   | "geo"
+  | "post"
   | "text";
 
 export const getMessageType = (msg: MessageDto): MessageType => {
@@ -17,6 +18,7 @@ export const getMessageType = (msg: MessageDto): MessageType => {
   if ('story' in msg && msg.story) return "story";
   if ('event' in msg && msg.event) return "event";
   if ('geo' in msg && msg.geo) return "geo";
+  if ('post' in msg && msg.post) return "post";
 
   return "text";
 };

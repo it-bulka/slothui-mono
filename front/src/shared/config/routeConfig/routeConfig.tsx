@@ -31,7 +31,9 @@ export enum AppRoutes {
 
   // AUTH
   FORGOT_PASSWORD = 'forgot_password',
-  RESET_PASSWORD = 'reset_password'
+  RESET_PASSWORD = 'reset_password',
+
+  POST = 'post',
 }
 
 export const UserRelativePaths = {
@@ -79,6 +81,7 @@ export const getLikedPage = () => '/activity/liked'
 export const getSavedPage = () => '/activity/saved'
 
 export const getNotFoundPage = () => `/not-found`
+export const getPostPage = (id: string) => `/posts/${id}`
 
 export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: getHomePage(),
@@ -106,5 +109,6 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.AUTH]: getAuthLayout(),
   [AppRoutes.FORGOT_PASSWORD]: getForgotPasswordPage(),
   [AppRoutes.RESET_PASSWORD]: getResetPasswordPage(),
-  [AppRoutes.NOT_FOUND]: getNotFoundPage()
+  [AppRoutes.NOT_FOUND]: getNotFoundPage(),
+  [AppRoutes.POST]: getPostPage(':postId'),
 }

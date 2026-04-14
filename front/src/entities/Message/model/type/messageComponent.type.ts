@@ -5,6 +5,7 @@ import type {
   MessageWithEventDto,
   MessageWithGeoDto,
   MessageWithPollDto, MessageWithStoryDto, MessageBaseDto,
+  MessageWithPostDto,
   MessageDto
 } from '@/shared/types/message.dto.ts';
 
@@ -17,6 +18,7 @@ export type MessageMap = {
   geo: MessageWithGeoDto;
   event: MessageWithEventDto;
   story: MessageWithStoryDto;
+  post: MessageWithPostDto;
 }
 
 export type MessageComponent<T extends MessageDto = MessageDto> = {

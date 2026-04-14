@@ -24,7 +24,8 @@ import {
   ActivityPage,
   LikedPage,
   SavedPage,
-  NotFound
+  NotFound,
+  PostPage
 } from '@/pages';
 import { ErrorBoundary } from '@/shared/ui';
 import {
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
           { path: RoutePaths.activity, element: <ActivityPage /> },
           { path: RoutePaths.liked, element: <LikedPage /> },
           { path: RoutePaths.saved, element: <SavedPage /> },
+          { path: RoutePaths.post, element: <PostPage /> },
           { path: RoutePaths.not_found, element: <NotFound /> }
         ]
       },
