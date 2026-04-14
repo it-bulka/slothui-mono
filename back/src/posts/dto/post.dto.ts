@@ -9,6 +9,7 @@ export interface PostDto {
   author: UserResponse;
   isLiked?: boolean;
   isSaved?: boolean;
+  likesCount: number;
   commentsCount: number;
   attachments?: GroupedAttachment;
   poll?: PollResultDto;

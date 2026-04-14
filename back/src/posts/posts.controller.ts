@@ -50,6 +50,17 @@ export class PostsController {
     });
   }
 
+  @Get('/liked')
+  async getLikedPosts(
+    @Query() q: GetMyPostsQueryDto,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.postsService.getLikedPosts(req.user.id, {
+      cursor: q.cursor,
+      limit: Number(q.limit) || 50,
+    });
+  }
+
   @Get('/saved')
   async getSavedPosts(
     @Query() q: GetMyPostsQueryDto,

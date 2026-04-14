@@ -71,6 +71,11 @@ export class PostsService {
         .setParameter('userId', userId);
     }
 
+    qb.addSelect(
+      `(SELECT COUNT(*) FROM post_like pl_count WHERE pl_count."postId" = post.id)`,
+      'likesCount',
+    );
+
     if (random) qb.orderBy('RANDOM()');
     else qb.orderBy('post.createdAt', 'DESC').addOrderBy('post.id', 'DESC');
 
@@ -79,6 +84,7 @@ export class PostsService {
     const { entities: posts, raw } = await qb.getRawAndEntities<{
       isLiked: boolean;
       isSaved: boolean;
+      likesCount: string;
     }>();
 
     const hasMore = posts.length > limit;
@@ -102,6 +108,7 @@ export class PostsService {
       text: post.text,
       isLiked: raw[index].isLiked,
       isSaved: raw[index].isSaved,
+      likesCount: Number(raw[index].likesCount),
       commentsCount: post.commentsCount,
       attachments: groupedAttachments.get(post.id),
       poll: groupedPolls.get(post.id),
@@ -150,9 +157,17 @@ export class PostsService {
         `,
         'isSaved',
       )
+      .addSelect(
+        `(SELECT COUNT(*) FROM post_like pl_count WHERE pl_count."postId" = post.id)`,
+        'likesCount',
+      )
       .setParameter('userId', userId)
       .where('post.id = :id', { id: postId })
-      .getRawAndEntities<{ isLiked: boolean; isSaved: boolean }>();
+      .getRawAndEntities<{
+        isLiked: boolean;
+        isSaved: boolean;
+        likesCount: string;
+      }>();
 
     const post = entities[0];
 
@@ -162,6 +177,7 @@ export class PostsService {
 
     const isLiked = Boolean(raw[0].isLiked);
     const isSaved = Boolean(raw[0].isSaved);
+    const likesCount = Number(raw[0].likesCount);
 
     const attachments = await this.attachmentService.getMany('post', [postId]);
     const groupedAttachments = this.attachmentService.groupByType(attachments);
@@ -175,6 +191,7 @@ export class PostsService {
       text: post.text,
       isLiked,
       isSaved,
+      likesCount,
       commentsCount: post.commentsCount,
       attachments: groupedAttachments,
       poll: groupedPolls.get(post.id),
@@ -267,12 +284,62 @@ export class PostsService {
       text: save.post.text,
       isLiked: false,
       isSaved: true,
+      likesCount: 0,
       commentsCount: save.post.commentsCount,
       attachments: groupedAttachments.get(save.post.id),
     }));
 
     const lastPost = visibleSaves[visibleSaves.length - 1]?.post;
     const nextCursor = lastPost ? lastPost.createdAt.toISOString() : undefined;
+
+    return { items, hasMore, nextCursor };
+  }
+
+  async getLikedPosts(
+    userId: string,
+    params: { cursor?: string; limit?: number },
+  ): Promise<PostPaginatedRes> {
+    const { cursor, limit = 50 } = params;
+
+    const qb = this.postLikeRepo
+      .createQueryBuilder('like')
+      .innerJoinAndSelect('like.post', 'post')
+      .innerJoinAndSelect('post.author', 'author')
+      .where('like.userId = :userId', { userId });
+
+    if (cursor) {
+      qb.andWhere('post.createdAt < :cursor', { cursor: new Date(cursor) });
+    }
+
+    qb.orderBy('post.createdAt', 'DESC')
+      .addOrderBy('post.id', 'DESC')
+      .take(limit + 1);
+
+    const likes = await qb.getMany();
+
+    const hasMore = likes.length > limit;
+    const visibleLikes = likes.slice(0, limit);
+    const postIds = visibleLikes.map((l) => l.post.id);
+
+    const attachments = await this.attachmentService.getMany('post', postIds);
+    const groupedAttachments =
+      this.attachmentService.groupByTypeAndParentId(attachments);
+
+    const items: PostDto[] = visibleLikes.map((like) => ({
+      id: like.post.id,
+      author: UserMapper.toResponse(like.post.author),
+      text: like.post.text,
+      isLiked: true,
+      isSaved: false,
+      likesCount: 0,
+      commentsCount: like.post.commentsCount,
+      attachments: groupedAttachments.get(like.post.id),
+    }));
+
+    const lastLikePost = visibleLikes[visibleLikes.length - 1]?.post;
+    const nextCursor = lastLikePost
+      ? lastLikePost.createdAt.toISOString()
+      : undefined;
 
     return { items, hasMore, nextCursor };
   }
