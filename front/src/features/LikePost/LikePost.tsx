@@ -8,7 +8,7 @@ export const LikePost = memo(({ postId }: { postId: string}) => {
   const { toggleLikePost } = useToggleLikePost()
 
   return (
-    <ActionButton Icon={LikeSvg} onClick={() => toggleLikePost({ postId, liked: isLiked})}>
+    <ActionButton Icon={LikeSvg} isActive={isLiked} onClick={() => toggleLikePost({ postId, liked: isLiked})}>
       {likesCount} Likes
     </ActionButton>
   )

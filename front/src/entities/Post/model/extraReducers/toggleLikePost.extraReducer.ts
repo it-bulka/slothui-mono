@@ -14,11 +14,15 @@ export const toggleLikePostExtraReducer = (builder: ActionReducerMapBuilder<Post
       }
     })
     .addCase(toggleLikePostThunk.fulfilled, (state, action) => {
-      const post = state.entities[action.meta.arg.postId];
+      const post = state.entities[action.payload.postId];
       if (post) {
-        state.likes.ids.push(post.id);
-
-        post.isTogglingLike = false
+        if (action.meta.arg.liked) {
+          state.likes.ids = state.likes.ids.filter(id => id !== post.id);
+        } else if (!state.likes.ids.includes(post.id)) {
+          state.likes.ids.push(post.id);
+        }
+        post.likesCount = action.payload.likesCount;
+        post.isTogglingLike = false;
       }
     })
     .addCase(toggleLikePostThunk.rejected, (state, action) => {

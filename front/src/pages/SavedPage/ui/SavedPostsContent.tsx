@@ -34,10 +34,10 @@ export const SavedPostsContent = memo(() => {
               userName={post.author.nickname}
               userPosition={post.author.nickname}
               avatarSrc={post.author.avatarUrl}
-              file={post.attachments.file}
-              video={post.attachments.video}
-              audio={post.attachments.audio}
-              images={post.attachments.images}
+              file={post.attachments?.file}
+              video={post.attachments?.video}
+              audio={post.attachments?.audio}
+              images={post.attachments?.images}
               text={post.text}
             />
           </li>

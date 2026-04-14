@@ -7,5 +7,5 @@ export const selectPostsByIds = createSelector(
     (_: RootState, ids: string[]) => ids,
     selectPostEntities,
   ],
-  (ids, entities) => ids.map(id => entities[id]!)
+  (ids, entities) => ids.map(id => entities[id]).filter(Boolean)
 )

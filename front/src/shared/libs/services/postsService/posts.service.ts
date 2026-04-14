@@ -89,14 +89,14 @@ export class PostsService {
     );
   }
 
-  /** POST /api/posts/:postId/like */
-  async likePost(postId: string): Promise<void> {
-    return this.http.request(`${this.BASE_URL}/${postId}/like`, { method: 'POST' });
+  /** PUT /api/posts/:postId/likes */
+  async likePost(postId: string): Promise<{ postId: string; isLiked: boolean; likeCounts: number }> {
+    return this.http.request(`${this.BASE_URL}/${postId}/likes`, { method: 'PUT' });
   }
 
-  /** DELETE /api/posts/:postId/like */
-  async unlikePost(postId: string): Promise<void> {
-    return this.http.request(`${this.BASE_URL}/${postId}/like`, { method: 'DELETE' });
+  /** DELETE /api/posts/:postId/likes */
+  async unlikePost(postId: string): Promise<{ postId: string; isLiked: boolean; likeCounts: number }> {
+    return this.http.request(`${this.BASE_URL}/${postId}/likes`, { method: 'DELETE' });
   }
 
   /** PUT /api/posts/:postId/saves */
