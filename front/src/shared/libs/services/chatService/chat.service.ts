@@ -98,6 +98,10 @@ export class ChatService {
     await this.http.request<void>(`/api/chats/${chatId}`, { method: 'DELETE' });
   }
 
+  async markAsRead(chatId: string): Promise<void> {
+    await this.http.request<void>(`/api/chats/${chatId}/read`, { method: 'POST' });
+  }
+
   /* ------------------------------------------------------------------ */
   /*                  ---- WebSocket via socket.io ----                 */
   /* ------------------------------------------------------------------ */
