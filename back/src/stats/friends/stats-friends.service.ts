@@ -15,7 +15,7 @@ export class StatsFriendsService {
     const period = new Date();
     period.setDate(period.getDate() - STATS_PERIOD);
     const stats = await this.followersSnapshotRepo.findOne({
-      where: { id: userId },
+      where: { user: { id: userId } },
       order: { snapshotDate: 'DESC' }, // usually last raw for STATS_PERIOD
     });
     if (!stats)

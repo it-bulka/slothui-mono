@@ -24,11 +24,20 @@ import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ChangePasswordDto } from './dto/changePassword';
 import { Response as ExpressResponse } from 'express';
+import { StatsFollowersService } from '../stats/followers/stats-followers.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly statsFollowersService: StatsFollowersService,
+  ) {}
+
+  @Get('profile-analytics')
+  async getProfileAnalytics(@Request() req: AuthRequest) {
+    return this.statsFollowersService.getFollowerAnalytics(req.user.id);
+  }
 
   @Get('me/profile')
   async getProfile(@Request() req: AuthRequest) {
