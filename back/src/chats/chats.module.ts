@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ChatsService } from './chats.service';
 import { ChatsController } from './chats.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,12 +7,14 @@ import { UserModule } from '../user/user.module';
 import { User } from '../user/entities/user.entity';
 import { ChatMember } from './entities/chatMember.entity';
 import { EventEmitterModule } from '../event-emitter/event-emitter.module';
+import { MessagesModule } from '../messages/messages.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Chat, User, ChatMember]),
     UserModule,
     EventEmitterModule,
+    forwardRef(() => MessagesModule),
   ],
   controllers: [ChatsController],
   providers: [ChatsService],

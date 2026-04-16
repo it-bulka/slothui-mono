@@ -20,7 +20,7 @@ import { PostsModule } from '../posts/posts.module';
 
 @Module({
   imports: [
-    ChatsModule,
+    forwardRef(() => ChatsModule),
     UserModule,
     TypeOrmModule.forFeature([Message, Story, Chat, Attachment]),
     AttachmentsModule,

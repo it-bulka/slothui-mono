@@ -23,6 +23,7 @@ import { ChatMember } from './entities/chatMember.entity';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
 import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
+import { UnreadBufferService } from '../messages/unread-buffer.service';
 
 @Injectable()
 export class ChatsService {
@@ -35,6 +36,7 @@ export class ChatsService {
     private readonly userRepo: Repository<User>,
     private readonly userService: UserService,
     private readonly eventEmitterChatService: EventEmitterChatService,
+    private readonly unreadBufferService: UnreadBufferService,
   ) {}
 
   private async getChatEntity(chatId: string): Promise<Chat> {
@@ -574,6 +576,7 @@ export class ChatsService {
       { chatId, userId },
       { lastReadAt: new Date() },
     );
+    this.unreadBufferService.clear(chatId, userId);
   }
 
   async getChatMemberIds(chatId: string): Promise<string[]> {
