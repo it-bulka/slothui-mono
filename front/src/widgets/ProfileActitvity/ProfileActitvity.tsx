@@ -7,6 +7,9 @@ import classnames from 'classnames';
 
 const getSign = (delta: number) => delta > 0 ? '+' : '';
 
+const getAvatarClassName = (index: number, total: number) =>
+  classnames('border border-white', index > 0 && '-ml-[15px]', `z-[${total - index}]`);
+
 const getMessage = (percent: number): string => {
   if (percent >= 50) return 'You gained a substantial amount of followers this month!';
   if (percent >= 10) return 'Your audience is growing steadily.';
@@ -43,12 +46,12 @@ export const ProfileActivity = () => {
       />
 
       <div className="bg-light-l1 border-blue-b3 rounded-3xl py-6 px-4 flex flex-col gap-5">
-        <div className="flex -space-x-3 first:space-x-0">
-          {data.lastFollowers.map((user) => (
+        <div className="flex">
+          {data.lastFollowers.map((user, index) => (
             <Avatar
               src={user.avatarUrl ?? undefined}
               key={user.id}
-              className="border border-white"
+              className={getAvatarClassName(index, data.lastFollowers.length)}
             />
           ))}
         </div>
