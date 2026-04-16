@@ -1,9 +1,11 @@
 import { Textarea } from '@/shared/ui';
 import { useDraftMessageText } from '@/features/DraftMessage';
 import { useSendMessage } from '@/features/send-message/model';
-import { type RefObject, memo, useCallback } from 'react';
+import { type RefObject, memo, useCallback, useRef, useEffect } from 'react';
 import { useMessagesService } from '@/shared/libs/services';
 import { useActiveChatId, useSelectIsMessageSending } from '@/entities';
+
+const TYPING_STOP_DELAY = 2000;
 
 interface MessageInputTextProps {
   className?: string
@@ -17,15 +19,41 @@ export const MessageInputText = memo(({
   const activeChatId = useActiveChatId()
   const { sendMsg } = useSendMessage()
 
-  const onFocus = useCallback(() => {
-    if(!activeChatId) return
-    msgService.wsTyping(activeChatId, true)
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isTypingRef = useRef(false)
+
+  const stopTyping = useCallback(() => {
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current)
+      typingTimerRef.current = null
+    }
+    if (isTypingRef.current && activeChatId) {
+      isTypingRef.current = false
+      msgService.wsTyping(activeChatId, false)
+    }
   }, [activeChatId, msgService])
 
-  const onBlur =  useCallback(() => {
-    if(!activeChatId) return
-    msgService.wsTyping(activeChatId, false)
-  }, [activeChatId, msgService])
+  // cleanup on unmount or chat change
+  useEffect(() => {
+    return () => stopTyping()
+  }, [stopTyping])
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.currentTarget.value)
+    if (!activeChatId) return
+
+    if (!isTypingRef.current) {
+      isTypingRef.current = true
+      msgService.wsTyping(activeChatId, true)
+    }
+
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current)
+    typingTimerRef.current = setTimeout(stopTyping, TYPING_STOP_DELAY)
+  }, [activeChatId, msgService, setText, stopTyping])
+
+  const onBlur = useCallback(() => {
+    stopTyping()
+  }, [stopTyping])
 
   return (
     <Textarea
@@ -34,8 +62,7 @@ export const MessageInputText = memo(({
       className={className}
       ref={inputRef as RefObject<HTMLTextAreaElement>}
       value={text}
-      onChange={(e) => setText(e.currentTarget.value)}
-      onFocus={onFocus}
+      onChange={handleChange}
       onBlur={onBlur}
       aria-readonly={isMsgSending}
       readOnly={isMsgSending}
