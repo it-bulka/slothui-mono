@@ -32,6 +32,15 @@ export const chatSlice = createSlice({
         }
       })
     },
+    updateManyLastMessages: (state, action: PayloadAction<{chatId: string, lastMessage: LastMessage}[]>) => {
+      const updates = action.payload.map((item) => ({
+        id: item.chatId,
+        changes: {
+          lastMessage: item.lastMessage
+        }
+      }))
+      chatAdapter.updateMany(state, updates)
+    },
     markChatsStale: (state) => {
       state.needsRefetch = true;
     },

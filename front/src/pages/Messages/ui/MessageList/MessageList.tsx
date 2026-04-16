@@ -7,7 +7,6 @@ import {
   useScrollToBottom,
   usePaginationRestore,
   useUnreadMessages,
-  useCurrentChat,
   useMessageRow,
   type MessagesVirtuosoContext,
   useLoadMessages,
@@ -18,17 +17,17 @@ import type { MessageDto } from '@/shared/types';
 
 interface MessageListProps {
   chatId: string,
-  authUserId: string
+  authUserId: string,
+  messages: MessageDto[]
 }
 
 // TODO: fix blicks
 export const MessageList = memo(({
    chatId,
    authUserId,
+   messages: rawMsgs,
 }: MessageListProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-
-  const { messages: rawMsgs } = useCurrentChat()
   const reversedMsgs = useMemo(() => [...rawMsgs].reverse(), [rawMsgs])
   const { onLoadMore } = useLoadMessages({ chatId, isMessages: !!rawMsgs.length })
   const { loading, hasMore } = useChatMetaSelect(chatId)

@@ -27,6 +27,7 @@ export class SocketService {
 
 
   async connect(): Promise<Socket> {
+    console.log('Call SOCKET connect')
     if (this.socket && this.socket?.connected) return this.socket;
     if (!this.token) {
       throw new Error('Cannot connect to WebSocket without a token');
@@ -71,6 +72,7 @@ export class SocketService {
 
       ws.once('connect_error', (err) => {
         console.error('[ws] connect error', err)
+        this.isConnecting = false;
         reject(err);
       });
     });

@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import type { MessageDTO, ChatDTO, ChatGlobalSearchResult } from '../../../types/chat.types.ts';
+import type { MessageDTO, ChatDTO, ChatGlobalSearchResult, ChatUnreadUpdate } from '../../../types/chat.types.ts';
 import { HttpService } from '../httpService/http.service.ts';
 import { SocketService } from '../socketService/socket.service.ts';
 import { ChatRequestEvents, ChatServerEvents } from './event.types.ts';
@@ -10,6 +10,7 @@ export class ChatService {
   /** Multicast streams */
   private readonly chatCreated$ = new Subject<ChatDTO>();
   private readonly chatDeleted$ = new Subject<{ chatId: string }>();
+  private readonly unreadMessagesByChat$ = new Subject<ChatUnreadUpdate>();
   private readonly membersUpdated$ = new Subject<{ chatId: string; members: string[] }>();
   private socket: Socket | undefined;
 
@@ -93,6 +94,10 @@ export class ChatService {
     );
   }
 
+  async deleteChat(chatId: string): Promise<void> {
+    await this.http.request<void>(`/api/chats/${chatId}`, { method: 'DELETE' });
+  }
+
   /* ------------------------------------------------------------------ */
   /*                  ---- WebSocket via socket.io ----                 */
   /* ------------------------------------------------------------------ */
@@ -103,6 +108,7 @@ export class ChatService {
     socket.on(ChatServerEvents.CREATED,        (c: ChatDTO) => this.chatCreated$.next(c));
     socket.on(ChatServerEvents.DELETED,        (d: { chatId: string }) => this.chatDeleted$.next(d));
     socket.on(ChatServerEvents.MEMBERS_UPDATED, (u) => this.membersUpdated$.next(u));
+    socket.on(ChatServerEvents.UNREAD_BATCH,    (u) => this.unreadMessagesByChat$.next(u));
   }
 
   private offEvents() {
@@ -111,6 +117,7 @@ export class ChatService {
     socket.off(ChatServerEvents.CREATED)
     socket.off(ChatServerEvents.DELETED)
     socket.off(ChatServerEvents.MEMBERS_UPDATED)
+    socket.off(ChatServerEvents.UNREAD_BATCH)
   }
 
   private readonly joinedChats = new Set<string>();
@@ -150,8 +157,7 @@ export class ChatService {
     return this.membersUpdated$.asObservable();
   }
 
-  async deleteChat(chatId: string): Promise<void> {
-    await this.http.request<void>(`/api/chats/${chatId}`, { method: 'DELETE' });
+  onUnreadMessageByChat() {
+    return this.unreadMessagesByChat$.asObservable();
   }
-
 }

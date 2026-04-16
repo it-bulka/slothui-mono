@@ -12,7 +12,7 @@ import { filter } from 'rxjs';
 
 export class MessagesService {
   private readonly message$ = new Subject<MessageDto>();
-  private readonly typing$ = new Subject<{ chatId: string; user: string; isTyping: boolean }>();
+  private readonly typing$ = new Subject<{ chatId: string; user: { id: string; role: string }; isTyping: boolean }>();
 
   private socket: Socket | undefined;
 
@@ -123,7 +123,7 @@ export class MessagesService {
     return this.message$.asObservable()
   }
 
-  onTyping(chatId: string | null): Observable<{ chatId: string; user: string; isTyping: boolean }> {
+  onTyping(chatId: string | null): Observable<{ chatId: string; user: { id: string; role: string }; isTyping: boolean }> {
     return this.typing$.pipe(
       filter(t => t.chatId === chatId),
       shareReplay(1)

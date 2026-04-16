@@ -12,10 +12,17 @@ export const SocketBootstrap = memo(({ store }: { store: AppStore}) => {
   useEffect(() => {
     if (!token) return
     if (init.current) return;
-    initGlobalListeners(services, store)
+    init.current = true;
+
+    services.socket.connect()
+      .then(() => {
+        initGlobalListeners(services, store)
+      })
+      .catch((err) => console.error('[SocketBootstrap] connect error', err));
 
     return () => {
       services.socket.disconnect();
+      init.current = false;
       console.log('[SocketBootstrap] socket disconnected on unmount');
     };
 

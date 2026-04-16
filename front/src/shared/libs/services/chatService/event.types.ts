@@ -14,5 +14,6 @@ export enum ChatServerEvents {
   MEMBER_REMOVED = 'chat:memberRemoved', // another member
   REMOVED_FROM_CHAT = 'chat:removedFromChat', // current user is forced removed
   LEFT = 'chat:left', // current user left by its own
+  UNREAD_BATCH = 'chat:unread:batch', // unread msgs by chat
 }
 

@@ -3,6 +3,7 @@ import type {
   NotificationsCountersState
 } from '../types/notificationsCounters.types.ts';
 import { fetchNotificationsCountersThunk } from '../thunks';
+import type { ChatUnreadUpdate } from '@/shared/types';
 
 const initialState: NotificationsCountersState = {
   unreadMessagesTotal: 0,
@@ -26,14 +27,11 @@ export const notificationsCountersSlice = createSlice({
     },
     unreadBatchReceived: (
       state,
-      action: PayloadAction<{
-        chats: Record<string, number>;
-        totalDelta: number;
-      }>
+      action: PayloadAction<ChatUnreadUpdate>
     ) => {
-      for (const [chatId, delta] of Object.entries(action.payload.chats)) {
-        state.unreadMessagesByChat[chatId] =
-          (state.unreadMessagesByChat[chatId] ?? 0) + delta;
+      for (const item of action.payload.updates) {
+        state.unreadMessagesByChat[item.chatId] =
+          (state.unreadMessagesByChat[item.chatId] ?? 0) + item.unreadDelta;
       }
 
       state.unreadMessagesTotal += action.payload.totalDelta;

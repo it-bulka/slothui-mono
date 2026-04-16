@@ -1,8 +1,10 @@
 import { Typing } from '@/entities';
-import { useCurrentChat } from '@/pages/Messages/model';
 import { memo } from 'react';
 
-export const TypingInChat = memo(() => {
-  const { typing } = useCurrentChat()
+interface TypingInChatProps {
+  typing: { userName: string } | null;
+}
+
+export const TypingInChat = memo(({ typing }: TypingInChatProps) => {
   return typing && <Typing name={typing.userName} />
 })
