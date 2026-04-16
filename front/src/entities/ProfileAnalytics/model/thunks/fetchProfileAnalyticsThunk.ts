@@ -16,6 +16,7 @@ export const fetchProfileAnalyticsThunk = createAsyncThunk<
         delta: res.delta,
         percent: res.percent,
         period: res.period,
+        lastFollowers: res.lastFollowers,
       }
     } catch {
       return rejectWithValue('Failed to fetch profile analytics');

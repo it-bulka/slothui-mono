@@ -1,33 +1,39 @@
 import { Avatar, Typography, TypographyTypes } from '@/shared/ui';
-import AvatarMock from '@/mock/images/avatar.png'
 import TrendUpSvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
 import { useProfileAnalyticsSelect, useFetchProfileAnalytics } from '@/entities';
 import { useEffect } from 'react';
+import classnames from 'classnames';
 
-// TODO: add fetching last added followers; limit = 4
-const lastAddedFriends: string[] = [
-  AvatarMock, AvatarMock, AvatarMock, AvatarMock
-]
+const getSign = (delta: number) => delta > 0 ? '+' : '';
+
+const getMessage = (percent: number): string => {
+  if (percent >= 50) return 'You gained a substantial amount of followers this month!';
+  if (percent >= 10) return 'Your audience is growing steadily.';
+  if (percent === 0) return 'Your follower growth stayed stable.';
+  if (percent > -20) return 'Follower growth slowed this month.';
+  return 'You lost followers this month.';
+};
 
 export const ProfileActivity = () => {
   const { data, isLoading, error } = useProfileAnalyticsSelect()
   const { fetchProfileAnalytics } = useFetchProfileAnalytics()
 
   useEffect(() => {
-    // TODO: add fetching amount limit
-    if(data || isLoading || error) return;
+    if (data || isLoading || error) return;
     fetchProfileAnalytics()
   }, [fetchProfileAnalytics, data, isLoading, error])
 
-  if(isLoading) {
+  if (isLoading) {
     // TODO: add Skeleton
     return <div>Loading...</div>
   }
 
-  if(!data) {
+  if (!data) {
     return <div>No data</div>
   }
+
+  const isUp = data.delta >= 0;
 
   return (
     <div>
@@ -38,21 +44,36 @@ export const ProfileActivity = () => {
 
       <div className="bg-light-l1 border-blue-b3 rounded-3xl py-6 px-4 flex flex-col gap-5">
         <div className="flex -space-x-3 first:space-x-0">
-          {lastAddedFriends.map((avatar, ind) => <Avatar src={avatar} key={ind} className="border border-white"/>)}
+          {data.lastFollowers.map((user) => (
+            <Avatar
+              src={user.avatarUrl ?? undefined}
+              key={user.id}
+              className="border border-white"
+            />
+          ))}
         </div>
 
         <div className="flex flex-wrap gap-1">
-          <Typography className="font-bold text-6">+153</Typography> {/*TODO: add dynamic*/}
+          <Typography className={classnames('font-bold text-6', isUp ? 'text-green-g1' : 'text-red-r1')}>
+            {getSign(data.delta)}{data.delta}
+          </Typography>
           <Typography className="grow" color="secondary">Followers</Typography>
 
           <div className="basis-full" />
 
-          <TrendUpSvg className="w-5 h-5 fill-green-g1"/>
-          <Typography type={TypographyTypes.P_SM} color="secondary" className="text-green-g2 font-bold">23%</Typography>
+          <TrendUpSvg className={classnames('w-5 h-5', isUp ? 'fill-green-g1' : 'rotate-180 fill-red-r1')} />
+          <Typography
+            type={TypographyTypes.P_SM}
+            color="secondary"
+            className={classnames('font-bold', isUp ? 'text-green-g2' : 'text-red-r1')}
+          >
+            {getSign(data.percent)}{Math.abs(data.percent)}%
+          </Typography>
           <Typography type={TypographyTypes.P_SM} color="secondary" className="grow">vs last month</Typography>
         </div>
+
         <Typography type={TypographyTypes.P_SM} color="secondary">
-          You gained a substantial amount of followers this month!
+          {getMessage(data.percent)}
         </Typography>
       </div>
     </div>
