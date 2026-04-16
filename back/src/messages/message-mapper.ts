@@ -7,6 +7,7 @@ import {
   MessageWithPostResponseDto,
 } from './dto/message.dto';
 import { MessageWithOptionals } from './dto/message.dto';
+import { ChatLastMessage } from './dto/unread-buffer.dto';
 
 export class MessageMapper {
   static toResponce(msg: MessageWithOptionals): MessageResponseDto {
@@ -47,5 +48,50 @@ export class MessageMapper {
     }
 
     return base;
+  }
+
+  static toLastMessage(msg: MessageResponseDto): ChatLastMessage {
+    if ('attachments' in msg) {
+      return {
+        id: msg.id,
+        type: 'attachment',
+        text: msg.text ?? 'Attachment',
+        createdAt: msg.createdAt,
+      };
+    }
+
+    if ('poll' in msg) {
+      return {
+        id: msg.id,
+        type: 'poll',
+        text: msg.text ?? 'Poll',
+        createdAt: msg.createdAt,
+      };
+    }
+
+    if ('geo' in msg) {
+      return {
+        id: msg.id,
+        type: 'geo',
+        text: msg.text ?? 'Location',
+        createdAt: msg.createdAt,
+      };
+    }
+
+    if ('post' in msg) {
+      return {
+        id: msg.id,
+        type: 'post',
+        text: msg.text ?? 'Post',
+        createdAt: msg.createdAt,
+      };
+    }
+
+    return {
+      id: msg.id,
+      type: 'text',
+      text: msg.text ?? '',
+      createdAt: msg.createdAt,
+    };
   }
 }

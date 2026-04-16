@@ -32,7 +32,6 @@ import {
 } from '../event-emitter/type/notification.type';
 import { OpenedChatsTracker } from '../messages/opened-chats-tracker.service';
 import { UnreadBufferService } from '../messages/unread-buffer.service';
-import { WS_PREFIXES } from '../common/consts/ws-prefixes';
 import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
 import { FriendEmitterType } from '../event-emitter/type/followersEmitter.type';
 import { FollowersServerEvents } from './types/followers.events';
@@ -43,7 +42,8 @@ import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.ser
 @WebSocketGateway({
   path: '/ws',
   cors: {
-    origin: '*',
+    origin: process.env.FRONT_ORIGIN,
+    credentials: true,
     methods: ['GET', 'POST'],
   },
 })
@@ -86,9 +86,7 @@ export class WsGateway
         switch (event.ev) {
           // MESSAGES SERVER
           case MessageServerEvents.NEW:
-            this.server
-              .to(WS_PREFIXES.setChatPrefix(event.data.chatId))
-              .emit(event.ev, event.data);
+            this.server.to(event.data.chatId).emit(event.ev, event.data);
             break;
           default:
             return;
@@ -157,7 +155,14 @@ export class WsGateway
     console.log('WS connect', client.id, client.handshake.auth);
     console.log('client.data.user.id', client.data.user.id);
 
-    await this.wsService.activateAllUserChatsRooms(client.data.user.id, client);
+    try {
+      await this.wsService.activateAllUserChatsRooms(
+        client.data.user.id,
+        client,
+      );
+    } catch (err) {
+      console.error('[WsGateway] handleConnection error', err);
+    }
   }
 
   @SubscribeMessage(ChatRequestEvents.CREATE)

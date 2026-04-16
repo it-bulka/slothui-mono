@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ChatUnreadUpdate, ChatLastMessage } from './dto/unread-buffer.dto';
 
 @Injectable()
 export class UnreadBufferService {
@@ -6,12 +7,20 @@ export class UnreadBufferService {
   // TODO: add Redis
   private buffer = new Map<
     string, // userId
-    Record<string, number> // chatId -> delta
+    Record<string, ChatUnreadUpdate> // chatId -> ChatUnreadUpdate
   >();
 
-  increment(userId: string, chatId: string) {
+  increment(userId: string, chatId: string, lastMsg: ChatLastMessage) {
     const userBuffer = this.buffer.get(userId) ?? {};
-    userBuffer[chatId] = (userBuffer[chatId] ?? 0) + 1;
+    const current = userBuffer[chatId] ?? {
+      unreadDelta: 0,
+      lastMessage: lastMsg,
+    };
+
+    userBuffer[chatId] = {
+      unreadDelta: current.unreadDelta + 1,
+      lastMessage: lastMsg,
+    };
     this.buffer.set(userId, userBuffer);
   }
 
@@ -29,14 +38,18 @@ export class UnreadBufferService {
   }
 
   getUsersWithUpdates() {
-    return Object.keys(this.buffer);
+    return [...this.buffer.keys()];
   }
 
   flushAll() {
     const result: {
       userId: string;
-      chats: Record<string, number> | null;
-      total: number;
+      updates: {
+        chatId: string;
+        lastMessage: ChatLastMessage;
+        unreadDelta: number;
+      }[];
+      totalDelta: number;
     }[] = [];
 
     for (const userId of this.getUsersWithUpdates()) {
@@ -45,8 +58,11 @@ export class UnreadBufferService {
 
       result.push({
         userId,
-        chats: data,
-        total: Object.values(data).reduce((a, b) => a + b, 0),
+        updates: Object.entries(data).map(([chatId, value]) => ({
+          chatId,
+          ...value,
+        })),
+        totalDelta: Object.values(data).reduce((a, b) => a + b.unreadDelta, 0),
       });
     }
 

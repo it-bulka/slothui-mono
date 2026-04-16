@@ -95,6 +95,7 @@ export class WsService {
       void (async () => {
         try {
           const token = socket.handshake.auth?.token as string;
+          console.log('--- AUTH in WS---', token);
           if (!token) throw new Error('Token missing');
           const user = await this.authService.validateAccessToken(token);
           (socket as SocketWithUser).data.user = user;

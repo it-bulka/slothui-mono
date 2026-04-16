@@ -34,6 +34,7 @@ import { PollMapperToPollResult } from '../polls/pollMapToPollResult';
 import { DataSource, EntityManager } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { GeoMessageService } from '../geo-message/geo-message.service';
+import { ChatLastMessage } from './dto/unread-buffer.dto';
 
 @Injectable()
 export class MessagesService {
@@ -388,6 +389,7 @@ export class MessagesService {
     await this.handleUnreadCounters({
       chatId: dto.chatId,
       authorId: dto.authorId,
+      chatLastMsg: MessageMapper.toLastMessage(msg),
     });
 
     return msg;
@@ -396,9 +398,11 @@ export class MessagesService {
   private async handleUnreadCounters({
     chatId,
     authorId,
+    chatLastMsg,
   }: {
     chatId: string;
     authorId: string;
+    chatLastMsg: ChatLastMessage;
   }) {
     const memberIds = await this.chatsService.getChatMemberIds(chatId);
 
@@ -409,7 +413,7 @@ export class MessagesService {
 
       if (isOpened) continue;
 
-      this.unreadBufferService.increment(userId, chatId);
+      this.unreadBufferService.increment(userId, chatId, chatLastMsg);
     }
   }
 
