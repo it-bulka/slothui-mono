@@ -2,7 +2,7 @@ import { Avatar, Typography, TypographyTypes } from '@/shared/ui';
 import TrendUpSvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
 import { useProfileAnalyticsSelect, useFetchProfileAnalytics } from '@/entities';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import classnames from 'classnames';
 
 const getSign = (delta: number) => delta > 0 ? '+' : '';
@@ -18,7 +18,7 @@ const getMessage = (percent: number): string => {
   return 'You lost followers this month.';
 };
 
-export const ProfileActivity = () => {
+export const ProfileActivity = memo(() => {
   const { data, isLoading, error } = useProfileAnalyticsSelect()
   const { fetchProfileAnalytics } = useFetchProfileAnalytics()
 
@@ -81,4 +81,6 @@ export const ProfileActivity = () => {
       </div>
     </div>
   )
-}
+})
+
+ProfileActivity.displayName = 'ProfileActivity'
