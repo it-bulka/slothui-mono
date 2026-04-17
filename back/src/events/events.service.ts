@@ -81,7 +81,6 @@ export class EventsService {
         'event.category AS category',
         'event.coverUrl AS "coverUrl"',
         'event.onlineUrl AS "onlineUrl"',
-        'event.participantsCount AS participantsCount',
         'event.createdAt AS createdAt',
         `json_build_object(
            'id', organizer.id,
@@ -91,14 +90,24 @@ export class EventsService {
          ) AS organizer`,
         'TRUE AS "isSubscribed"',
       ])
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(*)')
+          .from('event_participants', 'ep')
+          .where('ep.event_id = event.id');
+      }, 'participantsCount')
       .where('participant.id = :userId', { userId })
       .andWhere(cursor ? 'event.date < :cursor' : '1=1', { cursor })
       .orderBy('event.date', 'DESC')
       .limit(pageSize + 1)
       .getRawMany<EventResponseDto>();
 
+    const mapped = events.map((e) => ({
+      ...e,
+      participantsCount: Number(e.participantsCount),
+    }));
     const { resultItems, nextCursor, hasMore } = checkNextCursor({
-      items: events,
+      items: mapped,
       cursorField: 'date',
       limit: pageSize,
     });
@@ -112,7 +121,11 @@ export class EventsService {
 
   async getOrganizedEvents(
     userId: string,
-    { pageSize = 10, cursor }: { pageSize?: number; cursor?: string } = {},
+    {
+      pageSize = 10,
+      cursor,
+      currentUserId,
+    }: { pageSize?: number; cursor?: string; currentUserId?: string } = {},
   ): Promise<PaginatedResponse<EventResponseDto>> {
     const qb = this.eventsRepo
       .createQueryBuilder('event')
@@ -126,7 +139,6 @@ export class EventsService {
         'event.category AS category',
         'event.coverUrl AS "coverUrl"',
         'event.onlineUrl AS "onlineUrl"',
-        'event.participantsCount AS participantsCount',
         'event.createdAt AS createdAt',
         `json_build_object(
            'id', organizer.id,
@@ -134,6 +146,20 @@ export class EventsService {
            'avatar', organizer."avatarUrl"
          ) AS organizer`,
       ])
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(*)')
+          .from('event_participants', 'ep')
+          .where('ep.event_id = event.id');
+      }, 'participantsCount')
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(*) > 0')
+          .from('event_participants', 'ep')
+          .where('ep.event_id = event.id')
+          .andWhere('ep.user_id = :currentUserId');
+      }, 'isSubscribed')
+      .setParameter('currentUserId', currentUserId ?? null)
       .where('organizer.id = :userId', { userId });
 
     if (cursor) {
@@ -143,8 +169,12 @@ export class EventsService {
     qb.orderBy('event.date', 'DESC').limit(pageSize + 1);
 
     const events = await qb.getRawMany<EventResponseDto>();
+    const mapped = events.map((e) => ({
+      ...e,
+      participantsCount: Number(e.participantsCount),
+    }));
     const { resultItems, nextCursor, hasMore } = checkNextCursor({
-      items: events,
+      items: mapped,
       cursorField: 'date',
       limit: pageSize,
     });
@@ -225,6 +255,14 @@ export class EventsService {
   }
 
   async subscribe(eventId: string, userId: string) {
+    const alreadySubscribed = await this.eventsRepo
+      .createQueryBuilder('event')
+      .innerJoin('event.participants', 'user', 'user.id = :userId', { userId })
+      .where('event.id = :eventId', { eventId })
+      .getExists();
+
+    if (alreadySubscribed) return;
+
     await this.eventsRepo
       .createQueryBuilder()
       .relation(Event, 'participants')

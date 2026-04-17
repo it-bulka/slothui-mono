@@ -40,8 +40,13 @@ export class EventsController {
   }
 
   @Get('organized')
-  async getOrganizedEvents(@Query('userId') userId: string) {
-    return await this.eventsService.getOrganizedEvents(userId);
+  async getOrganizedEvents(
+    @Query('userId') userId: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.eventsService.getOrganizedEvents(userId, {
+      currentUserId: req.user.id,
+    });
   }
 
   @Delete(':id')
