@@ -96,11 +96,11 @@ export class EventsService {
     );
   }
 
-  /** POST /api/events/:id/unsubscribe   id:string */
+  /** DELETE /api/events/:id/unsubscribe   id:string */
   async unsubscribeEvent(id:string): Promise<void> {
     await this.http.request(
       `/api/events/${id}/unsubscribe`,
-      { method: 'POST' },
+      { method: 'DELETE' },
     );
   }
 

@@ -26,7 +26,7 @@ export const SubscribeEventButton = memo(({
       onClick={handleClick}
       disabled={loading}
     >
-      {isSubscribed ? 'Subscribe' : 'Unsubscribe'}
+      {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
     </Button>
   )
 })

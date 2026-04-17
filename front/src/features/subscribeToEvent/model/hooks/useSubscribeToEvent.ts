@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import { useEventsService } from '@/shared/libs/services';
+import { useAppDispatch } from '@/shared/config/redux';
+import { subscribeToEventThunk } from '@/entities/Event/model/thunk/subscribeEvent.thunk.ts';
+import { unsubscribeFromEventThunk } from '@/entities/Event/model/thunk/unsubscribeFromEvent.thunk.ts';
 
 export function useSubscribeToEvent() {
   const [loading, setLoading] = useState(false)
-  const eventsService = useEventsService()
+  const dispatch = useAppDispatch()
 
   const toggleSubscription = async (eventId: string, isSubscribed?: boolean) => {
     setLoading(true)
     try {
       if (isSubscribed) {
-        await eventsService.unsubscribeEvent(eventId)
+        await dispatch(unsubscribeFromEventThunk({ eventId }))
       } else {
-        await eventsService.subscribeEvent(eventId)
+        await dispatch(subscribeToEventThunk({ eventId }))
       }
     } finally {
       setLoading(false)

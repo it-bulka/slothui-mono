@@ -12,6 +12,6 @@ export const unsubscribeEventExtraReducer = (
     event.isSubscribed = false
     event.participantsCount = Math.max(0, event.participantsCount - 1)
 
-    state.subscribed.ids.filter(id => id !== event.id)
+    state.subscribed.ids = state.subscribed.ids.filter(id => id !== event.id)
   })
 }

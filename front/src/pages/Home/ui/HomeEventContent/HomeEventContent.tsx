@@ -32,7 +32,7 @@ export const HomeEventContent = memo(() => {
         organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
         participantsCount={item.participantsCount || 0}
         actions={(
-          <SubscribeEventButton eventId={item.id} />
+          <SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />
         )}
       />
     )
