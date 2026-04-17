@@ -14,5 +14,11 @@
     height: calc(100vh + 100px);
     border-radius: 12px 12px 0;
     z-index: var(--z-index-modal);
-    background: var(--color-light-bg);
+    background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l2) 0%, var(--color-blue-b3) 100%);
+    border: 1px solid var(--color-gray-g3);
+    box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+[data-theme="dark"] .sheet {
+    background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l3) 0%, var(--color-light-l2) 100%);
 }
