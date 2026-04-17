@@ -146,8 +146,8 @@ export const EventDetails = ({
           )}
 
           {/* Actions row */}
-          <div className="flex items-center gap-3 flex-wrap">
-            {onlineUrl && (
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            {onlineUrl ? (
               <a
                 href={onlineUrl}
                 target="_blank"
@@ -159,7 +159,7 @@ export const EventDetails = ({
                 </svg>
                 Join Online
               </a>
-            )}
+            ) : <span />}
             {actions}
           </div>
         </div>
