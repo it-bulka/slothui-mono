@@ -19,7 +19,15 @@ export const EventInfo = memo(({id}: {id: string}) => {
       .catch(() => navigate(RoutePaths.not_found));
   }, [eventsService, id, navigate]);
 
-  if (!eventData) return <p>lading...</p>;
+  if (!eventData) return <p>Loading...</p>;
+
+  const position: [number, number] | null =
+    eventData.location
+      ? [
+          (eventData.location as unknown as { latitude: number; longitude: number }).latitude,
+          (eventData.location as unknown as { latitude: number; longitude: number }).longitude,
+        ]
+      : null;
 
   return (
     <EventDetails
@@ -27,9 +35,16 @@ export const EventInfo = memo(({id}: {id: string}) => {
       title={eventData.title}
       description={eventData.description}
       date={formatDate(eventData.date)}
-      location={eventData.location}
-      position={[7878,99.9]}
+      location={
+        (eventData.location as unknown as { address?: string; city?: string } | undefined)?.address ||
+        (eventData.location as unknown as { city?: string } | undefined)?.city ||
+        undefined
+      }
+      position={position}
       organizer={eventData.organizer}
+      category={eventData.category}
+      coverUrl={eventData.coverUrl}
+      onlineUrl={eventData.onlineUrl}
     />
   )
 })

@@ -34,6 +34,9 @@ export const LikedEventsContent = memo(() => {
               description={item.description}
               date={formatDate(item.date)}
               location={item.location}
+              category={item.category}
+              coverUrl={item.coverUrl}
+              onlineUrl={item.onlineUrl}
               profileLink={isMe ? getMyEventsPage() : getUserPage(item.organizer.id)}
               organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
               participantsCount={item.participantsCount || 0}

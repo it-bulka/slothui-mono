@@ -12,15 +12,18 @@ export const createEventThunk = createAsyncThunk<
   async (data, { extra, rejectWithValue, getState }) => {
     const currentUser = selectAuthUser(getState());
 
-    if(!currentUser) return rejectWithValue('User not authorised')
+    if(!currentUser) {
+      console.error('[createEventThunk] rejected: authUser.data is null — session may have expired')
+      return rejectWithValue('Session expired. Please refresh and log in again.')
+    }
     try {
       const event = await extra.services.events.createEvent(data)
 
       return { event, currentUserId: currentUser.id }
     } catch (e) {
-      return rejectWithValue(
-        extra.extractErrorMessage(e, 'Failed to create event')
-      )
+      const msg = extra.extractErrorMessage(e, 'Failed to create event')
+      console.error('[createEventThunk] HTTP error:', msg, e)
+      return rejectWithValue(msg)
     }
   }
 )

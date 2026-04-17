@@ -6,9 +6,13 @@ import type { CreateEventDTO } from '@/shared/libs/services/eventsService/events
 export const useCreateEvent = () => {
   const dispatch = useAppDispatch();
 
-  const createEvent = useCallback(async (event: CreateEventDTO): Promise<boolean> => {
+  const createEvent = useCallback(async (event: CreateEventDTO): Promise<{ ok: boolean; error?: string }> => {
     const result = await dispatch(createEventThunk(event));
-    return !result.type.endsWith('/rejected');
+    if (result.type.endsWith('/rejected')) {
+      const error = (result.payload as string | undefined) ?? 'Failed to create event'
+      return { ok: false, error }
+    }
+    return { ok: true }
   }, [dispatch]);
 
   return { createEvent };

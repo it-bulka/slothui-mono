@@ -7,7 +7,7 @@ import { memo } from 'react';
 export const CreateEvent = memo(() => {
   const { createEvent } = useCreateEvent();
 
-  const onEventCreate = useCallback(async (event: DraftEvent): Promise<boolean> => {
+  const onEventCreate = useCallback(async (event: DraftEvent): Promise<{ ok: boolean; error?: string }> => {
     let location;
     if(event.latitude && event.longitude) {
       location = {
@@ -20,8 +20,10 @@ export const CreateEvent = memo(() => {
       title: event.title,
       description: event.description,
       isOnline: event.isOnline,
+      onlineUrl: event.isOnline ? (event.onlineUrl || undefined) : undefined,
       location,
-      date: event.date.toISOString()
+      date: event.date.toISOString(),
+      category: event.category,
     })
   }, [createEvent])
 

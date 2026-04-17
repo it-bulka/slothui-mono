@@ -14,11 +14,11 @@ export const CreateEventModal = memo(({ isOpen, onClose }: CreateEventModalProps
   const { handleCreateEvent } = useDraftEvent()
 
   const onCreateEvent = useCallback(async (event: DraftEvent) => {
-    const success = await handleCreateEvent(event)
-    if (success) {
+    const result = await handleCreateEvent(event)
+    if (result.ok) {
       onClose()
     } else {
-      toast.error('Failed to create event. Please try again.')
+      toast.error(result.error ?? 'Failed to create event. Please try again.')
     }
   }, [onClose, handleCreateEvent])
 

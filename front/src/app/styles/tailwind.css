@@ -59,6 +59,10 @@
 }
 
 /* === DARK THEME OVERRIDES === */
+[data-theme="dark"] .card-premium {
+    background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l3) 0%, var(--color-light-l2) 100%);
+}
+
 [data-theme="dark"] {
     --color-gray-g1: #94A3B8;
     --color-gray-g2: #64748B;

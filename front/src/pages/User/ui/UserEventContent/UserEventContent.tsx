@@ -15,6 +15,9 @@ export const UserEventContent = ({ userId }: { userId: string }) => {
       description={item.description}
       date={item.date}
       location={item.location}
+      category={item.category}
+      coverUrl={item.coverUrl}
+      onlineUrl={item.onlineUrl}
       organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
       participantsCount={item.participantsCount || 0}
       actions={(

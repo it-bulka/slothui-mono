@@ -48,6 +48,7 @@ export const EventDateTimePicker = ({ value: selectedDate = new Date(), onChange
         minDate={minDate}
         placeholderText="Select date"
         className="w-[100px] cursor-pointer"
+        popperProps={{ strategy: 'fixed' }}
       />
 
       <Typography bold>Time:</Typography>
@@ -62,6 +63,7 @@ export const EventDateTimePicker = ({ value: selectedDate = new Date(), onChange
         dateFormat="HH:mm"
         placeholderText="Select time"
         className="w-[60px] cursor-pointer"
+        popperProps={{ strategy: 'fixed' }}
       />
     </div>
   );
