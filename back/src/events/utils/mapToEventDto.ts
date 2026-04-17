@@ -20,6 +20,9 @@ export function mapToEventDTO(
     description: event.description,
     date: event.date,
     location: event.location,
+    category: event.category ?? null,
+    coverUrl: event.coverUrl ?? null,
+    onlineUrl: event.onlineUrl ?? null,
     participantsCount: event.participantsCount,
     isSubscribed,
     organizer: {

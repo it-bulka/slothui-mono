@@ -6,8 +6,11 @@ import {
   IsDateString,
   IsNumber,
   ValidateNested,
+  IsEnum,
+  IsUrl,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { EventCategory } from '../enums/event-category.enum';
 
 export class LocationDto {
   @IsOptional()
@@ -48,4 +51,12 @@ export class CreateEventDto {
   @IsDateString()
   @IsNotEmpty()
   date: string;
+
+  @IsOptional()
+  @IsEnum(EventCategory)
+  category?: EventCategory;
+
+  @IsOptional()
+  @IsUrl({ require_tld: false }, { message: 'onlineUrl must be a valid URL' })
+  onlineUrl?: string;
 }

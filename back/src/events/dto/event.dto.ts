@@ -1,3 +1,5 @@
+import { EventCategory } from '../enums/event-category.enum';
+
 export interface EventParticipant {
   id: string;
   avatar: string;
@@ -24,6 +26,9 @@ export interface EventResponseDto {
   description: string;
   date: string;
   location?: Location | null;
+  category?: EventCategory | null;
+  coverUrl?: string | null;
+  onlineUrl?: string | null;
   organizer: {
     id: string;
     username: string;

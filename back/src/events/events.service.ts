@@ -30,6 +30,9 @@ export class EventsService {
       description: dto.description,
       date: dto.date,
       location: dto.location,
+      category: dto.category ?? null,
+      coverUrl: null,
+      onlineUrl: dto.onlineUrl ?? null,
     });
 
     const created = await this.eventsRepo.save(event);
@@ -75,6 +78,9 @@ export class EventsService {
         'event.description AS description',
         'event.date AS date',
         'event.location AS location',
+        'event.category AS category',
+        'event.coverUrl AS "coverUrl"',
+        'event.onlineUrl AS "onlineUrl"',
         'event.participantsCount AS participantsCount',
         'event.createdAt AS createdAt',
         `json_build_object(
@@ -117,6 +123,9 @@ export class EventsService {
         'event.description AS description',
         'event.date AS date',
         'event.location AS location',
+        'event.category AS category',
+        'event.coverUrl AS "coverUrl"',
+        'event.onlineUrl AS "onlineUrl"',
         'event.participantsCount AS participantsCount',
         'event.createdAt AS createdAt',
         `json_build_object(
@@ -200,6 +209,9 @@ export class EventsService {
       description: event.description,
       date: event.date,
       location: event.location,
+      category: event.category ?? null,
+      coverUrl: event.coverUrl ?? null,
+      onlineUrl: event.onlineUrl ?? null,
       organizer: {
         id: event.organizer.id,
         username: event.organizer.username,

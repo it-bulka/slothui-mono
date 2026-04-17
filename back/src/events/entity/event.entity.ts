@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Location } from '../dto/event.dto';
+import { EventCategory } from '../enums/event-category.enum';
 
 @Entity()
 export class Event {
@@ -20,6 +21,15 @@ export class Event {
 
   @Column()
   description: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  category: EventCategory | null;
+
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  coverUrl: string | null;
+
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  onlineUrl: string | null;
 
   @Column({
     type: 'timestamptz',
