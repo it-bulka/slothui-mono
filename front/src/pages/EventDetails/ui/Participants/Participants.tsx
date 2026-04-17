@@ -1,14 +1,16 @@
 import { Avatar, AvatarWithInfo, Button, List, Typography, TypographyTypes } from '@/shared/ui';
 import ArrowUpRightSvg from '@/shared/assets/images/general/arrow-up-right.svg?react'
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useEventsService } from '@/shared/libs/services';
 import type { EventParticipant } from '@/shared/libs/services/eventsService/events.type.ts';
 import { toast } from 'react-toastify'
 
-export const Participants = memo(({ id }: { id: string }) => {
+export const Participants = memo(({ id, refreshKey }: { id: string; refreshKey?: number }) => {
   const eventsService = useEventsService();
   const [participants, setParticipants] = useState<EventParticipant[]>([]);
   const [participantsMeta, setParticipantsMeta] = useState<{cursor?: string | null, hasMore: boolean, totalCount: number}>({ cursor: null, hasMore: true, totalCount: 0 });
+  const [visible, setVisible] = useState(true);
+  const prevRefreshKey = useRef(refreshKey);
 
   const fetchParticipants = useCallback(() => {
     if(!id) return;
@@ -26,8 +28,21 @@ export const Participants = memo(({ id }: { id: string }) => {
     fetchParticipants()
   }, [fetchParticipants, participantsMeta.hasMore]);
 
+  useEffect(() => {
+    if (refreshKey === prevRefreshKey.current) return;
+    prevRefreshKey.current = refreshKey;
+
+    setVisible(false);
+    const t = setTimeout(() => {
+      setParticipants([]);
+      setParticipantsMeta({ cursor: null, hasMore: true, totalCount: 0 });
+      setVisible(true);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [refreshKey]);
+
   return (
-    <section className="rounded-3xl p-5 mt-4 space-y-4 bg-light-l1">
+    <section className={`rounded-3xl p-5 mt-4 space-y-4 bg-light-l1 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
 
       {/* Header */}
       <header className="flex items-center justify-between">

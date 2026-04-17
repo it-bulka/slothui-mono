@@ -15,10 +15,12 @@ interface EventDetailsProps {
   category?: EventCategory | null
   coverUrl?: string | null
   onlineUrl?: string | null
+  participantsCount?: number
   organizer: {
     username: string
     avatar?: string
   }
+  actions?: ReactNode
 }
 
 function MetaBadge({ icon, children }: { icon: ReactNode; children: ReactNode }) {
@@ -40,6 +42,8 @@ export const EventDetails = ({
   category,
   coverUrl,
   onlineUrl,
+  participantsCount,
+  actions,
 }: EventDetailsProps) => {
   const categoryConfig = getCategoryConfig(category)
 
@@ -129,20 +133,35 @@ export const EventDetails = ({
             )}
           </div>
 
-          {/* Join Online button */}
-          {onlineUrl && (
-            <a
-              href={onlineUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-b1 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          {participantsCount !== undefined && (
+            <MetaBadge
+              icon={
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ fill: 'none' }}>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              }
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-              Join Online
-            </a>
+              {participantsCount} participants
+            </MetaBadge>
           )}
+
+          {/* Actions row */}
+          <div className="flex items-center gap-3 flex-wrap">
+            {onlineUrl && (
+              <a
+                href={onlineUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-b1 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Join Online
+              </a>
+            )}
+            {actions}
+          </div>
         </div>
       </section>
 
