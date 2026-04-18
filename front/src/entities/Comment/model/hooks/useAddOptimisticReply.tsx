@@ -17,7 +17,7 @@ export interface AddCommentOptimisticArgs {
 export const useAddOptimisticReply = () => {
   const dispatch = useAppDispatch();
   const store = useAppStore();
-  const { createComment } = useCommentsService()
+  const commentsService = useCommentsService()
 
   const addOptimisticReply = useCallback(async (dto: AddCommentOptimisticArgs) => {
     const user = selectAuthUser(store.getState())
@@ -40,10 +40,10 @@ export const useAddOptimisticReply = () => {
         isEdited: false,
         repliesCount: 0,
         author: {
-          id: 'user.id',
-          nickname: 'user.nickname',
-          username: 'user.username',
-          avatarUrl: 'user.avatarUrl',
+          id: user.id,
+          nickname: user.nickname,
+          username: user.username,
+          avatarUrl: user.avatarUrl,
         },
         isLoading: true
       })
@@ -59,11 +59,13 @@ export const useAddOptimisticReply = () => {
 
     try {
       /** real request */
-      const realComment = await createComment({
+      const realComment = await commentsService.createComment({
         postId: dto.postId,
         parentId: dto.parentId,
         text: dto.text,
       })
+
+      console.log('realComment', realComment)
 
       /** replace temp */
       dispatch(
@@ -72,7 +74,8 @@ export const useAddOptimisticReply = () => {
           realComment,
         })
       )
-    } catch {
+    } catch (err) {
+      console.log('COMMENT err', err)
       /** rollback / error */
       dispatch(
         commentsActions.markCommentFailed({
@@ -84,6 +87,6 @@ export const useAddOptimisticReply = () => {
 
       dto?.onFailed?.()
     }
-  }, [dispatch, store, createComment]);
+  }, [dispatch, store, commentsService]);
   return { addOptimisticReply}
 }

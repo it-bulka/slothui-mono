@@ -18,11 +18,12 @@ export const CommentActions = ({ className }: { className?: string }) => {
     setMsg: setText
   })
 
-  const handleSendComment = useCallback(() => {
+  const handleSendComment = useCallback(async () => {
+    console.log('CLICK on Send Action')
     if(!replyTarget.postId) return
     if(!replyTarget.parentId  && replyTarget.type === 'comment') return;
 
-    sendComment(
+    await sendComment(
       {
         text,
         postId: replyTarget.postId,
@@ -47,7 +48,10 @@ export const CommentActions = ({ className }: { className?: string }) => {
       <div className="flex items-center gap-[6px]">
         <AttachAction />
         <EmojiAction onEmojiClick={handleEmojiClick}/>
-        <SendAction onClick={handleSendComment}/>
+        <SendAction onClick={(e) => {
+          e.stopPropagation()
+          handleSendComment().catch()
+        }}/>
       </div>
     </div>
   )

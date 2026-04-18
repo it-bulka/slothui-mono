@@ -1,11 +1,11 @@
 @reference "../../../../../app/styles/tailwind.css";
 
 .drawer {
-    @apply fixed inset-0 flex items-end opacity-0 pointer-events-none z-[-1];
+    @apply fixed inset-0 flex items-end pointer-events-none z-[-1];
 }
 
 .opened {
-    @apply opacity-100 pointer-events-auto;
+    @apply pointer-events-auto;
     z-index: var(--z-index-modal);
 }
 

@@ -28,21 +28,23 @@ const DrawerContent = memo(({
   onClose,
   children
 }: PropsWithChildren<DrawerProps>) => {
-  const [{ y }, api] = useSpring(() => ({ y: height}))
+  const [{ y, bgOpacity }, api] = useSpring(() => ({
+    y: isOpen ? 0 : height,
+    bgOpacity: isOpen ? 1 : 0
+  }))
 
   const openDrawer = useCallback(() => {
-    api.start({ y: 0, immediate: false })
+    api.start({ y: 0, bgOpacity: 1, immediate: false })
   }, [api])
 
   useEffect(() => {
-    if (isOpen) {
-      openDrawer()
-    }
-  }, [api, isOpen, openDrawer])
+    api.start({ y: isOpen ? 0 : height, bgOpacity: isOpen ? 1 : 0 })
+  }, [isOpen])
 
   const close = (velocity = 0) => {
     api.start({
       y: height,
+      bgOpacity: 0,
       immediate: false,
       config: { ...config.stiff, velocity, precision: 0.0001 },
       onResolve: onClose
@@ -75,28 +77,21 @@ const DrawerContent = memo(({
     }
   )
 
-  if (!isOpen) {
-    return null
-  }
-
-  const display = y.to(py => (py < height ? 'block' : 'none'))
-
   return (
     <Portal>
-      <div className={classnames(cls.drawer, {
-        [cls.opened]: isOpen
-      }, [className, 'app_drawer'])}
+      <animated.div
+        style={{ opacity: bgOpacity }}
+        className={classnames(cls.drawer, { [cls.opened]: isOpen }, [className, 'app_drawer'])}
       >
         <Overlay onClick={close} />
         <animated.div
           className={cls.sheet}
-          style={{ display, bottom: `calc(-100vh + ${height - 100}px)`, y }}
-          {...bind()
-          }
+          style={{ bottom: `calc(-100vh + ${height - 100}px)`, y }}
+          {...bind()}
         >
           {children}
         </animated.div>
-      </div>
+      </animated.div>
     </Portal>
   )
 })
@@ -109,4 +104,3 @@ const DrawerWithAnim = memo((props: PropsWithChildren<DrawerProps>) => {
 })
 
 export const Drawer = withAnimationProvider(DrawerWithAnim)
-

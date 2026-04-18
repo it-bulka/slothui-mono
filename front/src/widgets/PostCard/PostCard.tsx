@@ -3,7 +3,7 @@ import { PostActions } from './PostActions/PostActions.tsx';
 import { PostContent } from './PostContent/PostContent.tsx';
 import { CommentThreadDrawer } from '../PostCommentsThread';
 import type { Attachment } from '@/shared/types';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router';
 
 type BaseProps = {
@@ -28,7 +28,7 @@ type WithoutAuthor = BaseProps & {
 }
 export type PostCardProps =  (WithAuthor | WithoutAuthor)
 
-export const PostCard = ({
+export const PostCard = memo(({
   text,
   images,
   video,
@@ -63,4 +63,4 @@ export const PostCard = ({
       />
     </>
   )
-}
+})
