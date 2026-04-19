@@ -39,7 +39,7 @@ const DrawerContent = memo(({
 
   useEffect(() => {
     api.start({ y: isOpen ? 0 : height, bgOpacity: isOpen ? 1 : 0 })
-  }, [isOpen])
+  }, [api, isOpen])
 
   const close = (velocity = 0) => {
     api.start({
@@ -89,6 +89,7 @@ const DrawerContent = memo(({
           style={{ bottom: `calc(-100vh + ${height - 100}px)`, y }}
           {...bind()}
         >
+          <div className={cls.handle} />
           {children}
         </animated.div>
       </animated.div>

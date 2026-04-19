@@ -10,13 +10,25 @@
 }
 
 .sheet {
-    @apply fixed left-[2vw] w-[96vw] p-[15px] touch-none;
+    @apply fixed left-[2vw] w-[96vw] touch-none;
+    padding: 0 15px 15px;
     height: calc(100vh + 100px);
     border-radius: 12px 12px 0;
     z-index: var(--z-index-modal);
     background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l2) 0%, var(--color-blue-b3) 100%);
     border: 1px solid var(--color-gray-g3);
     box-shadow: 0 8px 24px var(--shadow-color);
+    overflow-y: auto;
+}
+
+.handle {
+    @apply w-10 h-1 rounded-full mx-auto;
+    background-color: var(--color-gray-g3);
+    flex-shrink: 0;
+    margin-block: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 [data-theme="dark"] .sheet {
