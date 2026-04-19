@@ -2,6 +2,7 @@ import { UserShortDTO } from '../../user/dto/user-response.dto';
 
 export interface CommentListItemDTO {
   id: string;
+  postId: string;
   text: string | null;
   parentId: string | null;
   author: UserShortDTO;

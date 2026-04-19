@@ -22,6 +22,7 @@ import { normalizeFiles } from '../common/utils/normalizeFiles';
 import { GetMessagesQuery } from './dto/getMessages.dto';
 import { CreateGeoMessageDto } from '../geo-message/dto/createGeoMessage.dto';
 import { ParseCreateMsgPipe } from './pipe/parseCreateMsg.pipe';
+import { CreateMessageDto } from './dto/createMessage.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('chats/:chatId/messages')
@@ -86,7 +87,7 @@ export class MessagesController {
       postId: dto.postId,
       storyId: dto.storyId,
       eventId: dto.eventId,
-    } as any);
+    } as CreateMessageDto);
 
     this.msgEmitterService.onNewMessage(msg);
     return msg;

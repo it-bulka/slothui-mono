@@ -113,6 +113,7 @@ export class CommentsService {
 
     return comments.map((c) => ({
       id: c.id,
+      postId: c.postId,
       text: c.isDeleted ? null : c.text,
       parentId: c.parentId,
       createdAt: c.createdAt.toISOString(),
