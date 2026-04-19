@@ -9,11 +9,14 @@ import {
   HttpStatus,
   HttpCode,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDTO } from './dto/createComment.dto';
 import { AuthRequest } from '../common/types/user.types';
+import { JwtAuthGuard } from '../auth/guards';
 
+@UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
