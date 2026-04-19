@@ -16,7 +16,7 @@ export const CommentItem = ({ commentId, children, className }: PropsWithChildre
   if (!comment) return null
 
   return (
-    <div className={twMerge(classnames("relative py-1 pl-12", { 'opacity-50': comment.error }, [className]))}>
+    <div className={twMerge(classnames("relative py-1 pl-12", [className]))}>
       {/* thread connector */}
       <div className="absolute left-5 top-6 w-5 h-[calc(100%-18px)] border-l-2 border-b-2 border-gray-g3 rounded-bl-xl pointer-events-none" />
 

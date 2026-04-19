@@ -48,10 +48,7 @@ export const CommentActions = ({ className }: { className?: string }) => {
       <div className="flex items-center gap-[6px]">
         <AttachAction />
         <EmojiAction onEmojiClick={handleEmojiClick}/>
-        <SendAction onClick={(e) => {
-          e.stopPropagation()
-          handleSendComment().catch()
-        }}/>
+        <SendAction onClick={handleSendComment}/>
       </div>
     </div>
   )

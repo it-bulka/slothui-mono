@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+    --animate-comment-enter: comment-enter 0.25s ease both;
+
     /* === COLORS (light theme defaults) === */
     --color-gray-g1: #64748B;          /* text-secondary */
     --color-gray-g2: #94A3B8;          /* text-muted */
@@ -309,6 +311,17 @@
         -webkit-mask-composite: xor;
         mask-composite: exclude;
     }
+    @keyframes comment-enter {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     @keyframes gradient-rotate {
         0% {
             background-position: 0 50%;
