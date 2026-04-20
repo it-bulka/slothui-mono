@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import AttachSvg from '@/shared/assets/images/message/attach.svg?react'
-import { DraftAttachmentsPreview, EmojiAction, SendAction } from '@/features';
+import { DraftExtras, EmojiAction, SendAction } from '@/features';
 import { twMerge } from 'tailwind-merge';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction';
 import { AttachAction } from '../AttachAction';
@@ -67,7 +67,7 @@ const PostTextareaRaw = memo(({ className }: PostTextarea) => {
         <EmojiAction onEmojiClick={handleEmojiClick} />
         <SendAction onClick={handlePostSend} disabled={isPostCreating} />
       </div>
-      <DraftAttachmentsPreview />
+      <DraftExtras />
     </div>
   )
 })
