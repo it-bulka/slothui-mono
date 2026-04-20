@@ -11,7 +11,7 @@ export const createPostExtraReducer = (builder: ActionReducerMapBuilder<PostsSta
       attachments: action.payload.attachments ?? { images: [], video: [], audio: [], file: [] },
     };
     postsAdapter.addOne(state, normalized);
-    state.home.ids.push(normalized.id);
+    state.home.ids.unshift(normalized.id);
 
     const authorId = action.payload.author.id;
     state.profile[authorId] ??= {
