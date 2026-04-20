@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Repository } from 'typeorm';
@@ -193,7 +197,12 @@ export class PostsService {
       isSaved,
       likesCount,
       commentsCount: post.commentsCount,
-      attachments: groupedAttachments,
+      attachments: groupedAttachments ?? {
+        images: [],
+        file: [],
+        audio: [],
+        video: [],
+      },
       poll: groupedPolls.get(post.id),
     };
   }
@@ -364,7 +373,17 @@ export class PostsService {
       text: dto.text || '',
       authorId: dto.authorId,
     });
-    await this.attachmentService.saveAttachments(dto.files, 'post', post.id);
+
+    const saved = await this.attachmentService.saveAttachments(
+      dto.files,
+      'post',
+      post.id,
+    );
+
+    if (!saved.length) {
+      await this.postRepo.delete({ id: post.id });
+      throw new BadRequestException('Failed to upload attachments to storage');
+    }
 
     return await this.getById({ postId: post.id, userId: dto.authorId });
   }

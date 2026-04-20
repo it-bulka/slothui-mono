@@ -126,12 +126,15 @@ export class PostsController {
   }
 
   @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'images', maxCount: 10 },
-      { name: 'audio', maxCount: 5 },
-      { name: 'file', maxCount: 10 },
-      { name: 'video', maxCount: 5 },
-    ]),
+    FileFieldsInterceptor(
+      [
+        { name: 'images', maxCount: 10 },
+        { name: 'audio', maxCount: 5 },
+        { name: 'file', maxCount: 10 },
+        { name: 'video', maxCount: 5 },
+      ],
+      { limits: { fileSize: 10 * 1024 * 1024 } },
+    ),
   )
   @Post()
   async createPost(
