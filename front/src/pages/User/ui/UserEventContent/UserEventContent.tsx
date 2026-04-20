@@ -16,7 +16,7 @@ export const UserEventContent = ({ userId }: { userId: string }) => {
 
   useEffect(() => {
     fetchEventsByUser({ userId })
-  }, [userId])
+  }, [fetchEventsByUser, userId])
 
   if(!events?.length && !isLoading) return <Typography bold>No any event yet</Typography>
 

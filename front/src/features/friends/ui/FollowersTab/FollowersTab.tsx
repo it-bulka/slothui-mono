@@ -32,7 +32,7 @@ export const FollowersTab = memo(({
     dispatch(fetchFollowersThunk({ userId, cursor: null }));
     dispatch(fetchFollowingsThunk({ userId, cursor: null }));
     markSeen();
-  }, [dispatch, userId]);
+  }, [dispatch, markSeen, userId]);
 
   const loadMore = useCallback(() => {
     if (!hasMore || isLoading) return;

@@ -32,7 +32,7 @@ export const Tab = memo(({
     if (activeTabIndex !== undefined && activeTabIndex !== activeElId) {
       setActiveElId(activeTabIndex);
     }
-  }, [activeTabIndex]);
+  }, [activeElId, activeTabIndex]);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const id = useId()
 
