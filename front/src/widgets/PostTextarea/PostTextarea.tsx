@@ -39,8 +39,8 @@ const PostTextareaRaw = memo(({ className }: PostTextarea) => {
           clearExtras();
           clearText()
         })
-        .catch((err: Error) => {
-          toast.error(err.message || 'Send message failed.')
+        .catch((err: unknown) => {
+          toast.error(typeof err === 'string' ? err : (err as Error)?.message || 'Failed to create post')
         });
     } catch (err) {
       toast.error((err as Error).message || 'Send message failed.')
