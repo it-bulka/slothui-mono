@@ -1,7 +1,6 @@
 import ContactsSvg from '@/shared/assets/images/actions/contacts.svg?react'
 import CameraSvg from '@/shared/assets/images/actions/camera.svg?react'
 import {
-  CreateEventButton,
   CreateGeoButton,
   CreatePollButton,
   UploadDocumentButton,
@@ -9,8 +8,6 @@ import {
   UploadAudioButton,
   PollDraftProvider,
   type PollDraft,
-  DraftEventProvider,
-  type DraftEvent
 } from '@/features';
 
 import { ActionButton } from '@/shared/ui';
@@ -23,7 +20,7 @@ import { toast } from 'react-toastify'
 
 //TODO: remove to widgets
 export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) => {
-  const { addAttachments, setGeo, setPoll, setEvent } = useDraftMessageExtras()
+  const { addAttachments, setGeo, setPoll } = useDraftMessageExtras()
 
   const onFilesSelected = useCallback((type: DraftAttachmentType)=> (files: File[]) => {
     const error = addAttachments(type, files);
@@ -44,11 +41,6 @@ export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) 
     onBtnClick?.()
   }, [setPoll, onBtnClick]);
 
-  const onEventCreate = useCallback((event: DraftEvent) => {
-    setEvent(event)
-    onBtnClick?.()
-  }, [setEvent, onBtnClick]);
-
   return (
     <div className="grid grid-cols-4 gap-2 bg-white px-2 py-4 rounded-lg border-gray-g2 shadow">
       <UploadPhotosButton onFilesSelect={onFilesSelected('images')} />
@@ -62,9 +54,6 @@ export const AttachActionsPopup  = ({ onBtnClick }: { onBtnClick?: () => void}) 
       <PollDraftProvider onPollCreate={onPollCreate}>
         <CreatePollButton />
       </PollDraftProvider>
-      <DraftEventProvider onEventCreate={onEventCreate}>
-        <CreateEventButton />
-      </DraftEventProvider>
     </div>
   )
 }
