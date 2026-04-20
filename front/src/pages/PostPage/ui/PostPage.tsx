@@ -37,6 +37,7 @@ const PostPage = () => {
         audio={post.attachments?.audio}
         images={post.attachments?.images}
         text={post.text}
+        poll={post.poll}
       />
     </div>
   );

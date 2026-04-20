@@ -58,6 +58,7 @@ export const MyFeedContent = memo(() => {
           audio={post.attachments?.audio}
           images={post.attachments?.images}
           text={post.text}
+          poll={post.poll}
         />
       ))}
       {isPostCreating && <Typography bold className="text-center">Loading more...</Typography>}
