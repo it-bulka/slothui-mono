@@ -82,9 +82,7 @@ export const usePollForm = ({ limit = 4, onSubmit }: { limit?: number, onSubmit?
     const last = values[values.length - 1]
     if(last === '') values.pop()
 
-    console.log('onSubmit props', onSubmit)
-    onSubmit?.(data)
-    console.log('✅ valid poll', data);
+    onSubmit?.({ ...data, answers: data.answers.filter(a => a.value.trim() !== '') })
   })
 
   const isNoEmptyInput = useMemo(() => {
