@@ -14,6 +14,7 @@ export {
   useProfileFeedStateSelector,
   useFetchPostsByUser,
   useFetchMyPosts,
-  useCreatePost
+  useCreatePost,
+  useUpdatePollInPost
 } from './hooks';
 export { fetchFeedPostsThunk, createPostThunk } from './thunks';

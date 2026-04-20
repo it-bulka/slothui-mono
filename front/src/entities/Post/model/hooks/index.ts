@@ -13,3 +13,4 @@ export { useProfilePostsSelector } from './useProfilePostsSelector.ts';
 export { useFetchPostsByUser } from './useFetchPostsByUser.ts';
 export { useFetchMyPosts } from './useFetchMyPosts.ts';
 export { useCreatePost } from './useCreatePost.ts';
+export { useUpdatePollInPost } from './useUpdatePollInPost.ts';
