@@ -82,18 +82,26 @@ export class PollsService {
 
     const pollIds = pollsEntities.map((p) => p.id);
 
-    const [groupedUserAnswerIds, groupedVotersPreview] = await Promise.all([
-      this.getGroupedAnswersIdsByPoll(pollIds, currentUserId),
-      this.getVotersPreview(pollIds, 3),
-    ]);
+    const [groupedUserAnswerIds, groupedVotersPreview, uniqueVotersRaw] =
+      await Promise.all([
+        this.getGroupedAnswersIdsByPoll(pollIds, currentUserId),
+        this.getVotersPreview(pollIds, 3),
+        this.voteRepo
+          .createQueryBuilder('vote')
+          .select('vote.pollId', 'pollId')
+          .addSelect('COUNT(DISTINCT vote.userId)', 'count')
+          .where('vote.pollId IN (:...pollIds)', { pollIds })
+          .groupBy('vote.pollId')
+          .getRawMany<{ pollId: string; count: string }>(),
+      ]);
 
     const votesByAnswerId = this._buildVotesByAnswerId(pollsRaw);
+    const uniqueVotersByPollId = new Map(
+      uniqueVotersRaw.map((r) => [r.pollId, Number(r.count)]),
+    );
 
     return pollsEntities.map((poll) => {
-      const totalPollVotes = this._countTotalVotes(
-        poll.answers,
-        votesByAnswerId,
-      );
+      const totalUniqueVoters = uniqueVotersByPollId.get(poll.id) ?? 0;
 
       const answers: PollAnswerDto[] = poll.answers.map((answer) => {
         const answerVotesCount = votesByAnswerId.get(answer.id) || 0;
@@ -102,8 +110,8 @@ export class PollsService {
           index: answer.index,
           value: answer.value,
           votes: answerVotesCount,
-          percentage: answerVotesCount
-            ? Math.round((answerVotesCount / Number(totalPollVotes)) * 100)
+          percentage: totalUniqueVoters
+            ? Math.round((answerVotesCount / totalUniqueVoters) * 100)
             : 0,
           voters: poll.anonymous ? [] : groupedVotersPreview[answer.id],
         };
@@ -117,7 +125,7 @@ export class PollsService {
         parentType: poll.parentType,
         parentId: poll.parentId,
         answers,
-        votesCount: totalPollVotes,
+        votesCount: totalUniqueVoters,
         userVote,
       };
     });
@@ -133,19 +141,24 @@ export class PollsService {
     });
     if (!poll) return null;
 
-    const votesByAnswerId = new Map<string, number>();
-    const userVoteIds = await this.getGroupedAnswersIdsByPoll(
-      [poll.id],
-      currentUserId,
-    );
+    const [userVoteIds, uniqueVotersRaw] = await Promise.all([
+      this.getGroupedAnswersIdsByPoll([poll.id], currentUserId),
+      this.voteRepo
+        .createQueryBuilder('vote')
+        .select('COUNT(DISTINCT vote.userId)', 'count')
+        .where('vote.pollId = :pollId', { pollId: poll.id })
+        .getRawOne<{ count: string }>(),
+    ]);
+    const totalUniqueVoters = Number(uniqueVotersRaw?.count ?? 0);
 
     const answers: PollAnswerDto[] = await Promise.all(
       poll.answers.map(async (answer) => {
-        // total votes
         const votesCount = await this.voteRepo.count({
           where: { answer: { id: answer.id } },
         });
-        votesByAnswerId.set(answer.id, votesCount);
+        const percentage = totalUniqueVoters
+          ? Math.round((votesCount / totalUniqueVoters) * 100)
+          : 0;
 
         if (poll.anonymous) {
           return {
@@ -153,30 +166,24 @@ export class PollsService {
             index: answer.index,
             value: answer.value,
             votes: votesCount,
-            percentage: 0, // optional, можна рахуємо нижче
+            percentage,
             voters: [],
             nextCursor: null,
             hasMore: false,
           };
         }
 
-        // preview
         const { voters, nextCursor, hasMore } = await this._getVotersForAnswer(
           poll.id,
           answer.id,
           10,
         );
-        const totalPollVotes = await this.voteRepo.count({
-          where: { poll: { id: poll.id } },
-        });
         return {
           id: answer.id,
           index: answer.index,
           value: answer.value,
           votes: votesCount,
-          percentage: totalPollVotes
-            ? Math.round((votesCount / totalPollVotes) * 100)
-            : 0, // можна по totalPollVotes
+          percentage,
           voters,
           nextCursor,
           hasMore,
@@ -192,10 +199,7 @@ export class PollsService {
       parentType: poll.parentType,
       parentId: poll.parentId,
       answers,
-      votesCount: Array.from(votesByAnswerId.values()).reduce(
-        (a, b) => a + b,
-        0,
-      ),
+      votesCount: totalUniqueVoters,
       userVote: userVoteIds[poll.id] ?? [],
     };
   }
@@ -281,13 +285,15 @@ export class PollsService {
       );
     }
 
-    const pollAnswers = selectedAnswers.map((answerId) => {
-      return this.voteRepo.create({
+    await this.voteRepo.delete({ poll: { id: pollId }, user: { id: userId } });
+
+    const pollAnswers = selectedAnswers.map((answerId) =>
+      this.voteRepo.create({
         poll: { id: pollId },
         user: { id: userId },
         answer: { id: answerId },
-      });
-    });
+      }),
+    );
 
     await this.voteRepo.save(pollAnswers);
 
@@ -346,16 +352,6 @@ export class PollsService {
     });
 
     return map;
-  }
-
-  private _countTotalVotes(
-    answers: PollAnswer[],
-    votesByAnswerId: Map<string, number>, // <answerId, count>
-  ) {
-    return answers.reduce(
-      (sum, answer) => sum + (votesByAnswerId.get(answer.id) ?? 0),
-      0,
-    );
   }
 
   private async _getVotersForAnswer(
