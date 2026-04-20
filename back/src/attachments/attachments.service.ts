@@ -157,7 +157,7 @@ export class AttachmentsService {
     if (files.file) {
       const uploadedFile = await this.cloudinaryService.uploadFilesStream(
         files.file,
-        'posts/file',
+        `${PROJECT_FOLDER}/posts/file`,
       );
 
       uploadedFile.forEach(({ file, result }) => {

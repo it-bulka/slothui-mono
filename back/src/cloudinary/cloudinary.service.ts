@@ -96,7 +96,11 @@ export class CloudinaryService implements OnModuleInit {
       try {
         const result = await this.uploadFileStream(file, folder);
         return { file, result };
-      } catch {
+      } catch (err) {
+        console.error(
+          `[Cloudinary] upload failed — folder: "${folder}", file: "${file.originalname}", mimetype: "${file.mimetype}"`,
+          err,
+        );
         return { file, result: null };
       }
     });
