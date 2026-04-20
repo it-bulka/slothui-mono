@@ -101,8 +101,8 @@ export class PostsService {
     const groupedAttachments =
       this.attachmentService.groupByTypeAndParentId(attachments);
 
-    const polls = targetUserId
-      ? await this.pollsService.getMany('post', postIds, targetUserId)
+    const polls = userId
+      ? await this.pollsService.getMany('post', postIds, userId)
       : [];
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
