@@ -78,8 +78,9 @@ export class CommentsService {
   // REPLIES
   /** GET /api/comments/:commentId/replies  */
   async fetchReplies({ parentId: commentId, cursor }: GetReplyDto): Promise<CommentsPaginated> {
+    const query = cursor ? `?cursor=${cursor}` : ''
     return await this.http.request<CommentsPaginated>(
-      `/api/comments/${commentId}/replies?cursor=${cursor}`,
+      `/api/comments/${commentId}/replies${query}`,
       { }
     );
   }

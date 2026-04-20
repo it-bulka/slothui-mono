@@ -9,8 +9,12 @@ export const fetchPostComments = createAsyncThunk<
   ThunkAPI
 >(
   'comment/fetchPostComments',
-  async ({ postId, cursor }, { extra }) => {
-  const res = await extra.services.comments.fetchPostComments({ postId, cursor })
-  return { postId, ...res }
-})
-
+  async ({ postId, cursor }, { extra, rejectWithValue }) => {
+    try {
+      const res = await extra.services.comments.fetchPostComments({ postId, cursor })
+      return { postId, ...res }
+    } catch {
+      return rejectWithValue('Fetching comments failed')
+    }
+  }
+)
