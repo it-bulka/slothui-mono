@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { useSetActiveChatId } from '@/entities';
+import { useSetActiveChatId, useFetchMyChats, useActiveChatDataSelector } from '@/entities';
 
 export const useManageActiveChatId = (chatId?: string) => {
   const { setActiveChatId }  = useSetActiveChatId()
+  const { fetchMyChats } = useFetchMyChats()
+  const chat = useActiveChatDataSelector()
 
   useEffect(() => {
     if(!chatId) return
@@ -10,4 +12,10 @@ export const useManageActiveChatId = (chatId?: string) => {
 
     return () => setActiveChatId(null)
   }, [setActiveChatId, chatId])
+
+  useEffect(() => {
+    if (chatId && !chat) {
+      fetchMyChats()
+    }
+  }, [chatId, chat, fetchMyChats])
 }
