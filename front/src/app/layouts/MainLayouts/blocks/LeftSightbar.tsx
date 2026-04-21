@@ -4,13 +4,16 @@ import { NavigationSearchBar, NavBar } from '@/widgets';
 
 export const LeftSidebar = () => {
   return (
-    <ScrollableBlock className={"px-4 py-8 flex flex-col gap-4 border-style-r bg-light-l2"}>
+    <aside className={"px-4 py-8 flex flex-col gap-4 border-style-r bg-light-l2 h-screen overflow-y-auto scrollbar-hide"}>
       <Logo />
       <NavigationSearchBar />
-      <NavBar className="grow" />
+      <ScrollableBlock className="grow">
+        <NavBar  />
 
-      <Divider className={"my-6"}/>
-      <UserAuth />
-    </ScrollableBlock>
+        <Divider className={"my-6"}/>
+        <UserAuth />
+      </ScrollableBlock>
+
+    </aside>
   )
 }
