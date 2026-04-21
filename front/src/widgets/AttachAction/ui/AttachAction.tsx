@@ -1,10 +1,14 @@
 import { ActionButton } from '@/shared/ui';
 import AttachSvg from '@/shared/assets/images/message/attach.svg?react'
 import { useBtnPopup } from '@/shared/hooks';
-import { useLayoutEffect, useRef } from 'react';
-import { AttachActionsPopup } from './ActionPopup.tsx';
+import { memo, useLayoutEffect, useRef } from 'react';
+import { AttachActionsPopup, type AttachActionKey } from './ActionPopup.tsx';
 
-export const AttachAction = () => {
+interface Props {
+  actions?: AttachActionKey[]
+}
+
+const AttachActionBase = ({ actions }: Props) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context, close } = useBtnPopup({ defaultState: false })
@@ -29,10 +33,13 @@ export const AttachAction = () => {
             style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
             className="z-actions-popup"
           >
-            <AttachActionsPopup onBtnClick={close}/>
+            <AttachActionsPopup onBtnClick={close} actions={actions}/>
           </div>
         )
       }
     </>
   )
 }
+
+export const AttachAction = memo(AttachActionBase)
+AttachAction.displayName = 'AttachAction'

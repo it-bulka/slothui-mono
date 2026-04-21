@@ -1,6 +1,5 @@
 import { Input, Avatar } from '@/shared/ui';
 import { SendAction, EmojiAction } from '@/features';
-import { AttachAction } from '../AttachAction';
 import { useState, useCallback } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useSelectReplyTargetAuthor } from './model/hooks/useSelectReplyTargetAuthor.ts';
@@ -46,7 +45,6 @@ export const CommentActions = ({ className }: { className?: string }) => {
         wrapperClass="grow mr-2"
       />
       <div className="flex items-center gap-[6px]">
-        <AttachAction />
         <EmojiAction onEmojiClick={handleEmojiClick}/>
         <SendAction onClick={handleSendComment}/>
       </div>

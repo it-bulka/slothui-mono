@@ -62,7 +62,7 @@ const PostTextareaRaw = memo(({ className }: PostTextarea) => {
       />
 
       <div className="flex items-center justify-end gap-[6px] w-full">
-        <AttachAction />
+        <AttachAction actions={['photos', 'document', 'poll']}/>
 
         <EmojiAction onEmojiClick={handleEmojiClick} />
         <SendAction onClick={handlePostSend} disabled={isPostCreating} />
