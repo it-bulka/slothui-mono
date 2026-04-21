@@ -2,7 +2,9 @@ import { type FriendEntity, useAuthUserIdSelector } from '@/entities';
 import { DeleteFollowerButton, UnfollowButton, FollowButton } from '../../ui';
 import { useAppSelector } from '@/shared/config/redux';
 
-export const useFriendActions = (tab: 'followers' | 'followings') => {
+type FriendActionsMode = 'followers' | 'followings' | 'suggestions';
+
+export const useFriendActions = (tab: FriendActionsMode) => {
   const currentUserId = useAuthUserIdSelector();
   const followingIds = useAppSelector(
     state => state.friends.followingsByUser[currentUserId ?? '']?.ids ?? []
@@ -21,6 +23,11 @@ export const useFriendActions = (tab: 'followers' | 'followings') => {
 
     if (tab === 'followings') {
       return <UnfollowButton userId={friend.id} />;
+    }
+
+    if (tab === 'suggestions') {
+      const isAlreadyFollowing = followingIds.includes(friend.id);
+      return !isAlreadyFollowing ? <FollowButton userId={friend.id} /> : null;
     }
 
     return null;

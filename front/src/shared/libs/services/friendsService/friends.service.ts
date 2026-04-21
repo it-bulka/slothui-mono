@@ -64,7 +64,7 @@ export class FriendsService {
   /** GET /api/friends/suggestion */
   async getSuggestions({ cursor, userId }: { cursor?: string | null, userId?: string } = {}): Promise<PaginatedResponse<FriendDto>> {
     return await this.http.request<PaginatedResponse<FriendDto>>(
-      this.BASE_URL + '/suggestion',
+      this.BASE_URL + '/suggestions',
       { params: { cursor, userId }, },
     );
   }

@@ -18,7 +18,7 @@ export const fetchSuggestionsExtraReducer = (builder: ActionReducerMapBuilder<Fr
         items.map(mapFollowerDtoToEntity)
       )
 
-      state.suggestions.ids.push(...items.map((u) => u.id))
+      state.suggestions.ids = items.map((u) => u.id)
       state.suggestions.hasMore = hasMore
       state.suggestions.isLoading = false
       state.suggestions.nextCursor = nextCursor

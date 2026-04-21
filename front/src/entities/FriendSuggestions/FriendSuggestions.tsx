@@ -6,6 +6,7 @@ import { useLocation } from 'react-router';
 import { memo, useEffect } from 'react';
 import { useFetchFriendsSuggestions, useSuggestedFriendsSelect } from '../Friends';
 import { useAuthUserSelector } from '../AuthUser';
+import { pickRandom } from '@/shared/libs';
 
 export const FriendSuggestions = memo(() => {
   const location = useLocation()
@@ -24,14 +25,13 @@ export const FriendSuggestions = memo(() => {
 
   return (
     <div>
-      {/*TODO: add redirection*/}
       <BlockTitle
         title="Friend Suggestions"
         withMargin
         customBtn={(<AppLink to={getFriendsSuggestionsPage()} className="text-lg font-bold">See All</AppLink>)}
       />
 
-      <FriendsListWithActions friends={friendsSuggestions} />
+      <FriendsListWithActions friends={pickRandom(friendsSuggestions, 2)} />
     </div>
   );
 })
