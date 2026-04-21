@@ -11,7 +11,7 @@ const applyTheme = (theme: Theme) => {
 };
 
 const getStoredTheme = (): Theme =>
-  (localStorage.getItem('theme') as Theme) ?? 'light';
+  (localStorage.getItem('theme') as Theme) ?? 'dark';
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<Theme>(getStoredTheme);
