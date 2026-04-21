@@ -34,7 +34,7 @@ const MessageInputComp = ({ className }: MessageInputProps) => {
             ref={setPopupWrapperRef}
             {...getFloatingProps()}
             style={floatingStyle}
-            className="max-h-[70%] max-w-full p-2 pb-4 rounded-md bg-gray-100 z-[999999]"
+            className="max-h-[70%] max-w-full p-2 pb-4 rounded-md z-[999999] bg-light-l2"
           >
            <DraftExtras />
           </div>
