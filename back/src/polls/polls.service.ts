@@ -81,6 +81,7 @@ export class PollsService {
       }>();
 
     const pollIds = pollsEntities.map((p) => p.id);
+    if (!pollIds.length) return [];
 
     const [groupedUserAnswerIds, groupedVotersPreview, uniqueVotersRaw] =
       await Promise.all([
