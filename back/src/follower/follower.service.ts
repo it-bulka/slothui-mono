@@ -220,14 +220,16 @@ export class FollowerService {
   async getSuggestions({
     currentUserId,
     limit = 15,
-    cursor,
   }: {
     currentUserId: string;
     limit?: number;
     cursor?: string;
-  }): Promise<{ items: FriendDto[]; nextCursor: string | null }> {
-    // Створюємо queryBuilder для user
-    const qb = this.userRepo
+  }): Promise<{
+    items: FriendDto[];
+    nextCursor: string | null;
+    hasMore: boolean;
+  }> {
+    const users = await this.userRepo
       .createQueryBuilder('user')
       .where('user.id != :currentUserId', { currentUserId })
       .andWhere((qb) => {
@@ -239,20 +241,9 @@ export class FollowerService {
           .getQuery();
         return 'user.id NOT IN ' + subQuery;
       })
-      .orderBy('user.createdAt', 'DESC')
-      .take(limit + 1); // +1 for nextCursor
-
-    if (cursor) {
-      qb.andWhere('user.createdAt < :cursor', { cursor: new Date(cursor) });
-    }
-
-    const users = await qb.getMany();
-
-    let nextCursor: string | null = null;
-    if (users.length > limit) {
-      const nextItem: User = users.pop()!;
-      nextCursor = nextItem.createdAt.toISOString();
-    }
+      .orderBy('RANDOM()')
+      .take(limit)
+      .getMany();
 
     const items: FriendDto[] = users.map((u) => ({
       id: u.id,
@@ -264,7 +255,7 @@ export class FollowerService {
       createdAt: u.createdAt.toISOString(),
     }));
 
-    return { items, nextCursor };
+    return { items, nextCursor: null, hasMore: false };
   }
 
   async getFollowersViewed(currentUserId: string) {
