@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
-import { initAuthUser, authUserActions } from '@/entities';
+import { initAuthUser, authUserActions, fetchNotificationsCountersThunk } from '@/entities';
 import { TokenManager } from '@/shared/libs/services/tokenManager/TokenManager.ts';
 
 export const InitBootstrap = () => {
@@ -16,6 +16,7 @@ export const InitBootstrap = () => {
 
     if (new TokenManager().getToken()) {
       dispatch(initAuthUser());
+      dispatch(fetchNotificationsCountersThunk());
     } else {
       dispatch(authUserActions.setInitialized());
     }

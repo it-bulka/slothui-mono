@@ -4,3 +4,4 @@ export {
   useUnreadMessagesByChatSelect,
   useUnreadMessagesTotalSelect
 } from './hooks';
+export { fetchNotificationsCountersThunk } from './thunks/fetchNotificationsCounters.thunk.ts';

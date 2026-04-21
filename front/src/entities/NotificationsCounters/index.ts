@@ -3,5 +3,6 @@ export {
   useNewFollowersCountSelect,
   useUnreadMessagesByChatSelect,
   useUnreadMessagesTotalSelect,
-  notificationsCountersActions
+  notificationsCountersActions,
+  fetchNotificationsCountersThunk
 } from './model';

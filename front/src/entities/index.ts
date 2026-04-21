@@ -148,7 +148,8 @@ export {
   useNewFollowersCountSelect,
   useUnreadMessagesByChatSelect,
   useUnreadMessagesTotalSelect,
-  notificationsCountersActions
+  notificationsCountersActions,
+  fetchNotificationsCountersThunk
 } from './NotificationsCounters';
 export { useFetchFriendsSuggestions } from './Friends';
 export {
