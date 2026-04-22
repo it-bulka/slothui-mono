@@ -26,3 +26,6 @@ dist-ssr
 .env
 
 hw-8/uploads/**/*
+
+*storybook.log
+storybook-static
