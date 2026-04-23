@@ -31,6 +31,7 @@ import { MailerModule } from './mailer/mailer.module';
 import { SessionModule } from './session/session.module';
 import { GeoMessageModule } from './geo-message/geo-message.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    RedisModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => {
         return {
