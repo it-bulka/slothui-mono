@@ -14,6 +14,8 @@ import { EntityManager } from 'typeorm';
 import { PollResultDto, PollVoter } from './dto/poll.dto';
 import { PollAnswerDto } from './dto/poll.dto';
 import { UserShortDTO } from '../user/dto/user-response.dto';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class PollsService {
@@ -24,6 +26,7 @@ export class PollsService {
     private readonly answerRepo: Repository<PollAnswer>,
     @InjectRepository(PollVote)
     private readonly voteRepo: Repository<PollVote>,
+    private readonly cache: RedisService,
   ) {}
 
   async createPoll(
@@ -58,7 +61,6 @@ export class PollsService {
   ): Promise<PollResultDto[]> {
     if (!parentIds.length) return [];
 
-    // polls with answers and votes
     const { entities: pollsEntities, raw: pollsRaw } = await this.pollRepo
       .createQueryBuilder('poll')
       .leftJoinAndSelect('poll.answers', 'answer')
@@ -76,7 +78,7 @@ export class PollsService {
       .where('poll.parentType = :parentType', { parentType })
       .andWhere('poll.parentId IN (:...ids)', { ids: parentIds })
       .getRawAndEntities<{
-        votes: string; // COUNT as string
+        votes: string;
         answer_id: string;
       }>();
 
@@ -136,6 +138,10 @@ export class PollsService {
     pollId: string,
     currentUserId: string,
   ): Promise<PollResultDto | null> {
+    const key = `${CACHE_KEYS.poll(pollId)}:${currentUserId}`;
+    const cached = await this.cache.get<PollResultDto>(key);
+    if (cached) return cached;
+
     const poll = await this.pollRepo.findOne({
       where: { id: pollId },
       relations: ['answers'],
@@ -192,7 +198,7 @@ export class PollsService {
       }),
     );
 
-    return {
+    const result: PollResultDto = {
       id: poll.id,
       question: poll.question,
       anonymous: poll.anonymous,
@@ -203,11 +209,11 @@ export class PollsService {
       votesCount: totalUniqueVoters,
       userVote: userVoteIds[poll.id] ?? [],
     };
+
+    await this.cache.set(key, result, 300);
+    return result;
   }
 
-  /**
-   * get answers ids grouped by poll id
-   */
   async getGroupedAnswersIdsByPoll(pollIds: string[], userId: string) {
     if (!pollIds.length) return {};
 
@@ -298,25 +304,15 @@ export class PollsService {
 
     await this.voteRepo.save(pollAnswers);
 
+    await Promise.all([
+      this.cache.delByPattern(`${CACHE_KEYS.poll(pollId)}:*`),
+      this.cache.delByPattern(`poll:voters:${pollId}:*`),
+    ]);
+
     const updatedPollData = await this.getOnePoll(poll.id, userId);
     if (!updatedPollData) {
       throw new NotFoundException(`pollId ${pollId} not found`);
     }
-
-    // TODO: add WS broadcast
-    /*
-    // for updating for others user via WS
-    const updatedPollDataWs: PollVotesUpdateDto = {
-      pollId: updatedPollData.id,
-      votesCount: updatedPollData.votesCount,
-      answers: updatedPollData.answers.map((a) => ({
-        id: a.id,
-        votes: a.votes,
-        percentage: a.percentage,
-      })),
-    };
-    wsServer.broadcastToPollSubscribers(pollId, updatedPollDataWs);
-    */
 
     return updatedPollData;
   }
@@ -335,16 +331,25 @@ export class PollsService {
     nextCursor?: string | null;
     hasMore: boolean;
   }> {
+    const key = `${CACHE_KEYS.pollVoters(pollId, answerId)}:${cursor || ''}`;
+    const cached = await this.cache.get<{
+      items: UserShortDTO[];
+      nextCursor?: string | null;
+      hasMore: boolean;
+    }>(key);
+    if (cached) return cached;
+
     const { voters, nextCursor, hasMore } = await this._getVotersForAnswer(
       pollId,
       answerId,
       limit,
       cursor,
     );
-    return { items: voters, nextCursor, hasMore };
+    const result = { items: voters, nextCursor, hasMore };
+    await this.cache.set(key, result, 120);
+    return result;
   }
 
-  // helpers
   private _buildVotesByAnswerId(raw: { answer_id: string; votes: string }[]) {
     const map = new Map<string, number>();
 
@@ -378,7 +383,7 @@ export class PollsService {
       });
     }
 
-    const votes = await qb.take(limit + 1).getMany(); // +1 для hasMore
+    const votes = await qb.take(limit + 1).getMany();
 
     const hasMore = votes.length > limit;
     const voters = votes.slice(0, limit).map((v) => ({

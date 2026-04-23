@@ -16,6 +16,8 @@ import { EntityManager } from 'typeorm';
 import { PollsService } from '../polls/polls.service';
 import { CreatePostCommand } from './dto/createPost.dto';
 import { GetPostsParams } from './getPostParams';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class PostsService {
@@ -28,6 +30,7 @@ export class PostsService {
     private readonly postSaveRepo: Repository<PostSave>,
     private readonly attachmentService: AttachmentsService,
     private readonly pollsService: PollsService,
+    private readonly cache: RedisService,
   ) {}
 
   async getMany(params: GetPostsParams): Promise<PostPaginatedRes> {
@@ -47,7 +50,6 @@ export class PostsService {
       qb.where('post.createdAt < :cursor', { cursor: cursorDate });
     }
 
-    // filters
     if (onlyMe && userId) {
       qb.andWhere('post.authorId = :me', { me: userId });
     } else if (targetUserId) {
@@ -56,7 +58,6 @@ export class PostsService {
       qb.andWhere('post.authorId IN (:...friends)', { friends: friendsIds });
     }
 
-    // isLiked / isSaved for currentUser
     if (userId) {
       qb.addSelect(
         `EXISTS (
@@ -96,7 +97,6 @@ export class PostsService {
     const lastPost = visiblePosts[visiblePosts.length - 1];
     const postIds = visiblePosts.map((p) => p.id);
 
-    // include attachments & polls
     const attachments = await this.attachmentService.getMany('post', postIds);
     const groupedAttachments =
       this.attachmentService.groupByTypeAndParentId(attachments);
@@ -130,6 +130,10 @@ export class PostsService {
     postId: string;
     userId: string;
   }): Promise<PostDto> {
+    const key = `${CACHE_KEYS.post(postId)}:${userId}`;
+    const cached = await this.cache.get<PostDto>(key);
+    if (cached) return cached;
+
     const { entities, raw } = await this.postRepo
       .createQueryBuilder('post')
       .leftJoin('post.author', 'author')
@@ -189,7 +193,7 @@ export class PostsService {
     const polls = await this.pollsService.getMany('post', [postId], userId);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
 
-    return {
+    const result: PostDto = {
       id: post.id,
       author: UserMapper.toResponse(post.author),
       text: post.text,
@@ -205,6 +209,9 @@ export class PostsService {
       },
       poll: groupedPolls.get(post.id),
     };
+
+    await this.cache.set(key, result, 120);
+    return result;
   }
 
   async setLike(postId: string, userId: string) {
@@ -217,6 +224,8 @@ export class PostsService {
       post: { id: postId },
       user: { id: userId },
     });
+
+    await this.cache.delByPattern(`post:${postId}:*`);
   }
 
   async deleteLike(postId: string, userId: string) {
@@ -224,6 +233,8 @@ export class PostsService {
       post: { id: postId },
       user: { id: userId },
     });
+
+    await this.cache.delByPattern(`post:${postId}:*`);
   }
 
   async countLikes(postId: string): Promise<number> {
@@ -242,6 +253,8 @@ export class PostsService {
       post: { id: postId },
       user: { id: userId },
     });
+
+    await this.cache.delByPattern(`post:${postId}:*`);
   }
 
   async deleteSave(postId: string, userId: string) {
@@ -249,6 +262,8 @@ export class PostsService {
       post: { id: postId },
       user: { id: userId },
     });
+
+    await this.cache.delByPattern(`post:${postId}:*`);
   }
 
   async countSaves(postId: string): Promise<number> {
@@ -363,7 +378,14 @@ export class PostsService {
       text: dto.text,
       author: { id: dto.authorId },
     });
-    return await repo.save(post);
+    const saved = await repo.save(post);
+
+    await Promise.all([
+      this.cache.delByPattern(`posts:feed:${dto.authorId}:*`),
+      this.cache.del(CACHE_KEYS.postCount(dto.authorId)),
+    ]);
+
+    return saved;
   }
 
   async createPostWithAttachments(
@@ -391,7 +413,6 @@ export class PostsService {
   async createPostWithPoll(
     dto: Extract<CreatePostCommand, { type: 'poll' }>,
   ): Promise<PostDto> {
-    //TODO: add poll
     const post = await this.createPostText({
       text: dto.text || '',
       authorId: dto.authorId,
@@ -438,15 +459,27 @@ export class PostsService {
     ]);
     await this.attachmentService.deleteMany(attachments);
 
+    await Promise.all([
+      this.cache.delByPattern(`post:${postId}:*`),
+      this.cache.delByPattern(`posts:feed:${userId}:*`),
+      this.cache.del(CACHE_KEYS.postCount(userId)),
+    ]);
+
     return deleted;
   }
 
   async countPosts(userId: string) {
-    return await this.postRepo.count({
+    const key = CACHE_KEYS.postCount(userId);
+    const cached = await this.cache.get<number>(key);
+    if (cached !== null) return cached;
+
+    const count = await this.postRepo.count({
       where: {
         author: { id: userId },
       },
     });
+    await this.cache.set(key, count, 300);
+    return count;
   }
 
   async findById(postId: string): Promise<Post | null> {

@@ -28,4 +28,21 @@ export class RedisService {
   async exists(key: string): Promise<boolean> {
     return (await this.redis.exists(key)) === 1;
   }
+
+  async delByPattern(pattern: string): Promise<void> {
+    let cursor = '0';
+    do {
+      const [nextCursor, keys] = await this.redis.scan(
+        cursor,
+        'MATCH',
+        pattern,
+        'COUNT',
+        100,
+      );
+      cursor = nextCursor;
+      if (keys.length) {
+        await this.redis.del(keys[0], ...keys.slice(1));
+      }
+    } while (cursor !== '0');
+  }
 }

@@ -24,6 +24,8 @@ import { ConfigService } from '@nestjs/config';
 import { UserAccount } from './entities/userAccount.entity';
 import { AuthProvider } from './types/authProviders.type';
 import * as bcrypt from 'bcrypt';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class UserService {
@@ -36,6 +38,7 @@ export class UserService {
     private readonly postsService: PostsService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly configService: ConfigService,
+    private readonly cache: RedisService,
   ) {}
 
   async createLocalProvider(
@@ -95,7 +98,14 @@ export class UserService {
     }
 
     Object.assign(user, newData);
-    return await this.userRepo.save(user);
+    const saved = await this.userRepo.save(user);
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.userProfile(userId)),
+      this.cache.del(CACHE_KEYS.userShort(userId)),
+    ]);
+
+    return saved;
   }
 
   async updateAvatar(
@@ -246,10 +256,16 @@ export class UserService {
   }
 
   async getUserShort(id: string): Promise<UserShortDTO | null> {
-    return await this.userRepo.findOne({
+    const key = CACHE_KEYS.userShort(id);
+    const cached = await this.cache.get<UserShortDTO>(key);
+    if (cached) return cached;
+
+    const user = await this.userRepo.findOne({
       where: { id },
       select: ['id', 'nickname', 'avatarUrl'],
     });
+    if (user) await this.cache.set(key, user, 300);
+    return user;
   }
 
   async getUsersShort(ids: string[]): Promise<UserShortDTO[]> {
@@ -273,6 +289,13 @@ export class UserService {
         nextCursor: null,
         hasMore: false,
       };
+
+    const cacheKey = CACHE_KEYS.userSearch(
+      `${trimmedSearch}:${q.cursor || ''}:${q.currentUserId || ''}`,
+    );
+    const cached =
+      await this.cache.get<PaginatedResponse<UserShortDTO>>(cacheKey);
+    if (cached) return cached;
 
     const qb = this.userRepo
       .createQueryBuilder('u')
@@ -301,14 +324,16 @@ export class UserService {
     const items = hasMore ? users.slice(0, limit) : users;
     const nextCursor = hasMore ? users[users.length - 1].id : null;
 
-    return {
-      items,
-      hasMore,
-      nextCursor,
-    };
+    const result = { items, hasMore, nextCursor };
+    await this.cache.set(cacheKey, result, 60);
+    return result;
   }
 
   async getProfileData(userId: string): Promise<UserProfileDto> {
+    const key = CACHE_KEYS.userProfile(userId);
+    const cached = await this.cache.get<UserProfileDto>(key);
+    if (cached) return cached;
+
     const user = await this.userRepo.findOne({
       where: { id: userId },
       select: ['id', 'nickname', 'username', 'email', 'avatarUrl', 'bio'],
@@ -322,7 +347,7 @@ export class UserService {
       this.postsService.countPosts(userId),
     ]);
 
-    return {
+    const result: UserProfileDto = {
       user: {
         id: user.id,
         nickname: user.nickname,
@@ -336,6 +361,9 @@ export class UserService {
         postsCount,
       },
     };
+
+    await this.cache.set(key, result, 600);
+    return result;
   }
 
   async getProfileDataForOtherUser(
@@ -408,6 +436,12 @@ export class UserService {
     if (user.avatarPublicId) {
       await this.deleteAvatar(user.avatarPublicId);
     }
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.userProfile(userId)),
+      this.cache.del(CACHE_KEYS.userShort(userId)),
+    ]);
+
     await this.userRepo.delete(userId);
   }
 }

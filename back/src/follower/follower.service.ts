@@ -12,6 +12,8 @@ import { User } from '../user/entities/user.entity';
 import { FollowersViewed } from './entity/followersViewed.entity';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class FollowerService {
@@ -24,6 +26,7 @@ export class FollowerService {
     private readonly userRepo: Repository<User>,
     private readonly notificationEmitter: EventEmitterNotificationService,
     private readonly followerEmitter: EventEmitterFollowersService,
+    private readonly cache: RedisService,
   ) {}
 
   async followUser(
@@ -78,8 +81,6 @@ export class FollowerService {
     });
     await this.followerRepo.save(following);
 
-    // TODO: add ws notification
-
     this.notificationEmitter.onFriendRequest(
       following.followee.id,
       following.follower,
@@ -90,12 +91,20 @@ export class FollowerService {
       following.follower,
     );
 
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.followerCount(followeeId)),
+      this.cache.del(CACHE_KEYS.followeeCount(currentUserId)),
+      this.cache.del(CACHE_KEYS.followRelation(followeeId, currentUserId)),
+      this.cache.del(CACHE_KEYS.suggestions(currentUserId)),
+      this.cache.del(CACHE_KEYS.userProfile(followeeId)),
+      this.cache.del(CACHE_KEYS.stats(followeeId)),
+    ]);
+
     return {
       id: followee.id,
       src: followee.avatarUrl,
       username: followee.username,
       nickname: followee.nickname,
-
       confirmed: following.confirmed,
       isFollowee: true,
       isFollower,
@@ -109,6 +118,15 @@ export class FollowerService {
     });
 
     this.followerEmitter.onFollowersUpdate(actorId, targetId);
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.followerCount(targetId)),
+      this.cache.del(CACHE_KEYS.followeeCount(actorId)),
+      this.cache.del(CACHE_KEYS.followRelation(targetId, actorId)),
+      this.cache.del(CACHE_KEYS.suggestions(actorId)),
+      this.cache.del(CACHE_KEYS.userProfile(targetId)),
+      this.cache.del(CACHE_KEYS.stats(targetId)),
+    ]);
   }
 
   async confirmFollower(currentUserId: string, followerId: string) {
@@ -127,7 +145,16 @@ export class FollowerService {
     }
 
     following.confirmed = true;
-    return await this.followerRepo.save(following);
+    const saved = await this.followerRepo.save(following);
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.followerCount(currentUserId)),
+      this.cache.del(CACHE_KEYS.followRelation(currentUserId, followerId)),
+      this.cache.del(CACHE_KEYS.userProfile(currentUserId)),
+      this.cache.del(CACHE_KEYS.stats(currentUserId)),
+    ]);
+
+    return saved;
   }
 
   async getFollowers({
@@ -149,7 +176,7 @@ export class FollowerService {
       order: {
         createdAt: 'DESC',
       },
-      take: limit + 1, // +1 to check existence of next portion of data
+      take: limit + 1,
     };
 
     if (typeof confirmed === 'boolean') {
@@ -229,6 +256,14 @@ export class FollowerService {
     nextCursor: string | null;
     hasMore: boolean;
   }> {
+    const key = CACHE_KEYS.suggestions(currentUserId);
+    const cached = await this.cache.get<{
+      items: FriendDto[];
+      nextCursor: string | null;
+      hasMore: boolean;
+    }>(key);
+    if (cached) return cached;
+
     const users = await this.userRepo
       .createQueryBuilder('user')
       .where('user.id != :currentUserId', { currentUserId })
@@ -255,7 +290,9 @@ export class FollowerService {
       createdAt: u.createdAt.toISOString(),
     }));
 
-    return { items, nextCursor: null, hasMore: false };
+    const result = { items, nextCursor: null, hasMore: false };
+    await this.cache.set(key, result, 600);
+    return result;
   }
 
   async getFollowersViewed(currentUserId: string) {
@@ -286,20 +323,31 @@ export class FollowerService {
   async countFollowers(id: string) {
     if (!id) throw new BadRequestException('id is required');
 
-    return this.followerRepo.count({
-      where: { followee: { id: id } },
+    const key = CACHE_KEYS.followerCount(id);
+    const cached = await this.cache.get<number>(key);
+    if (cached !== null) return cached;
+
+    const count = await this.followerRepo.count({
+      where: { followee: { id } },
     });
+    await this.cache.set(key, count, 300);
+    return count;
   }
 
   async countFollowees(id: string) {
     if (!id) throw new BadRequestException('id is required');
 
-    return this.followerRepo.count({
-      where: { follower: { id: id } },
+    const key = CACHE_KEYS.followeeCount(id);
+    const cached = await this.cache.get<number>(key);
+    if (cached !== null) return cached;
+
+    const count = await this.followerRepo.count({
+      where: { follower: { id } },
     });
+    await this.cache.set(key, count, 300);
+    return count;
   }
 
-  // check user
   async getFollowingsRelations({
     userId,
     currentUserId,
@@ -307,6 +355,13 @@ export class FollowerService {
     userId: string;
     currentUserId: string;
   }) {
+    const key = CACHE_KEYS.followRelation(userId, currentUserId);
+    const cached = await this.cache.get<{
+      isFollowee: boolean;
+      isFollower: boolean;
+    }>(key);
+    if (cached) return cached;
+
     const isFollowee = await this.followerRepo.findOne({
       where: {
         followee: { id: userId },
@@ -321,9 +376,11 @@ export class FollowerService {
       },
     });
 
-    return {
+    const result = {
       isFollowee: !!isFollowee,
       isFollower: !!isFollower,
     };
+    await this.cache.set(key, result, 300);
+    return result;
   }
 }

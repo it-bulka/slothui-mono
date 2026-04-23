@@ -3,17 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { And, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { Follower } from '../../follower/entity/follower.entity';
 import { FollowerAnalyticsResponseDto } from './dto/follower-analytics-response.dto';
+import { RedisService } from '../../redis/redis.service';
+import { CACHE_KEYS } from '../../redis/redis.cache-keys';
 
 @Injectable()
 export class StatsFollowersService {
   constructor(
     @InjectRepository(Follower)
     private readonly followerRepo: Repository<Follower>,
+    private readonly cache: RedisService,
   ) {}
 
   async getFollowerAnalytics(
     userId: string,
   ): Promise<FollowerAnalyticsResponseDto> {
+    const key = CACHE_KEYS.stats(userId);
+    const cached = await this.cache.get<FollowerAnalyticsResponseDto>(key);
+    if (cached) return cached;
+
     const [currentCount, prevCount, lastFollowers] = await Promise.all([
       this.countFollowersForMonth(userId, 0),
       this.countFollowersForMonth(userId, 1),
@@ -28,7 +35,16 @@ export class StatsFollowersService {
           ? 100
           : 0;
 
-    return { userId, delta, percent, period: 'month', lastFollowers };
+    const result: FollowerAnalyticsResponseDto = {
+      userId,
+      delta,
+      percent,
+      period: 'month',
+      lastFollowers,
+    };
+
+    await this.cache.set(key, result, 3600);
+    return result;
   }
 
   private async countFollowersForMonth(

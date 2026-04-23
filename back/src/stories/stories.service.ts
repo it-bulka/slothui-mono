@@ -15,6 +15,8 @@ import { User } from '../user/entities/user.entity';
 import { UserWithStory, UsersWithStoryPaginatedRes } from './dto/story.dto';
 import { StoryView } from './entities/storyView.entitty';
 import { ViewDto, ViewsPaginatedResponse } from './dto/view.dto';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class StoriesService {
@@ -27,6 +29,7 @@ export class StoriesService {
     private readonly viewsRepo: Repository<StoryView>,
     private readonly cloudinaryService: CloudinaryService,
     private readonly configService: ConfigService,
+    private readonly cache: RedisService,
   ) {}
 
   async findById(id: string) {
@@ -53,7 +56,9 @@ export class StoriesService {
       expiresAt,
     });
 
-    return await this.storyRepo.save(story);
+    const saved = await this.storyRepo.save(story);
+    await this.cache.del(CACHE_KEYS.stories(userId));
+    return saved;
   }
 
   async deleteStory(id: string, autorId: string) {
@@ -68,6 +73,7 @@ export class StoriesService {
     try {
       await this.cloudinaryService.deleteFile(id);
       await this.storyRepo.remove(story);
+      await this.cache.del(CACHE_KEYS.stories(story.userId));
     } catch {
       throw new InternalServerErrorException(
         'Failed to delete the file. Please try again later.',
@@ -146,10 +152,16 @@ export class StoriesService {
   }
 
   async getStoriesByUser(userId: string) {
-    return this.storyRepo.find({
+    const key = CACHE_KEYS.stories(userId);
+    const cached = await this.cache.get<Story[]>(key);
+    if (cached) return cached;
+
+    const stories = await this.storyRepo.find({
       where: { userId },
       order: { createdAt: 'ASC' },
     });
+    await this.cache.set(key, stories, 120);
+    return stories;
   }
 
   async getStoryViews(
@@ -210,7 +222,7 @@ export class StoriesService {
       throw new NotFoundException(`Story not found`);
     }
 
-    return await this.viewsRepo
+    const result = await this.viewsRepo
       .createQueryBuilder()
       .insert()
       .into(StoryView)
@@ -220,5 +232,8 @@ export class StoriesService {
       })
       .orIgnore()
       .execute();
+
+    await this.cache.del(CACHE_KEYS.stories(story.userId));
+    return result;
   }
 }

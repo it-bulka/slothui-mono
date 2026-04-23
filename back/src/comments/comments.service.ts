@@ -11,6 +11,8 @@ import { NotFoundException } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common';
 import { EditedCommentDTO } from './dto/editedComment.dto';
 import { Post } from '../posts/entities/post.entity';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class CommentsService {
@@ -18,6 +20,7 @@ export class CommentsService {
     @InjectRepository(CommentEntity)
     private readonly commentRepo: Repository<CommentEntity>,
     private readonly userService: UserService,
+    private readonly cache: RedisService,
   ) {}
 
   async getPostComments(
@@ -128,6 +131,11 @@ export class CommentsService {
     postId: string,
     cursor?: string,
   ): Promise<PaginatedResponse<CommentListItemDTO>> {
+    const key = CACHE_KEYS.comments(postId, cursor || '');
+    const cached =
+      await this.cache.get<PaginatedResponse<CommentListItemDTO>>(key);
+    if (cached) return cached;
+
     const {
       items: comments,
       nextCursor,
@@ -136,17 +144,20 @@ export class CommentsService {
 
     const commentItems = await this.buildCommentListItems(comments);
 
-    return {
-      nextCursor,
-      hasMore,
-      items: commentItems,
-    };
+    const result = { nextCursor, hasMore, items: commentItems };
+    await this.cache.set(key, result, 30);
+    return result;
   }
 
   async getRepliesDTO(
     parentId: string,
     cursor?: string,
   ): Promise<PaginatedResponse<CommentListItemDTO>> {
+    const key = CACHE_KEYS.commentReplies(parentId, cursor || '');
+    const cached =
+      await this.cache.get<PaginatedResponse<CommentListItemDTO>>(key);
+    if (cached) return cached;
+
     const {
       items: comments,
       nextCursor,
@@ -155,11 +166,9 @@ export class CommentsService {
 
     const commentItems = await this.buildCommentListItems(comments);
 
-    return {
-      nextCursor,
-      hasMore,
-      items: commentItems,
-    };
+    const result = { nextCursor, hasMore, items: commentItems };
+    await this.cache.set(key, result, 30);
+    return result;
   }
 
   async createComment({
@@ -185,6 +194,8 @@ export class CommentsService {
       },
     );
 
+    await this.cache.delByPattern(`comments:${postId}:*`);
+
     const [dto] = await this.buildCommentListItems([savedComment]);
     return dto;
   }
@@ -207,6 +218,13 @@ export class CommentsService {
 
       await repo.remove(comment);
       await manager.decrement(Post, { id: comment.postId }, 'commentsCount', 1);
+
+      await Promise.all([
+        this.cache.delByPattern(`comments:${comment.postId}:*`),
+        comment.parentId
+          ? this.cache.delByPattern(`comments:replies:${comment.parentId}:*`)
+          : Promise.resolve(),
+      ]);
     });
   }
 
@@ -229,6 +247,7 @@ export class CommentsService {
     comment.editedAt = new Date();
 
     await this.commentRepo.save(comment);
+    await this.cache.delByPattern(`comments:${comment.postId}:*`);
 
     return {
       id: comment.id,

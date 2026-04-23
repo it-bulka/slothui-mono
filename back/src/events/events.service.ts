@@ -12,6 +12,8 @@ import { User } from '../user/entities/user.entity';
 import { PaginatedResponse } from '../common/types/pagination.type';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
 import { mapToEventDTO } from './utils/mapToEventDto';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class EventsService {
@@ -20,7 +22,9 @@ export class EventsService {
     private readonly eventsRepo: Repository<Event>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    private readonly cache: RedisService,
   ) {}
+
   async create(userId: string, dto: CreateEventDto) {
     const organizer = await this.userRepo.findOne({ where: { id: userId } });
     if (!organizer) throw new NotFoundException('User not found');
@@ -62,6 +66,11 @@ export class EventsService {
     }
 
     await this.eventsRepo.remove(event);
+
+    await Promise.all([
+      this.cache.delByPattern(`event:${eventId}:*`),
+      this.cache.del(CACHE_KEYS.eventCount(eventId)),
+    ]);
   }
 
   async getSubscribedEvents(
@@ -196,7 +205,6 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
-    // isSubscribed:
     const isSubscribed = await this.userRepo
       .createQueryBuilder('user')
       .innerJoin('user.participatingEvents', 'event')
@@ -208,6 +216,10 @@ export class EventsService {
   }
 
   async getOne(eventId: string, userId: string): Promise<EventResponseDto> {
+    const key = `${CACHE_KEYS.event(eventId)}:${userId}`;
+    const cached = await this.cache.get<EventResponseDto>(key);
+    if (cached) return cached;
+
     const { raw, entities } = await this.eventsRepo
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.organizer', 'organizer')
@@ -233,7 +245,7 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
-    return {
+    const result: EventResponseDto = {
       id: event.id,
       title: event.title,
       description: event.description,
@@ -252,6 +264,9 @@ export class EventsService {
       isSubscribed: Boolean(rawRow.isSubscribed),
       createdAt: event.createdAt,
     };
+
+    await this.cache.set(key, result, 120);
+    return result;
   }
 
   async subscribe(eventId: string, userId: string) {
@@ -270,6 +285,11 @@ export class EventsService {
       .add(userId);
 
     await this.eventsRepo.increment({ id: eventId }, 'participantsCount', 1);
+
+    await Promise.all([
+      this.cache.delByPattern(`event:${eventId}:*`),
+      this.cache.del(CACHE_KEYS.eventCount(eventId)),
+    ]);
   }
 
   async unsubscribe(eventId: string, userId: string) {
@@ -280,9 +300,18 @@ export class EventsService {
       .remove(userId);
 
     await this.eventsRepo.decrement({ id: eventId }, 'participantsCount', 1);
+
+    await Promise.all([
+      this.cache.delByPattern(`event:${eventId}:*`),
+      this.cache.del(CACHE_KEYS.eventCount(eventId)),
+    ]);
   }
 
   async getParticipantsCount(eventId: string) {
+    const key = CACHE_KEYS.eventCount(eventId);
+    const cached = await this.cache.get<number>(key);
+    if (cached !== null) return cached;
+
     const event = await this.eventsRepo.findOne({
       where: { id: eventId },
       select: { participantsCount: true },
@@ -292,6 +321,7 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
+    await this.cache.set(key, event.participantsCount, 60);
     return event.participantsCount;
   }
 

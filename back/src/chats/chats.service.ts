@@ -24,6 +24,8 @@ import { PaginatedResponse } from '../common/types/pagination.type';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
 import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
 import { UnreadBufferService } from '../messages/unread-buffer.service';
+import { RedisService } from '../redis/redis.service';
+import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class ChatsService {
@@ -37,6 +39,7 @@ export class ChatsService {
     private readonly userService: UserService,
     private readonly eventEmitterChatService: EventEmitterChatService,
     private readonly unreadBufferService: UnreadBufferService,
+    private readonly cache: RedisService,
   ) {}
 
   private async getChatEntity(chatId: string): Promise<Chat> {
@@ -90,6 +93,11 @@ export class ChatsService {
     userId: string,
     { cursor, limit = 50 }: { cursor?: string; limit?: number } = {},
   ): Promise<PaginatedResponse<ChatListItemDTO>> {
+    const cacheKey = CACHE_KEYS.chats(userId, cursor || '');
+    const cached =
+      await this.cache.get<PaginatedResponse<ChatListItemDTO>>(cacheKey);
+    if (cached) return cached;
+
     const qb = this.chatRepo
       .createQueryBuilder('chat')
       .innerJoin(
@@ -99,9 +107,7 @@ export class ChatsService {
         { userId },
       )
       .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
-      // members count
       .loadRelationCountAndMap('chat.membersCount', 'chat.members')
-      // otherUser (ChatMember)
       .leftJoinAndMapOne(
         'chat.otherUser',
         ChatMember,
@@ -109,14 +115,12 @@ export class ChatsService {
         'otherCm.chatId = chat.id AND otherCm.userId != :userId',
         { userId },
       )
-      // add otherUser property to entity
       .leftJoinAndMapOne(
         'otherCm.user',
         User,
         'otherUser',
         'otherUser.id = otherCm.userId',
       )
-
       .orderBy('lastMessage.createdAt', 'DESC')
       .take(limit + 1);
 
@@ -128,7 +132,6 @@ export class ChatsService {
       membersCount: number;
     }>();
 
-    // due to use leftJoinAndMapOne
     const chats = entities as (Chat & { otherUser?: { user?: User } })[];
 
     const { resultItems, nextCursor, hasMore } = checkNextCursor({
@@ -179,11 +182,13 @@ export class ChatsService {
       };
     });
 
-    return {
+    const result = {
       items,
       hasMore,
       nextCursor: nextCursor?.toISOString(),
     };
+    await this.cache.set(cacheKey, result, 120);
+    return result;
   }
 
   async findOrCreatePrivateChat(
@@ -225,6 +230,10 @@ export class ChatsService {
 
         return newChat;
       });
+
+      await Promise.all(
+        members.map((id) => this.cache.delByPattern(`chats:${id}:*`)),
+      );
     }
 
     const otherUser = await this.userRepo
@@ -347,7 +356,6 @@ export class ChatsService {
         'cm.chatId = chat.id AND cm.userId = :userId',
         { userId },
       )
-      // all members (for private)
       .leftJoinAndSelect('chat.members', 'members')
       .leftJoinAndSelect('members.user', 'memberUser')
       .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
@@ -436,6 +444,10 @@ export class ChatsService {
       },
     );
 
+    await Promise.all(
+      memberIds.map((id) => this.cache.delByPattern(`chats:${id}:*`)),
+    );
+
     return {
       ...ChatMapper.toDetails(chat),
       memberIds,
@@ -443,9 +455,6 @@ export class ChatsService {
   }
 
   _preCreateChat(dto: CreateChatDtoWithOwner) {
-    // pipe not appropriate, needs access to res to include userIds into members
-    // rest is validated with CreateChatDto
-
     if (dto.type === 'private' && dto.members.length !== 2) {
       throw new BadRequestException(
         `Unappropriated amount of members for private chat. Expect 2 (including owner), but got ${dto.members.length}`,
@@ -475,7 +484,12 @@ export class ChatsService {
 
     chat.members = chat.members.filter((u) => u.id !== memberToDeleteId);
 
-    return await this.updateChat(chat);
+    const updated = await this.updateChat(chat);
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.chatMembers(chatId)),
+      this.cache.delByPattern(`chats:${memberToDeleteId}:*`),
+    ]);
+    return updated;
   }
 
   async addMember(chatId: string, userId: string) {
@@ -499,6 +513,11 @@ export class ChatsService {
       .orIgnore()
       .execute();
 
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.chatMembers(chatId)),
+      this.cache.delByPattern(`chats:${userId}:*`),
+    ]);
+
     return {
       chatId,
       newMember: {
@@ -514,7 +533,6 @@ export class ChatsService {
     chatId: string,
     { add = [], remove = [] }: { add: string[]; remove: string[] },
   ) {
-    // ADD members
     if (add.length) {
       const membersToInsert = add.map((userId) =>
         this.chatMemberRepo.create({
@@ -542,6 +560,12 @@ export class ChatsService {
         .execute();
     }
 
+    const affected = [...add, ...remove];
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.chatMembers(chatId)),
+      ...affected.map((id) => this.cache.delByPattern(`chats:${id}:*`)),
+    ]);
+
     return { chatId, added: add.length, removed: remove.length };
   }
 
@@ -568,6 +592,12 @@ export class ChatsService {
 
     await this.chatRepo.remove(chat);
     this.eventEmitterChatService.onChatDeleted(chatId, memberIds);
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.chatMembers(chatId)),
+      ...memberIds.map((id) => this.cache.delByPattern(`chats:${id}:*`)),
+    ]);
+
     return { id: chatId, memberIds };
   }
 
@@ -580,6 +610,10 @@ export class ChatsService {
   }
 
   async getChatMemberIds(chatId: string): Promise<string[]> {
+    const key = CACHE_KEYS.chatMembers(chatId);
+    const cached = await this.cache.get<string[]>(key);
+    if (cached) return cached;
+
     const rows = await this.chatMemberRepo
       .createQueryBuilder('cm')
       .select('cm.userId')
@@ -590,7 +624,9 @@ export class ChatsService {
       throw new NotFoundException('Chat not found');
     }
 
-    return rows.map((r) => r.cm_userId);
+    const memberIds = rows.map((r) => r.cm_userId);
+    await this.cache.set(key, memberIds, 300);
+    return memberIds;
   }
 
   async exists(chatId: string): Promise<boolean> {
