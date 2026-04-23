@@ -9,6 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { REDIS_CLIENT } from './redis.constants';
+import { RedisService } from './redis.service';
 
 const logger = new Logger('RedisModule');
 
@@ -47,8 +48,8 @@ const redisProvider = {
 
 @Global()
 @Module({
-  providers: [redisProvider],
-  exports: [redisProvider],
+  providers: [redisProvider, RedisService],
+  exports: [redisProvider, RedisService],
 })
 export class RedisModule implements OnModuleInit, OnApplicationShutdown {
   constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {}
