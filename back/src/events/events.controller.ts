@@ -20,6 +20,18 @@ import { CreatedEvent } from './dto/event.dto';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  @Get()
+  async getMany(
+    @Query('cursor') cursor: string,
+    @Query('limit') limit: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.eventsService.getMany(req.user.id, {
+      cursor,
+      pageSize: Number(limit) || 50,
+    });
+  }
+
   @Post()
   async create(
     @Body() dto: CreateEventDto,

@@ -379,4 +379,75 @@ export class EventsService {
       totalCount: Number(totalCount),
     };
   }
+
+  async getMany(
+    userId: string,
+    {
+      pageSize = 50,
+      cursor,
+    }: {
+      pageSize?: number;
+      cursor?: string;
+    } = {},
+  ): Promise<PaginatedResponse<EventResponseDto>> {
+    const qb = this.eventsRepo
+      .createQueryBuilder('event')
+      .innerJoin('event.organizer', 'organizer')
+      .select([
+        'event.id AS id',
+        'event.title AS title',
+        'event.description AS description',
+        'event.date AS date',
+        'event.location AS location',
+        'event.category AS category',
+        'event.coverUrl AS "coverUrl"',
+        'event.onlineUrl AS "onlineUrl"',
+        'event.createdAt AS "createdAt"',
+        `json_build_object(
+        'id', organizer.id,
+        'username', organizer.username,
+        'nickname', organizer.nickname,
+        'avatar', organizer."avatarUrl"
+      ) AS organizer`,
+      ])
+      .addSelect((sub) => {
+        return sub
+          .select('COUNT(*)')
+          .from('event_participants', 'ep')
+          .where('ep.event_id = event.id');
+      }, 'participantsCount')
+      .addSelect((sub) => {
+        return sub
+          .select('COUNT(*) > 0')
+          .from('event_participants', 'ep')
+          .where('ep.event_id = event.id')
+          .andWhere('ep.user_id = :userId');
+      }, 'isSubscribed')
+      .setParameter('userId', userId);
+
+    if (cursor) {
+      qb.where('event.date < :cursor', { cursor });
+    }
+
+    qb.orderBy('event.date', 'DESC').limit(pageSize + 1);
+
+    const events = await qb.getRawMany<EventResponseDto>();
+
+    const mapped = events.map((e) => ({
+      ...e,
+      participantsCount: Number(e.participantsCount),
+    }));
+
+    const { resultItems, nextCursor, hasMore } = checkNextCursor({
+      items: mapped,
+      cursorField: 'date',
+      limit: pageSize,
+    });
+
+    return {
+      items: resultItems,
+      nextCursor,
+      hasMore,
+    };
+  }
 }
