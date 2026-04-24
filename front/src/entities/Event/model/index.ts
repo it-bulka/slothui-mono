@@ -11,5 +11,6 @@ export {
   useCreateEvent,
   useSelectLikedEvents,
   useSelectSavedEvents,
+  useSelectHomeEventsMeta
 } from './hooks';
 export { fetchAllEventsThunk, fetchLikedEventsThunk, fetchSavedEventsThunk } from './thunk';

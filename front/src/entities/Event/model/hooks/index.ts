@@ -9,3 +9,4 @@ export { useFetchSubscribedEvents } from './useFetchSubscribedEvents.ts';
 export { useCreateEvent } from './useCreateEvent.ts';
 export { useSelectLikedEvents } from './useSelectLikedEvents.ts';
 export { useSelectSavedEvents } from './useSelectSavedEvents.ts';
+export { useSelectHomeEventsMeta } from './useSelectHomeEventsMeta.ts';

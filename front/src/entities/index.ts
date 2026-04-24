@@ -142,6 +142,7 @@ export {
   fetchAllEventsThunk,
   fetchLikedEventsThunk,
   fetchSavedEventsThunk,
+  useSelectHomeEventsMeta
 } from './Event/model';
 
 export {

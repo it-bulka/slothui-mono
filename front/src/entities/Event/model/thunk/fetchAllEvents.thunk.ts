@@ -8,27 +8,34 @@ export const fetchAllEventsThunk = createAsyncThunk<
   ThunkAPI
 >(
   'events/fetchAllEvents',
-  async ({ cursor } = {}, { extra, getState, rejectWithValue }) => {
-    const { events } = getState()
-    const feed = events.home
-    const now = Date.now()
-
-    // cache
-    if (
-      !cursor &&
-      !feed.hasMore &&
-      feed.lastFetchedAt &&
-      now - feed.lastFetchedAt < 60_000
-    ) {
-      return rejectWithValue('cached')
-    }
-
+  async ({ cursor } = {}, { extra, rejectWithValue }) => {
     try {
-      return await extra.services.events.listEvents(cursor)
+      const res = await extra.services.events.listEvents(cursor)
+      console.log('fetchAllEvents', res)
+      return res
     } catch (e) {
       return rejectWithValue(
         extra.extractErrorMessage(e, 'Failed to fetch events')
       )
+    }
+  },
+  {
+    condition: ({ cursor } = {}, { getState }) => {
+      const state = getState();
+      const home = state.events.home;
+      const lastCursor = home.nextCursor;
+
+      const now = Date.now();
+
+      const sameCursor = lastCursor === cursor;
+      const fresh =
+        home.lastFetchedAt &&
+        now - home.lastFetchedAt < 500;
+
+      if (home.isLoading) return false;
+      if (sameCursor && fresh) return false;
+
+      return true;
     }
   }
 )
