@@ -51,7 +51,11 @@ export const MediaGrid = ({ list, showAll }: MediaGridProps) => {
 
   return (
     <>
-      <div className={classNames(css.grid, { [css.gridCompact]: visible.length > 2 })}>
+      <div className={classNames(css.grid, {
+        [css.grid2]: visible.length === 2,
+        [css.grid3]: visible.length === 3,
+        [css.gridCompact]: visible.length >= 4,
+      })}>
         {visible.map((item, idx) => {
           const itemClass = idx === 0 ? css.itemFirst : css.item;
           return !showAll && idx === LIMIT - 1 && hiddenCount > 0 ? (

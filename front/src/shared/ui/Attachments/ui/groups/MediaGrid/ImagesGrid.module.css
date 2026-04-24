@@ -54,3 +54,41 @@
     justify-content: center;
     align-items: center;
 }
+
+/* ── 2 items: 55/45 side-by-side ── */
+.grid2 {
+    grid-template-columns: 70fr 30fr;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.grid2 .itemFirst {
+    grid-column: auto;
+}
+
+.grid2 .itemFirst img,
+.grid2 .itemFirst video,
+.grid2 .item img,
+.grid2 .item video {
+    height: 210px;
+    max-height: 210px;
+}
+
+/* ── 3 items: 1 big top + 2 below (Variant B) ── */
+.grid3 {
+    grid-template-columns: 1fr 1fr;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.grid3 .itemFirst img,
+.grid3 .itemFirst video {
+    height: 180px;
+    max-height: 180px;
+}
+
+.grid3 .item img,
+.grid3 .item video {
+    height: 120px;
+    max-height: 120px;
+}
