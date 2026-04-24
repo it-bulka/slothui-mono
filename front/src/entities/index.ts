@@ -78,7 +78,9 @@ export {
   useFetchMyPosts,
   useSelectHomePostsMeta,
   useCreatePost,
-  createPostThunk
+  createPostThunk,
+  useSelectLikedPostsMeta,
+  fetchLikedPostsThunk
 } from './Post';
 
 export {
