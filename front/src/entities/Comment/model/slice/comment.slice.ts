@@ -124,10 +124,10 @@ export const commentsSlice = createSlice({
         commentsAdapter.upsertMany(state, items)
 
         state.postComments[postId] = {
-          ids: [
+          ids: [...new Set([
             ...(state.postComments[postId]?.ids ?? []),
             ...items.map((c) => c.id),
-          ],
+          ])],
           nextCursor,
           hasMore,
           isLoading: false,
@@ -152,10 +152,10 @@ export const commentsSlice = createSlice({
         commentsAdapter.upsertMany(state, items)
 
         state.replies[parentId] = {
-          ids: [
+          ids: [...new Set([
             ...(state.replies[parentId]?.ids ?? []),
             ...items.map((c) => c.id),
-          ],
+          ])],
           nextCursor,
           hasMore,
           isLoading: false,
