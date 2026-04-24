@@ -17,5 +17,6 @@ export {
   useFetchMyPosts,
   useCreatePost,
   useUpdatePollInPost,
-  createPostThunk
+  createPostThunk,
+  useSelectHomePostsMeta
 } from './model';

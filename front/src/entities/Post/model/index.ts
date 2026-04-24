@@ -15,6 +15,7 @@ export {
   useFetchPostsByUser,
   useFetchMyPosts,
   useCreatePost,
-  useUpdatePollInPost
+  useUpdatePollInPost,
+  useSelectHomePostsMeta
 } from './hooks';
 export { fetchFeedPostsThunk, createPostThunk } from './thunks';

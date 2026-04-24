@@ -76,6 +76,7 @@ export {
   useProfilePostsSelector,
   useFetchPostsByUser,
   useFetchMyPosts,
+  useSelectHomePostsMeta,
   useCreatePost,
   createPostThunk
 } from './Post';
