@@ -1,37 +1,39 @@
 import { AttachmentImage, AttachmentVideoPreview } from '@/shared/ui';
 import type { DraftAttachment } from '../../model/types';
-import { DeleteMediaBtn } from '../MediaGrid/DeleteMediaBtn.tsx';
+import { DeleteMediaBtn } from './DeleteMediaBtn.tsx';
 
 interface MediaGridProps {
   images?: DraftAttachment[]
-  video?: DraftAttachment[],
+  video?: DraftAttachment[]
   onDelete?: (id: string) => void
 }
 
-export const MediaGrid = ({
-  images = [],
-  video = [],
-  onDelete
-}: MediaGridProps) => {
+const THUMB_CLASS = 'w-[80px] h-[80px] flex-shrink-0 rounded-xl overflow-hidden';
+
+export const MediaGrid = ({ images = [], video = [], onDelete }: MediaGridProps) => {
+  const deleteBtn = (id: string) => <DeleteMediaBtn onDelete={onDelete} itemId={id} />;
+
   return (
-    <div className={'flex items-center justify-center flex-wrap gap-2'}>
-      {images.map((image, index) => (
+    <div className="flex gap-2 overflow-x-auto scrollbar-themed pb-1">
+      {images.map((image) => (
         <AttachmentImage
+          key={image.id}
           url={image.tempUrl}
-          key={index}
           originalName={image.file.name}
-          additionalComp={<DeleteMediaBtn onDelete={onDelete} itemId={image.id}/>}
+          className={THUMB_CLASS}
+          imgClass="w-full h-full"
+          additionalComp={deleteBtn(image.id)}
         />
       ))}
-
-      {video.map((image, index) => (
+      {video.map((v) => (
         <AttachmentVideoPreview
-          url={image.tempUrl}
-          key={index}
-          originalName={image.file.name}
-          additionalComp={<DeleteMediaBtn onDelete={onDelete} itemId={image.id}/>}
+          key={v.id}
+          url={v.tempUrl}
+          originalName={v.file.name}
+          className={THUMB_CLASS}
+          additionalComp={deleteBtn(v.id)}
         />
       ))}
     </div>
-  )
-}
+  );
+};

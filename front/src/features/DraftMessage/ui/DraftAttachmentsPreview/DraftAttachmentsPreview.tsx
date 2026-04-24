@@ -13,7 +13,7 @@ export const DraftAttachmentsPreview = () => {
   return (
     <div>
       <Typography bold>Preview</Typography>
-      <div className="max-h-[70vh] h-[200px] overflow-y-auto">
+      <div className="max-h-[70vh] h-[200px] overflow-y-auto scrollbar-themed">
         <MediaGrid images={groupedDraftAttachments.images} video={groupedDraftAttachments.video} onDelete={removeAttachment}/>
         <DocsList docs={groupedDraftAttachments.file} onDelete={removeAttachment}/>
         <AudioList list={groupedDraftAttachments.audio} onDelete={removeAttachment}/>
