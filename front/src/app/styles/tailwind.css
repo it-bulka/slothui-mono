@@ -150,6 +150,7 @@
     .rs__menu {
         background-color: var(--color-underground-primary) !important;
         border: 1px solid var(--color-gray-g3) !important;
+        z-index: 50 !important;
     }
     .rs__single-value {
         color: var(--color-dark) !important;
