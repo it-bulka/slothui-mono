@@ -9,8 +9,9 @@ export class GetPostsQueryDto {
   @Type(() => Number)
   limit?: number;
 
+  @IsOptional()
   @IsString()
-  userId: string;
+  userId?: string;
 }
 
 export class GetMyPostsQueryDto {
