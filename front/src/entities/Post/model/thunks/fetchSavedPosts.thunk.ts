@@ -15,5 +15,25 @@ export const fetchSavedPostsThunk = createAsyncThunk<
     } catch {
       return rejectWithValue('Failed to fetch posts.');
     }
+  },
+  {
+    condition: ({ cursor }, { getState }) => {
+      const state = getState();
+      const feed = state.posts.saves;
+      const lastCursor = feed.nextCursor;
+
+      const now = Date.now();
+
+      if (
+        cursor === lastCursor &&
+        !feed.hasMore &&
+        feed.lastFetchedAt &&
+        now - feed.lastFetchedAt < 60_000
+      ) {
+        return false;
+      }
+
+      return true;
+    },
   }
 )

@@ -17,6 +17,7 @@ export {
   useCreatePost,
   useUpdatePollInPost,
   useSelectHomePostsMeta,
-  useSelectLikedPostsMeta
+  useSelectLikedPostsMeta,
+  useSelectSavedPostsMeta
 } from './hooks';
 export { fetchFeedPostsThunk, createPostThunk, fetchLikedPostsThunk } from './thunks';

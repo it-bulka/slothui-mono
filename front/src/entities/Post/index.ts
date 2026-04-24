@@ -20,5 +20,6 @@ export {
   createPostThunk,
   useSelectHomePostsMeta,
   useSelectLikedPostsMeta,
-  fetchLikedPostsThunk
+  fetchLikedPostsThunk,
+  useSelectSavedPostsMeta
 } from './model';

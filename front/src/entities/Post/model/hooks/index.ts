@@ -16,3 +16,4 @@ export { useCreatePost } from './useCreatePost.ts';
 export { useUpdatePollInPost } from './useUpdatePollInPost.ts';
 export { useSelectHomePostsMeta } from './useSelectHomePostsMeta.ts';
 export { useSelectLikedPostsMeta } from './useSelectLikedPostsMeta.ts';
+export { useSelectSavedPostsMeta } from './useSelectSavedPostsMeta.ts';

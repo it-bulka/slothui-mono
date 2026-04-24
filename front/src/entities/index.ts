@@ -80,7 +80,8 @@ export {
   useCreatePost,
   createPostThunk,
   useSelectLikedPostsMeta,
-  fetchLikedPostsThunk
+  fetchLikedPostsThunk,
+  useSelectSavedPostsMeta
 } from './Post';
 
 export {
