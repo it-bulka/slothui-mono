@@ -24,6 +24,7 @@ const replyTargetSlice = createSlice({
     },
     resetParentId(state) {
       state.parentId = null
+      state.type = 'post'
       return state
     }
   }
