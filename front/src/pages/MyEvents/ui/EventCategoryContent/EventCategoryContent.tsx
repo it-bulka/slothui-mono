@@ -6,7 +6,8 @@ import { useInfiniteScroll } from '@/shared/hooks';
 import { useCallback, useEffect } from 'react';
 import { useLoadMoreEvents } from '../../model/hooks/useLoadMoreEvents.tsx';
 import { memo } from 'react';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { EventsLoader } from '../EventsLoader.tsx';
 
 interface EventCategoryContentProps {
   userId: string;
@@ -15,7 +16,7 @@ interface EventCategoryContentProps {
 
 export const EventCategoryContent = memo(({ userId, type }: EventCategoryContentProps) => {
   const { items: events, isLoading, hasMore, nextCursor, error } = useEventsByTypeSelect(userId, type);
-  const { loadMore } = useLoadMoreEvents()
+  const { loadMore } = useLoadMoreEvents();
 
   const onLoadMore = useCallback(() => {
     loadMore({ userId, type, nextCursor });
@@ -23,30 +24,28 @@ export const EventCategoryContent = memo(({ userId, type }: EventCategoryContent
 
   const { setTrigger } = useInfiniteScroll({
     canLoadMore: hasMore,
-    isLoading: isLoading,
-    onLoadMore
+    isLoading,
+    onLoadMore,
   });
 
   useEffect(() => {
-    if(error) {
-      toast.warn(error)
-    }
+    if (error) toast.warn(error);
   }, [error]);
 
   if (!events?.length) return (
     <>
-      <Typography bold>No any event yet</Typography>
+      {isLoading ? <EventsLoader /> : <Typography bold>No events yet</Typography>}
       <div ref={setTrigger} />
     </>
   );
 
   return (
-    <div className="overflow-auto space-y-4">
+    <div className="space-y-4">
       <EventsList events={events} withActions={type !== 'your'} />
       {isLoading && <Typography bold className="text-center">Loading more...</Typography>}
       <div ref={setTrigger} />
     </div>
-  )
+  );
 });
 
 

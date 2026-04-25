@@ -25,7 +25,7 @@ export const EventsList = ({ events, withActions }: { events: EventDTO[], withAc
         organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
         participantsCount={item.participantsCount || 0}
         actions={withActions && (
-          <SubscribeEventButton eventId={item.id} />
+          <SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />
         )}
       />)
   })
