@@ -169,7 +169,7 @@ export class EventsService {
            'id', organizer.id,
            'username', organizer.username,
            'nickname', organizer.nickname,
-           'avatar', organizer.avatar
+           'avatar', organizer."avatarUrl"
          ) AS organizer`,
         'TRUE AS "isSubscribed"',
       ])
