@@ -46,9 +46,11 @@ export class EventsController {
   }
 
   @Get('upcoming')
-  async getUpcomingEvents(@Request() req: AuthRequest) {
-    // TODO: add service method for upcoming
-    return await this.eventsService.getSubscribedEvents(req.user.id);
+  async getUpcomingEvents(
+    @Query('cursor') cursor: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.eventsService.getUpcomingEvents(req.user.id, { cursor });
   }
 
   @Get('organized')

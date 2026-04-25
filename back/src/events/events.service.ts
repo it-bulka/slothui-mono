@@ -73,6 +73,80 @@ export class EventsService {
     ]);
   }
 
+  async getUpcomingEvents(
+    userId: string,
+    { pageSize = 10, cursor }: { pageSize?: number; cursor?: string } = {},
+  ): Promise<PaginatedResponse<EventResponseDto>> {
+    const events = await this.eventsRepo
+      .createQueryBuilder('event')
+      .innerJoin('event.organizer', 'organizer')
+      .select([
+        'event.id AS id',
+        'event.title AS title',
+        'event.description AS description',
+        'event.date AS date',
+        'event.location AS location',
+        'event.category AS category',
+        'event.coverUrl AS "coverUrl"',
+        'event.onlineUrl AS "onlineUrl"',
+        'event.createdAt AS createdAt',
+        `json_build_object(
+           'id', organizer.id,
+           'username', organizer.username,
+           'nickname', organizer.nickname,
+           'avatar', organizer."avatarUrl"
+         ) AS organizer`,
+      ])
+      .addSelect(
+        (sub) =>
+          sub
+            .select('COUNT(*) > 0')
+            .from('event_participants', 'ep')
+            .where('ep.event_id = event.id')
+            .andWhere('ep.user_id = :userId'),
+        'isSubscribed',
+      )
+      .addSelect(
+        (sub) =>
+          sub
+            .select('COUNT(*)')
+            .from('event_participants', 'ep')
+            .where('ep.event_id = event.id'),
+        'participantsCount',
+      )
+      .where(
+        `(
+        organizer.id = :userId
+        OR EXISTS (
+          SELECT 1 FROM event_participants ep
+          WHERE ep.event_id = event.id AND ep.user_id = :userId
+        )
+      )`,
+        { userId },
+      )
+      .andWhere('event.date >= NOW()')
+      .andWhere(cursor ? 'event.date > :cursor' : '1=1', { cursor })
+      .orderBy('event.date', 'ASC')
+      .limit(pageSize + 1)
+      .getRawMany<EventResponseDto>();
+
+    const mapped = events.map((e) => ({
+      ...e,
+      participantsCount: Number(e.participantsCount),
+    }));
+    const { resultItems, nextCursor, hasMore } = checkNextCursor({
+      items: mapped,
+      cursorField: 'date',
+      limit: pageSize,
+    });
+
+    return {
+      items: resultItems,
+      nextCursor,
+      hasMore,
+    };
+  }
+
   async getSubscribedEvents(
     userId: string,
     { pageSize = 10, cursor }: { pageSize?: number; cursor?: string } = {},
