@@ -12,6 +12,7 @@ const Home = () => {
     <Feed header={<PostsToolbar />} >
       <HomeStories />
       <Tab
+        scrollableContent
         tabs={['Posts', 'Events']}
         contents={[
           <HomeFeedContent />,

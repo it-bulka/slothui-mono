@@ -24,6 +24,7 @@ const SavedPage = memo(() => {
     )}>
       <Tab
         scrollableTabs
+        scrollableContent
         animated
         tabs={['Posts', 'Events']}
         activeTabIndex={activeIndex}

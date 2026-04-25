@@ -13,6 +13,7 @@ const User = () => {
     <Feed header={<ContactUserToolbar />}>
       <UserStories />
       <Tab
+        scrollableContent
         tabs={['Posts', 'Events']}
         contents={[
           <UserFeedContent userId={userId} />,
