@@ -8,22 +8,28 @@ export const fetchUpcomingEventsThunk = createAsyncThunk<
   ThunkAPI
 >(
   'events/fetchUpcomingEvents',
-  async ({ cursor }, { extra, getState, rejectWithValue }) => {
-    const { events } = getState();
-    const feed = events.upcoming;
-    const now = Date.now();
-
-    // Кешування: якщо вже завантажені всі події і немає cursor
-    if (!cursor && !feed.hasMore && feed.lastFetchedAt && now - feed.lastFetchedAt < 60_000) {
-      return rejectWithValue('cached');
-    }
-
+  async ({ cursor }, { extra, rejectWithValue }) => {
     try {
       return await extra.services.events.getUpcomingEvents(cursor);
     } catch (e) {
       return rejectWithValue(
         extra.extractErrorMessage(e, 'Failed to fetch upcoming events')
       );
+    }
+  },
+  {
+    condition: ({ cursor }, { getState }) => {
+      const feed = getState().events.upcoming;
+
+      if (cursor != null) {
+        if (!feed.hasMore) return false;
+        return cursor !== feed.lastFetchedCursor;
+      }
+
+      if (!feed.hasMore) return false;
+      const lastFetched = feed.lastFetchedAt;
+      if (!lastFetched) return true;
+      return Date.now() - lastFetched > 60_000;
     }
   }
 );

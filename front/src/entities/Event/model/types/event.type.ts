@@ -9,6 +9,7 @@ type FeedState = {
   hasMore: boolean
   nextCursor?: string | null
   lastFetchedAt?: number
+  lastFetchedCursor?: string | null
 }
 
 type ParticipantsFeedState = {

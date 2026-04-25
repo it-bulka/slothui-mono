@@ -13,6 +13,7 @@ import {
   fetchMyEventsExtraReducer,
   fetchLikedEventsExtraReducer,
   fetchSavedEventsExtraReducer,
+  fetchUpcomingEventsExtraReducer,
 } from '../extraReducers';
 
 const initialState = eventsAdapter.getInitialState<EventsState>({
@@ -72,6 +73,7 @@ const eventsSlice = createSlice({
     unsubscribeEventExtraReducer(builder)
     fetchLikedEventsExtraReducer(builder)
     fetchSavedEventsExtraReducer(builder)
+    fetchUpcomingEventsExtraReducer(builder)
   },
 })
 

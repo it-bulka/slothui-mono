@@ -13,3 +13,4 @@ export { subscribeEventExtraReducer } from './subscribeEvent.extraReducer.ts';
 export { fetchMyEventsExtraReducer } from './fetchMyEvents.extraReducer.ts';
 export { fetchLikedEventsExtraReducer } from './fetchLikedEvents.extraReducer.ts';
 export { fetchSavedEventsExtraReducer } from './fetchSavedEvents.extraReducer.ts';
+export { fetchUpcomingEventsExtraReducer } from './fetchUpcomingEvents.extraReducer.ts';
