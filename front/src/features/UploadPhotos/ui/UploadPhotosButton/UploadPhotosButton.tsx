@@ -12,7 +12,7 @@ export const UploadPhotosButton = memo(({ onFilesSelect}: UploadPhotosButtonProp
         Icon={PicturesSvg}
         column
         aria-label="Upload Photos"
-        accept="images/*"
+        accept="image/*,video/*"
         onFilesSelect={onFilesSelect}
         multiple
       >

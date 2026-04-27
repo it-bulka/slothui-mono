@@ -31,7 +31,7 @@ export const VideoGrid = ({ list, showAll, setShowAll }: IVideoGrid ) => {
           )
         }
 
-        return <AttachmentVideoPreview key={item.id} url={item.url} originalName={item.originalName} />;
+        return <AttachmentVideoPreview key={item.id} url={item.metadata.thumbnailUrl ?? item.url} originalName={item.originalName} />;
       })}
     </div>
   );
