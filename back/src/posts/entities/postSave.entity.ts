@@ -10,6 +10,6 @@ export class PostSave {
   @ManyToOne(() => User, (user) => user.id)
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.saves)
+  @ManyToOne(() => Post, (post) => post.saves, { onDelete: 'CASCADE' })
   post: Post;
 }
