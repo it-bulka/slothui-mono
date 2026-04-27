@@ -98,8 +98,7 @@ export class PostsService {
     const postIds = visiblePosts.map((p) => p.id);
 
     const attachments = await this.attachmentService.getMany('post', postIds);
-    const groupedAttachments =
-      this.attachmentService.groupByTypeAndParentId(attachments);
+    const flatAttachments = this.attachmentService.flatByParentId(attachments);
 
     const polls = userId
       ? await this.pollsService.getMany('post', postIds, userId)
@@ -114,7 +113,7 @@ export class PostsService {
       isSaved: raw[index].isSaved,
       likesCount: Number(raw[index].likesCount),
       commentsCount: post.commentsCount,
-      attachments: groupedAttachments.get(post.id),
+      attachments: flatAttachments.get(post.id) ?? [],
       poll: groupedPolls.get(post.id),
     }));
 
@@ -188,7 +187,7 @@ export class PostsService {
     const likesCount = Number(raw[0].likesCount);
 
     const attachments = await this.attachmentService.getMany('post', [postId]);
-    const groupedAttachments = this.attachmentService.groupByType(attachments);
+    const flatAttachments = this.attachmentService.toFlatDtos(attachments);
 
     const polls = await this.pollsService.getMany('post', [postId], userId);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
@@ -201,12 +200,7 @@ export class PostsService {
       isSaved,
       likesCount,
       commentsCount: post.commentsCount,
-      attachments: groupedAttachments ?? {
-        images: [],
-        file: [],
-        audio: [],
-        video: [],
-      },
+      attachments: flatAttachments,
       poll: groupedPolls.get(post.id),
     };
 
@@ -299,8 +293,7 @@ export class PostsService {
     const postIds = visibleSaves.map((s) => s.post.id);
 
     const attachments = await this.attachmentService.getMany('post', postIds);
-    const groupedAttachments =
-      this.attachmentService.groupByTypeAndParentId(attachments);
+    const flatAttachments = this.attachmentService.flatByParentId(attachments);
 
     const items: PostDto[] = visibleSaves.map((save) => ({
       id: save.post.id,
@@ -310,7 +303,7 @@ export class PostsService {
       isSaved: true,
       likesCount: 0,
       commentsCount: save.post.commentsCount,
-      attachments: groupedAttachments.get(save.post.id),
+      attachments: flatAttachments.get(save.post.id) ?? [],
     }));
 
     const lastPost = visibleSaves[visibleSaves.length - 1]?.post;
@@ -346,8 +339,7 @@ export class PostsService {
     const postIds = visibleLikes.map((l) => l.post.id);
 
     const attachments = await this.attachmentService.getMany('post', postIds);
-    const groupedAttachments =
-      this.attachmentService.groupByTypeAndParentId(attachments);
+    const flatAttachments = this.attachmentService.flatByParentId(attachments);
 
     const items: PostDto[] = visibleLikes.map((like) => ({
       id: like.post.id,
@@ -357,7 +349,7 @@ export class PostsService {
       isSaved: false,
       likesCount: 0,
       commentsCount: like.post.commentsCount,
-      attachments: groupedAttachments.get(like.post.id),
+      attachments: flatAttachments.get(like.post.id) ?? [],
     }));
 
     const lastLikePost = visibleLikes[visibleLikes.length - 1]?.post;

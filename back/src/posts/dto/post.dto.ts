@@ -1,4 +1,4 @@
-import { GroupedAttachment } from '../../attachments/types/attachments.type';
+import { AttachmentDto } from '../../attachments/dto/attachment.dto';
 import { PaginatedResponse } from '../../common/types/pagination.type';
 import { UserResponse } from '../../user/dto/user-response.dto';
 import { PollResultDto } from '../../polls/dto/poll.dto';
@@ -11,7 +11,7 @@ export interface PostDto {
   isSaved?: boolean;
   likesCount: number;
   commentsCount: number;
-  attachments?: GroupedAttachment;
+  attachments?: AttachmentDto[];
   poll?: PollResultDto;
 }
 

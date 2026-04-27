@@ -13,12 +13,10 @@ import {
 import { MessagesService } from './messages.service';
 import { JwtAuthGuard } from '../auth/guards';
 import { AuthRequest } from '../common/types/user.types';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
-import { normalizeFiles } from '../common/utils/normalizeFiles';
 import { GetMessagesQuery } from './dto/getMessages.dto';
 import { CreateGeoMessageDto } from '../geo-message/dto/createGeoMessage.dto';
 import { ParseCreateMsgPipe } from './pipe/parseCreateMsg.pipe';
@@ -48,23 +46,12 @@ export class MessagesController {
   }
 
   @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'images', maxCount: 10 },
-      { name: 'audio', maxCount: 5 },
-      { name: 'file', maxCount: 10 },
-      { name: 'video', maxCount: 5 },
-    ]),
+    FilesInterceptor('files', 25, { limits: { fileSize: 10 * 1024 * 1024 } }),
   )
   @Post()
   async create(
     @Param('chatId') chatId: string,
-    @UploadedFiles()
-    rowFiles: {
-      images?: Express.Multer.File[];
-      audio?: Express.Multer.File[];
-      file?: Express.Multer.File[];
-      video?: Express.Multer.File[];
-    },
+    @UploadedFiles() files: Express.Multer.File[],
     @Body(ParseCreateMsgPipe)
     dto: {
       text: string;
@@ -76,9 +63,8 @@ export class MessagesController {
     },
     @Request() req: AuthRequest,
   ) {
-    const files = normalizeFiles(rowFiles);
     const msg = await this.messagesService.createWithExtra({
-      files,
+      files: files?.length ? files : undefined,
       text: dto.text,
       authorId: req.user.id,
       chatId: chatId,

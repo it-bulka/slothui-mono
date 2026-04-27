@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import {
-  AttachmentParentType,
-  AttachmentType,
-  GroupedAttachment,
-} from './types/attachments.type';
+import { AttachmentParentType, AttachmentType } from './types/attachments.type';
 import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Attachment } from './entities/attachment.entity';
 import { AttachmentDto } from './dto/attachment.dto';
-import { Files } from './types/attachments.type';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ConfigService } from '@nestjs/config';
+import { fixFileNameCoding } from '../common/utils/fixFileNameCoding';
+
+const FOLDER_SUFFIX: Record<AttachmentType, string> = {
+  images: 'image',
+  video: 'video',
+  audio: 'audio',
+  file: 'file',
+};
 
 @Injectable()
 export class AttachmentsService {
@@ -31,67 +34,60 @@ export class AttachmentsService {
     });
   }
 
-  groupByTypeAndParentId(attachments: Attachment[]) {
-    const grouped = new Map<string, GroupedAttachment>();
-
-    for (const att of attachments) {
-      const dto: AttachmentDto = {
-        id: att.id,
-        url: att.url,
-        publicId: att.publicId,
-        originalName: att.originalName,
-        type: att.type,
-        metadata: att.metadata,
-      };
-
-      if (!grouped.has(att.parentId)) {
-        grouped.set(att.parentId, {
-          file: [],
-          images: [],
-          audio: [],
-          video: [],
-        });
-      }
-
-      const bucket = grouped.get(att.parentId)!;
-      bucket[att.type].push(dto);
-    }
-
-    return grouped;
+  private toDto(att: Attachment): AttachmentDto {
+    return {
+      id: att.id,
+      url: att.url,
+      order: att.order,
+      publicId: att.publicId,
+      originalName: att.originalName,
+      type: att.type,
+      metadata: att.metadata,
+    };
   }
 
-  groupByType(attachments: Attachment[]) {
-    let noAttachments: boolean = true;
-    const grouped: GroupedAttachment = {
-      file: [],
-      images: [],
-      audio: [],
-      video: [],
-    };
+  toFlatDtos(attachments: Attachment[]): AttachmentDto[] {
+    return attachments
+      .map((att) => this.toDto(att))
+      .sort((a, b) => a.order - b.order);
+  }
 
+  flatByParentId(attachments: Attachment[]): Map<string, AttachmentDto[]> {
+    const map = new Map<string, AttachmentDto[]>();
     for (const att of attachments) {
-      if (grouped[att.type]) {
-        noAttachments = false;
-        grouped[att.type].push({
-          id: att.id,
-          url: att.url,
-          publicId: att.publicId,
-          originalName: att.originalName,
-          type: att.type,
-          metadata: att.metadata,
-        });
-      }
+      if (!map.has(att.parentId)) map.set(att.parentId, []);
+      map.get(att.parentId)!.push(this.toDto(att));
     }
+    for (const dtos of map.values()) {
+      dtos.sort((a, b) => a.order - b.order);
+    }
+    return map;
+  }
 
-    return noAttachments ? undefined : grouped;
+  private detectType(file: Express.Multer.File): AttachmentType {
+    if (file.mimetype.startsWith('image/')) return 'images';
+    if (file.mimetype.startsWith('video/')) return 'video';
+    if (file.mimetype.startsWith('audio/')) return 'audio';
+    return 'file';
   }
 
   async saveAttachments(
-    files: Partial<Files>,
+    files: Express.Multer.File[],
     parentType: AttachmentParentType,
     parentId: string,
   ) {
-    let savedAttachments: Attachment[] = [];
+    if (!files.length) return [];
+
+    const PROJECT_FOLDER: string =
+      this.configService.getOrThrow('CLOUDINARY_PROJECT');
+
+    const groups = new Map<AttachmentType, Express.Multer.File[]>();
+    for (const file of files) {
+      const type = this.detectType(file);
+      if (!groups.has(type)) groups.set(type, []);
+      groups.get(type)!.push(file);
+    }
+
     const attachmentsToSave: Pick<
       Attachment,
       | 'parentType'
@@ -101,121 +97,48 @@ export class AttachmentsService {
       | 'publicId'
       | 'metadata'
       | 'originalName'
+      | 'order'
     >[] = [];
 
-    const PROJECT_FOLDER: string =
-      this.configService.getOrThrow('CLOUDINARY_PROJECT');
-
-    if (files.images) {
-      const uploadedImgs = await this.cloudinaryService.uploadFilesStream(
-        files.images,
-        `${PROJECT_FOLDER}/posts/image`,
+    for (const [type, groupFiles] of groups) {
+      const folder = `${PROJECT_FOLDER}/${parentType}/${FOLDER_SUFFIX[type]}`;
+      const uploaded = await this.cloudinaryService.uploadFilesStream(
+        groupFiles,
+        folder,
       );
 
-      uploadedImgs.forEach(({ file, result }) => {
-        if (!result) return;
+      for (const { file, result } of uploaded) {
+        if (!result) continue;
 
-        attachmentsToSave.push({
-          parentType,
-          parentId,
-          originalName: file.originalname,
-          type: 'images' as AttachmentType,
-          url: result.secure_url,
-          publicId: result.public_id,
-          metadata: {
-            size: result.bytes,
-            format: result.format,
-          },
-        });
-      });
-    }
-
-    if (files.audio) {
-      const uploadedAudio = await this.cloudinaryService.uploadFilesStream(
-        files.audio,
-        `${PROJECT_FOLDER}/posts/audio`,
-      );
-
-      uploadedAudio.forEach(({ file, result }) => {
-        if (!result) return;
-
-        attachmentsToSave.push({
-          parentType,
-          parentId,
-          originalName: file.originalname,
-          type: 'audio' as AttachmentType,
-          url: result.secure_url,
-          publicId: result.public_id,
-          metadata: {
-            size: result.bytes,
-            format: result.format,
-          },
-        });
-      });
-    }
-
-    if (files.file) {
-      const uploadedFile = await this.cloudinaryService.uploadFilesStream(
-        files.file,
-        `${PROJECT_FOLDER}/posts/file`,
-      );
-
-      uploadedFile.forEach(({ file, result }) => {
-        if (!result) return;
-
-        attachmentsToSave.push({
-          parentType,
-          parentId,
-          originalName: file.originalname,
-          type: 'file' as AttachmentType,
-          url: result.secure_url,
-          publicId: result.public_id,
-          metadata: {
-            size: result.bytes,
-            format: result.format,
-          },
-        });
-      });
-    }
-
-    if (files.video) {
-      const uploadedVideo = await this.cloudinaryService.uploadFilesStream(
-        files.video,
-        `${PROJECT_FOLDER}/posts/video`,
-      );
-
-      uploadedVideo.forEach(({ file, result }) => {
-        if (!result) return;
-
-        const thumbnailUrl = this.cloudinaryService.generateThumbnailUrl(
-          result.public_id,
-        );
-        const originalName = Buffer.from(file.originalname, 'latin1').toString(
-          'utf8',
-        );
+        const originalName = fixFileNameCoding(file.originalname);
+        const metadata =
+          type === 'video'
+            ? {
+                thumbnailUrl: this.cloudinaryService.generateThumbnailUrl(
+                  result.public_id,
+                ),
+                size: result.bytes,
+                format: result.format,
+              }
+            : { size: result.bytes, format: result.format };
 
         attachmentsToSave.push({
           parentType,
           parentId,
           originalName,
-          type: 'video' as AttachmentType,
+          type,
           url: result.secure_url,
           publicId: result.public_id,
-          metadata: {
-            thumbnailUrl: thumbnailUrl,
-            size: result.bytes,
-            format: result.format,
-          },
+          order: attachmentsToSave.length,
+          metadata,
         });
-      });
+      }
     }
 
-    if (attachmentsToSave.length) {
-      const created = this.attachmentRepo.create(attachmentsToSave);
-      savedAttachments = await this.attachmentRepo.save(created);
-    }
+    if (!attachmentsToSave.length) return [];
 
-    return savedAttachments;
+    const created = this.attachmentRepo.create(attachmentsToSave);
+    return await this.attachmentRepo.save(created);
   }
 
   async deleteMany(attachments: Attachment[]) {

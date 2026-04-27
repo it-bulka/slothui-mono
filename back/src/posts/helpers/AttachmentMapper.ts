@@ -1,30 +1,16 @@
 import { Attachment } from '../../attachments/entities/attachment.entity';
-import { GroupedAttachment } from '../../attachments/types/attachments.type';
+import { AttachmentDto } from '../../attachments/dto/attachment.dto';
 
 export class AttachmentMapper {
-  static toResponse(attachment: Attachment) {
+  static toResponse(attachment: Attachment): AttachmentDto {
     return {
       id: attachment.id,
       url: attachment.url,
+      order: attachment.order,
       publicId: attachment.publicId,
       originalName: attachment.originalName,
       type: attachment.type,
       metadata: attachment.metadata,
     };
-  }
-
-  static groupToResponse(attachments: Attachment[]): GroupedAttachment {
-    const result: GroupedAttachment = {
-      images: [],
-      video: [],
-      audio: [],
-      file: [],
-    };
-
-    for (const att of attachments) {
-      result[att.type].push(this.toResponse(att));
-    }
-
-    return result;
   }
 }

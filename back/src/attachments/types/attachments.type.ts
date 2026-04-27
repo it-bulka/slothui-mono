@@ -1,9 +1,5 @@
-import { AttachmentDto } from '../dto/attachment.dto';
-
 export type AttachmentType = 'images' | 'file' | 'audio' | 'video';
 export type AttachmentParentType = 'post' | 'message';
-export type GroupedAttachment = Record<AttachmentType, AttachmentDto[]>; // res
-export type Files = Record<AttachmentType, Express.Multer.File[]>; // req
 export interface AttachmentMetadata {
   width?: number;
   height?: number;

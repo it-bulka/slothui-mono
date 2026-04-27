@@ -15,11 +15,10 @@ import { PostsService } from './posts.service';
 import { GetMyPostsQueryDto, GetPostsQueryDto } from './dto/getPostQuery.dto';
 import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { ParseCreatePostPollPipe } from './pipes/parseCreatePostPoll.pipe';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
-import { normalizeFiles } from '../common/utils/normalizeFiles';
 import { CreatePostCommand } from './dto/createPost.dto';
 
 @UseGuards(JwtAuthGuard)
@@ -126,31 +125,15 @@ export class PostsController {
   }
 
   @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'images', maxCount: 10 },
-        { name: 'audio', maxCount: 5 },
-        { name: 'file', maxCount: 10 },
-        { name: 'video', maxCount: 5 },
-      ],
-      { limits: { fileSize: 10 * 1024 * 1024 } },
-    ),
+    FilesInterceptor('files', 25, { limits: { fileSize: 10 * 1024 * 1024 } }),
   )
   @Post()
   async createPost(
-    @UploadedFiles()
-    rowFiles: {
-      images?: Express.Multer.File[];
-      audio?: Express.Multer.File[];
-      file?: Express.Multer.File[];
-      video?: Express.Multer.File[];
-    },
+    @UploadedFiles() files: Express.Multer.File[],
     @Body(ParseCreatePostPollPipe)
     body: { poll?: CreatePollDto; text?: string },
     @Request() req: AuthRequest,
   ) {
-    const files = normalizeFiles(rowFiles);
-
     let command: CreatePostCommand;
 
     if (body.poll) {
@@ -160,7 +143,7 @@ export class PostsController {
         text: body.text,
         authorId: req.user.id,
       };
-    } else if (files && Object.keys(files).length > 0) {
+    } else if (files?.length) {
       command = {
         type: 'files',
         files,

@@ -23,7 +23,7 @@ import { StoriesService } from '../stories/stories.service';
 import { EventsService } from '../events/events.service';
 import { PostsService } from '../posts/posts.service';
 import { Post } from '../posts/entities/post.entity';
-import { GroupedAttachment } from '../attachments/types/attachments.type';
+import { AttachmentDto } from '../attachments/dto/attachment.dto';
 import { PollsService } from '../polls/polls.service';
 import { CreateStoryReactionMsgDto } from './dto/createStoryReactionMsg.dto';
 import { OpenedChatsTracker } from './opened-chats-tracker.service';
@@ -91,8 +91,7 @@ export class MessagesService {
       'message',
       msgsIds,
     );
-    const groupedAttachments =
-      this.attachmentService.groupByTypeAndParentId(attachments);
+    const flatAttachments = this.attachmentService.flatByParentId(attachments);
 
     const polls = await this.pollsService.getMany('message', msgsIds, userId);
     const groupedPolls = this.pollsService.groupedByParentId(polls);
@@ -113,8 +112,8 @@ export class MessagesService {
       'post',
       postIds,
     );
-    const postAttachmentsGrouped =
-      this.attachmentService.groupByTypeAndParentId(postAttachments);
+    const postAttachmentsFlat =
+      this.attachmentService.flatByParentId(postAttachments);
 
     const pollQuestions =
       await this.pollsService.findPollQuestionsByPostIds(postIds);
@@ -128,13 +127,13 @@ export class MessagesService {
 
         return MessageMapper.toResponce({
           ...item,
-          attachments: groupedAttachments.get(item.id),
+          attachments: flatAttachments.get(item.id),
           poll: groupedPolls.get(item.id),
           geo: groupedGeos.get(item.id),
           post: post
             ? this.buildPostSummaryDto(
                 post,
-                postAttachmentsGrouped.get(post.id),
+                postAttachmentsFlat.get(post.id),
                 pollQuestions.get(post.id),
               )
             : undefined,
@@ -182,11 +181,11 @@ export class MessagesService {
         );
       }
 
-      const groupedFiles = this.attachmentService.groupByType(savedFiles);
+      const flatFiles = this.attachmentService.toFlatDtos(savedFiles);
       return MessageMapper.toResponce({
         ...msg,
         chatId: msg.chat.id,
-        attachments: groupedFiles,
+        attachments: flatFiles,
       });
     });
   }
@@ -317,8 +316,7 @@ export class MessagesService {
     const saved = await this.messageRepo.save(msg);
 
     const postAtts = await this.attachmentService.getMany('post', [post.id]);
-    const postAttsGrouped =
-      this.attachmentService.groupByTypeAndParentId(postAtts);
+    const postAttsFlat = this.attachmentService.flatByParentId(postAtts);
     const pollQuestionsMap = await this.pollsService.findPollQuestionsByPostIds(
       [post.id],
     );
@@ -327,7 +325,7 @@ export class MessagesService {
       ...saved,
       post: this.buildPostSummaryDto(
         post,
-        postAttsGrouped.get(post.id),
+        postAttsFlat.get(post.id),
         pollQuestionsMap.get(post.id),
       ),
     });
@@ -335,20 +333,17 @@ export class MessagesService {
 
   private buildPostSummaryDto(
     post: Post,
-    attachments: GroupedAttachment | undefined,
+    attachments: AttachmentDto[] | undefined,
     pollQuestion: string | undefined,
   ): PostSummaryDto {
-    const images = attachments?.images ?? [];
-    const video = attachments?.video ?? [];
-    const files = attachments?.file ?? [];
-    const audio = attachments?.audio ?? [];
+    const atts = attachments ?? [];
+    const images = atts.filter((a) => a.type === 'images');
+    const video = atts.filter((a) => a.type === 'video');
+    const files = atts.filter((a) => a.type === 'file');
+    const audio = atts.filter((a) => a.type === 'audio');
 
-    let coverUrl: string | undefined;
-    if (images.length > 0) {
-      coverUrl = images[0].url;
-    } else if (video.length > 0) {
-      coverUrl = video[0].metadata?.thumbnailUrl ?? video[0].url;
-    }
+    const coverUrl =
+      images[0]?.url ?? video[0]?.metadata?.thumbnailUrl ?? video[0]?.url;
 
     return {
       id: post.id,

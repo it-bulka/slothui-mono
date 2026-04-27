@@ -33,6 +33,9 @@ export class Attachment {
   @Column()
   parentId: string;
 
+  @Column({ type: 'int', default: 0 })
+  order: number;
+
   @Column({ default: false })
   deleteFailed: boolean;
 

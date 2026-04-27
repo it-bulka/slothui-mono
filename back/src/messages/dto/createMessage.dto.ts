@@ -1,5 +1,4 @@
 import { IsUUID, IsString } from 'class-validator';
-import { Files } from '../../attachments/types/attachments.type';
 import { CreatePollDto } from '../../polls/dto/createPoll.dto';
 import { CreateGeoMessageDto } from '../../geo-message/dto/createGeoMessage.dto';
 
@@ -15,7 +14,7 @@ export class CreateMessageBaseDto {
 }
 
 export class CreateMessageDtoWithFiles extends CreateMessageBaseDto {
-  files: Partial<Files>;
+  files: Express.Multer.File[];
 }
 
 export class CreateMessageDtoWithStory extends CreateMessageBaseDto {

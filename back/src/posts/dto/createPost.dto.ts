@@ -1,4 +1,3 @@
-import { Files } from '../../attachments/types/attachments.type';
 import { CreatePollDto } from '../../polls/dto/createPoll.dto';
 
 export interface CreatePostBase {
@@ -6,7 +5,7 @@ export interface CreatePostBase {
 }
 
 export interface CreatePostWithFiles extends CreatePostBase {
-  files: Partial<Files>;
+  files: Express.Multer.File[];
 }
 
 export interface CreatePostWithPoll extends CreatePostBase {
@@ -27,7 +26,7 @@ export type CreatePostCommand =
   | {
       type: 'files';
       text?: string;
-      files: Partial<Files>;
+      files: Express.Multer.File[];
       authorId: string;
     }
   | {

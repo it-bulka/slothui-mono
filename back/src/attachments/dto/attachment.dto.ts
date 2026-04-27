@@ -14,6 +14,7 @@ export interface AttachmentMetadata {
 export type AttachmentDto = {
   id: string;
   url: string;
+  order: number;
   metadata: AttachmentMetadata;
   publicId: string;
   originalName: string;

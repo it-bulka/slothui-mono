@@ -1,4 +1,4 @@
-import { GroupedAttachment } from '../../attachments/types/attachments.type';
+import { AttachmentDto } from '../../attachments/dto/attachment.dto';
 import { PollResultDto } from '../../polls/dto/poll.dto';
 import { Message } from '../entities/message.entity';
 import { GeoDtoResponse } from '../../geo-message/dto/geo.dto';
@@ -12,7 +12,7 @@ export type MessageBaseResponseDto = {
 };
 
 export type MessageWithAttachmentsResponseDto = MessageBaseResponseDto & {
-  attachments: GroupedAttachment;
+  attachments: AttachmentDto[];
 };
 
 export type MessageWithPollResponseDto = MessageBaseResponseDto & {
@@ -48,7 +48,7 @@ export type MessageResponseDto =
   | MessageWithPostResponseDto;
 
 export type MessageWithOptionals = Message & {
-  attachments?: GroupedAttachment;
+  attachments?: AttachmentDto[];
   poll?: PollResultDto;
   geo?: GeoDtoResponse;
   post?: PostSummaryDto;
