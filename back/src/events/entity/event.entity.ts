@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  JoinColumn,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
@@ -55,7 +56,11 @@ export class Event {
     onDelete: 'CASCADE',
     nullable: false,
   })
+  @JoinColumn({ name: 'organizerId' })
   organizer: User;
+
+  @Column()
+  organizerId: string;
 
   @ManyToMany(() => User, (user) => user.participatingEvents, {
     onDelete: 'CASCADE',

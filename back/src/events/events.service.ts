@@ -55,13 +55,14 @@ export class EventsService {
   async deleteEvent(eventId: string, userId: string) {
     const event = await this.eventsRepo.findOne({
       where: { id: eventId },
+      select: { id: true, organizerId: true },
     });
 
     if (!event) {
       throw new NotFoundException('Event not found');
     }
 
-    if (event.organizer.id !== userId) {
+    if (event.organizerId !== userId) {
       throw new ForbiddenException('You are not allowed to delete this event');
     }
 
