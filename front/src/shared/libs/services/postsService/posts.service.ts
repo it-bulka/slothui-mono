@@ -77,7 +77,8 @@ export class PostsService {
   /** DELETE /api/posts/:postId */
   async deleteOne({ id }: { id: string }): Promise<void> {
     await this.http.request(
-      `${this.BASE_URL}/${id}`
+      `${this.BASE_URL}/${id}`,
+      { method: 'DELETE' },
     );
   }
 

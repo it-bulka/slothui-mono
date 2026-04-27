@@ -3,13 +3,12 @@ import {
   useProfilePostsSelector,
   useFetchMyPosts
 } from '@/entities';
-import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { Typography } from '@/shared/ui';
 import { memo, useEffect, useCallback } from 'react';
 import { useAuthUserSelector } from '@/entities';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useIsPostCreating } from '@/features/PostComposer';
-import { getMyPostsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
 
 export const MyFeedContent = memo(() => {
   const userId = useAuthUserSelector()?.id;
@@ -45,21 +44,7 @@ export const MyFeedContent = memo(() => {
   return (
     <>
       {posts.map((post) => (
-        <PostCard
-          postId={post.id}
-          key={post.id}
-          profileLink={getMyPostsPage()}
-          userId={post.author?.id}
-          userName={post.author?.nickname}
-          userPosition={post.author?.nickname}
-          avatarSrc={post.author?.avatarUrl}
-          file={post.attachments?.file}
-          video={post.attachments?.video}
-          audio={post.attachments?.audio}
-          images={post.attachments?.images}
-          text={post.text}
-          poll={post.poll}
-        />
+        <PostFeedItem key={post.id} post={post} />
       ))}
       {isPostCreating && <Typography bold className="text-center">Loading more...</Typography>}
       <div ref={setTrigger} className='h-[20px] bg-red'/>

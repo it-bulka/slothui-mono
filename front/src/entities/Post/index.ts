@@ -18,6 +18,7 @@ export {
   useCreatePost,
   useUpdatePollInPost,
   createPostThunk,
+  deletePostThunk,
   useSelectHomePostsMeta,
   useSelectLikedPostsMeta,
   fetchLikedPostsThunk,

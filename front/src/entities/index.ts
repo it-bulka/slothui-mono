@@ -71,6 +71,7 @@ export {
   usePostByIdSelect,
   usePostLikeSelect,
   usePostSaveSelect,
+  deletePostThunk,
   fetchFeedPostsThunk,
   useProfileFeedStateSelector,
   useProfilePostsSelector,

@@ -20,4 +20,4 @@ export {
   useSelectLikedPostsMeta,
   useSelectSavedPostsMeta
 } from './hooks';
-export { fetchFeedPostsThunk, createPostThunk, fetchLikedPostsThunk } from './thunks';
+export { fetchFeedPostsThunk, createPostThunk, fetchLikedPostsThunk, deletePostThunk } from './thunks';

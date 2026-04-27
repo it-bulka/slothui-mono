@@ -4,7 +4,7 @@ import { PostContent } from './PostContent/PostContent.tsx';
 import { CommentThreadDrawer } from '../PostCommentsThread';
 import type { Attachment } from '@/shared/types';
 import type { PollResultDto } from '@/shared/types/poll.dto.ts';
-import { memo, useState } from 'react';
+import { memo, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useUpdatePollInPost } from '@/entities/Post';
 
@@ -16,6 +16,7 @@ type BaseProps = {
   audio?: Attachment[]
   file?: Attachment[]
   poll?: PollResultDto
+  menu?: ReactNode
 }
 
 type WithAuthor =  BaseProps & {
@@ -39,6 +40,7 @@ export const PostCard = memo(({
   file,
   poll,
   postId,
+  menu,
   ...rest
 }: PostCardProps) => {
   const [isCommentOpen, setIsCommentOpen] = useState(false)
@@ -49,9 +51,16 @@ export const PostCard = memo(({
       <Card>
         {("withOutAuthor" in rest) ? null : (
           <Card.Header>
-            <Link to={rest.profileLink}>
-              <AvatarWithInfo src={rest.avatarSrc} position={rest.userPosition} name={rest.userName} />
-            </Link>
+            <div className="flex items-center justify-between">
+              <Link to={rest.profileLink}>
+                <AvatarWithInfo src={rest.avatarSrc} position={rest.userPosition} name={rest.userName} />
+              </Link>
+              {menu && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  {menu}
+                </div>
+              )}
+            </div>
           </Card.Header>
         )}
 
