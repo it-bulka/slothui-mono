@@ -1,8 +1,8 @@
 import { memo, useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useSelectSavedEvents, fetchSavedEventsThunk } from '@/entities';
-import { EventCard } from '@/entities';
 import { SubscribeEventButton } from '@/features';
+import { EventCardWithDelete } from '@/features/DeleteEvent';
 import { Typography } from '@/shared/ui';
 import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
@@ -24,27 +24,25 @@ export const SavedEventsContent = memo(() => {
 
   return (
     <ul className="flex flex-col gap-4">
-      {events.map((item) => {
-        const isMe = currentUserId === item.organizer.id;
-        return (
-          <li key={item.id}>
-            <EventCard
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              date={formatDate(item.date)}
-              location={item.location}
-              category={item.category}
-              coverUrl={item.coverUrl}
-              onlineUrl={item.onlineUrl}
-              profileLink={isMe ? getMyEventsPage() : getUserPage(item.organizer.id)}
-              organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
-              participantsCount={item.participantsCount || 0}
-              actions={<SubscribeEventButton eventId={item.id} />}
-            />
-          </li>
-        );
-      })}
+      {events.map((item) => (
+        <li key={item.id}>
+          <EventCardWithDelete
+            id={item.id}
+            title={item.title}
+            description={item.description}
+            date={formatDate(item.date)}
+            location={item.location}
+            category={item.category}
+            coverUrl={item.coverUrl}
+            onlineUrl={item.onlineUrl}
+            profileLink={currentUserId === item.organizer.id ? getMyEventsPage() : getUserPage(item.organizer.id)}
+            organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
+            participantsCount={item.participantsCount || 0}
+            isOwner={currentUserId === item.organizer.id}
+            actions={<SubscribeEventButton eventId={item.id} />}
+          />
+        </li>
+      ))}
     </ul>
   );
 });

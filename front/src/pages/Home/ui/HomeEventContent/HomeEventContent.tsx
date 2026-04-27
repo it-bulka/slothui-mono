@@ -1,5 +1,6 @@
-import { EventCard, useEventsHomeSelect } from '@/entities';
+import { useEventsHomeSelect } from '@/entities';
 import { SubscribeEventButton } from '@/features';
+import { EventCardWithDelete } from '@/features/DeleteEvent';
 import { Typography } from '@/shared/ui';
 import { memo } from 'react';
 import { formatDate } from '@/shared/libs';
@@ -16,29 +17,25 @@ export const HomeEventContent = memo(() => {
 
   return (
     <>
-      {events.map((item) => {
-        const isMe = currentUserId === item.organizer.id
-        return (
-          <EventCard
-            id={item.id}
-            key={item.id}
-            title={item.title}
-            description={item.description}
-            date={formatDate(item.date)}
-            location={item.location}
-            category={item.category}
-            coverUrl={item.coverUrl}
-            onlineUrl={item.onlineUrl}
-            profileLink={isMe ? getMyEventsPage() : getUserPage(item.organizer.id)}
-            organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
-            participantsCount={item.participantsCount || 0}
-            actions={(
-              <SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />
-            )}
-          />
-        )
-      })}
-      { isLoading && <Typography>Loading...</Typography> }
+      {events.map((item) => (
+        <EventCardWithDelete
+          id={item.id}
+          key={item.id}
+          title={item.title}
+          description={item.description}
+          date={formatDate(item.date)}
+          location={item.location}
+          category={item.category}
+          coverUrl={item.coverUrl}
+          onlineUrl={item.onlineUrl}
+          profileLink={currentUserId === item.organizer.id ? getMyEventsPage() : getUserPage(item.organizer.id)}
+          organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
+          participantsCount={item.participantsCount || 0}
+          isOwner={currentUserId === item.organizer.id}
+          actions={<SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />}
+        />
+      ))}
+      {isLoading && <Typography>Loading...</Typography>}
       <div ref={setTrigger} className="h-[2px] mb-[2px]"/>
     </>
   )

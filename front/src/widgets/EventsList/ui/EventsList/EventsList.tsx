@@ -1,5 +1,5 @@
-import { EventCard } from '@/entities';
 import { SubscribeEventButton } from '@/features';
+import { EventCardWithDelete } from '@/features/DeleteEvent';
 import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.ts';
 import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
@@ -7,11 +7,12 @@ import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeC
 
 export const EventsList = ({ events, withActions }: { events: EventDTO[], withActions?: boolean }) => {
   const currentUserId = useAuthUserIdSelector()
+
   return events.map((item) => {
     const isMe = currentUserId === item.organizer.id
 
     return (
-      <EventCard
+      <EventCardWithDelete
         id={item.id}
         key={item.id}
         title={item.title}
@@ -24,9 +25,11 @@ export const EventsList = ({ events, withActions }: { events: EventDTO[], withAc
         profileLink={isMe ? getMyEventsPage() : getUserPage(item.organizer.id)}
         organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
         participantsCount={item.participantsCount || 0}
+        isOwner={isMe}
         actions={withActions && (
           <SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />
         )}
-      />)
+      />
+    )
   })
 }

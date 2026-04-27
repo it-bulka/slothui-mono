@@ -131,6 +131,7 @@ export {
 
 export {
   eventsReducer,
+  eventsActions,
   useEventsHomeSelect,
   useSubscribedEventsSelect,
   useEventParticipantsSelect,

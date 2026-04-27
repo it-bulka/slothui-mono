@@ -23,6 +23,7 @@ export interface EventCardProps {
   participantsCount?: number
   onClick?: (id: string) => void
   actions?: ReactNode
+  menu?: ReactNode
 }
 
 export const EventCard = memo(({
@@ -38,6 +39,7 @@ export const EventCard = memo(({
   participantsCount = 0,
   onClick,
   actions,
+  menu,
   profileLink
 }: EventCardProps) => {
   const navigate = useNavigate()
@@ -88,10 +90,17 @@ export const EventCard = memo(({
           )}
         </div>
 
-        {/* Date badge — top right */}
-        <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm">
+        {/* Date badge — top right (shifts left when menu is present) */}
+        <div className={`absolute top-3 z-10 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm ${menu ? 'right-10' : 'right-3'}`}>
           <Typography type={TypographyTypes.P_SM} className="text-[rgba(255,255,255,0.9)]">{date}</Typography>
         </div>
+
+        {/* 3-dot context menu — top right */}
+        {menu && (
+          <div className="absolute top-3 right-2 z-20" onClick={(e) => e.stopPropagation()}>
+            {menu}
+          </div>
+        )}
 
         {/* Title + category emoji — bottom of hero */}
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-3 bg-gradient-to-t from-black/75 to-transparent z-10">

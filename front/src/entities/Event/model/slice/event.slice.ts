@@ -59,7 +59,20 @@ const eventsSlice = createSlice({
   reducers: {
     clearEventParticipants(state, action: PayloadAction<string>) {
       delete state.participants[action.payload]
-    }
+    },
+    removeEvent(state, action: PayloadAction<string>) {
+      eventsAdapter.removeOne(state, action.payload);
+      const id = action.payload;
+      const filter = (ids: string[]) => ids.filter(i => i !== id);
+      state.home.ids       = filter(state.home.ids);
+      state.subscribed.ids = filter(state.subscribed.ids);
+      state.upcoming.ids   = filter(state.upcoming.ids);
+      state.liked.ids      = filter(state.liked.ids);
+      state.saved.ids      = filter(state.saved.ids);
+      for (const uid of Object.keys(state.eventsByUser)) {
+        state.eventsByUser[uid].ids = filter(state.eventsByUser[uid].ids);
+      }
+    },
   },
   extraReducers: (builder) => {
     fetchAllEventsExtraReducer(builder)

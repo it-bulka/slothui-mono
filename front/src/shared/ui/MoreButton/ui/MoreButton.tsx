@@ -10,7 +10,7 @@ interface DownloadButtonPops {
   className?: string
   contentWrapperClass?: string,
   moreBtnClass?: string
-  content: ReactNode
+  content: ReactNode | ((close: () => void) => ReactNode)
 }
 export const MoreButton = ({
   className,
@@ -20,7 +20,7 @@ export const MoreButton = ({
 }: DownloadButtonPops) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context } = useBtnPopup()
+  const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context, close } = useBtnPopup()
 
   const setWrapperRef = (node: HTMLDivElement | null) => {
     wrapperRef.current = node;
@@ -34,7 +34,7 @@ export const MoreButton = ({
 
   return (
     <div className={twMerge(classnames('w-fit', [className]))}>
-      <button ref={btnRef} {...getReferenceProps()} className={twMerge(classnames("text-white mix-blend-difference px-4", [moreBtnClass]))}>
+      <button ref={btnRef} {...getReferenceProps()} className={twMerge(classnames("text-white mix-blend-difference", [moreBtnClass]))}>
         <MoreIcon />
       </button>
 
@@ -47,7 +47,7 @@ export const MoreButton = ({
               style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
               className={twMerge('z-[99999999999999999999999999]', contentWrapperClass)}
             >
-              {content}
+              {typeof content === 'function' ? content(close) : content}
             </div>
           </FloatingPortal>
         )

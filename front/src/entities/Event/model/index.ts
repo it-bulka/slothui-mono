@@ -1,4 +1,4 @@
-export { eventsReducer } from './slice/event.slice.ts';
+export { eventsReducer, eventsActions } from './slice/event.slice.ts';
 export {
   useEventsHomeSelect,
   useSubscribedEventsSelect,
