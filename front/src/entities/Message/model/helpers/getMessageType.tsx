@@ -11,9 +11,9 @@ type MessageType =
   | "text";
 
 export const getMessageType = (msg: MessageDto): MessageType => {
-  if ('attachments' in msg && (msg.attachments?.images?.length || msg.attachments?.video?.length)) return "media";
-  if ('attachments' in msg && msg.attachments?.audio?.length) return "audio";
-  if ('attachments' in msg && msg.attachments?.file?.length) return "file";
+  if ('attachments' in msg && msg.attachments?.some(a => a.type === 'images' || a.type === 'video')) return "media";
+  if ('attachments' in msg && msg.attachments?.some(a => a.type === 'audio')) return "audio";
+  if ('attachments' in msg && msg.attachments?.some(a => a.type === 'file')) return "file";
   if ('poll' in msg && msg.poll) return "poll";
   if ('story' in msg && msg.story) return "story";
   if ('event' in msg && msg.event) return "event";

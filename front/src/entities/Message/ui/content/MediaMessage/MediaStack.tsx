@@ -1,12 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
 import { MediaAttachmentsModal } from '@/shared/ui';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
-import type { GroupedAttachment } from '@/shared/types';
+import type { Attachment } from '@/shared/types';
 import cls from './MediaStack.module.css'
 
-type MediaItem = GroupedAttachment['images' | 'video'][number];
 interface MediaStackProps {
-  media: MediaItem[];
+  media: Attachment[];
 }
 
 export const MediaStack = ({ media }: MediaStackProps) => {

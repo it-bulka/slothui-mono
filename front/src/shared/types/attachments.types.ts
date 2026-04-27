@@ -1,8 +1,3 @@
-// req
-export type RawAttachmentType = 'images' | 'video' | 'audio' | 'file';
-export type RawGroupedAttachment = Record<RawAttachmentType, File[]>
-
-// res
 export type AttachmentType = 'images' | 'file' | 'audio' | 'video';
 export interface AttachmentMetadata {
   width?: number;
@@ -17,6 +12,7 @@ export interface AttachmentMetadata {
 export type Attachment = {
   id: string;
   url: string;
+  order: number;
   metadata: AttachmentMetadata;
   publicId: string;
   originalName: string;

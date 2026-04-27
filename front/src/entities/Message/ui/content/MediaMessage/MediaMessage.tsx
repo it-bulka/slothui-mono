@@ -1,13 +1,15 @@
+import { useMemo } from 'react';
 import type { MessageWithAttachmentsDto } from '@/shared/types/message.dto.ts';
 import { MessageTime } from '../../MessageTime/MessageTime.tsx';
 import { MediaStack } from './MediaStack';
 import type { MessageComponent } from '../../../model';
+import { groupAttachments } from '../../../model/helpers/groupAttachments.tsx';
 
 export const MediaMessage = ({ msg, time }: MessageComponent<MessageWithAttachmentsDto>) => {
-  const media = [
-    ...(msg.attachments?.images || []),
-    ...(msg.attachments?.video || [])
-  ];
+  const media = useMemo(() => {
+    const grouped = groupAttachments(msg.attachments);
+    return [...grouped.images, ...grouped.video];
+  }, [msg.attachments]);
 
   return (
     <div className="relative inline-block" >

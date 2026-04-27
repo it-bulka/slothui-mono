@@ -1,5 +1,5 @@
 import type { UserShort } from './user.types.ts';
-import type { GroupedAttachment } from '../types/attachments.types.ts';
+import type { Attachment } from '../types/attachments.types.ts';
 import type { PollResultDto } from './poll.dto.ts';
 
 export interface PostBaseDTO {
@@ -17,6 +17,6 @@ export interface PostBaseDTO {
 }
 
 export type PostWithAttachmentsDto = PostBaseDTO & {
-  attachments: GroupedAttachment;
+  attachments: Attachment[];
   poll?: PollResultDto;
 }

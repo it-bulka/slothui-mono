@@ -72,21 +72,7 @@ export class MessagesService {
     }
 
     if('attachments' in msg && msg.attachments) {
-      msg.attachments?.images?.forEach(file => {
-        fd.append('images', file); // file = File
-      });
-
-      msg.attachments?.audio?.forEach(file => {
-        fd.append('audio', file);
-      });
-
-      msg.attachments?.video?.forEach(file => {
-        fd.append('video', file);
-      });
-
-      msg.attachments?.file?.forEach(file => {
-        fd.append('file', file);
-      });
+      msg.attachments.forEach(file => fd.append('files', file));
     }
 
     if('storyId' in msg && msg.storyId) {

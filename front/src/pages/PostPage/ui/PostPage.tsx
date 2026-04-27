@@ -7,11 +7,13 @@ import { useEffect } from 'react';
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Typography } from '@/shared/ui';
+import { usePostGroupedAttachments } from '@/entities/Post';
 
 const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();
   const dispatch = useAppDispatch();
   const post = usePostByIdSelect(postId ?? '');
+  const grouped = usePostGroupedAttachments(postId ?? '');
 
   useEffect(() => {
     if (!postId) return;
@@ -32,10 +34,10 @@ const PostPage = () => {
         userName={post.author?.nickname}
         userPosition={post.author?.nickname}
         avatarSrc={post.author?.avatarUrl}
-        file={post.attachments?.file}
-        video={post.attachments?.video}
-        audio={post.attachments?.audio}
-        images={post.attachments?.images}
+        file={grouped.file}
+        video={grouped.video}
+        audio={grouped.audio}
+        images={grouped.images}
         text={post.text}
         poll={post.poll}
       />

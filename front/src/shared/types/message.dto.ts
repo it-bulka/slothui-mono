@@ -1,4 +1,4 @@
-import type { GroupedAttachment } from './attachments.types.ts';
+import type { Attachment } from './attachments.types.ts';
 import type { PollDto, PollResultDto } from './poll.dto.ts';
 import type { StoryDTO } from '../libs/services';
 import type { UserShort } from './user.types.ts';
@@ -13,7 +13,7 @@ export type MessageBaseDto = {
 };
 
 export type MessageWithAttachmentsDto = MessageBaseDto & {
-  attachments: GroupedAttachment;
+  attachments: Attachment[];
 };
 
 export type MessageWithPollDto = MessageBaseDto & {

@@ -6,12 +6,8 @@ import { prependUniqueIds } from '@/shared/libs';
 
 export const createPostExtraReducer = (builder: ActionReducerMapBuilder<PostsState>) => {
   builder.addCase(createPostThunk.fulfilled, (state, action) => {
-    const normalized = {
-      ...action.payload,
-      attachments: action.payload.attachments ?? { images: [], video: [], audio: [], file: [] },
-    };
-    postsAdapter.addOne(state, normalized);
-    state.home.ids.unshift(normalized.id);
+    postsAdapter.addOne(state, action.payload);
+    state.home.ids.unshift(action.payload.id);
 
     const authorId = action.payload.author.id;
     state.profile[authorId] ??= {

@@ -3,7 +3,7 @@ export type { Poll } from './poll.types.ts'
 export type { PollVotesUpdateDto, PollResultDto, VoterDetails } from './poll.dto.ts';
 export type { Message, MessageNotification, Author } from './message.types.ts';
 export type { Geo } from './geo.types.ts';
-export type { GroupedAttachment, Attachment, RawAttachmentType, AttachmentType, AttachmentMetadata, RawGroupedAttachment } from './attachments.types.ts';
+export type { GroupedAttachment, Attachment, AttachmentType, AttachmentMetadata } from './attachments.types.ts';
 export type { MessageDto, MessageWithPollDto } from './message.dto.ts';
 export type { PaginatedResponse } from './paginatedResponse.types.ts';
 export type { ChatGlobalSearchResult, LastMessage, ChatUnreadUpdate } from './chat.types.ts';

@@ -22,5 +22,6 @@ export {
   useSelectHomePostsMeta,
   useSelectLikedPostsMeta,
   fetchLikedPostsThunk,
-  useSelectSavedPostsMeta
+  useSelectSavedPostsMeta,
+  usePostGroupedAttachments
 } from './model';

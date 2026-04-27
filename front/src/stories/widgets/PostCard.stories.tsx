@@ -65,3 +65,22 @@ export const TextOnly: Story = {
     profileLink: '/users/user-4',
   },
 }
+
+export const WithMenu: Story = {
+  args: {
+    postId: 'post-5',
+    text: 'Post with owner actions menu.',
+    avatarSrc: 'https://i.pravatar.cc/150?img=12',
+    userName: 'owner_user',
+    userPosition: 'Developer',
+    userId: 'user-5',
+    profileLink: '/users/user-5',
+    menu: (
+      <div className="card-premium rounded-xl py-1 min-w-[160px] shadow-lg overflow-hidden">
+        <button className="flex items-center gap-3 w-full px-4 py-3 text-left text-red-500 hover:bg-gray-50 transition-colors text-sm font-medium">
+          Delete post
+        </button>
+      </div>
+    ),
+  },
+}

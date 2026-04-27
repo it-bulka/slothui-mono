@@ -1,4 +1,4 @@
-import type { Poll, RawGroupedAttachment } from '../../../types';
+import type { Poll } from '../../../types';
 
 export type CreatePostDTO =
   | CreateTextPostDTO
@@ -13,7 +13,7 @@ export interface CreateTextPostDTO {
 export interface CreateFilesPostDTO {
   type: 'files';
   text?: string;
-  files: RawGroupedAttachment;
+  files: File[];
 }
 
 export interface CreatePollPostDTO {
@@ -23,8 +23,8 @@ export interface CreatePollPostDTO {
 }
 
 export interface UpdatePostDTO {
-  toRemove?: string[];  // ids
-  toAdd?: RawGroupedAttachment,
+  toRemove?: string[];
+  toAdd?: File[];
   text?: string;
   postId: string;
 }

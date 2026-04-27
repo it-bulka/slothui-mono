@@ -1,4 +1,4 @@
-import type { RawGroupedAttachment, GroupedAttachment } from './attachments.types.ts'
+import type { Attachment } from './attachments.types.ts'
 import type { Geo } from './geo.types.ts'
 import type { Poll } from './poll.types.ts'
 import type { UserShort } from './user.types.ts';
@@ -8,7 +8,7 @@ export type MessageBase = {
   text: string;
 };
 
-export  type MsgWithAttachments = MessageBase & { attachments: GroupedAttachment }
+export  type MsgWithAttachments = MessageBase & { attachments: Attachment[] }
 export  type MsgWithGeo = MessageBase & { geo: Geo }
 export  type MsgWithPoll = MessageBase & { poll: Poll }
 export  type MsgWithStory = MessageBase & { storyId: string }
@@ -24,7 +24,7 @@ export type MessageBaseToSend = {
   text?: string;
 };
 
-export  type MsgWithAttachmentsToSend = MessageBaseToSend & { attachments: RawGroupedAttachment }
+export  type MsgWithAttachmentsToSend = MessageBaseToSend & { attachments: File[] }
 export  type MsgWithStoryToSend = MessageBaseToSend & { storyId: string }
 export  type MsgWithEventToSend = MessageBaseToSend & { eventId: string }
 export  type MsgWithPostToSend = MessageBaseToSend & { postId: string }

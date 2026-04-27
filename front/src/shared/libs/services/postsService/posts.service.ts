@@ -61,11 +61,7 @@ export class PostsService {
     }
 
     if (post.type === 'files') {
-      Object.entries(post.files).forEach(([field, files]) => {
-        files.forEach(file => {
-          formData.append(field, file);
-        });
-      });
+      post.files.forEach(file => formData.append('files', file));
     }
 
     return await this.http.request<PostWithAttachmentsDto>(

@@ -59,3 +59,16 @@ export const WithActions: Story = {
     actions: <button className="btn-soft text-sm">Join</button>,
   },
 }
+
+export const WithMenu: Story = {
+  args: {
+    ...baseArgs,
+    menu: (
+      <div className="card-premium rounded-xl py-1 min-w-[160px] shadow-lg overflow-hidden">
+        <button className="flex items-center gap-3 w-full px-4 py-3 text-left text-red-500 hover:bg-gray-50 transition-colors text-sm font-medium">
+          Delete event
+        </button>
+      </div>
+    ),
+  },
+}
