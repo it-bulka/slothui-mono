@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { NoUserEventsYet } from './NoUserEventsYet.tsx';
 
 export const UserEventContent = ({ userId }: { userId: string }) => {
   const { items: events, isLoading, hasMore, error } = useEventsByUserSelect(userId)
@@ -23,7 +24,7 @@ export const UserEventContent = ({ userId }: { userId: string }) => {
     fetchEventsByUser({ userId })
   }, [fetchEventsByUser, userId])
 
-  if(!events?.length && !isLoading) return <Typography bold>No any event yet</Typography>
+  if(!events?.length && !isLoading) return <NoUserEventsYet />
 
   return (
     <>

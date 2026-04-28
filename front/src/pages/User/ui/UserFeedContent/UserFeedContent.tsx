@@ -1,5 +1,6 @@
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { Typography } from '@/shared/ui'
+import { NoUserPostsYet } from './NoUserPostsYet.tsx';
 import { getMyPostsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { useInfiniteScroll } from '@/shared/hooks';
@@ -47,7 +48,7 @@ export const UserFeedContent = ({ userId }: { userId: string }) => {
     if(error) toast.error(error);
   }, [error])
 
-  if(!posts?.length && !isLoading) return <Typography bold>No any posts yet</Typography>
+  if(!posts?.length && !isLoading) return <NoUserPostsYet />
 
   return (
     <>
