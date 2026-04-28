@@ -3,7 +3,7 @@ import cls from './Button.module.css'
 import { twMerge } from 'tailwind-merge'
 import classNames from 'classnames'
 
-type BtnVariant = 'icon' | 'primary' | 'secondary' | 'transparent' | 'link'
+type BtnVariant = 'icon' | 'primary' | 'secondary' | 'transparent' | 'link' | 'outlined'
 type BtnSizes = 'normal' | 'md'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: BtnVariant

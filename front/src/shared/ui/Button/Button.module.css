@@ -38,6 +38,19 @@
   box-shadow: none;
 }
 
+.outlined {
+  @apply bg-transparent;
+  border-color: var(--color-blue-b1);
+  color: var(--color-blue-b1);
+  box-shadow: none;
+}
+
+.btn.outlined:not(.disabled):hover {
+  background-color: var(--color-light-l3);
+  border-color: var(--color-blue-b2);
+  box-shadow: none;
+}
+
 /* ─── Sizes ──────────────────────────────────────────── */
 .md {
   @apply font-bold text-sm px-4 py-2;
