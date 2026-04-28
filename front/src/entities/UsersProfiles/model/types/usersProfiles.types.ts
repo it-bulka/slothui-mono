@@ -7,6 +7,7 @@ export type UserProfile = {
   nickname: string;
   avatarUrl?: string | null;
   description?: string | null;
+  createdAt?: string;
   // stats
   postsCount: number
   followersCount: number

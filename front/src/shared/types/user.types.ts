@@ -4,6 +4,7 @@ export interface UserShort {
   nickname: string;
   email?: string;
   avatarUrl?: string | null;
+  createdAt?: string;
 }
 
 export type UserProfileStatsDto = {
