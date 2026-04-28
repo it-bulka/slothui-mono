@@ -5,6 +5,7 @@ export interface UserProfileDto {
     username: string;
     avatarUrl?: string;
     bio?: string | null;
+    createdAt: string;
   };
   stats: {
     followersCount: number;

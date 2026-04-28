@@ -78,6 +78,7 @@ export class AuthService {
         username: user.username,
         avatarUrl: user.avatarUrl,
         bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
       },
       stats: {
         followersCount: 0,

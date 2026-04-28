@@ -336,7 +336,15 @@ export class UserService {
 
     const user = await this.userRepo.findOne({
       where: { id: userId },
-      select: ['id', 'nickname', 'username', 'email', 'avatarUrl', 'bio'],
+      select: [
+        'id',
+        'nickname',
+        'username',
+        'email',
+        'avatarUrl',
+        'bio',
+        'createdAt',
+      ],
     });
 
     if (!user) throw new BadRequestException(`User not found`);
@@ -354,6 +362,7 @@ export class UserService {
         username: user.username,
         avatarUrl: user.avatarUrl,
         bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
       },
       stats: {
         followersCount,
