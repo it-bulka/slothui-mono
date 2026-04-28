@@ -4,8 +4,9 @@ import { UserProfileData } from './UserProfileData/UserProfileData.tsx';
 import { UserContactInformation } from './UserContactInformation/UserContactInformation.tsx';
 import { useUserRightSidebar } from '../model/hooks/useUserRightSidebar.tsx';
 import { ActionRow } from './ActionRow.tsx';
-import { Section } from './Section.tsx';
 import { Stories } from './Stories.tsx';
+import { SidebarInfoCard } from './SidebarInfoCard.tsx';
+import { MemberSince } from './MemberSince.tsx';
 
 export const UserRightSidebar = () => {
   const { userId, isLoading, data, friend } = useUserRightSidebar();
@@ -29,19 +30,19 @@ export const UserRightSidebar = () => {
         }}
       />
 
-      {data.description && (
-        <Section title="About Me">
-          <Typography type={TypographyTypes.P_SM}>
-            {data.description}
-          </Typography>
-        </Section>
-      )}
-
       <ActionRow userId={userId} isFollowee={friend?.isFollowee} />
 
       <Stories />
 
-      <UserContactInformation contacts={[data]} />
+      <SidebarInfoCard title="About">
+        <Typography type={TypographyTypes.P_SM}>
+          {data.description || 'No information about this user yet'}
+        </Typography>
+      </SidebarInfoCard>
+
+      <UserContactInformation contacts={[{ avatarSrc: data.avatarUrl, username: data.username, nickname: data.nickname }]} />
+
+      {data.createdAt && <MemberSince createdAt={data.createdAt} />}
     </aside>
   );
 };

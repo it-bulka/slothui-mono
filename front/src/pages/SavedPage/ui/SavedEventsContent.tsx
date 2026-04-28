@@ -3,10 +3,10 @@ import { useAppDispatch } from '@/shared/config/redux';
 import { useSelectSavedEvents, fetchSavedEventsThunk } from '@/entities';
 import { SubscribeEventButton } from '@/features';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
-import { Typography } from '@/shared/ui';
 import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getUserPage, getMyEventsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { NoSavedEventsYet } from './NoSavedEventsYet.tsx';
 
 export const SavedEventsContent = memo(() => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ export const SavedEventsContent = memo(() => {
   }, []);
 
   if (!events?.length) {
-    return <Typography bold>No saved events yet</Typography>;
+    return <NoSavedEventsYet />;
   }
 
   return (

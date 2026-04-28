@@ -1,6 +1,6 @@
-import { BlockTitle } from '@/widgets';
-import { AvatarWithInfo, List } from '@/shared/ui';
+import { AvatarWithInfo, List, Typography, TypographyTypes } from '@/shared/ui';
 import ArrowUpRightSvg from "@/shared/assets/images/general/arrow-up-right.svg?react"
+import { SidebarInfoCard } from '../SidebarInfoCard.tsx';
 
 interface UserContactInformationProps {
   contacts: {
@@ -9,17 +9,23 @@ interface UserContactInformationProps {
     nickname: string,
   }[]
 }
-export const UserContactInformation = ({contacts}: UserContactInformationProps) => {
+
+export const UserContactInformation = ({ contacts }: UserContactInformationProps) => {
   return (
-    <div>
-      <BlockTitle title="Contact Information" withMargin />
-      <List>
-        {contacts.map((item) => (
-          <List.Item key={item.nickname} btnIcon={ArrowUpRightSvg}>
-            <AvatarWithInfo src={item.avatarSrc} position={item.username}/>
-          </List.Item>
-        ))}
-      </List>
-    </div>
+    <SidebarInfoCard title="Contact Information">
+      {contacts.length === 0 ? (
+        <Typography type={TypographyTypes.P_SM} className="text-gray-g2">
+          No contact information yet
+        </Typography>
+      ) : (
+        <List>
+          {contacts.map((item) => (
+            <List.Item key={item.nickname} btnIcon={ArrowUpRightSvg}>
+              <AvatarWithInfo src={item.avatarSrc} position={item.username} />
+            </List.Item>
+          ))}
+        </List>
+      )}
+    </SidebarInfoCard>
   )
 }

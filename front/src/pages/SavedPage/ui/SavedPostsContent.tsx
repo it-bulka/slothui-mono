@@ -2,12 +2,13 @@ import { memo } from 'react';
 import { Typography } from '@/shared/ui';
 import { useSavedPostsFeed } from '../model/hooks/useSavedPostsFeed.ts';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
+import { NoSavedPostsYet } from './NoSavedPostsYet.tsx';
 
 export const SavedPostsContent = memo(() => {
   const { posts, setTrigger, isLoading } = useSavedPostsFeed();
 
-  if (!posts?.length) {
-    return <Typography bold>No saved posts yet</Typography>;
+  if (!posts?.length && !isLoading) {
+    return <NoSavedPostsYet />;
   }
 
   return (
