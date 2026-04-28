@@ -6,7 +6,7 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'select', options: ['primary', 'secondary', 'icon', 'transparent', 'link'] },
+    variant: { control: 'select', options: ['primary', 'secondary', 'icon', 'transparent', 'link', 'outlined'] },
     size: { control: 'radio', options: ['normal', 'md'] },
     disabled: { control: 'boolean' },
     fullWidth: { control: 'boolean' },
@@ -29,6 +29,10 @@ export const Transparent: Story = {
 
 export const Link: Story = {
   args: { children: 'Button', variant: 'link' },
+}
+
+export const Outlined: Story = {
+  args: { children: 'Button', variant: 'outlined' },
 }
 
 export const Disabled: Story = {

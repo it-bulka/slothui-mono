@@ -12,6 +12,7 @@ const mockProfile = {
   nickname: 'John Doe',
   avatarUrl: 'https://i.pravatar.cc/150?img=10',
   description: 'Frontend developer passionate about UX and clean code.',
+  createdAt: '2024-05-10T00:00:00.000Z',
   followeesCount: 128,
   followersCount: 256,
   postsCount: 42,
