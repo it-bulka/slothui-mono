@@ -9,6 +9,7 @@ import { useAuthUserSelector } from '@/entities';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useIsPostCreating } from '@/features/PostComposer';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
+import { NoMyPostsYet } from './NoMyPostsYet.tsx';
 
 export const MyFeedContent = memo(() => {
   const userId = useAuthUserSelector()?.id;
@@ -39,7 +40,7 @@ export const MyFeedContent = memo(() => {
     onLoadMore: handleLoadMore,
   });
 
-  if(!posts?.length) return <Typography bold>No any posts yet</Typography>
+  if(!posts?.length && !isLoading && !isPostCreating) return <NoMyPostsYet />
 
   return (
     <>

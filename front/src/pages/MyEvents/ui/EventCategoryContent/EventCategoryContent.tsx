@@ -8,6 +8,7 @@ import { useLoadMoreEvents } from '../../model/hooks/useLoadMoreEvents.tsx';
 import { memo } from 'react';
 import { toast } from 'react-toastify';
 import { EventsLoader } from '../EventsLoader.tsx';
+import { NoMyEventsYet } from './NoMyEventsYet.tsx';
 
 interface EventCategoryContentProps {
   userId: string;
@@ -34,7 +35,7 @@ export const EventCategoryContent = memo(({ userId, type }: EventCategoryContent
 
   if (!events?.length) return (
     <>
-      {isLoading ? <EventsLoader /> : <Typography bold>No events yet</Typography>}
+      {isLoading ? <EventsLoader /> : <NoMyEventsYet />}
       <div ref={setTrigger} />
     </>
   );
