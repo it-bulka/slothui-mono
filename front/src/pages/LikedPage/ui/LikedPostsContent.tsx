@@ -4,6 +4,7 @@ import { Typography } from '@/shared/ui';
 import { useLikedPostsFeed } from '../model/hooks/useLikedPostsFeed.ts';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
+import { NoLikedPostsYet } from './NoLikedPostsYet.tsx';
 
 export const LikedPostsContent = memo(() => {
   const { posts } = useSelectLikedPosts();
@@ -16,8 +17,8 @@ export const LikedPostsContent = memo(() => {
     onLoadMore: loadMore,
   });
 
-  if (!posts?.length) {
-    return <Typography bold>No liked posts yet</Typography>;
+  if (!posts?.length && !isLoading) {
+    return <NoLikedPostsYet />;
   }
 
   return (

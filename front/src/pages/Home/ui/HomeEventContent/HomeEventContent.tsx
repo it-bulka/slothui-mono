@@ -7,13 +7,14 @@ import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useHomeEventsFeed } from '../../model/hooks/useHomeEventsFeed.tsx';
+import { NoHomeEventsYet } from './NoHomeEventsYet.tsx';
 
 export const HomeEventContent = memo(() => {
   const { items: events } = useEventsHomeSelect()
   const currentUserId = useAuthUserIdSelector()
   const { setTrigger, isLoading } = useHomeEventsFeed()
 
-  if(!events?.length) return <Typography bold>No any event yet</Typography>
+  if(!events?.length && !isLoading) return <NoHomeEventsYet />
 
   return (
     <>

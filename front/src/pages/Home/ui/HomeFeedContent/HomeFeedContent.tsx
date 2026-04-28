@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useHomeFeed } from '../../model/hooks/useHomePostFeed.ts';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
+import { NoHomeFeedYet } from './NoHomeFeedYet.tsx';
 
 export const HomeFeedContent = memo(() => {
   const { posts, hasMore, isLoading, loadMore } = useHomeFeed()
@@ -13,7 +14,7 @@ export const HomeFeedContent = memo(() => {
     onLoadMore: loadMore
   });
 
-  if(!posts?.length) return <Typography bold>No any posts yet</Typography>
+  if(!posts?.length && !isLoading) return <NoHomeFeedYet />
   return (
     <>
       {posts.map((post) => (

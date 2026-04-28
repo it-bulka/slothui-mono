@@ -3,10 +3,10 @@ import { useAppDispatch } from '@/shared/config/redux';
 import { useSelectLikedEvents, fetchLikedEventsThunk } from '@/entities';
 import { SubscribeEventButton } from '@/features';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
-import { Typography } from '@/shared/ui';
 import { formatDate } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getUserPage, getMyEventsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { NoLikedEventsYet } from './NoLikedEventsYet.tsx';
 
 export const LikedEventsContent = memo(() => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ export const LikedEventsContent = memo(() => {
   }, []);
 
   if (!events?.length) {
-    return <Typography bold>No liked events yet</Typography>;
+    return <NoLikedEventsYet />;
   }
 
   return (
