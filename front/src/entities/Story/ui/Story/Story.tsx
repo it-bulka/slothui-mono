@@ -8,18 +8,17 @@ export interface StoryProps {
   type: 'image' | 'video';
   duration?: number | null;
   isViewed?: boolean;
+  isPaused?: boolean;
   onComplete?: () => void
   onStart?: () => void
 }
-export const Story = ({ type, url, onComplete, onStart, children }: StoryProps & {  children?: ReactNode }) => {
+export const Story = ({ type, url, onComplete, onStart, isPaused, children }: StoryProps & {  children?: ReactNode }) => {
   const content =
     type === 'image' ? (
-      <StoryImage url={url} onComplete={onComplete} onStart={onStart} />
+      <StoryImage url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} />
     ) : (
-      <StoryVideo url={url} onComplete={onComplete} onStart={onStart} />
+      <StoryVideo url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} />
     );
-
-  console.log('story RERENDER', url)
 
   return (
     <div className="h-full w-full relative">
