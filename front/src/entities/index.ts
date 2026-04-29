@@ -121,6 +121,7 @@ export {
 
 export {
   storiesReducer,
+  storiesActions,
   useFlushStoriesViewed,
   useMarkStoriesViewedLocally,
   useFlushStoriesOnExit,

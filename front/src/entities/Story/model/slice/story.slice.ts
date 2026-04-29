@@ -24,17 +24,35 @@ export const storiesSlice = createSlice({
   name: 'stories',
   initialState,
   reducers: {
-    addStory(state, action: PayloadAction<Story>) {
-      const story = action.payload;
+    addStory(state, action: PayloadAction<{
+      story: Story;
+      nickname?: string;
+      avatarUrl?: string;
+    }>) {
+      const { story, nickname, avatarUrl } = action.payload;
       storiesAdapter.addOne(state, story);
 
       const meta = state.storiesByUser[story.userId];
-      if (!meta) return;
-
-      meta.storyIds.push(story.id);
-      meta.totalStories += 1;
-      meta.hasUnseen = true;
-      meta.lastStoryAt = story.createdAt;
+      if (meta) {
+        meta.storyIds.push(story.id);
+        meta.totalStories += 1;
+        meta.hasUnseen = true;
+        meta.lastStoryAt = story.createdAt;
+      } else if (nickname !== undefined) {
+        state.storiesByUser[story.userId] = {
+          userId: story.userId,
+          nickname,
+          avatarUrl: avatarUrl ?? '',
+          storyIds: [story.id],
+          totalStories: 1,
+          viewedStories: 0,
+          hasUnseen: true,
+          lastStoryAt: story.createdAt,
+        };
+        if (!state.usersOrder.includes(story.userId)) {
+          state.usersOrder.unshift(story.userId);
+        }
+      }
     },
 
     markStoryViewedLocally(state, action: PayloadAction<string>) {
