@@ -12,7 +12,7 @@ import { Express } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { checkNextCursor } from '../common/utils/checkNextCursor';
 import { User } from '../user/entities/user.entity';
-import { UserWithStory, UsersWithStoryPaginatedRes } from './dto/story.dto';
+import { UserWithStory } from './dto/story.dto';
 import { StoryView } from './entities/storyView.entitty';
 import { ViewDto, ViewsPaginatedResponse } from './dto/view.dto';
 import { RedisService } from '../redis/redis.service';
@@ -82,13 +82,13 @@ export class StoriesService {
   }
 
   async getUsersWithStory(
-    authorsIds: string[],
+    authorsIds: string[] | undefined,
     currentUserId: string,
     options: {
       limit?: number;
       cursor?: string | null;
     },
-  ): Promise<UsersWithStoryPaginatedRes> {
+  ) {
     const { limit = 50, cursor } = options;
     const qb = this.userRepo
       .createQueryBuilder('user')
@@ -100,19 +100,20 @@ export class StoriesService {
       .addSelect('MAX(story.createdAt)', 'lastStoryDate')
       .addSelect('COUNT(story.id)', 'totalStories')
       .addSelect('COUNT(view.id)', 'viewedStories')
-      .where('user.id IN (:...authorsIds)', { authorsIds })
       .groupBy('user.id')
       .orderBy('MAX(story.createdAt)', 'DESC')
-      .limit(limit + 1);
+      .limit(limit + 1)
+      .andWhere('user.id != :currentUserId');
+
+    if (authorsIds?.length) {
+      qb.andWhere('user.id IN (:...authorsIds)', { authorsIds });
+    }
 
     if (cursor) {
       const [lastStoryDate, userId] = cursor.split('_');
       qb.andWhere(
         '(MAX(story.createdAt), user.id) < (:lastStoryDate, :userId)',
-        {
-          lastStoryDate,
-          userId,
-        },
+        { lastStoryDate, userId },
       );
     }
 
@@ -121,7 +122,8 @@ export class StoriesService {
       totalStories: string;
       viewedStories: string;
     }>();
-    const users: UserWithStory[] = entities.map((user, index) => {
+
+    const usersWithMeta: UserWithStory[] = entities.map((user, index) => {
       const addition = raw[index];
       return {
         ...user,
@@ -134,7 +136,7 @@ export class StoriesService {
     });
 
     const { resultItems, hasMore, itemForCursor } = checkNextCursor({
-      items: users,
+      items: usersWithMeta,
       cursorField: 'id',
       limit,
     });
@@ -144,14 +146,32 @@ export class StoriesService {
         ? `${itemForCursor.lastStoryDate}_${itemForCursor.id}`
         : null;
 
-    return {
-      items: resultItems,
-      nextCursor,
-      hasMore,
-    };
+    // Batch-fetch story content using Redis-cached getStoriesByUser
+    const storiesPerUser = await Promise.all(
+      resultItems.map((u) => this.getStoriesByUser(u.id)),
+    );
+
+    const items = resultItems.map((user, i) => ({
+      userId: user.id,
+      username: user.nickname || user.username,
+      avatar: user.avatarUrl ?? '',
+      storiesAmount: storiesPerUser[i].length,
+      stories: storiesPerUser[i].map((s) => ({
+        id: s.id,
+        url: s.url,
+        type: s.type,
+        duration: s.duration ?? null,
+        isViewed: false,
+        createdAt: s.createdAt,
+        expiresAt: s.expiresAt ?? null,
+        userId: s.userId,
+      })),
+    }));
+
+    return { items, nextCursor, hasMore };
   }
 
-  async getStoriesByUser(userId: string) {
+  async getStoriesByUser(userId: string): Promise<Story[]> {
     const key = CACHE_KEYS.stories(userId);
     const cached = await this.cache.get<Story[]>(key);
     if (cached) return cached;
@@ -162,6 +182,29 @@ export class StoriesService {
     });
     await this.cache.set(key, stories, 120);
     return stories;
+  }
+
+  async getFormattedStoriesByUser(userId: string) {
+    const [user, stories] = await Promise.all([
+      this.userRepo.findOneOrFail({ where: { id: userId } }),
+      this.getStoriesByUser(userId),
+    ]);
+    return {
+      userId: user.id,
+      username: user.nickname || user.username,
+      avatar: user.avatarUrl ?? '',
+      storiesAmount: stories.length,
+      stories: stories.map((s) => ({
+        id: s.id,
+        url: s.url,
+        type: s.type,
+        duration: s.duration ?? null,
+        isViewed: false,
+        createdAt: s.createdAt,
+        expiresAt: s.expiresAt ?? null,
+        userId: s.userId,
+      })),
+    };
   }
 
   async getStoryViews(
@@ -214,6 +257,13 @@ export class StoriesService {
       nextCursor: itemForCursor?.viewer?.id || null,
       hasMore,
     };
+  }
+
+  async setBatchStoryViews(
+    storyIds: string[],
+    viewerId: string,
+  ): Promise<void> {
+    await Promise.all(storyIds.map((id) => this.setStoryView(id, viewerId)));
   }
 
   async setStoryView(storyId: string, viewerId: string) {

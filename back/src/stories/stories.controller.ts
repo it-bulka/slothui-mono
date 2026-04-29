@@ -73,13 +73,13 @@ export class StoriesController {
   }
 
   @Get('/users/me')
-  async getMyStory(@Param('userId') userId: string) {
-    return await this.storiesService.getStoriesByUser(userId);
+  async getMyStory(@Request() req: AuthRequest) {
+    return await this.storiesService.getFormattedStoriesByUser(req.user.id);
   }
 
   @Get('/users/:userId')
   async getStoryByUser(@Param('userId') userId: string) {
-    return await this.storiesService.getStoriesByUser(userId);
+    return await this.storiesService.getFormattedStoriesByUser(userId);
   }
 
   @Delete(':storyId')
@@ -88,6 +88,15 @@ export class StoriesController {
     @Request() req: AuthRequest,
   ) {
     await this.storiesService.deleteStory(storyId, req.user.id);
+  }
+
+  @Post('viewed')
+  @HttpCode(204)
+  async markBatchViewed(
+    @Body() storyIds: string[],
+    @Request() req: AuthRequest,
+  ): Promise<void> {
+    await this.storiesService.setBatchStoryViews(storyIds, req.user.id);
   }
 
   @Get(':storyId/views')
