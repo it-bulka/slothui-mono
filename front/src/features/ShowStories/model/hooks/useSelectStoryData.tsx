@@ -3,41 +3,43 @@ import type { UserStories } from '@/shared/libs/services';
 
 interface SelectStoryDataProps {
   allStories: UserStories[];
-  currentUserIndex: number
-  currentStoryIndex: number
-  viewedStories: RefObject<Record<string, string>> // Record<userId, storyId>
-  nextStory: (storyIndex?: number) => void
+  currentUserIndex: number;
+  currentStoryIndex: number;
+  viewedStories: RefObject<Record<string, string>>;
+  nextStory: (storyIndex?: number) => void;
 }
+
 export const useSelectStoryData = ({
   allStories,
   currentUserIndex,
   currentStoryIndex,
   viewedStories,
-  nextStory
+  nextStory,
 }: SelectStoryDataProps) => {
   const storyData = useMemo(() => {
-    const userStories = allStories[currentUserIndex]
-    const lastSeenStoriesId = viewedStories.current[userStories.userId]
+    const userStories = allStories[currentUserIndex];
+    if (!userStories?.stories?.length) return null;
 
+    const lastSeenStoriesId = viewedStories.current[userStories.userId];
     if (!lastSeenStoriesId) {
-      return userStories.stories[currentStoryIndex]
+      return userStories.stories[currentStoryIndex] ?? null;
     }
-    const lastSeenStoryIndex = userStories.stories.findIndex(story => story.id === lastSeenStoriesId)
-    nextStory(lastSeenStoryIndex)
-  }, [allStories, currentUserIndex, viewedStories, nextStory, currentStoryIndex])
+
+    const lastSeenStoryIndex = userStories.stories.findIndex(
+      (story) => story.id === lastSeenStoriesId,
+    );
+    nextStory(lastSeenStoryIndex);
+    return null;
+  }, [allStories, currentUserIndex, viewedStories, nextStory, currentStoryIndex]);
 
   const { storyId, userId } = useMemo(() => {
-    const userWithStories = allStories[currentUserIndex]
-
+    const userWithStories = allStories[currentUserIndex];
+    const story = userWithStories?.stories?.[currentStoryIndex];
     return {
-      userId: userWithStories.userId,
-      storyId: userWithStories.stories[currentStoryIndex].id,
-    }
-  }, [allStories, currentStoryIndex, currentUserIndex])
+      userId: userWithStories?.userId ?? '',
+      storyId: story?.id ?? '',
+    };
+  }, [allStories, currentStoryIndex, currentUserIndex]);
 
-  return {
-    storyData,
-    storyId,
-    userId,
-  }
-}
+  return { storyData, storyId, userId };
+};

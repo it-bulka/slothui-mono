@@ -17,38 +17,37 @@ export const useSwitchStories = ({
   allStories
 }: SwitchStoriesProps) => {
   const prevStory = useCallback(() => {
-    // CHANGE STORY; the same USER
+    // More stories before in current user
     if(currentStoryIndex > 0) {
-      setCurrentStoryIndex((prev: number) => prev - 1)
+      setCurrentStoryIndex(prev => prev - 1)
       return
     }
 
-    // CHANGE STORY & USER
-    if(currentStoryIndex === 0) {
-      if(currentUserIndex === 0) {
-        onStoriesEnd?.()
-        return;
-      }
-
-      setCurrentStoryIndex(0)
+    // Go to previous user → last story of that user
+    if(currentUserIndex > 0) {
+      const prevUser = allStories[currentUserIndex - 1]
+      const lastIndex = Math.max(0, (prevUser?.stories?.length ?? 1) - 1)
+      setCurrentStoryIndex(lastIndex)
       setCurrentUserIndex(prev => prev - 1)
       return;
     }
-  }, [currentStoryIndex, currentUserIndex, onStoriesEnd, setCurrentStoryIndex, setCurrentUserIndex])
+
+    // At the very beginning — do nothing
+  }, [allStories, currentStoryIndex, currentUserIndex, setCurrentStoryIndex, setCurrentUserIndex])
   
   const nextStory = useCallback((storyIndex?: number) => {
     const currentUserStory = allStories[currentUserIndex]
-    const index = storyIndex || currentStoryIndex
-    const amountOfSeenStories = index + 1
+    const index = storyIndex ?? currentStoryIndex
+    const nextStoryIndex = index + 1
 
-    // CHANGE STORY; the same USER
-    if(currentUserStory.stories.length > amountOfSeenStories) {
-      setCurrentStoryIndex(prev => prev + 1)
+    // More stories for the same user
+    if(currentUserStory.stories.length > nextStoryIndex) {
+      setCurrentStoryIndex(nextStoryIndex)
       return
     }
 
-    // CHANGE STORY & USER
-    if(allStories.length > amountOfSeenStories) {
+    // Move to next user
+    if(currentUserIndex + 1 < allStories.length) {
       setCurrentStoryIndex(0)
       setCurrentUserIndex(prev => prev + 1)
       return;

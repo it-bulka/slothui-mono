@@ -1,5 +1,5 @@
 import { HttpService } from '../httpService/http.service.ts';
-import type { StoryFormData, UserStories } from './stories.type.tsx';
+import type { StoryDTO, StoryFormData, UserStories } from './stories.type.tsx';
 import type { PaginatedResponse } from '@/shared/types';
 
 export class StoriesService {
@@ -29,19 +29,20 @@ export class StoriesService {
     return res.items;
   }
 
-  /** GET /api/stories?userId=:id */
+  /** GET /api/stories/users/:userId */
   async getUserStories(userId: string): Promise<UserStories> {
     return await this.http.request<UserStories>(
-      `/api/stories`,
-      { params: { userId } },
+      `/api/stories/users/${userId}`,
     );
   }
 
-  /** POST /api/stories StoryFormData */
-  async createStory(data: StoryFormData): Promise<UserStories> {
-    return this.http.request<UserStories>(
+  /** POST /api/stories — multipart/form-data */
+  async createStory(data: StoryFormData): Promise<StoryDTO> {
+    const formData = new FormData();
+    formData.append('file', data.file);
+    return this.http.request<StoryDTO>(
       '/api/stories',
-      { method: 'POST', body: data },
+      { method: 'POST', body: formData },
     );
   }
 

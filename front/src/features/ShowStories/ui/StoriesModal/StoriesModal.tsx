@@ -17,6 +17,7 @@ export const StoryModal = memo(({
       <StoriesView
         allStories={allStories}
         onClose={onClose}
+        onStoriesEnd={onClose}
         startUserIndex={startUserIndex}
       />
     </Modal>

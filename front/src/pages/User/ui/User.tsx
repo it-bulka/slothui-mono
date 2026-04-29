@@ -11,7 +11,7 @@ const User = () => {
   if(!userId) return <p>Not Found User Id</p>
   return (
     <Feed header={<ContactUserToolbar />}>
-      <UserStories />
+      <UserStories userId={userId} />
       <Tab
         scrollableContent
         tabs={['Posts', 'Events']}
