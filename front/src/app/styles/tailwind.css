@@ -50,10 +50,10 @@
     --font-sans: "PlusJakartaSan", sans-serif;
 
     /* === Z-INDEX === */
-    --z-index-overlay: 99999;
-    --z-index-modal: 9999999;
-    --z-index-modal-content: 9999999;
-    --z-index-actions-popup: 999999999;
+    --z-index-overlay: 9999999;
+    --z-index-modal: 999999999;
+    --z-index-modal-content: 999999999;
+    --z-index-actions-popup: 99999999999;
 
     /* === MODAL === */
     --modal-y-shift: -75.2%;

@@ -1,7 +1,7 @@
 import { AvatarWithStatus } from '@/shared/ui';
 import { NotificationAction, MessageAction, SettingAction, ThemeToggleAction } from '@/features';
 import { FriendSuggestions } from '@/entities';
-import { ProfileActivity, UpcomingEvents } from '@/widgets';
+import { ProfileActivity, UpcomingEvents, CurrentUserStories } from '@/widgets';
 import { CurrentUserStatistics } from './CurrentUserStatistics/CurrentUserStatistics.tsx';
 import { useAuthUserSelector } from '@/entities';
 
@@ -25,6 +25,10 @@ export const RightSidebar = () => {
       </div>
 
       <CurrentUserStatistics />
+
+      <div className="px-6 py-3 flex justify-center">
+        <CurrentUserStories />
+      </div>
 
       <div className={"p-6 flex flex-col gap-8"}>
         <FriendSuggestions />
