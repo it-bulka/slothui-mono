@@ -7,9 +7,10 @@ type StoryVideoProps = {
   onComplete?: () => void;
   onStart?: () => void;
   isPaused?: boolean;
+  onReady?: () => void;
 };
 
-export const StoryVideo = ({ url, onComplete, onStart, isPaused }: StoryVideoProps) => {
+export const StoryVideo = ({ url, onComplete, onStart, isPaused, onReady }: StoryVideoProps) => {
     const ref = useRef<HTMLVideoElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     const [loaded, setLoaded] = useState(false);
@@ -38,6 +39,7 @@ export const StoryVideo = ({ url, onComplete, onStart, isPaused }: StoryVideoPro
           className={`object-cover w-full h-full transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           autoPlay
           onLoadedData={() => setLoaded(true)}
+          onCanPlay={onReady}
         />
       </>
     )

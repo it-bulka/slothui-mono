@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { ProgressBar } from '@/shared/ui';
 import { useProgressOnDuration } from '@/shared/hooks/useProgress/useProgressOnDuration.tsx';
 
-type StoryImageProps = { url: string, onComplete?: () => void, onStart?: () => void, isPaused?: boolean };
+type StoryImageProps = { url: string, onComplete?: () => void, onStart?: () => void, isPaused?: boolean, onReady?: () => void };
 const IMG_SHOWING_DURATION = 6;
 
-export const StoryImage = ({ url, onComplete, onStart, isPaused }: StoryImageProps) => {
+export const StoryImage = ({ url, onComplete, onStart, isPaused, onReady }: StoryImageProps) => {
   const [loaded, setLoaded] = useState(false);
   const { progressRef } = useProgressOnDuration({
     duration: IMG_SHOWING_DURATION,
@@ -25,7 +25,7 @@ export const StoryImage = ({ url, onComplete, onStart, isPaused }: StoryImagePro
         src={url}
         alt="story"
         className={`object-cover w-full h-full transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setLoaded(true)}
+        onLoad={() => { setLoaded(true); onReady?.(); }}
       />
     </>
   )

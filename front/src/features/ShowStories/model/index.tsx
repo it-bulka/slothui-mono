@@ -4,3 +4,4 @@ export { useSwitchStories } from './hooks/useSwitchStories.tsx';
 export { useSelectStoryData } from './hooks/useSelectStoryData.tsx';
 export { useClickStory } from './hooks/useClickStory.tsx';
 export { usePressEvent } from './hooks/usePressEvent.tsx';
+export { useStoryBuffer } from './hooks/useStoryBuffer.tsx';

@@ -12,7 +12,8 @@ import {
   useSelectStoryData,
   useClickStory,
   usePressEvent,
-  usePrefetchNextUserStories
+  usePrefetchNextUserStories,
+  useStoryBuffer
 } from '../../model';
 
 const PauseWhileMounted = ({ onMount, onUnmount, children }: { onMount: () => void; onUnmount: () => void; children: ReactNode }) => {
@@ -62,6 +63,8 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
     allStories
   })
 
+  const { evenStory, oddStory, activeSlot, pendingSlot, handleReady } = useStoryBuffer(storyData)
+
   usePrefetchNextUserStories({
     storiesData: allStories,
     currentUserIndex
@@ -99,23 +102,46 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {storyData && (
-        <Story
-          id={storyData.id}
-          key={storyData.id}
-          url={storyData.url}
-          type={storyData.type}
-          duration={storyData.duration}
-          onStart={() => markStoryViewedLocally(storyData.id)}
-          onComplete={nextStory}
-          isPaused={isPaused}
-        >
-          <CommentStory storyId={storyId} userId={userId} />
-        </Story>
-      )}
+      {/* Even slot */}
+      <div className={`absolute inset-0 ${activeSlot !== 'even' ? 'invisible pointer-events-none' : ''}`}>
+        {evenStory && (
+          <Story
+            key={evenStory.id}
+            id={evenStory.id}
+            url={evenStory.url}
+            type={evenStory.type}
+            duration={evenStory.duration}
+            isPaused={activeSlot !== 'even' || isPaused}
+            onStart={activeSlot === 'even' ? () => markStoryViewedLocally(evenStory.id) : undefined}
+            onComplete={activeSlot === 'even' ? nextStory : undefined}
+            onReady={pendingSlot === 'even' ? handleReady : undefined}
+          >
+            {activeSlot === 'even' && <CommentStory storyId={storyId} userId={userId} />}
+          </Story>
+        )}
+      </div>
+
+      {/* Odd slot */}
+      <div className={`absolute inset-0 ${activeSlot !== 'odd' ? 'invisible pointer-events-none' : ''}`}>
+        {oddStory && (
+          <Story
+            key={oddStory.id}
+            id={oddStory.id}
+            url={oddStory.url}
+            type={oddStory.type}
+            duration={oddStory.duration}
+            isPaused={activeSlot !== 'odd' || isPaused}
+            onStart={activeSlot === 'odd' ? () => markStoryViewedLocally(oddStory.id) : undefined}
+            onComplete={activeSlot === 'odd' ? nextStory : undefined}
+            onReady={pendingSlot === 'odd' ? handleReady : undefined}
+          >
+            {activeSlot === 'odd' && <CommentStory storyId={storyId} userId={userId} />}
+          </Story>
+        )}
+      </div>
 
       {isAuthor && (
-        <div className="absolute top-2 right-2 z-10" onClick={(e) => e.stopPropagation()}>
+        <div className="absolute top-2 right-2 z-20" onClick={(e) => e.stopPropagation()}>
           <MoreButton
             moreBtnClass="text-gray-800 bg-white/25 rounded-md px-0.5 py-1.5 backdrop-blur-sm"
             content={
@@ -127,7 +153,7 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
         </div>
       )}
 
-      <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-10">
+      <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-20">
         <Avatar src={allStories[currentUserIndex].avatar} />
       </Link>
 

@@ -11,13 +11,14 @@ export interface StoryProps {
   isPaused?: boolean;
   onComplete?: () => void
   onStart?: () => void
+  onReady?: () => void
 }
-export const Story = ({ type, url, onComplete, onStart, isPaused, children }: StoryProps & {  children?: ReactNode }) => {
+export const Story = ({ type, url, onComplete, onStart, isPaused, onReady, children }: StoryProps & {  children?: ReactNode }) => {
   const content =
     type === 'image' ? (
-      <StoryImage url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} />
+      <StoryImage url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} onReady={onReady} />
     ) : (
-      <StoryVideo url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} />
+      <StoryVideo url={url} onComplete={onComplete} onStart={onStart} isPaused={isPaused} onReady={onReady} />
     );
 
   return (
