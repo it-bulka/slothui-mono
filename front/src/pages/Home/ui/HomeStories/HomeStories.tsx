@@ -1,10 +1,11 @@
 import { Stories } from '@/features';
-import { useFetchAllStories, useAllGroupedStoriesSelect } from '@/entities';
+import { useFetchAllStories, useGroupedStoriesExcludingUser, useAuthUserSelector } from '@/entities';
 import { useEffect, memo } from 'react';
 
 
 export const HomeStories = memo(() => {
-  const { items: stories, isLoading } = useAllGroupedStoriesSelect();
+  const authUser = useAuthUserSelector();
+  const { items: stories, isLoading } = useGroupedStoriesExcludingUser(authUser?.id);
   const { fetchAllStories } = useFetchAllStories()
 
   useEffect(() => {

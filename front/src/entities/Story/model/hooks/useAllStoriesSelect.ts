@@ -1,6 +1,10 @@
 import { useAppSelector } from '@/shared/config/redux';
-import { selectAllGroupedStories } from '../selectors/story.selector.ts';
+import { selectAllGroupedStories, selectGroupedStoriesExcluding } from '../selectors/story.selector.ts';
 
 export const useAllGroupedStoriesSelect = () => {
   return useAppSelector(selectAllGroupedStories);
+}
+
+export const useGroupedStoriesExcludingUser = (excludeUserId?: string) => {
+  return useAppSelector(state => selectGroupedStoriesExcluding(state, excludeUserId));
 }

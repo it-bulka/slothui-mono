@@ -4,4 +4,4 @@ export { useFlushStoriesOnExit } from './useFlushStoriesOnExit.ts';
 export { useFetchAllStories } from './useFetchAllStories.ts';
 export { useFetchStoriesByUser } from './useFetchStoriesByUser.ts';
 export { useGroupedStoriesByUserSelect } from './useStoriesByUserSelect.ts';
-export { useAllGroupedStoriesSelect } from './useAllStoriesSelect.ts';
+export { useAllGroupedStoriesSelect, useGroupedStoriesExcludingUser } from './useAllStoriesSelect.ts';

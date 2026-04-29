@@ -128,7 +128,8 @@ export {
   useFetchAllStories,
   useFetchStoriesByUser,
   useGroupedStoriesByUserSelect,
-  useAllGroupedStoriesSelect
+  useAllGroupedStoriesSelect,
+  useGroupedStoriesExcludingUser
 } from './Story/model';
 
 export {

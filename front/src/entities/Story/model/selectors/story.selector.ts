@@ -64,6 +64,23 @@ export const selectGroupedStoriesByUser = createSelector(
   }
 );
 
+export const selectGroupedStoriesExcluding = createSelector(
+  [
+    (_: RootState, excludeUserId?: string) => excludeUserId,
+    (state: RootState) => state.stories.entities,
+    (state: RootState) => state.stories.storiesByUser,
+    (state: RootState) => state.stories.isLoading,
+    (state: RootState) => state.stories.error,
+  ],
+  (excludeUserId, entities, storiesByUser, isLoading, error) => {
+    const items: UserStories[] = Object.values(storiesByUser)
+      .filter(Boolean)
+      .filter(userMeta => userMeta.userId !== excludeUserId)
+      .map(userMeta => mapUserMetaToUserStories(userMeta, entities));
+    return { items, isLoading, error };
+  }
+);
+
 export const storiesSelectors = storiesAdapter.getSelectors<RootState>(
   (state) => state.stories
 );
