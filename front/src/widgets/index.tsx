@@ -13,3 +13,4 @@ export { NavigationSearchBar } from './NavigationSearchBar';
 export { NavBar } from './NavBar/NavBar.tsx';
 export { AddPostPanel } from './AddPostPanel';
 export { UserRightSidebar } from './UserRightSidebar';
+export { CurrentUserStories } from './CurrentUserStories';
