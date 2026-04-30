@@ -1,7 +1,6 @@
 import { Feed, ContactUserToolbar } from '@/widgets';
 import { useParams } from 'react-router';
 import { UserFeedContent } from './UserFeedContent/UserFeedContent.tsx';
-import { UserStories } from './UserStories/UserStories.tsx';
 import { UserEventContent } from './UserEventContent/UserEventContent.tsx';
 import { Tab } from '@/shared/ui';
 
@@ -11,7 +10,6 @@ const User = () => {
   if(!userId) return <p>Not Found User Id</p>
   return (
     <Feed header={<ContactUserToolbar />}>
-      <UserStories userId={userId} />
       <Tab
         scrollableContent
         tabs={['Posts', 'Events']}

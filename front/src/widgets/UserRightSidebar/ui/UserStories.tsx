@@ -1,22 +1,26 @@
 import { Stories } from '@/features';
 import { useFetchStoriesByUser, useGroupedStoriesByUserSelect } from '@/entities';
 import { useEffect } from 'react';
-
+import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
 
 interface UserStoriesProps {
-  userId?: string;
+  userId: string;
 }
 
 export const UserStories = ({ userId }: UserStoriesProps) => {
   const { items: stories, isLoading } = useGroupedStoriesByUserSelect(userId);
-  const { fetchStoriesByUser } = useFetchStoriesByUser()
+  const { fetchStoriesByUser } = useFetchStoriesByUser();
 
   useEffect(() => {
-    if(!userId) return;
-    fetchStoriesByUser(userId)
+    fetchStoriesByUser(userId);
   }, [fetchStoriesByUser, userId]);
 
   if (isLoading || stories.length === 0) return null;
 
-  return <Stories stories={stories} />;
+  return (
+    <section>
+      <BlockTitle title="Story" withMargin />
+      <Stories stories={stories} hideUsername />
+    </section>
+  );
 };

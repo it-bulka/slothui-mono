@@ -19,7 +19,7 @@ const StoryScrollButton = memo(({ onClick }: { onClick: () => void }) => {
 
 StoryScrollButton.displayName = 'StoryScrollButton';
 
-export const Stories = memo(({ stories }: { stories: UserStories[] }) => {
+export const Stories = memo(({ stories, hideUsername }: { stories: UserStories[]; hideUsername?: boolean }) => {
   const { isOpen, close, open } = useModalControl(false)
   const [clickedAvatarIndex, setClickedAvatarIndex] = useState<number | null>(null)
   const [canScroll, setCanScroll] = useState(false)
@@ -81,7 +81,7 @@ export const Stories = memo(({ stories }: { stories: UserStories[] }) => {
           {stories.map((story, index) => {
             return <StoryAvatar
               avatarSrc={story.avatar}
-              username={story.username}
+              username={hideUsername ? undefined : story.username}
               key={story.userId}
               onClick={handleAvatarClick({ index })}
             />

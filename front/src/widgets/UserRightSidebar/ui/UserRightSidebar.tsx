@@ -4,7 +4,7 @@ import { UserProfileData } from './UserProfileData/UserProfileData.tsx';
 import { UserContactInformation } from './UserContactInformation/UserContactInformation.tsx';
 import { useUserRightSidebar } from '../model/hooks/useUserRightSidebar.tsx';
 import { ActionRow } from './ActionRow.tsx';
-import { Stories } from './Stories.tsx';
+import { UserStories } from './UserStories.tsx';
 import { SidebarInfoCard } from './SidebarInfoCard.tsx';
 import { MemberSince } from './MemberSince.tsx';
 
@@ -32,7 +32,9 @@ export const UserRightSidebar = () => {
 
       <ActionRow userId={userId} isFollowee={friend?.isFollowee} />
 
-      <Stories />
+      <div className="mb-4">
+        <UserStories userId={userId} />
+      </div>
 
       <SidebarInfoCard title="About">
         <Typography type={TypographyTypes.P_SM}>

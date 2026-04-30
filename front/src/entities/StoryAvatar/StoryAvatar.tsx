@@ -2,7 +2,7 @@ import { ImageWithFallback } from '@/shared/ui';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png'
 interface StoryAvatarProps {
   avatarSrc: string;
-  username: string;
+  username?: string;
   onClick?: () => void;
 }
 
@@ -13,11 +13,11 @@ export const StoryAvatar = ({ avatarSrc, username, onClick }: StoryAvatarProps) 
         <ImageWithFallback
           src={avatarSrc}
           fallback={DefaultAvatar}
-          alt={`${username} avatar`}
+          alt={username ? `${username} avatar` : 'avatar'}
           className="relative z-2 block w-[66px] rounded-full aspect-square"
         />
       </div>
-      <p className="text-center">{username}</p>
+      {username && <p className="text-center">{username}</p>}
     </button>
   )
 }
