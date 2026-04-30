@@ -62,11 +62,4 @@ export class StoriesService {
     );
   }
 
-  /** POST /api/stories/:storyId/messages { text, ownerId } */
-  async sendMessage({ storyId, text, ownerId }: { storyId: string, ownerId: string, text: string }): Promise<void> {
-    await this.http.request<void>(
-      `/api/stories/${storyId}/messages`,
-      { method: 'POST', body: { text, ownerId } },
-    );
-  }
 }

@@ -1,6 +1,6 @@
 import { Input } from '@/shared/ui';
 import { EmojiAction, SendAction } from '@/features';
-import { useStoriesService } from '@/shared/libs/services';
+import { useMessagesService } from '@/shared/libs/services';
 import { useState, useEffect } from 'react';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction/model';
 
@@ -10,7 +10,7 @@ interface CommentStoryProps {
 }
 
 export const CommentStory = ({ storyId, userId }: CommentStoryProps) => {
-  const storiesService = useStoriesService();
+  const messagesService = useMessagesService();
   const [msg, setMsg] = useState('');
 
   const { handleEmojiClick, inputRef } = useAddEmojiIntoInput<HTMLInputElement>({
@@ -20,12 +20,9 @@ export const CommentStory = ({ storyId, userId }: CommentStoryProps) => {
   const sendMsg = async () => {
     if(!msg.trim()) return;
 
-    storiesService
-      .sendMessage({ text: msg, storyId, ownerId: userId })
+    messagesService
+      .sendStoryReaction({ text: msg, storyId, receiverId: userId })
       .then(() => setMsg(''))
-
-    //TODO: delete after connecting to backend
-    setMsg('')
   }
 
   useEffect(() => {

@@ -94,6 +94,13 @@ export class MessagesService {
     );
   }
 
+  async sendStoryReaction({ receiverId, text, storyId }: { receiverId: string; text: string; storyId: string }): Promise<void> {
+    await this.http.request<void>(
+      '/api/messages/story-reaction',
+      { method: 'POST', body: { receiverId, text, storyId } },
+    );
+  }
+
   async fetchMessagesByChat({ chatId, cursor, limit }: { chatId: string, cursor?: string | null, limit?: number }) {
     return await this.http.request<PaginatedResponse<MessageDto>>(
       `/api/chats/${chatId}/messages`,
