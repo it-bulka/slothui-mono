@@ -25,7 +25,21 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ChangePasswordDto } from './dto/changePassword';
 import { Response as ExpressResponse } from 'express';
 import { StatsFollowersService } from '../stats/followers/stats-followers.service';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiGetProfileAnalytics,
+  ApiGetMyProfile,
+  ApiDeleteProfile,
+  ApiUpdateProfile,
+  ApiChangePassword,
+  ApiSearchUsers,
+  ApiGetUserProfile,
+  ApiGetUserBrief,
+} from './decorators/api-user.decorator';
 
+@ApiTags('Users')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
@@ -35,11 +49,13 @@ export class UserController {
   ) {}
 
   @Get('profile-analytics')
+  @ApiGetProfileAnalytics()
   async getProfileAnalytics(@Request() req: AuthRequest) {
     return this.statsFollowersService.getFollowerAnalytics(req.user.id);
   }
 
   @Get('me/profile')
+  @ApiGetMyProfile()
   async getProfile(@Request() req: AuthRequest) {
     const profile = await this.userService.getProfileData(req.user.id);
     const providers = await this.userService.getProviders(req.user.id);
@@ -48,6 +64,7 @@ export class UserController {
 
   @Delete('me/profile')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiDeleteProfile()
   async deleteProfile(
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
@@ -59,6 +76,7 @@ export class UserController {
 
   @Patch('me/profile')
   @UseInterceptors(FileInterceptor('avatar'))
+  @ApiUpdateProfile()
   async updateProfile(
     @Body() dto: ProfileUpdateDto,
     @Request() req: AuthRequest,
@@ -74,6 +92,7 @@ export class UserController {
 
   @Post('me/change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiChangePassword()
   async changePassword(
     @Body() dto: ChangePasswordDto,
     @Request() req: AuthRequest,
@@ -86,6 +105,7 @@ export class UserController {
   }
 
   @Get()
+  @ApiSearchUsers()
   async searchUsers(
     @Query() q: SearchUsersQueryDto,
     @Request() req: AuthRequest,
@@ -99,6 +119,7 @@ export class UserController {
   }
 
   @Get(':userId/profile')
+  @ApiGetUserProfile()
   async getUser(@Param('userId') userId: string, @Request() req: AuthRequest) {
     return await this.userService.getProfileDataForOtherUser(
       userId,
@@ -107,6 +128,7 @@ export class UserController {
   }
 
   @Get(':userId')
+  @ApiGetUserBrief()
   async getUserBrief(@Param('userId') userId: string) {
     return await this.userService.getUserBrief(userId);
   }

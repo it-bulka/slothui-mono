@@ -16,7 +16,22 @@ import { EventEmitterNotificationService } from '../event-emitter/event-emitter-
 import { FriendDto } from './dto/follower.dto';
 import { Follower } from './entity/follower.entity';
 import { FollowUserDto } from './dto/follow-user.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiFollow,
+  ApiDeleteFollower,
+  ApiUnfollow,
+  ApiConfirmFollowRequest,
+  ApiRejectFollowRequest,
+  ApiMarkFollowersSeen,
+  ApiGetFollowers,
+  ApiGetFollowings,
+  ApiGetSuggestions,
+} from './decorators/api-follower.decorator';
 
+@ApiTags('Friends')
+@ApiAuth()
 @Controller('friends')
 @UseGuards(JwtAuthGuard)
 export class FollowerController {
@@ -26,6 +41,7 @@ export class FollowerController {
   ) {}
 
   @Post()
+  @ApiFollow()
   async follow(@Body() dto: FollowUserDto, @Request() req: AuthRequest) {
     const following = await this.followerService.followUser(
       req.user.id,
@@ -36,6 +52,7 @@ export class FollowerController {
   }
 
   @Delete('followers')
+  @ApiDeleteFollower()
   async deleteFollowers(
     @Param('userId') userId: string,
     @Request() req: AuthRequest,
@@ -45,12 +62,14 @@ export class FollowerController {
   }
 
   @Delete('followee/:userId')
+  @ApiUnfollow()
   async unfollow(@Param('userId') userId: string, @Request() req: AuthRequest) {
     await this.followerService.deleteFollower(req.user.id, userId);
     return { id: userId };
   }
 
   @Post('/confirmation')
+  @ApiConfirmFollowRequest()
   async confirmFollowerReq(
     @Body() userId: string,
     @Request() req: AuthRequest,
@@ -67,17 +86,20 @@ export class FollowerController {
   }
 
   @Delete('/confirmation')
+  @ApiRejectFollowRequest()
   async rejectFollowerReq(@Body() userId: string, @Request() req: AuthRequest) {
     await this.followerService.deleteFollower(req.user.id, userId);
   }
 
   @Post('followers/markSeen')
+  @ApiMarkFollowersSeen()
   async markFollowersSeen(@Request() req: AuthRequest) {
     await this.followerService.markFollowersView(req.user.id);
     return Date.now();
   }
 
   @Get('followers')
+  @ApiGetFollowers()
   async getFollowers(
     @Query('userId') userId: string,
     @Query('cursor') cursor?: string,
@@ -94,6 +116,7 @@ export class FollowerController {
   }
 
   @Get('followings')
+  @ApiGetFollowings()
   async getFollowings(
     @Query('userId') userId: string,
     @Query('cursor') cursor?: string,
@@ -110,6 +133,7 @@ export class FollowerController {
   }
 
   @Get('suggestions')
+  @ApiGetSuggestions()
   async getSuggestions(
     @Query('userId') userId: string,
     @Query('cursor') cursor?: string,

@@ -21,7 +21,15 @@ import { GetMessagesQuery } from './dto/getMessages.dto';
 import { CreateGeoMessageDto } from '../geo-message/dto/createGeoMessage.dto';
 import { ParseCreateMsgPipe } from './pipe/parseCreateMsg.pipe';
 import { CreateMessageDto } from './dto/createMessage.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiGetMessages,
+  ApiSendMessage,
+} from './decorators/api-messages.decorator';
 
+@ApiTags('Messages')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('chats/:chatId/messages')
 export class MessagesController {
@@ -32,6 +40,7 @@ export class MessagesController {
   ) {}
 
   @Get()
+  @ApiGetMessages()
   async getMessages(
     @Query() q: GetMessagesQuery,
     @Param('chatId') chatId: string,
@@ -49,6 +58,7 @@ export class MessagesController {
     FilesInterceptor('files', 25, { limits: { fileSize: 10 * 1024 * 1024 } }),
   )
   @Post()
+  @ApiSendMessage()
   async create(
     @Param('chatId') chatId: string,
     @UploadedFiles() files: Express.Multer.File[],

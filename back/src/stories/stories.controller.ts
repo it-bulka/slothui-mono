@@ -17,29 +17,29 @@ import { AuthRequest } from '../common/types/user.types';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CursorQueryDto } from '../common/types/cursorQuery.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiCreateStory,
+  ApiGetUsersWithStory,
+  ApiGetMyStories,
+  ApiGetUserStories,
+  ApiDeleteStory,
+  ApiMarkStoriesViewed,
+  ApiGetStoryViews,
+  ApiSetStoryView,
+} from './decorators/api-stories.decorator';
 
+@ApiTags('Stories')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('stories')
 export class StoriesController {
   constructor(private readonly storiesService: StoriesService) {}
-  /*@UseInterceptors(
-    FileInterceptor('file', {
-      fileFilter: (_req, file, cb) => {
-        if (
-          !file.mimetype.startsWith('image/') &&
-          !file.mimetype.startsWith('video/')
-        ) {
-          return cb(
-            new BadRequestException('Only image or video allowed!'),
-            false,
-          );
-        }
-        cb(null, true);
-      },
-    }),
-  )*/
+
   @Post()
   @UseInterceptors(FileFieldsInterceptor([{ name: 'file', maxCount: 1 }]))
+  @ApiCreateStory()
   async create(
     @UploadedFiles()
     uploaded: {
@@ -54,6 +54,7 @@ export class StoriesController {
   }
 
   @Get()
+  @ApiGetUsersWithStory()
   async getUsersWithStory(
     @Body('authorsIds') authorsIds: string[],
     @Query()
@@ -68,16 +69,19 @@ export class StoriesController {
   }
 
   @Get('/users/me')
+  @ApiGetMyStories()
   async getMyStory(@Request() req: AuthRequest) {
     return await this.storiesService.getFormattedStoriesByUser(req.user.id);
   }
 
   @Get('/users/:userId')
+  @ApiGetUserStories()
   async getStoryByUser(@Param('userId') userId: string) {
     return await this.storiesService.getFormattedStoriesByUser(userId);
   }
 
   @Delete(':storyId')
+  @ApiDeleteStory()
   async deleteOne(
     @Param('storyId') storyId: string,
     @Request() req: AuthRequest,
@@ -87,6 +91,7 @@ export class StoriesController {
 
   @Post('viewed')
   @HttpCode(204)
+  @ApiMarkStoriesViewed()
   async markBatchViewed(
     @Body() storyIds: string[],
     @Request() req: AuthRequest,
@@ -95,6 +100,7 @@ export class StoriesController {
   }
 
   @Get(':storyId/views')
+  @ApiGetStoryViews()
   async getStoryViews(
     @Param('storyId') storyId: string,
     query: CursorQueryDto,
@@ -105,6 +111,7 @@ export class StoriesController {
 
   @Post(':storyId/views')
   @HttpCode(204)
+  @ApiSetStoryView()
   async setStoryView(
     @Param('storyId') storyId: string,
     @Request() req: AuthRequest,

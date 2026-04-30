@@ -34,7 +34,18 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { getRefreshTokenFromReq } from '../common/utils/getRefreshTokenFromReq';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiRegister,
+  ApiLogin,
+  ApiRefresh,
+  ApiLogout,
+  ApiOAuthCallback,
+  ApiForgotPassword,
+  ApiResetPassword,
+} from './decorators/api-auth.decorator';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -43,6 +54,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @ApiRegister()
   @UseInterceptors(FileInterceptor('avatar'))
   async registerByLogin(
     @Body() createUserDto: CreateUserDto,
@@ -68,6 +80,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @ApiLogin()
   async login(
     @Body('deviceId') deviceId: string,
     @Request() req: AuthRequest,
@@ -82,6 +95,7 @@ export class AuthController {
 
   @UseGuards(RefreshJwtAuthGuard)
   @Get('refresh')
+  @ApiRefresh()
   async refresh(
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
@@ -98,6 +112,7 @@ export class AuthController {
   @UseGuards(RefreshJwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
+  @ApiLogout()
   async logout(
     @Request() req: AuthRequest,
     @Response({ passthrough: true }) res: ExpressResponse,
@@ -114,12 +129,18 @@ export class AuthController {
     return;
   }
 
+  @ApiTags('OAuth')
   @UseGuards(GoogleAuthGuard)
   @Get('google/login')
+  @ApiOperation({
+    summary: 'Initiate Google OAuth2 login — redirects to Google consent page',
+  })
   googleLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
+  @ApiOAuthCallback('Google')
   async googleCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -129,12 +150,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(FacebookAuthGuard)
   @Get('facebook/login')
+  @ApiOperation({ summary: 'Initiate Facebook OAuth2 login' })
   facebookLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(FacebookAuthGuard)
   @Get('facebook/callback')
+  @ApiOAuthCallback('Facebook')
   async facebookCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -144,12 +169,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(InstagramAuthGuard)
   @Get('instagram/login')
+  @ApiOperation({ summary: 'Initiate Instagram OAuth2 login' })
   instagramLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(InstagramAuthGuard)
   @Get('instagram/callback')
+  @ApiOAuthCallback('Instagram')
   async instagramCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -159,12 +188,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(TwitterAuthGuard)
   @Get('twitter/login')
+  @ApiOperation({ summary: 'Initiate Twitter OAuth2 login' })
   twitterLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(TwitterAuthGuard)
   @Get('twitter/callback')
+  @ApiOAuthCallback('Twitter')
   async twitterCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -174,12 +207,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(LinkedInAuthGuard)
   @Get('linkedin/login')
+  @ApiOperation({ summary: 'Initiate LinkedIn OAuth2 login' })
   linkedInLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(LinkedInAuthGuard)
   @Get('linkedin/callback')
+  @ApiOAuthCallback('LinkedIn')
   async linkedInCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -189,12 +226,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(GithubAuthGuard)
   @Get('github/login')
+  @ApiOperation({ summary: 'Initiate GitHub OAuth2 login' })
   githubLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(GithubAuthGuard)
   @Get('github/callback')
+  @ApiOAuthCallback('GitHub')
   async githubCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -204,13 +245,16 @@ export class AuthController {
     await this._handleOAuthRedirect({ req, res, state, deviceId });
   }
 
+  @ApiTags('OAuth')
   @UseGuards(TelepassAuthGuard)
   @Get('telegram/login')
-  // TELEGRAM via TELEPASS
+  @ApiOperation({ summary: 'Initiate Telegram login via Telepass' })
   telegramLogin() {}
 
+  @ApiTags('OAuth')
   @UseGuards(TelepassAuthGuard)
   @Get('telegram/callback')
+  @ApiOAuthCallback('Telegram')
   async telegramCallback(
     @Query('state') state: string,
     @Query('deviceId') deviceId: string,
@@ -244,6 +288,7 @@ export class AuthController {
 
   @Post('forgot-password')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiForgotPassword()
   async forgotPassword(
     @Body() dto: ForgotPasswordDto,
     @Request() req: ExpressRequest,
@@ -253,6 +298,7 @@ export class AuthController {
 
   @Post('reset-password')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResetPassword()
   async resetPassword(@Body() dto: ResetPasswordDto) {
     await this.authService.resetPassword(dto.token, dto.password);
   }

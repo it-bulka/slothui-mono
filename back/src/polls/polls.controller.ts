@@ -13,13 +13,23 @@ import { JwtAuthGuard } from '../auth/guards';
 import { AuthRequest } from '../common/types/user.types';
 import { SelectPollAnswerDto } from './dto/selectPollAnswer.dto';
 import { UserShortDTO } from '../user/dto/user-response.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiVotePoll,
+  ApiGetPollDetails,
+  ApiGetPollVoters,
+} from './decorators/api-polls.decorator';
 
+@ApiTags('Polls')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('polls')
 export class PollsController {
   constructor(private readonly pollsService: PollsService) {}
 
   @Post(':pollId/choose-answer')
+  @ApiVotePoll()
   async selectAnswer(
     @Param('pollId') pollId: string,
     @Body() dto: SelectPollAnswerDto,
@@ -33,6 +43,7 @@ export class PollsController {
   }
 
   @Get(':pollId/details')
+  @ApiGetPollDetails()
   async getDetails(
     @Param('pollId') pollId: string,
     @Request() req: AuthRequest,
@@ -41,6 +52,7 @@ export class PollsController {
   }
 
   @Get(':pollId/answers/:answerId/voters')
+  @ApiGetPollVoters()
   async fetchVoters(
     @Param('pollId') pollId: string,
     @Param('answerId') answerId: string,

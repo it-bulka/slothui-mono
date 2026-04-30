@@ -14,13 +14,30 @@ import { JwtAuthGuard } from '../auth/guards';
 import { AuthRequest } from '../common/types/user.types';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { CreatedEvent } from './dto/event.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiGetEvents,
+  ApiCreateEvent,
+  ApiGetSubscribedEvents,
+  ApiGetUpcomingEvents,
+  ApiGetOrganizedEvents,
+  ApiDeleteEvent,
+  ApiGetEvent,
+  ApiSubscribeEvent,
+  ApiUnsubscribeEvent,
+  ApiGetEventParticipants,
+} from './decorators/api-events.decorator';
 
+@ApiTags('Events')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
+  @ApiGetEvents()
   async getMany(
     @Query('cursor') cursor: string,
     @Query('limit') limit: string,
@@ -33,6 +50,7 @@ export class EventsController {
   }
 
   @Post()
+  @ApiCreateEvent()
   async create(
     @Body() dto: CreateEventDto,
     @Request() req: AuthRequest,
@@ -41,11 +59,13 @@ export class EventsController {
   }
 
   @Get('subscribed')
+  @ApiGetSubscribedEvents()
   async getSubscribedEvents(@Request() req: AuthRequest) {
     return await this.eventsService.getSubscribedEvents(req.user.id);
   }
 
   @Get('upcoming')
+  @ApiGetUpcomingEvents()
   async getUpcomingEvents(
     @Query('cursor') cursor: string,
     @Request() req: AuthRequest,
@@ -54,6 +74,7 @@ export class EventsController {
   }
 
   @Get('organized')
+  @ApiGetOrganizedEvents()
   async getOrganizedEvents(
     @Query('userId') userId: string,
     @Request() req: AuthRequest,
@@ -64,29 +85,34 @@ export class EventsController {
   }
 
   @Delete(':id')
+  @ApiDeleteEvent()
   async deleteEvent(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.eventsService.deleteEvent(id, req.user.id);
     return { message: 'Event deleted successfully' };
   }
 
   @Get(':id')
+  @ApiGetEvent()
   async getEvent(@Param('id') id: string, @Request() req: AuthRequest) {
     return await this.eventsService.getOne(id, req.user.id);
   }
 
   @Post(':id/subscribe')
+  @ApiSubscribeEvent()
   async subscribe(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.eventsService.subscribe(id, req.user.id);
     return { message: 'User subscribed successfully' };
   }
 
   @Delete(':id/unsubscribe')
+  @ApiUnsubscribeEvent()
   async unsubscribe(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.eventsService.unsubscribe(id, req.user.id);
     return { message: 'User unsubscribe successfully' };
   }
 
   @Get(':id/participants')
+  @ApiGetEventParticipants()
   async getParticipants(
     @Param('id') id: string,
     @Query() q: { pageSize?: number; cursor?: string },

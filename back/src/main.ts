@@ -8,6 +8,7 @@ import { RequestMethod } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as path from 'node:path';
 import { setLoggering } from './common/utils/setLoggering';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -32,8 +33,23 @@ async function bootstrap() {
   app.setGlobalPrefix('api', {
     exclude: [
       { path: 'docs', method: RequestMethod.ALL },
+      { path: 'docs/rest', method: RequestMethod.ALL },
+      { path: 'docs/rest-json', method: RequestMethod.GET },
       { path: 'static', method: RequestMethod.GET },
     ],
+  });
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('SlothUI API')
+    .setDescription('REST API for the SlothUI social network')
+    .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
+    .addCookieAuth('refresh_token')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs/rest', app, document, {
+    jsonDocumentUrl: 'docs/rest-json',
   });
 
   app.setViewEngine('ejs');

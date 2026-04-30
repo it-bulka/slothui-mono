@@ -20,13 +20,31 @@ import { UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { ParseCreatePostPollPipe } from './pipes/parseCreatePostPoll.pipe';
 import { CreatePollDto } from '../polls/dto/createPoll.dto';
 import { CreatePostCommand } from './dto/createPost.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiAuth } from '../docs/swagger/api-auth.decorator';
+import {
+  ApiGetPosts,
+  ApiGetMyPosts,
+  ApiGetLikedPosts,
+  ApiGetSavedPosts,
+  ApiGetPost,
+  ApiLikePost,
+  ApiUnlikePost,
+  ApiSavePost,
+  ApiUnsavePost,
+  ApiCreatePost,
+  ApiDeletePost,
+} from './decorators/api-posts.decorator';
 
+@ApiTags('Posts')
+@ApiAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
+  @ApiGetPosts()
   async getMany(@Query() q: GetPostsQueryDto, @Request() req: AuthRequest) {
     return await this.postsService.getMany({
       cursor: q.cursor,
@@ -37,6 +55,7 @@ export class PostsController {
   }
 
   @Get('/my')
+  @ApiGetMyPosts()
   async getMyPosts(
     @Query() q: GetMyPostsQueryDto,
     @Request() req: AuthRequest,
@@ -50,6 +69,7 @@ export class PostsController {
   }
 
   @Get('/liked')
+  @ApiGetLikedPosts()
   async getLikedPosts(
     @Query() q: GetMyPostsQueryDto,
     @Request() req: AuthRequest,
@@ -61,6 +81,7 @@ export class PostsController {
   }
 
   @Get('/saved')
+  @ApiGetSavedPosts()
   async getSavedPosts(
     @Query() q: GetMyPostsQueryDto,
     @Request() req: AuthRequest,
@@ -72,11 +93,13 @@ export class PostsController {
   }
 
   @Get(':id')
+  @ApiGetPost()
   async getOne(@Param('id') id: string, @Request() req: AuthRequest) {
     return await this.postsService.getById({ postId: id, userId: req.user.id });
   }
 
   @Put(':id/likes')
+  @ApiLikePost()
   async setLike(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.setLike(id, req.user.id);
     const likeCounts = await this.postsService.countLikes(id);
@@ -89,6 +112,7 @@ export class PostsController {
   }
 
   @Delete(':id/likes')
+  @ApiUnlikePost()
   async deleteLike(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.deleteLike(id, req.user.id);
     const likeCounts = await this.postsService.countLikes(id);
@@ -101,6 +125,7 @@ export class PostsController {
   }
 
   @Put(':id/saves')
+  @ApiSavePost()
   async setSave(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.setSave(id, req.user.id);
     const saveCounts = await this.postsService.countSaves(id);
@@ -113,6 +138,7 @@ export class PostsController {
   }
 
   @Delete(':id/saves')
+  @ApiUnsavePost()
   async deleteSave(@Param('id') id: string, @Request() req: AuthRequest) {
     await this.postsService.deleteSave(id, req.user.id);
     const saveCounts = await this.postsService.countSaves(id);
@@ -128,6 +154,7 @@ export class PostsController {
     FilesInterceptor('files', 25, { limits: { fileSize: 10 * 1024 * 1024 } }),
   )
   @Post()
+  @ApiCreatePost()
   async createPost(
     @UploadedFiles() files: Express.Multer.File[],
     @Body(ParseCreatePostPollPipe)
@@ -164,6 +191,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @ApiDeletePost()
   deletePost(@Param('id') id: string, @Request() req: AuthRequest) {
     return this.postsService.deletePost(id, req.user.id);
   }
