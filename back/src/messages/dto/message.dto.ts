@@ -40,12 +40,32 @@ export type MessageWithPostResponseDto = MessageBaseResponseDto & {
   post: PostSummaryDto;
 };
 
+export type StoryInMessageDto = {
+  id: string;
+  url: string;
+  type: 'image' | 'video';
+  duration?: number;
+  createdAt: string;
+  userId: string;
+  user?: {
+    id: string;
+    username: string;
+    nickname: string;
+    avatarUrl?: string | null;
+  };
+};
+
+export type MessageWithStoryResponseDto = MessageBaseResponseDto & {
+  story: StoryInMessageDto;
+};
+
 export type MessageResponseDto =
   | MessageBaseResponseDto
   | MessageWithAttachmentsResponseDto
   | MessageWithPollResponseDto
   | MessageWithGeoResponseDto
-  | MessageWithPostResponseDto;
+  | MessageWithPostResponseDto
+  | MessageWithStoryResponseDto;
 
 export type MessageWithOptionals = Message & {
   attachments?: AttachmentDto[];

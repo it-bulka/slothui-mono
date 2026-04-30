@@ -5,6 +5,7 @@ import {
   MessageBaseResponseDto,
   MessageWithGeoResponseDto,
   MessageWithPostResponseDto,
+  MessageWithStoryResponseDto,
 } from './dto/message.dto';
 import { MessageWithOptionals } from './dto/message.dto';
 import { ChatLastMessage } from './dto/unread-buffer.dto';
@@ -45,6 +46,29 @@ export class MessageMapper {
         ...base,
         post: msg.post,
       } satisfies MessageWithPostResponseDto;
+    }
+
+    if (msg.story) {
+      const s = msg.story;
+      return {
+        ...base,
+        story: {
+          id: s.id,
+          url: s.url,
+          type: s.type,
+          duration: s.duration,
+          createdAt: s.createdAt.toISOString(),
+          userId: s.userId,
+          user: s.user
+            ? {
+                id: s.user.id,
+                username: s.user.username,
+                nickname: s.user.nickname,
+                avatarUrl: s.user.avatarUrl,
+              }
+            : undefined,
+        },
+      } satisfies MessageWithStoryResponseDto;
     }
 
     return base;

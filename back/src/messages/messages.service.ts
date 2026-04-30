@@ -71,6 +71,8 @@ export class MessagesService {
 
     const qb = this.messageRepo
       .createQueryBuilder('message')
+      .leftJoinAndSelect('message.story', 'story')
+      .leftJoinAndSelect('story.user', 'storyUser')
       .where('message.chatId = :chatId', { chatId });
 
     if (cursor) {
