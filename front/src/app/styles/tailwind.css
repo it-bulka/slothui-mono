@@ -363,12 +363,12 @@
     }
 
     .msg-extra {
-        border-left: 1px solid gray;
+        border-left: 2px solid var(--color-blue-b1);
         display: block;
-        padding-left: 6px;
-        background-color: #0000ff24;
-        box-shadow: 2px 2px 15px gray;
-        margin: 0 0 4px 4px;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 10px var(--shadow-color);
+        margin: 0 0 4px 0;
     }
 
     .scrollbar-hide {

@@ -13,7 +13,7 @@ export const StoryMessage = ({
       <SharedInfo />
       <StoryMessagePreview {...msg.story} />
       {msg.text && (
-        <MessageWrapper isAuthor={isAuthor} isFirst={isFirst} as="p">
+        <MessageWrapper isAuthor={isAuthor} isFirst={isFirst} as="p" className={`w-fit${isAuthor ? ' ml-auto' : ''}`}>
           {msg.text}
         </MessageWrapper>
       )}

@@ -12,29 +12,29 @@ export const StoryMessagePreview = ({
 }: StoryDTO & { user: UserShort }) => {
   const { isOpen, close, open } = useModalControl(false)
   return (
-    <div className="relative h-200px msg-extra">
+    <div className="relative msg-extra w-[100px]">
       {user && (
-        <HStack className="absolute w-full top-2 right-0 px-2">
+        <HStack className="absolute w-full top-2 right-0 px-2 z-10">
           <Avatar src={user.avatarUrl} name={user.nickname} size="sm" />
           <p>{user.nickname}</p>
         </HStack>
       )}
-      {type === 'image' && (
-        <img
-          src={url}
-          alt="Story image preview"
-          className="object-cover w-full h-[200px] aspect-[3/9] border-l border-gray-500"
-        />
-      )}
-
-      {type === 'video' && (
-        <video
-          src={url}
-          className="object-cover w-full h-[200px] aspect-[3/9] border-l border-gray-500"
-          aria-label="Story video"
-        />
-      )}
-
+      <div className="w-full aspect-[3/5]">
+        {type === 'image' && (
+          <img
+            src={url}
+            alt="Story image preview"
+            className="object-cover w-full h-full"
+          />
+        )}
+        {type === 'video' && (
+          <video
+            src={url}
+            className="object-cover w-full h-full"
+            aria-label="Story video"
+          />
+        )}
+      </div>
       <button onClick={open} className="absolute inset-0 z-40" aria-label="Open story preview" type="button"/>
       <StoryMessageModal
         isOpen={isOpen}
@@ -48,4 +48,3 @@ export const StoryMessagePreview = ({
     </div>
   )
 }
-
