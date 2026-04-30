@@ -27,7 +27,8 @@ export const Tab = memo(({
   scrollableTabs = false,
   scrollableContent = false,
 }: TabProps) => {
-  const [underlinePosition, setUnderlinePosition] = useState({ left: 0, top: 0, width: 0 });
+  const [underlinePosition, setUnderlinePosition] = useState({ left: 0, width: 0 });
+  const tabNavRef = useRef<HTMLDivElement>(null);
   const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex ?? 0);
 
   useEffect(() => {
@@ -65,9 +66,9 @@ export const Tab = memo(({
   const checkActive = (id: ActiveTabIndex) => activeElId === id
 
   const setRect = useCallback((el: HTMLElement) => {
-    const { x, y, width, height } = el.getBoundingClientRect();
-
-    setUnderlinePosition({ left: x, top: y + height, width: width });
+    const { x, width } = el.getBoundingClientRect();
+    const containerX = tabNavRef.current?.getBoundingClientRect().x ?? 0;
+    setUnderlinePosition({ left: x - containerX, width });
   }, [setUnderlinePosition])
 
   const onActiveElClick = useCallback((id: ActiveTabIndex, isActive: boolean, ) => (e: MouseEvent<HTMLButtonElement>) => {
@@ -103,17 +104,17 @@ export const Tab = memo(({
       ))}
 
       <div
-        className={classnames("fixed h-[1px] bg-blue-b1 transition-[width,left,top] will-change-transform -translate-y-full", { "duration-500": !isFirstRender })}
-        style={{ width: underlinePosition.width, left: underlinePosition.left, top: underlinePosition.top }}/>
+        className={classnames("absolute bottom-0 h-[1px] bg-blue-b1 transition-[width,left]", { "duration-500": !isFirstRender })}
+        style={{ width: underlinePosition.width, left: underlinePosition.left }}/>
     </>
   )
 
   const tabNav = scrollableTabs ? (
     <nav className="overflow-x-auto scrollbar-none">
-      <div className="flex min-w-max cursor-children">{tabButtons}</div>
+      <div ref={tabNavRef} className="relative flex min-w-max cursor-children">{tabButtons}</div>
     </nav>
   ) : (
-    <div className="flex justify-stretch cursor-children">{tabButtons}</div>
+    <div ref={tabNavRef} className="relative flex justify-stretch cursor-children">{tabButtons}</div>
   )
 
   const contentContainerClass = scrollableContent
