@@ -7,6 +7,7 @@ import { CommentStory } from '@/features/CommentStory';
 import { useDeleteStory, DeleteStoryModal, StoryActionsMenu } from '@/features/DeleteStory';
 import { Link } from 'react-router';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { Typography } from '@/shared/ui';
 import {
   useSwitchStories,
   useSelectStoryData,
@@ -153,8 +154,9 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
         </div>
       )}
 
-      <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-20">
+      <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-20 flex items-center gap-2">
         <Avatar src={allStories[currentUserIndex].avatar} />
+        <Typography variant="span" bold className="text-white mix-blend-difference">{allStories[currentUserIndex].username}</Typography>
       </Link>
 
       <StoryProgress

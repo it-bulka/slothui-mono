@@ -24,7 +24,7 @@ export const StoryMessageModal = ({
         <div className="absolute top-2 left-0 w-full z-20 flex justify-between items-center gap-2 px-2">
           <Link to={getUserPage(user.id)} className="flex items-center gap-2">
             <Avatar src={user.avatarUrl} />
-            <Typography>{user.nickname}</Typography>
+            <Typography variant="span" bold className="text-white mix-blend-difference">{user.nickname}</Typography>
           </Link>
           <CloseButton onClick={onClose} />
         </div>
