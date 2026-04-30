@@ -9,4 +9,8 @@ export class CreateStoryReactionMsgDto {
   @IsUUID()
   @IsNotEmpty()
   receiverId: string;
+
+  @IsUUID()
+  @IsNotEmpty()
+  storyId: string;
 }

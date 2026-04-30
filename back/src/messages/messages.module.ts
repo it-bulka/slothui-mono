@@ -1,6 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
+import { StoryReactionController } from './story-reaction.controller';
 import { ChatsModule } from '../chats/chats.module';
 import { UserModule } from '../user/user.module';
 import { Message } from './entities/message.entity';
@@ -25,13 +26,13 @@ import { PostsModule } from '../posts/posts.module';
     TypeOrmModule.forFeature([Message, Story, Chat, Attachment]),
     AttachmentsModule,
     EventEmitterModule,
-    forwardRef(() => StoriesModule),
+    StoriesModule,
     EventsModule,
     PollsModule,
     GeoMessageModule,
     PostsModule,
   ],
-  controllers: [MessagesController],
+  controllers: [MessagesController, StoryReactionController],
   providers: [MessagesService, OpenedChatsTracker, UnreadBufferService],
   exports: [MessagesService, OpenedChatsTracker, UnreadBufferService],
 })

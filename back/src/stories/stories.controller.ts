@@ -15,18 +15,13 @@ import { StoriesService } from './stories.service';
 import { UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { AuthRequest } from '../common/types/user.types';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { MessagesService } from '../messages/messages.service';
-import { CreateStoryReactionMsgDto } from '../messages/dto/createStoryReactionMsg.dto';
 import { CursorQueryDto } from '../common/types/cursorQuery.dto';
 import { JwtAuthGuard } from '../auth/guards';
 
 @UseGuards(JwtAuthGuard)
 @Controller('stories')
 export class StoriesController {
-  constructor(
-    private readonly storiesService: StoriesService,
-    private readonly messagesService: MessagesService,
-  ) {}
+  constructor(private readonly storiesService: StoriesService) {}
   /*@UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (_req, file, cb) => {
@@ -115,20 +110,5 @@ export class StoriesController {
     @Request() req: AuthRequest,
   ) {
     await this.storiesService.setStoryView(storyId, req.user.id);
-  }
-
-  @Post(':storyId/reactions')
-  @HttpCode(204)
-  async createStoryReactionMsg(
-    @Param('storyId') storyId: string,
-    @Body() dto: CreateStoryReactionMsgDto,
-    @Request() req: AuthRequest,
-  ) {
-    await this.messagesService.sendMessageOnStory({
-      ...dto,
-      senderId: req.user.id,
-      storyId,
-      currentUserId: req.user.id,
-    });
   }
 }
