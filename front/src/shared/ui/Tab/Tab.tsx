@@ -31,10 +31,10 @@ export const Tab = memo(({
   const [activeElId, setActiveElId] = useState<ActiveTabIndex>(activeTabIndex ?? 0);
 
   useEffect(() => {
-    if (activeTabIndex !== undefined && activeTabIndex !== activeElId) {
+    if (activeTabIndex !== undefined) {
       setActiveElId(activeTabIndex);
     }
-  }, [activeElId, activeTabIndex]);
+  }, [activeTabIndex]);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const id = useId()
 
