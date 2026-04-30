@@ -5,21 +5,23 @@
 }
 
 .message.self {
-    @apply bg-blue-b3;
+    background-color: var(--color-msg-self);
 }
 
 .message.self.first::after {
     content: "";
-    @apply absolute bottom-2 -right-1 w-3 h-3 bg-blue-b3;
+    @apply absolute bottom-2 -right-1 w-3 h-3;
+    background-color: var(--color-msg-self);
     clip-path: polygon(0 0, 100% 100%, 0 100%);
 }
 
 .message.other {
-    @apply bg-gray-g3;
+    background-color: var(--color-msg-other);
 }
 
 .message.other.first::after {
     content: "";
-    @apply absolute bottom-2 -left-1 w-3 h-3 bg-gray-g3;
+    @apply absolute bottom-2 -left-1 w-3 h-3;
+    background-color: var(--color-msg-other);
     clip-path: polygon(100% 0, 100% 100%, 0 100%);
 }
