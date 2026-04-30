@@ -116,7 +116,7 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
             onComplete={activeSlot === 'even' ? nextStory : undefined}
             onReady={pendingSlot === 'even' ? handleReady : undefined}
           >
-            {activeSlot === 'even' && <CommentStory storyId={storyId} userId={userId} />}
+            {activeSlot === 'even' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
           </Story>
         )}
       </div>
@@ -135,7 +135,7 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
             onComplete={activeSlot === 'odd' ? nextStory : undefined}
             onReady={pendingSlot === 'odd' ? handleReady : undefined}
           >
-            {activeSlot === 'odd' && <CommentStory storyId={storyId} userId={userId} />}
+            {activeSlot === 'odd' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
           </Story>
         )}
       </div>
