@@ -42,6 +42,7 @@ export const CommentStory = ({ storyId, userId }: CommentStoryProps) => {
         name="comment"
         value={msg}
         onChange={(value) => setMsg(value as string)}
+        onEnter={sendMsg}
         placeholder={"Write your comment.."}
         wrapperClass="grow mr-2"
       />
