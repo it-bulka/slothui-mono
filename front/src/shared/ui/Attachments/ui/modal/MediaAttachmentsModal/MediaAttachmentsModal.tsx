@@ -1,5 +1,9 @@
 import { Modal } from '@/shared/ui';
 import type { Attachment } from '@/shared/types';
+import 'swiper/css';
+import 'swiper/css/thumbs';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Thumbs, Navigation, Scrollbar, FreeMode } from 'swiper/modules';
 import { useState } from 'react';
