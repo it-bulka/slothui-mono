@@ -14,7 +14,9 @@ export const loginUser = createAsyncThunk<
 
     try {
       const authService = extra.services.auth
-      return await authService.loginByPassword(arg)
+      const result = await authService.loginByPassword(arg)
+      await extra.services.initFeatureServices()
+      return result
     } catch (e) {
       const msg = extra.extractErrorMessage(e, 'Failed to login')
       return rejectWithValue(msg);

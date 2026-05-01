@@ -1,9 +1,10 @@
-import { createServices } from '../createServices/createServices.tsx';
-let servicesInstance: ReturnType<typeof createServices> | null = null;
+import { ServicesFacade } from '../ServicesFacade/ServicesFacade.ts';
 
-export const getServices = () => {
+let servicesInstance: ServicesFacade | null = null;
+
+export const getServices = (): ServicesFacade => {
   if (!servicesInstance) {
-    servicesInstance = createServices();
+    servicesInstance = new ServicesFacade();
   }
   return servicesInstance;
-}
+};

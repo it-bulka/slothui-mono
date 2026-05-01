@@ -15,6 +15,7 @@ export const registerUser = createAsyncThunk<
       const authService = extra.services.auth
       const res = await authService.registerByPassword(arg)
       if(!res) throw new Error('')
+      await extra.services.initFeatureServices()
       return res
     } catch (e) {
       const errMsg = extra.extractErrorMessage(e, 'Failed to register');
