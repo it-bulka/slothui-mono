@@ -1,11 +1,12 @@
 import { ActionButton } from '@/shared/ui';
 import SmileSvg from '@/shared/assets/images/message/smile.svg?react'
-import EmojiPicker from 'emoji-picker-react';
-import type { EmojiClickData } from 'emoji-picker-react';
-import { memo, useLayoutEffect } from 'react';
+import { lazy, memo, Suspense, useLayoutEffect } from 'react';
 import { useRef } from 'react';
+import type { EmojiClickData } from 'emoji-picker-react';
 import { useBtnPopup } from '@/shared/hooks';
 import { FloatingPortal } from '@floating-ui/react';
+
+const EmojiPicker = lazy(() => import('emoji-picker-react'))
 
 export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick?: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
   const btnRef = useRef<HTMLButtonElement>(null)
@@ -34,7 +35,9 @@ export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmoji
         context.open && (
           <FloatingPortal>
             <div ref={setWrapperRef} {...getFloatingProps()} style={{ position: strategy, top: y ?? 0, left: x ?? 0 }} className="z-[999999999999999]">
-              <EmojiPicker onEmojiClick={onEmojiClick}/>
+              <Suspense fallback={<div className="w-[350px] h-[450px] animate-pulse rounded-lg bg-gray-100 dark:bg-slate-800" />}>
+                <EmojiPicker onEmojiClick={onEmojiClick}/>
+              </Suspense>
             </div>
           </FloatingPortal>
         )

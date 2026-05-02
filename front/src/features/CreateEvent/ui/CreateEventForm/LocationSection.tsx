@@ -1,18 +1,10 @@
-import { memo, useState } from 'react'
+import { lazy, memo, Suspense, useState } from 'react'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
 import { Typography, TypographyTypes, Input, CheckboxInput } from '@/shared/ui'
 import type { DraftEvent } from '../../model/types/event.type'
 import { SectionLabel } from './SectionLabel'
 
-/* ─── Internal leaflet click handler ───────────────────────── */
-
-const LocationPicker = memo(({ onPick }: { onPick: (lat: number, lng: number) => void }) => {
-  useMapEvents({ click(e) { onPick(e.latlng.lat, e.latlng.lng) } })
-  return null
-})
-LocationPicker.displayName = 'LocationPicker'
+const LocationMapPicker = lazy(() => import('./LocationMapPicker'))
 
 /* ─── Section ───────────────────────────────────────────────── */
 
@@ -105,20 +97,9 @@ export const LocationSection = memo(({
             ].join(' ')}
           >
             <div className="overflow-hidden space-y-2">
-              <div className="rounded-2xl overflow-hidden" style={{ height: 200 }}>
-                <MapContainer
-                  center={[50.45, 30.52]}
-                  zoom={12}
-                  style={{ height: '100%', width: '100%' }}
-                >
-                  <TileLayer
-                    attribution="© OpenStreetMap"
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <LocationPicker onPick={handlePick} />
-                  {marker && <Marker position={marker} />}
-                </MapContainer>
-              </div>
+              <Suspense fallback={<div className="rounded-2xl bg-gray-100 dark:bg-slate-800 animate-pulse" style={{ height: 200 }} />}>
+                <LocationMapPicker onPick={handlePick} marker={marker} />
+              </Suspense>
               {marker && (
                 <Typography type={TypographyTypes.P_SM} className="text-gray-g2">
                   📍 {marker[0].toFixed(4)}, {marker[1].toFixed(4)}

@@ -1,1 +1,1 @@
-export { MapView } from './MapView/MapView.tsx';
+export { MapView } from './MapView/MapView.async.tsx';
