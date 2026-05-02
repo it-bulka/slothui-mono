@@ -19,7 +19,7 @@ export interface EventDTO {
   title: string
   description: string
   date: string
-  location?: string
+  location?: string | { address?: string; latitude: number; longitude: number }
   category?: EventCategory | null
   coverUrl?: string | null
   onlineUrl?: string | null

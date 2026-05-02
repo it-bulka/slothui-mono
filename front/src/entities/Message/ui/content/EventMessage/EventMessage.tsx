@@ -21,7 +21,7 @@ export const EventMessage = ({ msg, time }: MessageComponent<MessageWithEventDto
       <MsgEventPreview
         id={msg.event.id}
         title={msg.event.title}
-        location={msg.event.location}
+        location={typeof msg.event.location === 'object' ? msg.event.location?.address : msg.event.location}
         date={msg.event.date}
         description={msg.event.description}
       />

@@ -31,7 +31,7 @@ export const SavedEventsContent = memo(() => {
             title={item.title}
             description={item.description}
             date={formatDate(item.date)}
-            location={item.location}
+            location={typeof item.location === 'object' ? item.location?.address : item.location}
             category={item.category}
             coverUrl={item.coverUrl}
             onlineUrl={item.onlineUrl}

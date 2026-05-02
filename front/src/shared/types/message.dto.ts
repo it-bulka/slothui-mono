@@ -32,7 +32,7 @@ export type MessageWithEventDto = MessageBaseDto & {
   event: {
     description: string;
     title: string;
-    location?: string;
+    location?: string | { address?: string; latitude: number; longitude: number };
     date?: string;
     id: string
   };
