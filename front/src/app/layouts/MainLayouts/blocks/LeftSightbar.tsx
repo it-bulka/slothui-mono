@@ -1,19 +1,98 @@
+import { useState, memo } from 'react';
 import { UserAuth } from '@/features';
-import { ScrollableBlock, Logo, Divider } from '@/shared/ui';
+import { ScrollableBlock, Logo, Divider, Overlay } from '@/shared/ui';
 import { NavigationSearchBar, NavBar } from '@/widgets';
+import { useMediaQuery } from '@/shared/hooks';
+import classnames from 'classnames';
+import LogoSvg from '@/shared/assets/images/logo.svg?react';
 
-export const LeftSidebar = () => {
+const COLLAPSED_WIDTH = 72;
+const EXPANDED_WIDTH = 260;
+
+export const LeftSidebarContent = () => (
+  <div className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
+    <Logo />
+    <NavigationSearchBar />
+    <ScrollableBlock className="grow">
+      <NavBar />
+      <Divider className="my-6" />
+      <UserAuth />
+    </ScrollableBlock>
+  </div>
+);
+
+const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
+  <>
+    <div className={classnames('flex items-center font-extrabold text-3xl overflow-hidden', collapsed ? 'justify-center' : '')}>
+      <LogoSvg className="shrink-0" />
+      {!collapsed && <p className="whitespace-nowrap">slothui</p>}
+    </div>
+
+    {!collapsed && <NavigationSearchBar />}
+
+    <ScrollableBlock className="grow">
+      <NavBar collapsed={collapsed} />
+      {!collapsed && (
+        <>
+          <Divider className="my-6" />
+          <UserAuth />
+        </>
+      )}
+    </ScrollableBlock>
+  </>
+);
+
+export const LeftSidebar = memo(() => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isTablet = useMediaQuery('(max-width: 1279px) and (min-width: 640px)');
+
+  if (!isTablet) {
+    return (
+      <aside className="px-4 py-8 flex flex-col gap-4 border-style-r bg-light-l2 h-screen overflow-y-auto scrollbar-hide">
+        <Logo />
+        <NavigationSearchBar />
+        <ScrollableBlock className="grow">
+          <NavBar />
+          <Divider className="my-6" />
+          <UserAuth />
+        </ScrollableBlock>
+      </aside>
+    );
+  }
+
   return (
-    <aside className={"px-4 py-8 flex flex-col gap-4 border-style-r bg-light-l2 h-screen overflow-y-auto scrollbar-hide"}>
-      <Logo />
-      <NavigationSearchBar />
-      <ScrollableBlock className="grow">
-        <NavBar  />
+    <>
+      {isExpanded && <Overlay onClick={() => setIsExpanded(false)} />}
 
-        <Divider className={"my-6"}/>
-        <UserAuth />
-      </ScrollableBlock>
+      <aside
+        className="fixed left-0 top-0 h-screen bg-light-l2 border-style-r z-40 flex flex-col gap-4 py-8 overflow-y-auto scrollbar-hide"
+        style={{
+          width: isExpanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
+          paddingLeft: isExpanded ? '1rem' : '0.75rem',
+          paddingRight: isExpanded ? '1rem' : '0.75rem',
+          transition: 'width 300ms ease-in-out, padding 300ms ease-in-out',
+        }}
+      >
+        <button
+          onClick={() => setIsExpanded(v => !v)}
+          className="absolute top-4 -right-3 z-10 bg-light-l2 border border-gray-g3 rounded-full w-6 h-6 flex items-center justify-center shadow-sm text-gray-g1 hover:text-blue-b1 transition-colors"
+          aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+        >
+          <svg
+            className={classnames('w-3 h-3 transition-transform duration-300', { 'rotate-180': isExpanded })}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
 
-    </aside>
-  )
-}
+        <SidebarInner collapsed={!isExpanded} />
+      </aside>
+    </>
+  );
+});
+
+LeftSidebar.displayName = 'LeftSidebar';
