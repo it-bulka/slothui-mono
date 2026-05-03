@@ -1,22 +1,66 @@
-import { type ReactNode, memo } from 'react';
-import { LeftSidebar } from './blocks/LeftSightbar.tsx'
+import { type ReactNode, memo, useState, useMemo } from 'react';
+import { LeftSidebar, LeftSidebarContent } from './blocks/LeftSightbar.tsx';
+import { MobileHeader } from './blocks/MobileHeader.tsx';
 import { Outlet } from 'react-router';
-import { ScrollableBlock, InlineErrorBoundary } from '@/shared/ui';
+import { ScrollableBlock, InlineErrorBoundary, SideDrawer, Drawer } from '@/shared/ui';
+import { SidebarContext, type SidebarState } from './SidebarContext.ts';
 
-export const MainLayout = memo(({ rightSidebar }: { rightSidebar: ReactNode}) => {
+interface MainLayoutProps {
+  rightSidebar: ReactNode;
+  mobileRightSidebar?: ReactNode;
+}
+
+export const MainLayout = memo(({ rightSidebar, mobileRightSidebar }: MainLayoutProps) => {
+  const [sidebar, setSidebar] = useState<SidebarState>('none');
+
+  const ctx = useMemo(() => ({
+    sidebar,
+    openLeft:  () => setSidebar('left'),
+    openRight: () => setSidebar('right'),
+    close:     () => setSidebar('none'),
+  }), [sidebar]);
+
   return (
-    <div className={'grid grid-cols-[minmax(150px,25%)_1fr_minmax(200px,30%)] h-screen bg-light-l3'}>
-      <LeftSidebar />
-      <ScrollableBlock className="min-w-0">
-        <InlineErrorBoundary>
-          <Outlet />
-        </InlineErrorBoundary>
-      </ScrollableBlock>
-      <ScrollableBlock>
-        { rightSidebar }
-      </ScrollableBlock>
-    </div>
-  )
-})
+    <SidebarContext.Provider value={ctx}>
+      {/* Mobile-only header */}
+      <MobileHeader className="md:hidden" />
 
-MainLayout.displayName = 'MainLayout'
+      <div className="grid grid-cols-1 md:grid-cols-[72px_1fr_minmax(270px,35%)] xl:grid-cols-[minmax(150px,20%)_1fr_minmax(260px,28%)] md:h-screen bg-light-l3">
+        {/* Left sidebar — visible on md+ as inline column */}
+        <div className="hidden md:block">
+          <LeftSidebar />
+        </div>
+
+        {/* Main feed */}
+        <ScrollableBlock className="min-w-0">
+          <InlineErrorBoundary>
+            <Outlet />
+          </InlineErrorBoundary>
+        </ScrollableBlock>
+
+        {/* Right sidebar — visible on md+ (tablet + desktop) */}
+        <ScrollableBlock className="hidden md:block">
+          {rightSidebar}
+        </ScrollableBlock>
+      </div>
+
+      {/* Mobile left side drawer */}
+      <SideDrawer
+        isOpen={sidebar === 'left'}
+        onClose={ctx.close}
+        className="md:hidden"
+      >
+        <LeftSidebarContent />
+      </SideDrawer>
+
+      {/* Mobile right bottom sheet — only renders if mobileRightSidebar provided */}
+      {mobileRightSidebar && (
+        <Drawer isOpen={sidebar === 'right'} onClose={ctx.close}>
+          {mobileRightSidebar}
+        </Drawer>
+      )}
+    </SidebarContext.Provider>
+  );
+});
+
+MainLayout.displayName = 'MainLayout';

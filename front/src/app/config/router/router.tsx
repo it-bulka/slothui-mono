@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
         path: RoutePaths.home,
         element: (
           <PrivateRoute>
-            <MainLayout rightSidebar={<RightSidebar />} />
+            <MainLayout rightSidebar={<RightSidebar />} mobileRightSidebar={<RightSidebar compact />} />
           </PrivateRoute>
         ),
         errorElement: <ErrorBoundary />,
