@@ -8,23 +8,32 @@ interface NavLinkProps {
   Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   count?: number;
   end?: boolean;
+  collapsed?: boolean;
 }
-export const NavbarLink = ({title, href, Icon, count, end }: NavLinkProps) => {
+
+export const NavbarLink = ({ title, href, Icon, count, end, collapsed }: NavLinkProps) => {
   return (
     <li className="pb-2">
       <NavLink
         to={href}
         end={end}
-        className={({ isActive }) => `nav-link${isActive ? ' nav-link-active' : ''}`}
+        className={({ isActive }) =>
+          `nav-link${isActive ? ' nav-link-active' : ''}${collapsed ? ' nav-link-collapsed' : ''}`
+        }
       >
         {({ isActive }) => (
-          <>
-            <Icon className={`w-[24px] h-[24px] shrink-0 ${isActive ? 'text-blue-b1' : 'text-gray-g2'}`} />
-            <p className='grow font-bold'>{title}</p>
-            {!count || <Badge>{count}</Badge>}
-          </>
+          <span className="relative flex items-center w-full">
+            <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-blue-b1' : 'text-gray-g2'}`} />
+            {!collapsed && <p className="grow font-bold ml-0">{title}</p>}
+            {!collapsed && !!count && <Badge>{count}</Badge>}
+            {collapsed && !!count && (
+              <Badge className="absolute -top-2 -right-2 text-[10px] min-w-[16px] h-4 flex items-center justify-center px-1">
+                {count}
+              </Badge>
+            )}
+          </span>
         )}
       </NavLink>
     </li>
-  )
-}
+  );
+};

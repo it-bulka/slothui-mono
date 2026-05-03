@@ -23,23 +23,27 @@ const navLinks: NavbarListType = [
   { Icon: HelpSvg, title: 'Help & Support', key: 'help', href: RoutePaths.home }, // TODO: add path for support or change
 ]
 
-export const NavBar = ({ className }: { className?: string }) => {
+interface NavBarProps {
+  className?: string;
+  collapsed?: boolean;
+}
+
+export const NavBar = ({ className, collapsed }: NavBarProps) => {
   const counts = useNavbarCounts()
 
   return (
-    <>
-      <div className={twMerge("flex flex-col justify-start", className)}>
-        {navLinks.map(({Icon, title, key, href, end }) => {
-          return <NavbarLink
-            Icon={Icon}
-            title={title}
-            key={key}
-            href={href}
-            count={counts[key]}
-            end={end}
-          />
-        })}
-      </div>
-    </>
+    <div className={twMerge("flex flex-col justify-start", className)}>
+      {navLinks.map(({ Icon, title, key, href, end }) => (
+        <NavbarLink
+          Icon={Icon}
+          title={title}
+          key={key}
+          href={href}
+          count={counts[key]}
+          end={end}
+          collapsed={collapsed}
+        />
+      ))}
+    </div>
   )
 }
