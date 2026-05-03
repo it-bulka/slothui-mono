@@ -57,3 +57,4 @@ export { Overlay } from './Overlay/Overlay.tsx';
 export { Drawer } from './Drawer';
 export { OverlayBadge } from './OverlayBadge/OverlayBadge';
 export { NoDataYet } from './NoDataYet/NoDataYet.tsx';
+export { SideDrawer } from './SideDrawer';

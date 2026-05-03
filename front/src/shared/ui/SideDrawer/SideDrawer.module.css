@@ -1,0 +1,41 @@
+@reference "../../../app/styles/tailwind.css";
+
+.root {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-index-modal);
+    pointer-events: none;
+}
+
+.open {
+    pointer-events: auto;
+}
+
+.overlay {
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.overlayVisible {
+    opacity: 0.5;
+}
+
+.panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 85vw;
+    max-width: 320px;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+    background: var(--color-light-l2);
+    border-right: 1px solid var(--color-gray-g3);
+    box-shadow: 4px 0 24px var(--shadow-color);
+    z-index: var(--z-index-modal);
+}
+
+.panelOpen {
+    transform: translateX(0);
+}
