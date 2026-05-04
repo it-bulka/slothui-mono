@@ -3,12 +3,13 @@ import { SearchBar } from '@/shared/ui';
 import { UserSearchResults } from '@/features/user-search';
 import { memo } from 'react';
 
-export const UserSearchToolbar = memo(() => {
+export const UserSearchToolbar = memo(({ className }: { className?: string }) => {
   const { query, setQuery, results, isLoading, hasSearched } = useUserSearch();
 
   return (
     <>
       <SearchBar
+        className={className}
         placeholder="Search users by nickname"
         size="lg"
         iconPosition="right"

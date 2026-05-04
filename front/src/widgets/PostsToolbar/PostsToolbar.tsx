@@ -5,8 +5,8 @@ import { ToolbarWrapper } from '@/shared/ui';
 
 export const PostsToolbar = memo(() => {
   return (
-    <ToolbarWrapper className={'flex flex-wrap justify-between'}>
-      <UserSearchToolbar />
+    <ToolbarWrapper className="flex items-stretch gap-4">
+      <UserSearchToolbar className="flex-1 min-w-0" />
       <AddPostPanel />
     </ToolbarWrapper>
   )
