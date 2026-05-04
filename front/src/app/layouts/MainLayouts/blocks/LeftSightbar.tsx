@@ -101,7 +101,7 @@ export const LeftSidebar = memo(() => {
       >
         <button
           onClick={() => setIsExpanded(v => !v)}
-          className="absolute top-4 -right-3 z-10 bg-light-l2 border border-gray-g3 rounded-full w-6 h-6 flex items-center justify-center shadow-sm text-gray-g1 hover:text-blue-b1 transition-colors"
+          className="absolute top-4 right-0 translate-x-1/2 z-10 bg-light-l2 border border-gray-g3 rounded-full w-6 h-6 flex items-center justify-center shadow-sm text-gray-g1 hover:text-blue-b1 transition-colors"
           aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
           <svg
