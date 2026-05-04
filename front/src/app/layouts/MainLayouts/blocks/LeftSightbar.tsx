@@ -5,13 +5,17 @@ import { NavigationSearchBar, NavBar } from '@/widgets';
 import { useMediaQuery } from '@/shared/hooks';
 import classnames from 'classnames';
 import LogoSvg from '@/shared/assets/images/logo.svg?react';
+import { SidebarCloseButton } from './SidebarCloseButton';
 
 const COLLAPSED_WIDTH = 72;
 const EXPANDED_WIDTH = 260;
 
 export const LeftSidebarContent = () => (
   <div className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
-    <Logo />
+    <div className="flex items-center justify-between">
+      <Logo />
+      <SidebarCloseButton />
+    </div>
     <NavigationSearchBar />
     <ScrollableBlock className="grow">
       <NavBar />
