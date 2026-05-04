@@ -71,7 +71,7 @@ export const LeftSidebar = memo(() => {
       <div
         className={classnames(
           'fixed left-0 top-0 h-screen',
-          isExpanded ? 'z-[var(--z-index-sidebar)]' : 'z-40',
+          isExpanded ? 'z-[var(--z-index-sidebar)]' : 'z-50',
         )}
         style={{
           width: isExpanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
