@@ -11,9 +11,10 @@ export const CloseButton = ({ onClick, className }: CloseButtonProps) => {
     <Button
       variant="icon"
       onClick={onClick}
+      aria-label="Close"
       className={classnames("py-2 px-4 font-bold block", [className])}
     >
-      x
+      <span aria-hidden="true">x</span>
     </Button>
   )
 }

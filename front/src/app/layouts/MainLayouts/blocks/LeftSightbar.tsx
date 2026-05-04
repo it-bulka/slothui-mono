@@ -11,7 +11,7 @@ const COLLAPSED_WIDTH = 72;
 const EXPANDED_WIDTH = 260;
 
 export const LeftSidebarContent = () => (
-  <div className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
+  <aside aria-label="Sidebar navigation" className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
     <div className="flex items-center justify-between">
       <Logo />
       <SidebarCloseButton />
@@ -22,7 +22,7 @@ export const LeftSidebarContent = () => (
       <Divider className="my-6" />
       <UserAuth />
     </ScrollableBlock>
-  </div>
+  </aside>
 );
 
 const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (

@@ -29,10 +29,12 @@ export const SearchBar = forwardRef(
     const Search = () => {
       return (
         <button
+          type="button"
           onClick={onSearch}
+          aria-label="Search"
           className={`rounded-10 w-[20px] h-[20px] inline-block text-gray-g1 ${cls[iconPosition]}`}
         >
-          <SearchIcon className="w-full" />
+          <SearchIcon aria-hidden="true" className="w-full" />
         </button>
       )
     }
@@ -42,9 +44,6 @@ export const SearchBar = forwardRef(
         className={twMerge(classnames(
           `flex items-center rounded-3xl border border-gray-g4 wrapper ${cls[size]}`,
           [className]))}
-        onKeyDown={onKeyDown}
-        role="button"
-        tabIndex={0}
       >
         {iconPosition === 'left' && <Search />}
         <input
@@ -52,6 +51,7 @@ export const SearchBar = forwardRef(
           ref={ref}
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
+          onKeyDown={onKeyDown}
           className={'grow font-medium placeholder:text-gray-g1'}
           placeholder={placeholder}
           name={name}

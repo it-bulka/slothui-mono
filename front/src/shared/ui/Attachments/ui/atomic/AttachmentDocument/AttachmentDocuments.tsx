@@ -66,10 +66,11 @@ export const AttachmentDocument = ({ url, originalName, size, additionalComp }: 
       <a
         href={url}
         download={originalName}
+        aria-label={`Download ${originalName}`}
         className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-light-l3 hover:bg-blue-b4 text-sm text-gray-g1 hover:text-blue-b1 transition-colors shrink-0"
         onClick={(e) => e.stopPropagation()}
       >
-        ↓
+        <span aria-hidden="true">↓</span>
       </a>
 
       {additionalComp}

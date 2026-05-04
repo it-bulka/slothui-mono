@@ -34,8 +34,8 @@ export const MoreButton = ({
 
   return (
     <div className={twMerge(classnames('w-fit', [className]))}>
-      <button ref={btnRef} {...getReferenceProps()} className={twMerge(classnames("text-white mix-blend-difference", [moreBtnClass]))}>
-        <MoreIcon />
+      <button ref={btnRef} {...getReferenceProps()} aria-label="More actions" className={twMerge(classnames("text-white mix-blend-difference", [moreBtnClass]))}>
+        <MoreIcon aria-hidden="true" />
       </button>
 
       {

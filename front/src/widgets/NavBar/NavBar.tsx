@@ -32,18 +32,20 @@ export const NavBar = ({ className, collapsed }: NavBarProps) => {
   const counts = useNavbarCounts()
 
   return (
-    <div className={twMerge("flex flex-col justify-start", className)}>
-      {navLinks.map(({ Icon, title, key, href, end }) => (
-        <NavbarLink
-          Icon={Icon}
-          title={title}
-          key={key}
-          href={href}
-          count={counts[key]}
-          end={end}
-          collapsed={collapsed}
-        />
-      ))}
-    </div>
+    <nav aria-label="Main navigation" className={twMerge("flex flex-col justify-start", className)}>
+      <ul className="list-none m-0 p-0">
+        {navLinks.map(({ Icon, title, key, href, end }) => (
+          <NavbarLink
+            Icon={Icon}
+            title={title}
+            key={key}
+            href={href}
+            count={counts[key]}
+            end={end}
+            collapsed={collapsed}
+          />
+        ))}
+      </ul>
+    </nav>
   )
 }

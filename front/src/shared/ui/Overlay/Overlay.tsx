@@ -12,10 +12,12 @@ export const Overlay = memo((props: OverlayProps) => {
   return (
     <div
       onClick={onClick}
-      onKeyDown={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') onClick?.();
+      }}
       role="button"
       tabIndex={0}
-      aria-label="Close overlay"
+      aria-label="Close"
       className={classnames(cls.overlay, {}, [className])}
     />
   )

@@ -11,9 +11,10 @@ export interface ActionButtonProps {
   column?: boolean
   disabled?: boolean
   isActive?: boolean
+  'aria-label'?: string
 }
 
-export const ActionButton = forwardRef<HTMLButtonElement, PropsWithChildren<ActionButtonProps>>(({ children, disabled, Icon, className, onClick, variant = 'primary', column = false, isActive = false }, ref) => {
+export const ActionButton = forwardRef<HTMLButtonElement, PropsWithChildren<ActionButtonProps>>(({ children, disabled, Icon, className, onClick, variant = 'primary', column = false, isActive = false, 'aria-label': ariaLabel }, ref) => {
   return (
     <button
       className={twMerge(classnames(cls.btn, cls[variant],
@@ -21,8 +22,9 @@ export const ActionButton = forwardRef<HTMLButtonElement, PropsWithChildren<Acti
       onClick={onClick}
       ref={ref}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
-      <Icon className={classnames(cls.icon, cls[variant], { [cls.active]: isActive })}/>
+      <Icon aria-hidden="true" className={classnames(cls.icon, cls[variant], { [cls.active]: isActive })}/>
       {children && <span>{children}</span>}
     </button>
   )

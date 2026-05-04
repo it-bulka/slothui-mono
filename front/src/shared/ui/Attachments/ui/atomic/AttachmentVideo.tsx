@@ -10,14 +10,16 @@ type IAttachmentVideo = Pick<Attachment, 'url' | 'originalName' | 'publicId'> & 
 }
 export const AttachmentVideo = ({
   url,
+  originalName,
   className,
   videoClass,
   additionalComponent
 }: IAttachmentVideo) => {
   return (
     <div className={classnames('relative',[className])}>
-      <video controls className={videoClass}>
+      <video controls aria-label={originalName} className={videoClass}>
         <source src={url} />
+        Your browser does not support the video tag.
       </video>
 
       {additionalComponent}

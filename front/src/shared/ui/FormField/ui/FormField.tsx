@@ -65,6 +65,7 @@ export const FormField = memo(({
   const childWithProps = isValidElement(children)
     ? cloneElement(children as ReactElement<FieldProps>, {
       ...(children.props || {}),
+      id,
       onFocus,
       onBlur,
       onChange,

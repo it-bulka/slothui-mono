@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
 import { useModal } from '../../../hooks/useModal/useModal.tsx';
 import { Portal } from '../../Portal/Portal.tsx';
 import { Overlay } from '../../Overlay/Overlay.tsx';
@@ -48,6 +48,14 @@ export const Modal = ({
     isOpen
   })
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isShown && contentRef.current) {
+      contentRef.current.focus();
+    }
+  }, [isShown]);
+
   if(!isMounted) return null;
   return (
     <Portal>
@@ -59,6 +67,10 @@ export const Modal = ({
         <Overlay onClick={closeHandler} className={overlayClassName} />
         <ModalContext.Provider value={{ close: closeHandler }}>
           <div
+            ref={contentRef}
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
             className={twMerge(classnames(
               cls.content,
               "min-w-[400px] w-[70%] max-w-[1000px]",

@@ -30,10 +30,15 @@ const MoreItem = ({
   const thumb = item.type === 'images' ? item.url : item.metadata?.thumbnailUrl;
 
   return (
-    <div className={classNames(css.moreWrapper, css.item)} onClick={onClick}>
-      <img src={thumb} alt="" className={css.item} />
-      <span className={css.moreOverlay}>+{hiddenCount}</span>
-    </div>
+    <button
+      type="button"
+      className={classNames(css.moreWrapper, css.item)}
+      onClick={onClick}
+      aria-label={`Show ${hiddenCount} more`}
+    >
+      <img src={thumb} alt="" aria-hidden="true" className={css.item} />
+      <span aria-hidden="true" className={css.moreOverlay}>+{hiddenCount}</span>
+    </button>
   );
 };
 

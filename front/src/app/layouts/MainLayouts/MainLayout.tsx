@@ -34,9 +34,11 @@ export const MainLayout = memo(({ rightSidebar, mobileRightSidebar }: MainLayout
 
           {/* Main feed */}
           <ScrollableBlock className="min-w-0">
-            <InlineErrorBoundary>
-              <Outlet />
-            </InlineErrorBoundary>
+            <main>
+              <InlineErrorBoundary>
+                <Outlet />
+              </InlineErrorBoundary>
+            </main>
           </ScrollableBlock>
 
           {/* Right sidebar — visible on md+ (tablet + desktop) */}
