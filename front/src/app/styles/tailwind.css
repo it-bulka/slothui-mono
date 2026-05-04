@@ -54,6 +54,7 @@
 
     /* === Z-INDEX === */
     --z-index-overlay: 9999999;
+    --z-index-sidebar: 19999999;
     --z-index-modal: 999999999;
     --z-index-modal-content: 999999999;
     --z-index-actions-popup: 99999999999;

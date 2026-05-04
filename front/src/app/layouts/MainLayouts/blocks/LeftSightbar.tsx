@@ -64,13 +64,14 @@ export const LeftSidebar = memo(() => {
     <>
       {isExpanded && <Overlay onClick={() => setIsExpanded(false)} />}
 
-      <aside
-        className="fixed left-0 top-0 h-screen bg-light-l2 border-style-r z-40 flex flex-col gap-4 py-8 overflow-y-auto scrollbar-hide"
+      <div
+        className={classnames(
+          'fixed left-0 top-0 h-screen',
+          isExpanded ? 'z-[var(--z-index-sidebar)]' : 'z-40',
+        )}
         style={{
           width: isExpanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
-          paddingLeft: isExpanded ? '1rem' : '0.75rem',
-          paddingRight: isExpanded ? '1rem' : '0.75rem',
-          transition: 'width 300ms ease-in-out, padding 300ms ease-in-out',
+          transition: 'width 300ms ease-in-out',
         }}
       >
         <button
@@ -89,8 +90,17 @@ export const LeftSidebar = memo(() => {
           </svg>
         </button>
 
-        <SidebarInner collapsed={!isExpanded} />
-      </aside>
+        <aside
+          className="w-full h-full bg-light-l2 border-style-r flex flex-col gap-4 py-8 overflow-y-auto scrollbar-hide"
+          style={{
+            paddingLeft: isExpanded ? '1rem' : '0.75rem',
+            paddingRight: isExpanded ? '1rem' : '0.75rem',
+            transition: 'padding 300ms ease-in-out',
+          }}
+        >
+          <SidebarInner collapsed={!isExpanded} />
+        </aside>
+      </div>
     </>
   );
 });

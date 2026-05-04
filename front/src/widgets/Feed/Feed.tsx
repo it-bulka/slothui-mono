@@ -3,7 +3,7 @@ export const Feed = ({ header, children }: { header?: ReactNode, children: React
   return (
     <div className="flex flex-col min-h-full">
       {header && (
-        <div className="sticky top-0 z-10000000 bg-light-l3">
+        <div className="sticky top-0 z-20 bg-light-l3">
           {header}
         </div>
       )}
