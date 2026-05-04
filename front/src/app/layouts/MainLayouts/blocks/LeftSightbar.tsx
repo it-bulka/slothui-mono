@@ -1,4 +1,5 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router';
 import { UserAuth } from '@/features';
 import { ScrollableBlock, Logo, Divider, Overlay } from '@/shared/ui';
 import { NavigationSearchBar, NavBar } from '@/widgets';
@@ -6,24 +7,43 @@ import { useMediaQuery } from '@/shared/hooks';
 import classnames from 'classnames';
 import LogoSvg from '@/shared/assets/images/logo.svg?react';
 import { SidebarCloseButton } from './SidebarCloseButton';
+import { useSidebarContext } from '../SidebarContext.ts';
+
+const useCloseOnNavigate = (onClose: () => void) => {
+  const { pathname } = useLocation();
+  const onCloseRef = useRef(onClose);
+  useLayoutEffect(() => { onCloseRef.current = onClose; });
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (!mounted.current) { mounted.current = true; return; }
+    onCloseRef.current();
+  }, [pathname]);
+};
 
 const COLLAPSED_WIDTH = 72;
 const EXPANDED_WIDTH = 260;
 
-export const LeftSidebarContent = () => (
-  <aside aria-label="Sidebar navigation" className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
-    <div className="flex items-center justify-between">
-      <Logo />
-      <SidebarCloseButton />
-    </div>
-    <NavigationSearchBar />
-    <ScrollableBlock className="grow">
-      <NavBar />
-      <Divider className="my-6" />
-      <UserAuth />
-    </ScrollableBlock>
-  </aside>
-);
+export const LeftSidebarContent = () => {
+  const { close } = useSidebarContext();
+  const isCompact = useMediaQuery('(max-width: 1279px)');
+  useCloseOnNavigate(() => { if (isCompact) close(); });
+
+  return (
+    <aside aria-label="Sidebar navigation" className="px-4 py-8 flex flex-col gap-4 h-full overflow-y-auto scrollbar-hide">
+      <div className="flex items-center justify-between">
+        <Logo />
+        <SidebarCloseButton />
+      </div>
+      <NavigationSearchBar />
+      <ScrollableBlock className="grow">
+        <NavBar />
+        <Divider className="my-6" />
+        <UserAuth />
+      </ScrollableBlock>
+    </aside>
+  );
+};
 
 const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
   <>
@@ -49,6 +69,7 @@ const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
 export const LeftSidebar = memo(() => {
   const [isExpanded, setIsExpanded] = useState(false);
   const isTablet = useMediaQuery('(max-width: 1279px) and (min-width: 640px)');
+  useCloseOnNavigate(() => { if (isTablet) setIsExpanded(false); });
 
   if (!isTablet) {
     return (
