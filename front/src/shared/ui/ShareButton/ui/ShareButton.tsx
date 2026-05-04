@@ -4,10 +4,11 @@ import type { PropsWithChildren } from 'react';
 
 interface SharePostProps {
   onClick: () => void;
+  className?: string;
 }
-export const ShareButton = ({ onClick, children }: PropsWithChildren<SharePostProps>) => {
+export const ShareButton = ({ onClick, children, className }: PropsWithChildren<SharePostProps>) => {
   return (
-    <ActionButton Icon={ShareSvg} onClick={onClick}>
+    <ActionButton Icon={ShareSvg} onClick={onClick} className={className}>
       {children}
     </ActionButton>
   )

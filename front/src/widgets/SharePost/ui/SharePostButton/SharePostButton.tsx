@@ -2,13 +2,17 @@ import { ShareButton } from '@/shared/ui';
 
 interface SharePostButtonProps {
   onClick: () => void;
+  showText?: boolean;
+  className?: string
 }
 export const SharePostButton = ({
-  onClick
+  onClick,
+  showText = true,
+  className
 }: SharePostButtonProps) => {
   //TODO: add dynamic amount of sharing
 
-  return <ShareButton onClick={onClick}>
-    Shares
+  return <ShareButton onClick={onClick} className={className}>
+    {showText && 'Shares'}
   </ShareButton>
 }
