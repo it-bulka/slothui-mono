@@ -27,7 +27,7 @@ const Messages = () => {
 
   if(!authUserId || !chatId) return null;
   return (
-    <div className="h-screen relative flex flex-col">
+    <div className="h-full relative flex flex-col">
       <CurrentChatHeader />
       <MessageList chatId={chatId} authUserId={authUserId} messages={messages} />
       <TypingInChat typing={typing} />

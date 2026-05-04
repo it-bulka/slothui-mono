@@ -22,26 +22,28 @@ export const MainLayout = memo(({ rightSidebar, mobileRightSidebar }: MainLayout
 
   return (
     <SidebarContext.Provider value={ctx}>
-      {/* Mobile-only header */}
-      <MobileHeader className="md:hidden" />
+      <div className="flex flex-col h-dvh md:contents">
+        {/* Mobile-only header */}
+        <MobileHeader className="shrink-0 sticky top-0 z-30 md:hidden" />
 
-      <div className="grid grid-cols-1 md:grid-cols-[72px_1fr_minmax(270px,35%)] xl:grid-cols-[minmax(150px,20%)_1fr_minmax(260px,28%)] md:h-screen bg-light-l3">
-        {/* Left sidebar — visible on md+ as inline column */}
-        <div className="hidden md:block">
-          <LeftSidebar />
+        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-[72px_1fr_minmax(270px,35%)] xl:grid-cols-[minmax(150px,20%)_1fr_minmax(260px,28%)] md:h-screen bg-light-l3">
+          {/* Left sidebar — visible on md+ as inline column */}
+          <div className="hidden md:block">
+            <LeftSidebar />
+          </div>
+
+          {/* Main feed */}
+          <ScrollableBlock className="min-w-0">
+            <InlineErrorBoundary>
+              <Outlet />
+            </InlineErrorBoundary>
+          </ScrollableBlock>
+
+          {/* Right sidebar — visible on md+ (tablet + desktop) */}
+          <ScrollableBlock className="hidden md:block">
+            {rightSidebar}
+          </ScrollableBlock>
         </div>
-
-        {/* Main feed */}
-        <ScrollableBlock className="min-w-0">
-          <InlineErrorBoundary>
-            <Outlet />
-          </InlineErrorBoundary>
-        </ScrollableBlock>
-
-        {/* Right sidebar — visible on md+ (tablet + desktop) */}
-        <ScrollableBlock className="hidden md:block">
-          {rightSidebar}
-        </ScrollableBlock>
       </div>
 
       {/* Mobile left side drawer */}
