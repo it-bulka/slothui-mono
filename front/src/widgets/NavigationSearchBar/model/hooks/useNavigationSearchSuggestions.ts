@@ -3,7 +3,6 @@ import debounce from 'lodash/debounce';
 import {
   getHomePage,
   getChatsPage,
-  getAllMessagesPage,
   getFriendsPage,
   getFriendsSuggestionsPage,
   getMePage,
@@ -21,7 +20,6 @@ export const searchSuggestions: SearchSuggestionsType[] = [
   { id: 'home', name: 'Home', path: getHomePage() },
   { id: 'feed', name: 'Feed', path: getHomePage() },
   { id: 'chats', name: 'Chats', path: getChatsPage() },
-  { id: 'messages', name: 'All Messages', path: getAllMessagesPage() },
   { id: 'friends', name: 'Friends', path: getFriendsPage() },
   { id: 'friend-suggestions', name: 'Friend Suggestions', path: getFriendsSuggestionsPage() },
   { id: 'me', name: 'My Profile', path: getMePage() },

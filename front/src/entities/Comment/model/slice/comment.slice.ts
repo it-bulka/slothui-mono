@@ -7,14 +7,13 @@ import {
   editComment,
   deleteComment
 } from '../thunk'
-import { mockComments } from '@/mock/data/comments.tsx';
 import type { CommentWithMeta } from '../types/comment.type.ts';
 import { commentsAdapter } from '../adaptor/comment.adaptor.ts';
 
 const initialState = commentsAdapter.getInitialState<CommentsState>({
-  entities: mockComments.entities,
-  ids: Object.keys(mockComments.entities),
-  postComments: mockComments.postComments,
+  entities: {},
+  ids: [],
+  postComments: {},
   replies: {},
 })
 

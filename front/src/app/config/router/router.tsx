@@ -6,7 +6,6 @@ import {
   FriendsPage,
   UserPage,
   UserFriendsPage,
-  MessagesAllPage,
   MePage,
   SettingsPage,
   ProfileSettingsPage,
@@ -53,7 +52,6 @@ export const router = createBrowserRouter([
         errorElement: <ErrorBoundary />,
         children: [
           { index: true, element: <HomePage /> },
-          { path: RoutePaths.messages_all, element: <MessagesAllPage /> },
           { path: RoutePaths.my_posts, element: <MePage /> },
           { path: RoutePaths.my_events, element: <MyEventsPage /> },
           { path: RoutePaths.messages_with, element: <MessagesPage /> },

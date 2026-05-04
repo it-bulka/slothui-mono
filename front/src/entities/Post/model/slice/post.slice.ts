@@ -14,10 +14,8 @@ import {
   fetchPostByIdExtraReducer,
   updatePostPollExtraReducer
 } from '../extraReducers';
-import { mockPostsState } from '@/mock/data';
 
-/*
-const initialState= postsAdapter.getInitialState<PostsState>({
+const initialState = postsAdapter.getInitialState<PostsState>({
   entities: {},
   ids: [],
   home: {
@@ -40,9 +38,6 @@ const initialState= postsAdapter.getInitialState<PostsState>({
     nextCursor: null
   }
 })
-*/
-// TODO: delete default later
-const initialState= postsAdapter.getInitialState<PostsState>(mockPostsState)
 
 const postsSlice = createSlice({
   name: 'posts',

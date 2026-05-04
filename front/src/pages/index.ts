@@ -3,7 +3,6 @@ export { MessagesPage } from './Messages/Messages.async.tsx';
 export { FriendsPage } from '@/pages/Friends/Friends.async.tsx';
 export { UserPage } from './User/ui/User.async.tsx';
 export { UserFriendsPage } from './UserFriends/UserFriends.async.tsx';
-export { MessagesAllPage } from './MessagesAll/MessagesAll.async.tsx';
 export { MePage } from './Me/Me.async.tsx';
 export { SettingsPage } from './Settings/Settings.async.tsx';
 export { ProfileSettingsPage } from './ProfileSettings/ProfileSettings.async.tsx';
