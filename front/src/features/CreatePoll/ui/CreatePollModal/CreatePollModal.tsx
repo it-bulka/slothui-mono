@@ -28,8 +28,8 @@ export const CreatePollModal = memo(({ isOpen, onClose, onCreatePoll }: CreatePo
 
   return (
     <>
-      <Modal isOpen={isOpen}>
-        <ModalCard title="Create poll" onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalCard title="Create poll">
           <form onSubmit={onSubmit} className="form-default gap-3">
             <Typography>Question</Typography>
             <Controller
