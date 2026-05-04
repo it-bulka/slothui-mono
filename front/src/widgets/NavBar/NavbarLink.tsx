@@ -24,7 +24,7 @@ export const NavbarLink = ({ title, href, Icon, count, end, collapsed }: NavLink
         {({ isActive }) => (
           <span className="relative flex items-center w-full">
             <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-blue-b1' : 'text-gray-g2'}`} />
-            {!collapsed && <p className="grow font-bold ml-0">{title}</p>}
+            {!collapsed && <p className="grow font-bold ml-2">{title}</p>}
             {!collapsed && !!count && <Badge>{count}</Badge>}
             {collapsed && !!count && (
               <Badge className="absolute -top-2 -right-2 text-[10px] min-w-[16px] h-4 flex items-center justify-center px-1">
