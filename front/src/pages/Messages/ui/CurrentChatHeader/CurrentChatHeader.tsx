@@ -30,7 +30,7 @@ export const CurrentChatHeader = memo(() => {
   )
 
   return (
-    <div className="border-style-b px-6 py-4 flex items-center justify-between bg-white z-[999999] sticky top-0 left-0">
+    <div className="border-style-b px-6 py-4 flex items-center justify-between bg-white z-30 sticky top-0 left-0">
       <div className="min-w-0 grow">
         {chat.anotherMember
           ? <Link to={getUserPage(chat.anotherMember.id)}>{avatarWithInfo}</Link>
