@@ -10,7 +10,7 @@ export {
   selectIsLoading,
   selectLiveIncomingCount,
 } from './selectors/notifications.selectors';
-export { fetchNotificationsThunk, loadMoreNotificationsThunk } from './thunk/fetchNotifications.thunk';
+export { fetchNotificationsThunk, fetchUnreadCountThunk, loadMoreNotificationsThunk } from './thunk/fetchNotifications.thunk';
 export { useMarkReadNotifications } from './hooks/useMarkReadNotifications';
 export { NotificationsMapper } from './notifications.mapper';
 export type { Notification, NotificationType, NotificationState } from './type/notification.types';

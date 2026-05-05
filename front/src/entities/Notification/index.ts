@@ -12,6 +12,7 @@ export {
   selectIsLoading,
   selectLiveIncomingCount,
   fetchNotificationsThunk,
+  fetchUnreadCountThunk,
   loadMoreNotificationsThunk,
   useMarkReadNotifications,
   NotificationsMapper,

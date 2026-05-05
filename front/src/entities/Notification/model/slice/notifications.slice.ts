@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Notification, NotificationState } from '../type/notification.types';
 import { notificationsAdapter } from './notifications.adapter';
-import { fetchNotificationsThunk, loadMoreNotificationsThunk } from '../thunk/fetchNotifications.thunk';
+import { fetchNotificationsThunk, fetchUnreadCountThunk, loadMoreNotificationsThunk } from '../thunk/fetchNotifications.thunk';
 
 const initialState = notificationsAdapter.getInitialState<NotificationState>({
   nextCursor: null,
@@ -85,6 +85,11 @@ export const notificationsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string | undefined;
       });
+
+    // fetch unread count only (on app init)
+    builder.addCase(fetchUnreadCountThunk.fulfilled, (state, action) => {
+      state.unreadCount = action.payload;
+    });
 
     // load more (pagination append)
     builder

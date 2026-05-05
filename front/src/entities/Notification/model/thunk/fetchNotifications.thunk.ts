@@ -41,6 +41,20 @@ export const fetchNotificationsThunk = createAsyncThunk<
   },
 );
 
+export const fetchUnreadCountThunk = createAsyncThunk<number, void, ThunkAPI>(
+  'notifications/fetchUnreadCount',
+  async (_arg, { extra, rejectWithValue }) => {
+    try {
+      const res = await extra.services.notifications.getUnreadCount();
+      return res.count;
+    } catch (e) {
+      return rejectWithValue(
+        extra.extractErrorMessage(e, 'Failed to fetch unread count.'),
+      );
+    }
+  },
+);
+
 export const loadMoreNotificationsThunk = createAsyncThunk<
   LoadMoreNotificationsResult,
   { cursor: string },
