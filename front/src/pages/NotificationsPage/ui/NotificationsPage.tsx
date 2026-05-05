@@ -2,6 +2,8 @@ import { memo, useEffect, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import {
   selectNotifications,
+  selectIsInitialized,
+  selectUnreadCount,
   selectHasNewNotifications,
   selectHasMore,
   selectNextCursor,
@@ -9,7 +11,6 @@ import {
   fetchNotificationsThunk,
   loadMoreNotificationsThunk,
   useMarkReadNotifications,
-  notificationsActions,
 } from '@/entities/Notification';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { Typography } from '@/shared/ui';
@@ -19,6 +20,8 @@ import { NotificationItem } from './NotificationItem';
 const NotificationsPage = memo(() => {
   const dispatch = useAppDispatch();
   const notifications = useAppSelector(selectNotifications);
+  const isInitialized = useAppSelector(selectIsInitialized);
+  const unreadCount = useAppSelector(selectUnreadCount);
   const hasNew = useAppSelector(selectHasNewNotifications);
   const hasMore = useAppSelector(selectHasMore);
   const nextCursor = useAppSelector(selectNextCursor);
@@ -26,27 +29,21 @@ const NotificationsPage = memo(() => {
   const { markReadNotifications } = useMarkReadNotifications();
 
   useEffect(() => {
-    dispatch(fetchNotificationsThunk())
-      .unwrap()
-      .then(() => markReadNotifications())
-      .catch(() => {});
+    if (unreadCount > 0) {
+      dispatch(fetchNotificationsThunk()).unwrap()
+        .then(() => markReadNotifications())
+        .catch(() => {});
+    } else if (!isInitialized) {
+      dispatch(fetchNotificationsThunk());
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = useCallback(() => {
-    if (import.meta.env.DEV) {
-      dispatch(notificationsActions.setNotifications({
-        items: NOTIFICATIONS_MOCK,
-        cursor: null,
-        hasMore: false,
-        unreadCount: NOTIFICATIONS_MOCK.filter(n => !n.read).length,
-      }));
-      return;
-    }
-    dispatch(fetchNotificationsThunk())
-      .unwrap()
+    dispatch(fetchNotificationsThunk()).unwrap()
+      .then(() => markReadNotifications())
       .catch(() => {});
-  }, [dispatch]);
+  }, [dispatch, markReadNotifications]);
 
   const onLoadMore = useCallback(() => {
     if (nextCursor) {

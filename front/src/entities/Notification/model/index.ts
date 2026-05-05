@@ -2,6 +2,7 @@ export { notificationsReducer, notificationsActions, notificationsSlice } from '
 export { notificationsAdapter } from './slice/notifications.adapter';
 export {
   selectNotifications,
+  selectIsInitialized,
   selectUnreadCount,
   selectHasNewNotifications,
   selectHasMore,

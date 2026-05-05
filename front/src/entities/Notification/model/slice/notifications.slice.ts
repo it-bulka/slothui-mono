@@ -10,6 +10,7 @@ const initialState = notificationsAdapter.getInitialState<NotificationState>({
   isLoading: false,
   error: undefined,
 
+  isInitialized: false,
   unreadCount: 0,
   liveIncomingCount: 0,
 });
@@ -51,6 +52,7 @@ export const notificationsSlice = createSlice({
       state.hasMore = action.payload.hasMore;
       state.unreadCount = action.payload.unreadCount;
       state.liveIncomingCount = 0;
+      state.isInitialized = true;
     },
 
     markAllAsRead(state) {
@@ -76,6 +78,7 @@ export const notificationsSlice = createSlice({
         state.hasMore = action.payload.hasMore;
         state.unreadCount = action.payload.unreadCount;
         state.liveIncomingCount = 0;
+        state.isInitialized = true;
         state.isLoading = false;
       })
       .addCase(fetchNotificationsThunk.rejected, (state, action) => {

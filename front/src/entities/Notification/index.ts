@@ -4,6 +4,7 @@ export {
   notificationsSlice,
   notificationsAdapter,
   selectNotifications,
+  selectIsInitialized,
   selectUnreadCount,
   selectHasNewNotifications,
   selectHasMore,

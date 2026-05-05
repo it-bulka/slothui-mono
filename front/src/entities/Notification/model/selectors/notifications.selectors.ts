@@ -6,6 +6,7 @@ const adapterSelectors = notificationsAdapter.getSelectors(
 );
 
 export const selectNotifications = adapterSelectors.selectAll;
+export const selectIsInitialized = (state: RootState) => state.notifications.isInitialized;
 export const selectUnreadCount = (state: RootState) => state.notifications.unreadCount;
 export const selectHasNewNotifications = (state: RootState) =>
   state.notifications.liveIncomingCount > 0;

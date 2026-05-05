@@ -25,7 +25,7 @@ export interface NotificationState {
   isLoading: boolean;
   error?: string;
 
+  isInitialized: boolean;
   unreadCount: number;
-
   liveIncomingCount: number;
 }
