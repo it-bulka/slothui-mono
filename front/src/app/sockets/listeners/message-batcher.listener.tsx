@@ -1,4 +1,4 @@
-import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '../../config';
 import { selectActiveChatId, messagesAction, chatsActions, notificationsCountersActions } from '@/entities';
 import { selectChatById } from '@/entities/Chats/model/chat.adapter.ts';
@@ -7,7 +7,7 @@ import { MessageToast } from '@/shared/ui';
 import { msgToNotification } from '@/shared/mappers';
 import type { MessageDto } from '@/shared/types';
 
-export const initMessageBatcher = (services: IServices, store: AppStore) => {
+export const initMessageBatcher = (services: ServicesFacade, store: AppStore) => {
   services.messages.onNewMessage()
     .subscribe((m) => {
       const chatId = m.chatId;
@@ -28,7 +28,7 @@ function handleActiveChatMessage (store: AppStore, chatId: string, message: Mess
 };
 
 async function handleInactiveChatMessage (
-  services: IServices,
+  services: ServicesFacade,
   store: AppStore,
   chatId: string,
   message: MessageDto

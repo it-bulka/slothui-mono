@@ -1,8 +1,8 @@
-import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import { initMessageBatcher, initFriendsListeners, initLikeListeners, initCommentListeners, initChatsListeners } from './listeners';
 import type { AppStore } from '../config';
 
-export const initGlobalListeners = (services: IServices, store: AppStore) => {
+export const initGlobalListeners = (services: ServicesFacade, store: AppStore) => {
   initMessageBatcher(services, store)
   initFriendsListeners(services, store)
   initLikeListeners(services, store)

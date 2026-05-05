@@ -48,6 +48,9 @@ export const notificationsCountersSlice = createSlice({
     resetFollowersCounter: (state) => {
       state.newFollowers = 0;
     },
+    incrementNewFollowers: (state) => {
+      state.newFollowers += 1;
+    },
   },
 
   extraReducers: (builder) => {

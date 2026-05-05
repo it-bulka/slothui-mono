@@ -1,9 +1,9 @@
-import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '@/app/config';
 import { authUserActions, friendsActions, selectAuthUserId, resentFriendsActions } from '@/entities';
 
 export function handleFollowersUpdateListener(
-  services: IServices,
+  services: ServicesFacade,
   store: AppStore
 ) {
   services.friends.onFollowersUpdate()
@@ -26,11 +26,12 @@ function removeFollowerFromState(
   if (actorId === currentUserId) {
     store.dispatch(friendsActions.removeFollower({ userId: currentUserId, followerToRemoveId: targetId }))
     store.dispatch(friendsActions.removeFollowee({ userId: targetId, followeeToRemoveId: currentUserId }))
-    store.dispatch(authUserActions.decreaseFollowersCount())
+    store.dispatch(authUserActions.decreaseFolloweesCount())
   } else {
     store.dispatch(friendsActions.removeFollower({ userId: targetId, followerToRemoveId: currentUserId }))
     store.dispatch(friendsActions.removeFollowee({ userId: currentUserId, followeeToRemoveId: targetId }))
-    store.dispatch(authUserActions.decreaseFolloweesCount())
+    store.dispatch(authUserActions.decreaseFollowersCount())
+
   }
 
   resentFriendsActions.markUnfollow(actorId, targetId)

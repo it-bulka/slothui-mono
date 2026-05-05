@@ -1,12 +1,12 @@
-import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '@/app/config';
 import { NewFriendToast } from '@/shared/ui';
-import { authUserActions, friendsActions, selectAuthUserId } from '@/entities';
+import { authUserActions, friendsActions, selectAuthUserId, notificationsCountersActions } from '@/entities';
 import { NotificationsMapper } from '@/entities/Notification';
 import { toast } from 'react-toastify'
 
 export function handleNewFriendListener(
-  services: IServices,
+  services: ServicesFacade,
   store: AppStore
 ) {
   services.friends.onNewFollower().subscribe(friend => {
@@ -18,6 +18,7 @@ export function handleNewFriendListener(
     const currentUserId = selectAuthUserId(store.getState())
     if(!currentUserId) return
     store.dispatch(authUserActions.increaseFollowersCount())
+    store.dispatch(notificationsCountersActions.incrementNewFollowers())
     store.dispatch(friendsActions.resetFriendsStateByUser({ userId: currentUserId}))
 
     NotificationsMapper.follow(store.dispatch, {

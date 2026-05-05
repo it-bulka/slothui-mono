@@ -15,7 +15,6 @@ import { useInfiniteScroll } from '@/shared/hooks';
 import { Typography } from '@/shared/ui';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { NotificationItem } from './NotificationItem';
-import { NOTIFICATIONS_MOCK } from '@/mock/data/notifications.mock';
 
 const NotificationsPage = memo(() => {
   const dispatch = useAppDispatch();
@@ -27,16 +26,6 @@ const NotificationsPage = memo(() => {
   const { markReadNotifications } = useMarkReadNotifications();
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
-      dispatch(notificationsActions.setNotifications({
-        items: NOTIFICATIONS_MOCK,
-        cursor: null,
-        hasMore: false,
-        unreadCount: NOTIFICATIONS_MOCK.filter(n => !n.read).length,
-      }));
-      return;
-    }
-
     dispatch(fetchNotificationsThunk())
       .unwrap()
       .then(() => markReadNotifications())

@@ -15,6 +15,7 @@ export const markNewFollowersSeenExtraReducer = (builder: ActionReducerMapBuilde
       state.followersLastViewedAt = now;
     })
     .addCase(markNewFollowersSeenThunk.fulfilled, (state, action) => {
+      if (!action.payload) return;
       const { userId, followersLastSeenAt } = action.payload;
       if(state.followersByUser[userId]) {
         state.followersByUser[userId].followersLastSeenAt = followersLastSeenAt;

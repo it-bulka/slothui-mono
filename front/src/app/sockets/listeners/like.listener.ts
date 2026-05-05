@@ -1,11 +1,11 @@
-import type { IServices } from '@/shared/libs/services/context/service.context.tsx';
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '../../config';
 import { NotificationsMapper } from '@/entities/Notification';
 
 // TODO: confirm the actual socket event name with the backend
 const LIKE_EVENT = 'like:new';
 
-export const initLikeListeners = (services: IServices, store: AppStore) => {
+export const initLikeListeners = (services: ServicesFacade, store: AppStore) => {
   const socket = services.socket.socket;
   if (!socket) return;
 
