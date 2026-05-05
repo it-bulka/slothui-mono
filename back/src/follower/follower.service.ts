@@ -12,6 +12,7 @@ import { User } from '../user/entities/user.entity';
 import { FollowersViewed } from './entity/followersViewed.entity';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
 import { EventEmitterFollowersService } from '../event-emitter/event-emitter-followers.service';
+import { NotificationsFacadeService } from '../notifications/notifications-facade.service';
 import { RedisService } from '../redis/redis.service';
 import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
@@ -26,6 +27,7 @@ export class FollowerService {
     private readonly userRepo: Repository<User>,
     private readonly notificationEmitter: EventEmitterNotificationService,
     private readonly followerEmitter: EventEmitterFollowersService,
+    private readonly notificationsFacade: NotificationsFacadeService,
     private readonly cache: RedisService,
   ) {}
 
@@ -85,6 +87,12 @@ export class FollowerService {
       following.followee.id,
       following.follower,
     );
+
+    this.notificationsFacade.notify({
+      type: 'follow',
+      recipientId: following.followee.id,
+      actorId: following.follower.id,
+    });
 
     this.followerEmitter.onNewFollower(
       following.followee.id,

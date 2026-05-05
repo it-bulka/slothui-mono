@@ -101,6 +101,16 @@ export class WsGateway
           case NotificationEvent.FRIEND_CONFIRMATION:
             this.server.to(event.meta.userId).emit(event.ev, event.data);
             break;
+          case NotificationEvent.NEW_NOTIFICATION: {
+            const socketEvent =
+              event.data.type === 'like'
+                ? 'like:new'
+                : event.data.type === 'comment'
+                  ? 'comment:new'
+                  : NotificationEvent.NEW_NOTIFICATION;
+            this.server.to(event.meta.userId).emit(socketEvent, event.data);
+            break;
+          }
           default:
             return;
         }

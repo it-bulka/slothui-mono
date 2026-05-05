@@ -11,6 +11,7 @@ import { NotFoundException } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common';
 import { EditedCommentDTO } from './dto/editedComment.dto';
 import { Post } from '../posts/entities/post.entity';
+import { NotificationsFacadeService } from '../notifications/notifications-facade.service';
 import { RedisService } from '../redis/redis.service';
 import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
@@ -20,6 +21,7 @@ export class CommentsService {
     @InjectRepository(CommentEntity)
     private readonly commentRepo: Repository<CommentEntity>,
     private readonly userService: UserService,
+    private readonly notificationsFacade: NotificationsFacadeService,
     private readonly cache: RedisService,
   ) {}
 
@@ -177,8 +179,8 @@ export class CommentsService {
     parentId,
     text,
   }: CreateCommentDTO & { authorId: string }): Promise<CommentListItemDTO> {
-    const savedComment = await this.commentRepo.manager.transaction(
-      async (manager) => {
+    const [savedComment, post] = await Promise.all([
+      this.commentRepo.manager.transaction(async (manager) => {
         const comment = await manager.getRepository(CommentEntity).save(
           manager.getRepository(CommentEntity).create({
             authorId,
@@ -191,8 +193,22 @@ export class CommentsService {
         await manager.increment(Post, { id: postId }, 'commentsCount', 1);
 
         return comment;
-      },
-    );
+      }),
+      this.commentRepo.manager.findOne(Post, {
+        where: { id: postId },
+        relations: { author: true },
+        select: { id: true, author: { id: true } },
+      }),
+    ]);
+
+    if (post) {
+      this.notificationsFacade.notify({
+        type: 'comment',
+        recipientId: post.author.id,
+        actorId: authorId,
+        entityId: postId,
+      });
+    }
 
     await this.cache.delByPattern(`comments:${postId}:*`);
 

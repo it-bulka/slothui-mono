@@ -8,6 +8,7 @@ import { PostSave } from './entities/postSave.entity';
 import { Attachment } from '../attachments/entities/attachment.entity';
 import { AttachmentsModule } from '../attachments/attachments.module';
 import { PollsModule } from '../polls/polls.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { Poll } from '../polls/entities/poll.entity';
 
 @Module({
@@ -15,6 +16,7 @@ import { Poll } from '../polls/entities/poll.entity';
     TypeOrmModule.forFeature([Post, PostLike, PostSave, Attachment, Poll]),
     AttachmentsModule,
     PollsModule,
+    NotificationsModule,
   ],
   controllers: [PostsController],
   providers: [PostsService],

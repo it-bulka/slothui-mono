@@ -13,6 +13,7 @@ import { FollowerService } from './follower.service';
 import { AuthRequest } from '../common/types/user.types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { EventEmitterNotificationService } from '../event-emitter/event-emitter-notification.service';
+import { NotificationsFacadeService } from '../notifications/notifications-facade.service';
 import { FriendDto } from './dto/follower.dto';
 import { Follower } from './entity/follower.entity';
 import { FollowUserDto } from './dto/follow-user.dto';
@@ -38,6 +39,7 @@ export class FollowerController {
   constructor(
     private readonly followerService: FollowerService,
     private readonly notificationEmitter: EventEmitterNotificationService,
+    private readonly notificationsFacade: NotificationsFacadeService,
   ) {}
 
   @Post()
@@ -83,6 +85,12 @@ export class FollowerController {
       following.follower.id,
       following.followee,
     );
+
+    this.notificationsFacade.notify({
+      type: 'follow',
+      recipientId: following.follower.id,
+      actorId: req.user.id,
+    });
   }
 
   @Delete('/confirmation')

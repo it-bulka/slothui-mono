@@ -16,6 +16,7 @@ import { EntityManager } from 'typeorm';
 import { PollsService } from '../polls/polls.service';
 import { CreatePostCommand } from './dto/createPost.dto';
 import { GetPostsParams } from './getPostParams';
+import { NotificationsFacadeService } from '../notifications/notifications-facade.service';
 import { RedisService } from '../redis/redis.service';
 import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
@@ -30,6 +31,7 @@ export class PostsService {
     private readonly postSaveRepo: Repository<PostSave>,
     private readonly attachmentService: AttachmentsService,
     private readonly pollsService: PollsService,
+    private readonly notificationsFacade: NotificationsFacadeService,
     private readonly cache: RedisService,
   ) {}
 
@@ -209,7 +211,11 @@ export class PostsService {
   }
 
   async setLike(postId: string, userId: string) {
-    const post = await this.postRepo.findOne({ where: { id: postId } });
+    const post = await this.postRepo.findOne({
+      where: { id: postId },
+      relations: { author: true },
+      select: { id: true, author: { id: true } },
+    });
     if (!post) {
       throw new NotFoundException(`Post with ID ${postId} not found`);
     }
@@ -217,6 +223,13 @@ export class PostsService {
     await this.postLikeRepo.save({
       post: { id: postId },
       user: { id: userId },
+    });
+
+    this.notificationsFacade.notify({
+      type: 'like',
+      recipientId: post.author.id,
+      actorId: userId,
+      entityId: postId,
     });
 
     await this.cache.delByPattern(`post:${postId}:*`);
