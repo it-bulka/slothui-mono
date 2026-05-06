@@ -1,8 +1,6 @@
 import {
   FacebookLoginButton, GithubLoginButton,
-  GoogleLoginButton,
-  InstagramLoginButton,
-  LinkedInLoginButton, TelegramLoginButton, TwitterLoginButton
+  GoogleLoginButton, TelegramLoginButton, TwitterLoginButton
 } from 'react-social-login-buttons';
 import { useAuthService } from '@/shared/libs/services';
 import type { ElementType } from 'react';
@@ -19,8 +17,8 @@ const socialBtns: {
 }[] = [
   { Btn: GoogleLoginButton, id: 'Google', cb: 'loginWithGoogle' },
   { Btn: FacebookLoginButton, id: 'Facebook', cb: 'loginWithFacebook' },
-  { Btn: InstagramLoginButton, id: 'Instagram', cb: 'loginWithInstagram' },
-  { Btn: LinkedInLoginButton, id: 'linkedIn', cb: 'loginWithLinkedin' },
+  //{ Btn: InstagramLoginButton, id: 'Instagram', cb: 'loginWithInstagram' },
+  //{ Btn: LinkedInLoginButton, id: 'linkedIn', cb: 'loginWithLinkedin' },
   { Btn: TelegramLoginButton, id: 'Telegram', cb: 'loginWithTelegram' },
   { Btn: GithubLoginButton, id: 'Github', cb: 'loginWithGithub' },
   { Btn: TwitterLoginButton, id: 'Twitter', cb: 'loginWithTwitter' },
