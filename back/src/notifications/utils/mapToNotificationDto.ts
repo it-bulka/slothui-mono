@@ -5,7 +5,7 @@ export function mapToNotificationDto(n: Notification): NotificationResponseDto {
   return {
     id: n.id,
     type: n.type,
-    createdAt: n.createdAt,
+    createdAt: new Date(n.createdAt).toISOString(),
     read: n.read,
     actor: n.actor
       ? {

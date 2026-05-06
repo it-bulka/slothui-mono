@@ -74,7 +74,7 @@ export class NotificationsService {
 
     return {
       items: resultItems.map(mapToNotificationDto),
-      nextCursor,
+      nextCursor: nextCursor ? new Date(nextCursor).toISOString() : null,
       hasMore,
     };
   }

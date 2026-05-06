@@ -40,11 +40,6 @@ export class Notification {
   @Column({ type: 'jsonb', nullable: true })
   meta: Record<string, unknown> | null;
 
-  @CreateDateColumn({
-    transformer: {
-      to: (v: Date | string) => v,
-      from: (v: Date) => v.toISOString(),
-    },
-  })
-  createdAt: string;
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
 }
