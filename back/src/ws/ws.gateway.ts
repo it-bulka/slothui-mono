@@ -108,7 +108,9 @@ export class WsGateway
                 : event.data.type === 'comment'
                   ? 'comment:new'
                   : NotificationEvent.NEW_NOTIFICATION;
-            this.server.to(event.meta.userId).emit(socketEvent, event.data);
+            this.server
+              .to(this.wsService.configUserRoomName(event.meta.userId))
+              .emit(socketEvent, event.data);
             break;
           }
           default:
