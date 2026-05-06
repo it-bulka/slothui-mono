@@ -197,7 +197,7 @@ export class CommentsService {
       this.commentRepo.manager.findOne(Post, {
         where: { id: postId },
         relations: { author: true },
-        select: { id: true, author: { id: true } },
+        select: { id: true, text: true, author: { id: true } },
       }),
     ]);
 
@@ -207,6 +207,8 @@ export class CommentsService {
         recipientId: post.author.id,
         actorId: authorId,
         entityId: postId,
+        entityTitle: post.text?.slice(0, 200) || undefined,
+        meta: { commentText: text },
       });
     }
 

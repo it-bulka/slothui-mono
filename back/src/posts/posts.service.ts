@@ -214,7 +214,7 @@ export class PostsService {
     const post = await this.postRepo.findOne({
       where: { id: postId },
       relations: { author: true },
-      select: { id: true, author: { id: true } },
+      select: { id: true, text: true, author: { id: true } },
     });
     if (!post) {
       throw new NotFoundException(`Post with ID ${postId} not found`);
@@ -230,6 +230,7 @@ export class PostsService {
       recipientId: post.author.id,
       actorId: userId,
       entityId: postId,
+      entityTitle: post.text?.slice(0, 200) || undefined,
     });
 
     await this.cache.delByPattern(`post:${postId}:*`);
