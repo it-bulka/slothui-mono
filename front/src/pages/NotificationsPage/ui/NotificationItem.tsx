@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Avatar } from '@/shared/ui';
 import type { Notification, NotificationType } from '@/entities/Notification';
+import { NotificationPostPreview } from './NotificationPostPreview.tsx';
 
 const TYPE_ICON: Record<NotificationType, string> = {
   like: '❤️',
@@ -32,42 +33,46 @@ interface NotificationItemProps {
 }
 
 export const NotificationItem = memo(({ notification }: NotificationItemProps) => {
-  const { type, actor, entityTitle, createdAt, read } = notification;
+  const { type, actor, entityId, entityTitle, meta, createdAt, read } = notification;
+
+  const commentText =
+    type === 'comment' ? (meta?.commentText as string | undefined) : undefined;
+
+  const showPreview = (type === 'like' || type === 'comment') && !!entityId;
 
   return (
     <div
-      className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
+      className={`p-3 rounded-xl transition-colors ${
         read ? '' : 'bg-blue-b4/20 border-l-2 border-blue-b1'
       }`}
     >
-      <div className="relative shrink-0">
-        <Avatar
-          src={actor?.avatarUrl}
-          name={actor?.nickname}
-          size="sm"
-        />
-        <span className="absolute -bottom-1 -right-1 text-xs leading-none">
-          {TYPE_ICON[type]}
+      <div className="flex items-start gap-3">
+        <div className="relative shrink-0">
+          <Avatar src={actor?.avatarUrl} name={actor?.nickname} size="sm" />
+          <span className="absolute -bottom-1 -right-1 text-xs leading-none">
+            {TYPE_ICON[type]}
+          </span>
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold leading-tight truncate">
+            {actor?.nickname ?? actor?.username ?? 'Someone'}
+          </p>
+          <p className="text-sm text-gray-g2 leading-tight">{TYPE_LABEL[type]}</p>
+        </div>
+
+        <span className="text-xs text-gray-g2 shrink-0 mt-0.5">
+          {formatRelativeTime(createdAt)}
         </span>
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold leading-tight truncate">
-          {actor?.nickname ?? actor?.username ?? 'Someone'}
-        </p>
-        <p className="text-sm text-gray-g2 leading-tight">
-          {TYPE_LABEL[type]}
-          {entityTitle && (
-            <span className="ml-1 font-medium text-primary truncate">
-              · {entityTitle}
-            </span>
-          )}
-        </p>
-      </div>
-
-      <span className="text-xs text-gray-g2 shrink-0 mt-0.5">
-        {formatRelativeTime(createdAt)}
-      </span>
+      {showPreview && (
+        <NotificationPostPreview
+          entityId={entityId!}
+          entityTitle={entityTitle}
+          commentText={commentText}
+        />
+      )}
     </div>
   );
 });
