@@ -66,7 +66,7 @@ export const PostCard = memo(({
 
         <Card.Body className="flex flex-col gap-y-4">
           <PostContent text={text} images={images} file={file} audio={audio} video={video} poll={poll} onUpdatePoll={updatePollInPost} />
-          <PostActions postId={postId} onCommentClick={() => setIsCommentOpen(true)} />
+          <PostActions postId={postId} text={text} onCommentClick={() => setIsCommentOpen(true)} />
         </Card.Body>
       </Card>
 

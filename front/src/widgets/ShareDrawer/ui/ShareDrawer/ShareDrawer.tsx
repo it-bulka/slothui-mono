@@ -8,9 +8,10 @@ interface ShareDrawerProps {
   payload: SharePayload
   isOpen: boolean
   onClose: () => void
+  titleToShare?: string
 }
 
-export const ShareDrawer = ({ payload, isOpen, onClose }: ShareDrawerProps) => {
+export const ShareDrawer = ({ payload, isOpen, onClose, titleToShare }: ShareDrawerProps) => {
   const messagesService = useMessagesService();
 
   const handleSend = async (chatId: string) => {
@@ -30,7 +31,7 @@ export const ShareDrawer = ({ payload, isOpen, onClose }: ShareDrawerProps) => {
 
         <section className="flex-shrink-0 flex flex-col gap-2">
           <Typography variant="h3" type={TypographyTypes.BLOCK_TITLE}>Share to social media</Typography>
-          {isOpen && <ShareContent sharableLink={getSharableLink(payload)} />}
+          {isOpen && <ShareContent sharableLink={getSharableLink(payload)} titleToShare={titleToShare} />}
         </section>
       </div>
     </Drawer>
