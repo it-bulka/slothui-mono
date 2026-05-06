@@ -1,5 +1,6 @@
 export enum CommentSocketEvents {
   // Server → Client
+  COMMENT_NEW = 'comment:new',
   COMMENT_CREATED = 'comment:created',
   COMMENT_UPDATED = 'comment:updated',
   COMMENT_DELETED = 'comment:deleted',

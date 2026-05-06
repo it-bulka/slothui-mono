@@ -51,6 +51,7 @@ export { EventDateTimePicker } from './EventDateTimePicker';
 export { ToolbarWrapper } from './ToolbarWrapper';
 export { LinkBlock } from './LinkBlock';
 export { NewFriendToast } from './NewFriendToast';
+export { NotificationToast } from './NotificationToast/NotificationToast.tsx';
 export { PasswordInput } from './PasswordInput';
 export { Portal } from './Portal/Portal.tsx';
 export { Overlay } from './Overlay/Overlay.tsx';

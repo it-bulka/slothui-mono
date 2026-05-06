@@ -1,0 +1,19 @@
+import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
+import type { AppStore } from '../../config';
+import { NotificationsMapper } from '@/entities/Notification';
+import { NotificationToast } from '@/shared/ui';
+import { CommentSocketEvents } from '@/shared/libs/services/commentsService/comments.events.ts';
+import { toast } from 'react-toastify';
+
+export const initCommentListeners = (services: ServicesFacade, store: AppStore) => {
+  const socket = services.socket.socket;
+  if (!socket) return;
+
+  socket.on(CommentSocketEvents.COMMENT_NEW, (e: { id: string; actor: { id: string; username: string; nickname: string; avatarUrl?: string | null }; entityId?: string; entityTitle?: string }) => {
+    NotificationsMapper.comment(store.dispatch, e);
+    toast.info(<NotificationToast type="comment" actor={e.actor} entityId={e.entityId} />, {
+      icon: false,
+      autoClose: 5000,
+    });
+  });
+};
