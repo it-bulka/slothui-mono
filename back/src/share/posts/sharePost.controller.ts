@@ -7,9 +7,8 @@ export class SharePostController {
 
   @Get(':id')
   @Render('posts/post')
-  sharePost(@Param('id') id: string) {
-    const data = this.shareService.getPostData(id);
-    console.log('SHARE post:', data);
+  async sharePost(@Param('id') id: string) {
+    const data = await this.shareService.getPostData(id);
     return { data };
   }
 }
