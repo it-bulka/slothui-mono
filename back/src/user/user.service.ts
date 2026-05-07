@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   BadRequestException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -29,6 +30,8 @@ import { CACHE_KEYS } from '../redis/redis.cache-keys';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
@@ -125,7 +128,10 @@ export class UserService {
         PATH,
       );
     } catch (err) {
-      console.warn('Stream upload failed, fallback to base64', err);
+      this.logger.warn(
+        'Stream upload failed, fallback to base64',
+        err instanceof Error ? err.stack : String(err),
+      );
 
       const base64 = `data:${newAvatarFile.mimetype};base64,${newAvatarFile.buffer.toString('base64')}`;
       uploaded = await this.cloudinaryService.uploadFileBase64(base64, PATH);

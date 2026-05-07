@@ -18,7 +18,7 @@ import { MessagesService } from '../messages/messages.service';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { ChatsService } from '../chats/chats.service';
 import { CreateChatDto } from '../chats/dto/createChat.dto';
-import { UseFilters, OnModuleInit, UseGuards } from '@nestjs/common';
+import { UseFilters, OnModuleInit, UseGuards, Logger } from '@nestjs/common';
 import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
@@ -52,6 +52,8 @@ import { WsRateLimit } from './guards/ws-rate-limiter.decorator';
 export class WsGateway
   implements OnGatewayInit, OnModuleInit, OnGatewayConnection
 {
+  private readonly logger = new Logger(WsGateway.name);
+
   @WebSocketServer() server: Server;
   private msgEvent$: Observable<MsgEmitterType>;
   private followersEvent$: Observable<FriendEmitterType>;
@@ -175,7 +177,10 @@ export class WsGateway
         client,
       );
     } catch (err) {
-      console.error('[WsGateway] handleConnection error', err);
+      this.logger.error(
+        'handleConnection error',
+        err instanceof Error ? err.stack : String(err),
+      );
     }
   }
 

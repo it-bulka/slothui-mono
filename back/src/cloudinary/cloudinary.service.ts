@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import * as path from 'node:path';
 import { v4 as uuidv4 } from 'uuid';
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
@@ -7,6 +7,8 @@ import * as streamifier from 'streamifier';
 
 @Injectable()
 export class CloudinaryService implements OnModuleInit {
+  private readonly logger = new Logger(CloudinaryService.name);
+
   constructor(private readonly configService: ConfigService) {}
 
   onModuleInit() {
@@ -97,9 +99,9 @@ export class CloudinaryService implements OnModuleInit {
         const result = await this.uploadFileStream(file, folder);
         return { file, result };
       } catch (err) {
-        console.error(
-          `[Cloudinary] upload failed — folder: "${folder}", file: "${file.originalname}", mimetype: "${file.mimetype}"`,
-          err,
+        this.logger.error(
+          `Upload failed — folder: "${folder}", file: "${file.originalname}", mimetype: "${file.mimetype}"`,
+          err instanceof Error ? err.stack : String(err),
         );
         return { file, result: null };
       }
