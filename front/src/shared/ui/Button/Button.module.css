@@ -58,7 +58,6 @@
 
 /* ─── Hover — lift ───────────────────────────────────── */
 .btn:not(.disabled):not(.link):not(.icon):hover {
-  transform: translateY(-1px);
   box-shadow: 0 10px 25px var(--shadow-color);
 }
 
@@ -82,7 +81,7 @@
 
 /* ─── Active — press ─────────────────────────────────── */
 .btn:not(.disabled):not(.link):not(.icon):active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
   box-shadow: 0 2px 8px var(--shadow-color);
 }
 
