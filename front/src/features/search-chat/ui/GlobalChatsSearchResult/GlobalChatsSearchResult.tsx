@@ -4,6 +4,18 @@ import { memo, useCallback } from 'react';
 import { ChatRow, createPrivateChatThunk, useGoToChat } from '@/entities';
 import { useAppDispatch } from '@/shared/config/redux';
 
+interface UserRowProps {
+  user: { id: string; name: string; avatarUrl?: string };
+  onOpen: (id: string) => void;
+}
+
+const UserSearchRow = memo(({ user, onOpen }: UserRowProps) => {
+  const handleClick = useCallback(() => onOpen(user.id), [user.id, onOpen]);
+  return <ChatRow name={user.name} avatar={user.avatarUrl} onClick={handleClick} />;
+});
+
+UserSearchRow.displayName = 'UserSearchRow';
+
 export const GlobalChatsSearchResult = memo(() => {
   const { items } = useGlobalChatsSearch()
   const { goToChat } = useGoToChat()
@@ -38,14 +50,7 @@ export const GlobalChatsSearchResult = memo(() => {
           if (item.type === 'user') {
             const { user } = item
             return (
-              <ChatRow
-                key={user.id}
-                name={user.name}
-                avatar={user.avatarUrl}
-                onClick={() => {
-                  openChatWithUser(user.id)
-                }}
-              />
+              <UserSearchRow key={user.id} user={user} onOpen={openChatWithUser} />
             );
           }
 

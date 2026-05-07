@@ -1,4 +1,4 @@
-import { memo, type ReactNode, type MouseEventHandler } from 'react'
+import { memo, useCallback, type ReactNode, type MouseEventHandler } from 'react'
 import { Avatar, Card, Typography, TypographyTypes, AppLink } from '@/shared/ui'
 import AvatarDefault from '@/shared/assets/images/default/avatar-default.png'
 import { getEventsDetailsPage } from '@/shared/config';
@@ -49,12 +49,14 @@ export const EventCard = memo(({
     e.stopPropagation()
   }
 
+  const handleCardClick = useCallback(() => {
+    onClick?.(id)
+    navigate(getEventsDetailsPage(id))
+  }, [onClick, id, navigate])
+
   return (
     <Card
-      onClick={() => {
-        onClick?.(id)
-        navigate(getEventsDetailsPage(id))
-      }}
+      onClick={handleCardClick}
       className="cursor-pointer overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
     >
       {/* Hero section */}
@@ -64,6 +66,9 @@ export const EventCard = memo(({
             src={coverUrl}
             alt={title}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            loading="lazy"
+            width={400}
+            height={144}
           />
         ) : (
           <div

@@ -1,7 +1,7 @@
 import { Button } from '@/shared/ui';
 import { useFetchMorePollVoters, selectAnswerVoters } from '@/entities/Poll';
 import { useAppSelector } from '@/shared/config/redux';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 interface MorePollVotersButtonProps {
   moreCount: number
@@ -12,11 +12,16 @@ interface MorePollVotersButtonProps {
 export const MorePollVotersButton = memo(({ moreCount, pollId, answerId, className }: MorePollVotersButtonProps) => {
   const { fetchVoters } = useFetchMorePollVoters()
   const votersState = useAppSelector(selectAnswerVoters(pollId, answerId))
+
+  const handleClick = useCallback(() => {
+    fetchVoters({ pollId, answerId, cursor: votersState?.cursor })
+  }, [fetchVoters, pollId, answerId, votersState?.cursor])
+
   if (!votersState || !votersState.hasMore) return null
 
   return (
     <Button
-      onClick={() => fetchVoters({pollId, answerId, cursor: votersState.cursor })}
+      onClick={handleClick}
       className={className}
     >
       +{moreCount} more
