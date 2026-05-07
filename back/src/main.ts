@@ -10,6 +10,7 @@ import * as path from 'node:path';
 import { setLoggering } from './common/utils/setLoggering';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -18,6 +19,7 @@ async function bootstrap() {
   setLoggering(app);
 
   app.set('trust proxy', true);
+  app.use(helmet());
   app.enableCors({
     origin: config.getOrThrow<string>('FRONT_ORIGIN'),
     credentials: true,
