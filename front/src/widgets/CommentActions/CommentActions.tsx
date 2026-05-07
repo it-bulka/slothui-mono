@@ -1,13 +1,13 @@
 import { Input, Avatar } from '@/shared/ui';
 import { SendAction, EmojiAction } from '@/features';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useSelectReplyTargetAuthor } from './model/hooks/useSelectReplyTargetAuthor.ts';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction/model';
 import { useSendComment } from './model/hooks/useSendComment.tsx';
 import { useGetReplyTarget } from '@/entities';
 
-export const CommentActions = ({ className }: { className?: string }) => {
+export const CommentActions = memo(({ className }: { className?: string }) => {
   const author = useSelectReplyTargetAuthor()
   const [text, setText] = useState(author ? `@${author.nickname}` : '');
   const { sendComment } = useSendComment()
@@ -50,4 +50,6 @@ export const CommentActions = ({ className }: { className?: string }) => {
       </div>
     </div>
   )
-}
+})
+
+CommentActions.displayName = 'CommentActions';

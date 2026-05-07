@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { CommentItem } from '@/entities';
 import { RepliesList } from '../RepliesList/RepliesList.tsx';
 import { ViewsRepliesButton } from '../ViewsRepliesButton/ViewsRepliesButton.tsx';
@@ -10,7 +11,7 @@ type Props = {
   postId: string
 }
 
-export const CommentThread = ({ commentIds, postId, onSeeRepliesClick }: Props) => {
+export const CommentThread = memo(({ commentIds, postId, onSeeRepliesClick }: Props) => {
   return (
     <div className="mt-3 pt-3 border-t border-gray-g3 space-y-3">
       {commentIds.map((id) => (
@@ -26,4 +27,6 @@ export const CommentThread = ({ commentIds, postId, onSeeRepliesClick }: Props) 
       ))}
     </div>
   )
-}
+})
+
+CommentThread.displayName = 'CommentThread';

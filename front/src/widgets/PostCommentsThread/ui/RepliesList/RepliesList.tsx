@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useGetRepliesIds } from '@/entities/Comment';
 import { CommentItem } from '@/entities';
 import { ViewsRepliesButton } from '../ViewsRepliesButton/ViewsRepliesButton.tsx';
@@ -10,7 +11,7 @@ type Props = {
   level: number
 }
 
-export const RepliesList = ({ parentId, level }: Props) => {
+export const RepliesList = memo(({ parentId, level }: Props) => {
   const replyIds = useGetRepliesIds(parentId);
 
   if (!replyIds.length) return null
@@ -31,4 +32,6 @@ export const RepliesList = ({ parentId, level }: Props) => {
       ))}
     </div>
   )
-}
+})
+
+RepliesList.displayName = 'RepliesList';
