@@ -4,13 +4,9 @@ import { debounce } from 'lodash';
 
 export const SearchFriendInput = ({ className }: { className?: string }) => {
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const debouncedSetSearch = useMemo(
-    () =>
-      debounce((value: string) => {
-        setDebouncedSearch(value);
-      }, 300),
+    () => debounce((_value: string) => {}, 300),
     []
   );
 
@@ -20,8 +16,8 @@ export const SearchFriendInput = ({ className }: { className?: string }) => {
   }, [setSearch, debouncedSetSearch]);
 
   useEffect(() => {
-
-  }, [debouncedSearch]);
+    return () => debouncedSetSearch.cancel();
+  }, [debouncedSetSearch]);
 
   return (
     <SearchBar

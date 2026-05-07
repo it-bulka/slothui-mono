@@ -4,10 +4,12 @@ import { useAppSelector } from '@/shared/config/redux';
 
 type FriendActionsMode = 'followers' | 'followings' | 'suggestions';
 
+const EMPTY_IDS: string[] = [];
+
 export const useFriendActions = (tab: FriendActionsMode) => {
   const currentUserId = useAuthUserIdSelector();
   const followingIds = useAppSelector(
-    state => state.friends.followingsByUser[currentUserId ?? '']?.ids ?? []
+    state => state.friends.followingsByUser[currentUserId ?? '']?.ids ?? EMPTY_IDS
   );
 
   const renderActions = (friend: FriendEntity) => {

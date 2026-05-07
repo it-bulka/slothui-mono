@@ -2,6 +2,7 @@ import type { Attachment } from '../../../../../types';
 import type { ReactNode } from 'react';
 import classnames from 'classnames';
 import { twMerge } from 'tailwind-merge';
+import { buildCloudinarySrcSet } from '@/shared/libs/buildCloudinarySrcSet/buildCloudinarySrcSet';
 
 type IAttachmentImage = Pick<Attachment, 'url' | 'originalName'> & {
   className?: string;
@@ -21,7 +22,10 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
         <img
           src={url}
           alt={originalName || 'image'}
-          className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))} />
+          className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))}
+          srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
+          sizes="(max-width: 640px) 100vw, 400px"
+        />
         {additionalComp}
       </button>
     );
