@@ -20,14 +20,16 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
         onClick={onClick}
         aria-label={`Open ${originalName || 'image'}`}
       >
-        <img
-          src={url}
-          alt={originalName || 'image'}
-          className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))}
-          fetchPriority={fetchPriority}
-          srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
-          sizes="(max-width: 640px) 100vw, 400px"
-        />
+        <div className="aspect-video max-h-[200px] overflow-hidden bg-light-l2">
+          <img
+            src={url}
+            alt={originalName || 'image'}
+            className={twMerge(classnames("w-full h-full object-cover", [imgClass]))}
+            fetchPriority={fetchPriority}
+            srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
+            sizes="(max-width: 640px) 100vw, 400px"
+          />
+        </div>
         {additionalComp}
       </button>
     );
@@ -35,10 +37,16 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
 
   return (
     <div className={`relative ${className}`}>
-      <img
-        src={url}
-        alt={originalName || 'image'}
-        className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))} />
+      <div className="aspect-video max-h-[200px] overflow-hidden bg-light-l2">
+        <img
+          src={url}
+          alt={originalName || 'image'}
+          className={twMerge(classnames("w-full h-full object-cover", [imgClass]))}
+          fetchPriority={fetchPriority}
+          srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
+          sizes="(max-width: 640px) 100vw, 400px"
+        />
+      </div>
       {additionalComp}
     </div>
   );
