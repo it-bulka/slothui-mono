@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,6 +19,8 @@ import * as path from 'node:path';
 import { ConfigService } from '@nestjs/config';
 import { MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { StaticGuardMiddleware } from './common/guards/static/static.guard';
+import { AppThrottlerGuard } from './common/guards/app-throttler.guard';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ShareModule } from './share/share.module';
 import { PostsModule } from './posts/posts.module';
 import { AttachmentsModule } from './attachments/attachments.module';
@@ -46,6 +49,7 @@ import { RedisModule } from './redis/redis.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot([{ name: 'default', ttl: 60000, limit: 60 }]),
     RedisModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => {
@@ -87,7 +91,7 @@ import { RedisModule } from './redis/redis.module';
     NotificationsModule,
   ],
   controllers: [],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: AppThrottlerGuard }],
 })
 export class AppModule {
   constructor(private readonly configService: ConfigService) {}

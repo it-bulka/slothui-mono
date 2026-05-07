@@ -44,6 +44,7 @@ import {
   ApiForgotPassword,
   ApiResetPassword,
 } from './decorators/api-auth.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -53,6 +54,7 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('register')
   @ApiRegister()
   @UseInterceptors(FileInterceptor('avatar'))
@@ -77,6 +79,7 @@ export class AuthController {
     return { profile, accessToken, linkedProviders };
   }
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -93,6 +96,7 @@ export class AuthController {
     return { profile, token: accessToken, linkedProviders };
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   @UseGuards(RefreshJwtAuthGuard)
   @Get('refresh')
   @ApiRefresh()
@@ -286,6 +290,7 @@ export class AuthController {
     res.redirect(redirectUrl);
   }
 
+  @Throttle({ default: { limit: 3, ttl: 300000 } })
   @Post('forgot-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiForgotPassword()
@@ -296,6 +301,7 @@ export class AuthController {
     await this.authService.forgotPassword(dto.email, req);
   }
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('reset-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResetPassword()

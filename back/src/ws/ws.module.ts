@@ -5,9 +5,10 @@ import { MessagesModule } from '../messages/messages.module';
 import { ChatsModule } from '../chats/chats.module';
 import { AuthModule } from '../auth/auth.module';
 import { EventEmitterModule } from '../event-emitter/event-emitter.module';
+import { WsRateLimiterGuard } from './guards/ws-rate-limiter.guard';
 
 @Module({
   imports: [EventEmitterModule, MessagesModule, ChatsModule, AuthModule],
-  providers: [WsGateway, WsService],
+  providers: [WsGateway, WsService, WsRateLimiterGuard],
 })
 export class WsModule {}

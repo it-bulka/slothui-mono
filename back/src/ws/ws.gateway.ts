@@ -18,7 +18,7 @@ import { MessagesService } from '../messages/messages.service';
 import { SocketWithUser } from './types/socketWithUser.type';
 import { ChatsService } from '../chats/chats.service';
 import { CreateChatDto } from '../chats/dto/createChat.dto';
-import { UseFilters, OnModuleInit } from '@nestjs/common';
+import { UseFilters, OnModuleInit, UseGuards } from '@nestjs/common';
 import { GatewayExceptionsFilter } from './filters/exceptions.filter';
 import { ValidateDtoPipe } from './pipes/validateDto.pipe';
 import { EventEmitterMessageService } from '../event-emitter/event-emitter-message.service';
@@ -36,6 +36,8 @@ import { EventEmitterFollowersService } from '../event-emitter/event-emitter-fol
 import { FriendEmitterType } from '../event-emitter/type/followersEmitter.type';
 import { FollowersServerEvents } from './types/followers.events';
 import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
+import { WsRateLimiterGuard } from './guards/ws-rate-limiter.guard';
+import { WsRateLimit } from './guards/ws-rate-limiter.decorator';
 
 @ValidateDtoPipe()
 @UseFilters(GatewayExceptionsFilter)
@@ -177,6 +179,8 @@ export class WsGateway
     }
   }
 
+  @UseGuards(WsRateLimiterGuard)
+  @WsRateLimit(5, 60)
   @SubscribeMessage(ChatRequestEvents.CREATE)
   async onChatCreate(
     @ConnectedSocket() client: SocketWithUser,
@@ -259,6 +263,8 @@ export class WsGateway
     this.server.to(body.chatId).emit(ChatServerEvents.MEMBER_REMOVED, data);
   }
 
+  @UseGuards(WsRateLimiterGuard)
+  @WsRateLimit(10, 1)
   @SubscribeMessage(MessageRequestEvents.TYPING)
   onTyping(
     @ConnectedSocket() client: SocketWithUser,
