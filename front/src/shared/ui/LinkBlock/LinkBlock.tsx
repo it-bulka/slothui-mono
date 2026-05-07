@@ -10,7 +10,7 @@ export const LinkBlock = ({ links, className = '', noArrow }: LinkBlockProps) =>
   return (
     <div className={twMerge("flex flex-col", className)}>
       {links.map(({ to, label }) => (
-        <AppLink to={to} noArrow={noArrow}>{label}</AppLink>
+        <AppLink key={to} to={to} noArrow={noArrow}>{label}</AppLink>
       ))}
     </div>
   )
