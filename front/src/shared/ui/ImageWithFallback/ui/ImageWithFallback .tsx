@@ -5,9 +5,10 @@ interface ImgProps {
  alt: string
  fallback: string
  className?: string
+ priority?: boolean
 }
 
-export const ImageWithFallback = memo(({ src, alt, fallback, className }: ImgProps) => {
+export const ImageWithFallback = memo(({ src, alt, fallback, className, priority }: ImgProps) => {
   const [imgSrc, setImgSrc] = useState(src);
   const [error, setError] = useState(false);
 
@@ -23,7 +24,8 @@ export const ImageWithFallback = memo(({ src, alt, fallback, className }: ImgPro
       src={imgSrc}
       alt={alt}
       onError={handleError}
-      loading="lazy"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : undefined}
       className={className}
     />
   );
