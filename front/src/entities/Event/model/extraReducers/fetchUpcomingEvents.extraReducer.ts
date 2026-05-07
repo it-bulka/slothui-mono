@@ -14,7 +14,8 @@ export const fetchUpcomingEventsExtraReducer = (builder: ActionReducerMapBuilder
 
       eventsAdapter.upsertMany(state, events)
 
-      state.upcoming.ids.push(...events.map(e => e.id))
+      const existingIds = new Set(state.upcoming.ids)
+      events.forEach(e => { if (!existingIds.has(e.id)) state.upcoming.ids.push(e.id) })
       state.upcoming.isLoading = false
       state.upcoming.hasMore = hasMore
       state.upcoming.nextCursor = nextCursor
