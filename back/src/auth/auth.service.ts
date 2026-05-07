@@ -237,12 +237,20 @@ export class AuthService {
     });
   }
 
-  buildRedirectUrl(
-    rowClientUrl: string | undefined,
-    accessToken: string,
-  ): string {
-    const redirectUrl = rowClientUrl || process.env.FRONT_ORIGIN!;
-    const url = new URL(redirectUrl);
+  buildRedirectUrl(rawUrl: string | undefined, accessToken: string): string {
+    const allowedOrigins = (
+      process.env.ALLOWED_REDIRECT_ORIGINS ?? process.env.FRONT_ORIGIN!
+    )
+      .split(',')
+      .map((o) => o.trim());
+
+    const target = rawUrl || process.env.FRONT_ORIGIN!;
+    const url = new URL(target);
+
+    if (!allowedOrigins.includes(url.origin)) {
+      throw new BadRequestException('Invalid redirect URL');
+    }
+
     url.searchParams.set('token', accessToken);
     return url.toString();
   }
