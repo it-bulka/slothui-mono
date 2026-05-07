@@ -8,8 +8,9 @@ type IAttachmentVideo = Pick<Attachment, 'url' | 'originalName'> & {
   className?: string;
   additionalComp?: ReactNode
   onClick?: () => void;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
-export const AttachmentVideoPreview = ({ url, originalName, className, additionalComp, onClick }: IAttachmentVideo) => {
+export const AttachmentVideoPreview = ({ url, originalName, className, additionalComp, onClick, fetchPriority }: IAttachmentVideo) => {
   const isBlob = url.startsWith('blob:');
   return (
     <div className={classnames('relative', className)} onClick={onClick}>
@@ -20,6 +21,7 @@ export const AttachmentVideoPreview = ({ url, originalName, className, additiona
           src={url}
           alt={originalName || 'video'}
           className="w-full h-full object-cover"
+          fetchPriority={fetchPriority}
           srcSet={buildCloudinarySrcSet(url, [400, 800, 1200])}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 600px"
         />

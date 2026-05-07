@@ -71,7 +71,7 @@ export const MediaGrid = ({ list, showAll }: MediaGridProps) => {
               onClick={handlePreviewClick(idx)}
             />
           ) : (
-            renderMediaItem(item, itemClass, handlePreviewClick(idx))
+            renderMediaItem(item, itemClass, handlePreviewClick(idx), idx === 0 ? 'high' : undefined)
           )
         })}
       </div>

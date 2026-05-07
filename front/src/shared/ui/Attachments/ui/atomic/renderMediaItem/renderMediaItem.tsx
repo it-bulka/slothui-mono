@@ -2,7 +2,12 @@ import type { Attachment } from '../../../../../types';
 import { AttachmentVideoPreview } from '../AttachmentVideoPreview/AttachmentVideoPreview.tsx';
 import { AttachmentImage } from '../AttachmentImage/AttachmentImage.tsx';
 
-export const renderMediaItem = (item: Attachment, className?: string, onClick?: () => void) => {
+export const renderMediaItem = (
+  item: Attachment,
+  className?: string,
+  onClick?: () => void,
+  fetchPriority?: 'high' | 'low' | 'auto'
+) => {
   if (item.type === 'images') {
     return <AttachmentImage
       key={item.id}
@@ -10,6 +15,7 @@ export const renderMediaItem = (item: Attachment, className?: string, onClick?: 
       originalName={item.originalName}
       className={className}
       onClick={onClick}
+      fetchPriority={fetchPriority}
     />;
   }
 
@@ -20,6 +26,7 @@ export const renderMediaItem = (item: Attachment, className?: string, onClick?: 
       originalName={item.originalName}
       className={className}
       onClick={onClick}
+      fetchPriority={fetchPriority}
     />
   );
 };
