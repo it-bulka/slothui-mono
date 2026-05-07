@@ -7,6 +7,7 @@ import { AttachmentDto } from './dto/attachment.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ConfigService } from '@nestjs/config';
 import { fixFileNameCoding } from '../common/utils/fixFileNameCoding';
+import { fileTypeFromBuffer } from 'file-type';
 
 const FOLDER_SUFFIX: Record<AttachmentType, string> = {
   images: 'image',
@@ -64,10 +65,12 @@ export class AttachmentsService {
     return map;
   }
 
-  private detectType(file: Express.Multer.File): AttachmentType {
-    if (file.mimetype.startsWith('image/')) return 'images';
-    if (file.mimetype.startsWith('video/')) return 'video';
-    if (file.mimetype.startsWith('audio/')) return 'audio';
+  private async detectType(file: Express.Multer.File): Promise<AttachmentType> {
+    const result = await fileTypeFromBuffer(file.buffer);
+    if (!result) return 'file';
+    if (result.mime.startsWith('image/')) return 'images';
+    if (result.mime.startsWith('video/')) return 'video';
+    if (result.mime.startsWith('audio/')) return 'audio';
     return 'file';
   }
 
@@ -83,7 +86,7 @@ export class AttachmentsService {
 
     const groups = new Map<AttachmentType, Express.Multer.File[]>();
     for (const file of files) {
-      const type = this.detectType(file);
+      const type = await this.detectType(file);
       if (!groups.has(type)) groups.set(type, []);
       groups.get(type)!.push(file);
     }
