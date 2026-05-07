@@ -9,9 +9,9 @@ type IAttachmentImage = Pick<Attachment, 'url' | 'originalName'> & {
   imgClass?: string;
   additionalComp?: ReactNode
   onClick?: () => void;
-  fetchPriority?: 'high' | 'low' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
-export const AttachmentImage = ({ url, originalName, className, imgClass, onClick, additionalComp, fetchPriority }: IAttachmentImage) => {
+export const AttachmentImage = ({ url, originalName, className, imgClass, onClick, additionalComp, fetchpriority }: IAttachmentImage) => {
   if (onClick) {
     return (
       <button
@@ -25,7 +25,7 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
             src={url}
             alt={originalName || 'image'}
             className={twMerge(classnames("w-full h-full object-cover", [imgClass]))}
-            fetchPriority={fetchPriority}
+            fetchpriority={fetchpriority}
             srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
             sizes="(max-width: 640px) 100vw, 400px"
           />
@@ -42,7 +42,7 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
           src={url}
           alt={originalName || 'image'}
           className={twMerge(classnames("w-full h-full object-cover", [imgClass]))}
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchpriority}
           srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
           sizes="(max-width: 640px) 100vw, 400px"
         />
