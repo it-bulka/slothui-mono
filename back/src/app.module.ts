@@ -35,6 +35,7 @@ import { SessionModule } from './session/session.module';
 import { GeoMessageModule } from './geo-message/geo-message.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { RedisModule } from './redis/redis.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -55,8 +56,8 @@ import { RedisModule } from './redis/redis.module';
       useFactory: () => {
         return {
           type: 'postgres',
-          host: 'localhost',
-          port: 5432,
+          host: process.env.DB_HOST ?? 'localhost',
+          port: parseInt(process.env.DB_PORT ?? '5432'),
           username: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
@@ -89,6 +90,7 @@ import { RedisModule } from './redis/redis.module';
     SessionModule,
     GeoMessageModule,
     NotificationsModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [AppService, { provide: APP_GUARD, useClass: AppThrottlerGuard }],
