@@ -1,3 +1,10 @@
+export type UserDTO = {
+  id: string;
+  username: string;
+  nickname: string;
+  avatarUrl: string;
+};
+
 export interface UserProfileDto {
   user: {
     id: string;

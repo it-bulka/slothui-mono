@@ -1,6 +1,6 @@
 import { Poll } from '../entities/poll.entity';
 import { PollAnswer } from '../entities/poll-answer.entity';
-import { UserDTO } from 'front/src/shared/types/chat.types';
+import { UserDTO } from '../../user/dto/user-profile.dto';
 import { PallParentType } from '../types/poll.type';
 
 type PollType = Pick<
