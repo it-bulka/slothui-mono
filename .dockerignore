@@ -1,0 +1,26 @@
+node_modules
+**/node_modules
+
+back/dist
+front/dist
+
+# Frontend source — only front/package.json is needed for npm ci
+front/src
+front/public
+front/index.html
+front/vite.config.ts
+front/tsconfig*.json
+front/eslint.config.ts
+front/.env*
+
+.git
+.gitignore
+.github
+
+back/.env
+back/.env.prod
+back/.env.local
+
+*.log
+back/coverage
+docs/
