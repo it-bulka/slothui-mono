@@ -1,0 +1,28 @@
+FROM node:22-alpine AS builder
+WORKDIR /app
+
+COPY package*.json ./
+COPY front/package.json ./front/
+COPY back/package.json ./back/
+COPY back/nest-cli.json back/tsconfig.json back/tsconfig.build.json ./back/
+COPY back/src ./back/src
+
+RUN npm ci
+RUN npm run build --workspace=back
+RUN npm run copy-yaml --workspace=back
+
+# ---
+
+FROM node:22-alpine AS runtime
+WORKDIR /app
+
+COPY package*.json ./
+COPY front/package.json ./front/
+COPY back/package.json ./back/
+
+RUN npm ci --omit=dev
+
+COPY --from=builder /app/back/dist ./back/dist
+
+EXPOSE 3000 3001
+CMD ["node", "back/dist/main"]
