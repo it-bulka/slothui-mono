@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -10,7 +11,6 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { CookieOptions } from 'express';
 import * as ms from 'ms';
-import type { StringValue } from 'ms';
 import { Inject } from '@nestjs/common';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigService, ConfigType } from '@nestjs/config';
@@ -201,8 +201,7 @@ export class AuthService {
             secure: false,
             signed: false,
           };
-    const expiresIn =
-      (this.refreshJwtConfiguration.expiresIn as StringValue) || '7d';
+    const expiresIn = this.refreshJwtConfiguration.expiresIn || '7d';
 
     res.cookie('refresh_token', token, {
       ...options,
@@ -267,7 +266,11 @@ export class AuthService {
 
     const link = `${this.configService.getOrThrow('FRONT_ORIGIN')}/${this.configService.getOrThrow('FRONT_RESET_PASSWORD_PATH')}?token=${token}`;
 
-    await this.mailService.sendResetPassword(email, link);
+    try {
+      await this.mailService.sendResetPassword(email, link);
+    } catch {
+      throw new InternalServerErrorException('Failed to send reset email');
+    }
   }
 
   async resetPassword(token: string, newPassword: string) {
