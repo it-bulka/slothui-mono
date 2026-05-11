@@ -13,6 +13,7 @@ export interface UserProfileDto {
     avatarUrl?: string;
     bio?: string | null;
     createdAt: string;
+    isEmailVerified: boolean;
   };
   stats: {
     followersCount: number;

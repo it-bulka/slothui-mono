@@ -33,6 +33,7 @@ import {
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailerModule } from '../mailer/mailer.module';
 import { SessionModule } from '../session/session.module';
+import { EmailVerificationModule } from '../email-verification/email-verification.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { SessionModule } from '../session/session.module';
     PasswordResetModule,
     MailerModule,
     SessionModule,
+    EmailVerificationModule,
   ],
   controllers: [AuthController],
   providers: [

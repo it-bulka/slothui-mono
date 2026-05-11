@@ -23,6 +23,7 @@ import { Event } from '../../events/entity/event.entity';
 import { UserAccount } from './userAccount.entity';
 import { PasswordResetToken } from '../../password-reset/entity/password-reset.entity';
 import { UserSession } from '../../session/entity/userSession.entity';
+import { EmailVerificationToken } from '../../email-verification/entity/email-verification.entity';
 
 @Entity()
 export class User {
@@ -50,6 +51,9 @@ export class User {
   @Column({ type: 'enum', enum: RolesEnum, default: RolesEnum.USER })
   role: RolesEnum;
 
+  @Column({ default: false })
+  isEmailVerified: boolean;
+
   @Column({ nullable: true, default: undefined })
   avatarUrl?: string;
 
@@ -61,6 +65,9 @@ export class User {
 
   @OneToMany(() => PasswordResetToken, (token) => token.user)
   resetTokens: PasswordResetToken[];
+
+  @OneToMany(() => EmailVerificationToken, (t) => t.user)
+  verificationTokens: EmailVerificationToken[];
 
   @OneToMany(() => UserSession, (session) => session.user)
   sessions: UserSession[];

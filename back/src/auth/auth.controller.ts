@@ -33,6 +33,7 @@ import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 import { getRefreshTokenFromReq } from '../common/utils/getRefreshTokenFromReq';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import {
@@ -58,25 +59,13 @@ export class AuthController {
   @Post('register')
   @ApiRegister()
   @UseInterceptors(FileInterceptor('avatar'))
-  async registerByLogin(
-    @Body() createUserDto: CreateUserDto,
-    @Request() req: ExpressRequest,
-    @Response({ passthrough: true }) res: ExpressResponse,
-  ) {
+  async registerByLogin(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.createLocalProvider(createUserDto);
-
-    const { accessToken, refreshToken, profile, linkedProviders } =
-      await this.authService.login(
-        {
-          id: user.id,
-          role: user.role,
-        },
-        createUserDto.deviceId,
-        req,
-      );
-    this.authService.attachRefreshTokenToCookie(res, refreshToken);
-
-    return { profile, accessToken, linkedProviders };
+    void this.authService.sendEmailVerification(user.id, user.email!);
+    return {
+      message:
+        'Registration successful. Please check your email to verify your account.',
+    };
   }
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })
@@ -307,5 +296,19 @@ export class AuthController {
   @ApiResetPassword()
   async resetPassword(@Body() dto: ResetPasswordDto) {
     await this.authService.resetPassword(dto.token, dto.password);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Post('verify-email')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async verifyEmail(@Body() dto: VerifyEmailDto) {
+    await this.authService.verifyEmail(dto.token);
+  }
+
+  @Throttle({ default: { limit: 3, ttl: 300000 } })
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async resendVerification(@Body() dto: ForgotPasswordDto) {
+    await this.authService.resendVerification(dto.email);
   }
 }

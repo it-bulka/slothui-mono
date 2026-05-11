@@ -176,6 +176,7 @@ export class UserService {
         nickname: dto.nickname,
         email: dto.email,
         avatarUrl: dto.avatarUrl,
+        isEmailVerified: true,
       });
       await this.userRepo.save(user);
     }
@@ -194,6 +195,11 @@ export class UserService {
     return await this.userRepo.findOne({
       where: { email },
     });
+  }
+
+  async markEmailVerified(userId: string): Promise<void> {
+    await this.userRepo.update(userId, { isEmailVerified: true });
+    await this.cache.del(CACHE_KEYS.userProfile(userId));
   }
 
   async findByProvider(
@@ -350,6 +356,7 @@ export class UserService {
         'avatarUrl',
         'bio',
         'createdAt',
+        'isEmailVerified',
       ],
     });
 
@@ -369,6 +376,7 @@ export class UserService {
         avatarUrl: user.avatarUrl,
         bio: user.bio,
         createdAt: user.createdAt.toISOString(),
+        isEmailVerified: user.isEmailVerified,
       },
       stats: {
         followersCount,

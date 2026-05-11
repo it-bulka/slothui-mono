@@ -3,6 +3,8 @@ import {
   UnauthorizedException,
   BadRequestException,
   InternalServerErrorException,
+  ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -23,9 +25,12 @@ import { Request } from 'express';
 import { MailService } from '../mailer/mailer.service';
 import { SessionService } from '../session/session.service';
 import { getReqIP } from '../common/utils/getReqIP';
+import { EmailVerificationService } from '../email-verification/email-verification.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
@@ -37,6 +42,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly mailService: MailService,
     private readonly sessionService: SessionService,
+    private readonly emailVerificationService: EmailVerificationService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -48,6 +54,12 @@ export class AuthService {
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch)
       throw new UnauthorizedException('Invalid credentials');
+
+    if (!user.isEmailVerified)
+      throw new ForbiddenException(
+        'Please verify your email before logging in',
+      );
+
     return user;
   }
 
@@ -79,6 +91,7 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
         bio: user.bio,
         createdAt: user.createdAt.toISOString(),
+        isEmailVerified: user.isEmailVerified,
       },
       stats: {
         followersCount: 0,
@@ -252,6 +265,31 @@ export class AuthService {
 
     url.searchParams.set('token', accessToken);
     return url.toString();
+  }
+
+  async sendEmailVerification(userId: string, email: string): Promise<void> {
+    try {
+      const token =
+        await this.emailVerificationService.createVerificationToken(userId);
+      const link = `${this.configService.getOrThrow('FRONT_ORIGIN')}/${this.configService.getOrThrow('FRONT_VERIFY_EMAIL_PATH')}?token=${token}`;
+      await this.mailService.sendVerificationEmail(email, link);
+    } catch (err) {
+      this.logger.error(`Email verification send failed for ${email}`, err);
+    }
+  }
+
+  async verifyEmail(token: string): Promise<void> {
+    const record =
+      await this.emailVerificationService.validateVerificationToken(token);
+    if (!record) throw new BadRequestException('Invalid or expired token');
+    await this.userService.markEmailVerified(record.user.id);
+    await this.emailVerificationService.markTokenUsed(record.id);
+  }
+
+  async resendVerification(email: string): Promise<void> {
+    const user = await this.userService.findByEmail(email);
+    if (!user || user.isEmailVerified || !user.email) return; // anti-enumeration
+    await this.sendEmailVerification(user.id, user.email);
   }
 
   async forgotPassword(email: string, req: Request) {
