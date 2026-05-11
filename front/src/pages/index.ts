@@ -17,6 +17,7 @@ export { MyFriendsSuggestionsPage } from './MyFriendsSuggestions';
 export { MyEventsPage } from './MyEvents';
 export { ForgotPasswordPage } from './ForgotPassword';
 export { ResetPasswordPage } from './ResetPassword';
+export { VerifyEmailPage } from './VerifyEmail';
 export { NotificationsPage } from './NotificationsPage/ui/NotificationsPage.async';
 export { ActivityPage } from './ActivityPage/ui/ActivityPage.async';
 export { LikedPage } from './LikedPage/ui/LikedPage.async';

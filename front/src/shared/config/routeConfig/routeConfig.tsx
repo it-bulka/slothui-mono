@@ -31,6 +31,7 @@ export enum AppRoutes {
   // AUTH
   FORGOT_PASSWORD = 'forgot_password',
   RESET_PASSWORD = 'reset_password',
+  VERIFY_EMAIL = 'verify_email',
 
   POST = 'post',
 }
@@ -71,6 +72,7 @@ export const getLoginPage = () => `/auth/login`
 export const getRegisterPage = () => `/auth/register`
 export const getForgotPasswordPage = () => `/auth/forgot-password`
 export const getResetPasswordPage = () => `/auth/reset-password`
+export const getVerifyEmailPage = () => `/auth/verify-email`
 
 export const getNotificationsPage = () => '/notifications'
 
@@ -106,6 +108,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.AUTH]: getAuthLayout(),
   [AppRoutes.FORGOT_PASSWORD]: getForgotPasswordPage(),
   [AppRoutes.RESET_PASSWORD]: getResetPasswordPage(),
+  [AppRoutes.VERIFY_EMAIL]: getVerifyEmailPage(),
   [AppRoutes.NOT_FOUND]: getNotFoundPage(),
   [AppRoutes.POST]: getPostPage(':postId'),
 }

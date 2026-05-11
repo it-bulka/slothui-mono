@@ -19,6 +19,7 @@ import {
   MyEventsPage,
   ForgotPasswordPage,
   ResetPasswordPage,
+  VerifyEmailPage,
   NotificationsPage,
   ActivityPage,
   LikedPage,
@@ -96,7 +97,8 @@ export const router = createBrowserRouter([
           { path: AuthRelativePaths.login, element: <LoginPage /> },
           { path: AuthRelativePaths.register, element: <RegisterPage /> },
           { path: RoutePaths.forgot_password, element: <ForgotPasswordPage /> },
-          { path: RoutePaths.reset_password, element: <ResetPasswordPage /> }
+          { path: RoutePaths.reset_password, element: <ResetPasswordPage /> },
+          { path: RoutePaths.verify_email, element: <VerifyEmailPage /> }
         ]
       },
       { path: RoutePaths.not_found, element: <NotFound /> },
