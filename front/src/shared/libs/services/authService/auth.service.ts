@@ -14,7 +14,7 @@ export class AuthService {
     username,
     nickname,
     avatar, // FileList | undefined
-  }: RegisterUserArgs): Promise<IAuthResponse> {
+  }: RegisterUserArgs): Promise<{ message: string }> {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
@@ -86,5 +86,21 @@ export class AuthService {
       body: { password, token },
       credentials: 'include'
     })
+  }
+
+  async verifyEmail({ token }: { token: string }): Promise<void> {
+    await this.http.request(`${AUTH_PATH}/verify-email`, {
+      method: 'POST',
+      body: { token },
+      credentials: 'include'
+    });
+  }
+
+  async resendVerification({ email }: { email: string }): Promise<void> {
+    await this.http.request(`${AUTH_PATH}/resend-verification`, {
+      method: 'POST',
+      body: { email },
+      credentials: 'include'
+    });
   }
 }
