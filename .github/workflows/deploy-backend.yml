@@ -30,5 +30,6 @@ jobs:
             cd /home/deploy/slothui-mono
             git pull origin main
             printf '%s' "$BACKEND_ENV_PROD" > back/.env.prod
+            touch back/.env
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build backend
             docker compose -f docker-compose.yml -f docker-compose.prod.yml restart nginx
