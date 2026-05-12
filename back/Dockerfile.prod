@@ -9,7 +9,7 @@ COPY back/src ./back/src
 
 RUN npm ci
 RUN npm run build --workspace=back
-RUN npm run copy-yaml --workspace=back
+RUN mkdir -p back/dist/docs/ws && cp back/src/docs/ws/*.yaml back/dist/docs/ws/
 
 # ---
 
