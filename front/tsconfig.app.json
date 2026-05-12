@@ -28,5 +28,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "type.d.ts"]
+  "include": ["src", "type.d.ts"],
+  "exclude": ["src/stories/**", "src/mock/**"]
 }
