@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { Overlay } from '../../../Overlay/Overlay.tsx'
 import { Portal } from '../../../Portal/Portal.tsx'
 
-type SpringDivProps = PropsWithChildren<HTMLAttributes<HTMLDivElement> & { style?: object }>;
+type SpringDivProps = PropsWithChildren<Omit<HTMLAttributes<HTMLDivElement>, 'style'> & { style?: Record<string, unknown> }>;
 const SpringDiv = animated.div as ComponentType<SpringDivProps>;
 
 interface DrawerProps {
