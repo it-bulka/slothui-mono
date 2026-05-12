@@ -18,12 +18,16 @@ jobs:
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
+        env:
+          BACKEND_ENV_PROD: ${{ secrets.BACKEND_ENV_PROD }}
         with:
           host: ${{ secrets.BACKEND_SSH_HOST }}
           username: ${{ secrets.BACKEND_SSH_USER }}
           key: ${{ secrets.BACKEND_SSH_KEY }}
+          envs: BACKEND_ENV_PROD
           script: |
             cd /home/deploy/slothui
             git pull origin main
+            printf '%s' "$BACKEND_ENV_PROD" > back/.env.prod
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build backend
             docker compose -f docker-compose.yml -f docker-compose.prod.yml restart nginx
