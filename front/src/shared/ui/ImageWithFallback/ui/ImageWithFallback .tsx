@@ -25,7 +25,7 @@ export const ImageWithFallback = memo(({ src, alt, fallback, className, priority
       alt={alt}
       onError={handleError}
       loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : undefined}
+      fetchPriority={priority ? 'high' : undefined}
       className={className}
     />
   );

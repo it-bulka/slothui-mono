@@ -5,13 +5,13 @@ import { ChatRow, createPrivateChatThunk, useGoToChat } from '@/entities';
 import { useAppDispatch } from '@/shared/config/redux';
 
 interface UserRowProps {
-  user: { id: string; name: string; avatarUrl?: string };
+  user: { id: string; nickname: string; avatarUrl?: string };
   onOpen: (id: string) => void;
 }
 
 const UserSearchRow = memo(({ user, onOpen }: UserRowProps) => {
   const handleClick = useCallback(() => onOpen(user.id), [user.id, onOpen]);
-  return <ChatRow name={user.name} avatar={user.avatarUrl} onClick={handleClick} />;
+  return <ChatRow name={user.nickname} avatar={user.avatarUrl} onClick={handleClick} />;
 });
 
 UserSearchRow.displayName = 'UserSearchRow';

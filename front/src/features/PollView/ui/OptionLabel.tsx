@@ -1,6 +1,9 @@
 import { Typography, LineRange } from '@/shared/ui';
 import { memo } from 'react';
-import type { Voter } from '../model/types';
+interface Voter {
+  name: string;
+  avatar: string;
+}
 import AvatarDefaultImg from '@/shared/assets/images/general/avatar-default.png'
 import { ImageWithFallback } from '@/shared/ui';
 

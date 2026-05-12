@@ -1,4 +1,10 @@
 import { memo, useMemo } from 'react'
+
+interface HeroDateTimePickerProps {
+  value: Date;
+  onChange: (date: Date) => void;
+  minDate?: Date;
+}
 import DatePicker from 'react-datepicker'
 import { HeroPill } from './HeroPill'
 import { CalendarIcon } from '@/shared/assets/icons/CalendarIcon'

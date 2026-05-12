@@ -8,7 +8,7 @@ interface FriendsListWithActionsProps {
 }
 
 export const FriendsListWithActions = memo(({ friends }: FriendsListWithActionsProps) => {
-  const { renderActions } = useFriendActions();
+  const { renderActions } = useFriendActions('suggestions');
 
   return (
     <FriendsList

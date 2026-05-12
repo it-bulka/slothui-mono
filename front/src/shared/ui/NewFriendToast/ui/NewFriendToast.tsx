@@ -15,7 +15,7 @@ export const NewFriendToast = memo(({ friend }: { friend: NewFriendNotification}
     >
       <Typography bold>New follower</Typography>
       <AvatarWithInfo
-        src={friend.avatarSrc}
+        src={friend.avatarUrl}
         name={`@${friend.nickname}`}
         position={friend.username}
       />

@@ -60,7 +60,7 @@ export const EventDetails = ({
               src={coverUrl}
               alt={title}
               className="w-full h-full object-cover"
-              fetchpriority="high"
+              fetchPriority="high"
               width={800}
               height={224}
             />

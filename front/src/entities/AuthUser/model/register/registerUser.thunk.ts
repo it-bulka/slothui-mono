@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ThunkAPI } from '@/shared/config/redux';
-import type { IAuthResponse, RegisterUserArgs } from '@/shared/types';
+import type { RegisterUserArgs } from '@/shared/types';
 
 export const registerUser = createAsyncThunk<
-  IAuthResponse,
+  { message: string },
   RegisterUserArgs,
   ThunkAPI
 >(

@@ -1,4 +1,4 @@
-import type { FileWithTempUrl } from '@/shared/types';
+import type { FileWithTempUrl } from '../../types';
 
 export const addTempUrl = (file: File): FileWithTempUrl => {
   return Object.assign(file, {

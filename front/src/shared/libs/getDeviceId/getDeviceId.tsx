@@ -1,11 +1,9 @@
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
-export const getDeviceId = () => {
-  let deviceId = localStorage.getItem('deviceId');
-  if (!deviceId) {
-    deviceId = uuid();
-    localStorage.setItem('deviceId', deviceId);
-  }
-
-  return deviceId;
+export const getDeviceId = (): string => {
+  const existing = localStorage.getItem('deviceId');
+  if (existing) return existing;
+  const id = nanoid();
+  localStorage.setItem('deviceId', id);
+  return id;
 }
