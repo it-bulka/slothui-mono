@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.BACKEND_SSH_KEY }}
           envs: BACKEND_ENV_PROD
           script: |
-            cd /home/deploy/slothui
+            cd /home/deploy/slothui-mono
             git pull origin main
             printf '%s' "$BACKEND_ENV_PROD" > back/.env.prod
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build backend
