@@ -2,5 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "ignoreCommand": "[ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && ! git diff $VERCEL_GIT_PREVIOUS_SHA HEAD --name-only | grep -q '^front/'"
+  "ignoreCommand": "[ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && [ \"$VERCEL_GIT_PREVIOUS_SHA\" != \"$VERCEL_GIT_COMMIT_SHA\" ] && ! git diff $VERCEL_GIT_PREVIOUS_SHA HEAD --name-only | grep -q '^front/'"
 }
