@@ -6,7 +6,7 @@ export const renderMediaItem = (
   item: Attachment,
   className?: string,
   onClick?: () => void,
-  fetchpriority?: 'high' | 'low' | 'auto'
+  fetchPriority?: 'high' | 'low' | 'auto'
 ) => {
   if (item.type === 'images') {
     return <AttachmentImage
@@ -15,7 +15,7 @@ export const renderMediaItem = (
       originalName={item.originalName}
       className={className}
       onClick={onClick}
-      fetchpriority={fetchpriority}
+      fetchPriority={fetchPriority}
     />;
   }
 
@@ -26,7 +26,7 @@ export const renderMediaItem = (
       originalName={item.originalName}
       className={className}
       onClick={onClick}
-      fetchpriority={fetchpriority}
+      fetchPriority={fetchPriority}
     />
   );
 };

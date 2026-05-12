@@ -1,10 +1,13 @@
 import { useSpring, config, animated } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
-import { memo, type PropsWithChildren, useCallback } from 'react'
+import { memo, type PropsWithChildren, useCallback, type ComponentType, type HTMLAttributes } from 'react'
 import cls from './Drawer.module.css'
 import classnames from 'classnames'
 import { Overlay } from '../../../Overlay/Overlay.tsx'
 import { Portal } from '../../../Portal/Portal.tsx'
+
+type SpringDivProps = PropsWithChildren<HTMLAttributes<HTMLDivElement> & { style?: object }>;
+const SpringDiv = animated.div as ComponentType<SpringDivProps>;
 
 interface DrawerProps {
   className?: string
@@ -51,20 +54,20 @@ const DrawerAnimated = memo(({ className, onClose, children }: PropsWithChildren
 
   return (
     <Portal>
-      <animated.div
+      <SpringDiv
         style={{ opacity: bgOpacity }}
         className={classnames(cls.drawer, cls.opened, className, 'app_drawer')}
       >
         <Overlay onClick={() => close()} />
-        <animated.div
+        <SpringDiv
           className={cls.sheet}
           style={{ bottom: `calc(-100vh + ${height - 100}px)`, y }}
           {...bind()}
         >
           <div className={cls.handle} />
           {children}
-        </animated.div>
-      </animated.div>
+        </SpringDiv>
+      </SpringDiv>
     </Portal>
   )
 })

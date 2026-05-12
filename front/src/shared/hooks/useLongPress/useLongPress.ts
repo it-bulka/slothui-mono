@@ -1,7 +1,7 @@
 import { useRef, useCallback } from 'react';
 
 export const useLongPress = (callback: () => void, delay = 500) => {
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const start = useCallback(() => {
     timer.current = setTimeout(callback, delay);
