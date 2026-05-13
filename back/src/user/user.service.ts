@@ -53,11 +53,36 @@ export class UserService {
     const { email, nickname } = createUserDto;
     if (!email || !nickname)
       throw new BadRequestException('Email or nickname is missing');
-    const existingUser = await this.userRepo.findOne({
+
+    const existingUsers = await this.userRepo.find({
       where: [{ email }, { nickname }],
     });
 
-    if (existingUser) throw new ConflictException(`User already exists`);
+    const existingByEmail = existingUsers.find((u) => u.email === email);
+    const existingByNickname = existingUsers.find(
+      (u) => u.nickname === nickname,
+    );
+
+    if (existingByEmail) {
+      if (existingByEmail.isEmailVerified) {
+        throw new ConflictException('User already exists');
+      }
+      if (existingByNickname && existingByNickname.id !== existingByEmail.id) {
+        throw new ConflictException(
+          'A user with this nickname already exists, please choose another',
+        );
+      }
+      existingByEmail.nickname = nickname;
+      existingByEmail.username = createUserDto.username;
+      existingByEmail.password = createUserDto.password;
+      await this.userRepo.save(existingByEmail);
+      return existingByEmail;
+    }
+
+    if (existingByNickname)
+      throw new ConflictException(
+        'A user with this nickname already exists, please choose another',
+      );
 
     const user = this.userRepo.create(createUserDto);
     await this.userRepo.save(user);
