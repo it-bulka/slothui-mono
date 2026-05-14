@@ -2,8 +2,8 @@ import { Button, ModalCard } from '@/shared/ui';
 import { useDeleteProfile } from '@/entities/AuthUser';
 import { memo } from 'react';
 
-export const ConfirmDeleteAccountButton = memo(({onClose}: { onClose: () => void}) => {
-  const { deleteProfile } = useDeleteProfile()
+export const ConfirmDeleteAccountButton = memo(({ onClose }: { onClose: () => void }) => {
+  const { deleteProfile, isDeleting } = useDeleteProfile();
   return (
     <ModalCard onClose={onClose} title="Are you sure you want to delete account?">
       <Button
@@ -11,11 +11,12 @@ export const ConfirmDeleteAccountButton = memo(({onClose}: { onClose: () => void
         variant="secondary"
         position="right"
         onClick={deleteProfile}
+        disabled={isDeleting}
       >
-        Confirm and Delete account
+        {isDeleting ? 'Deleting...' : 'Confirm and Delete account'}
       </Button>
     </ModalCard>
-  )
-})
+  );
+});
 
-ConfirmDeleteAccountButton.displayName = 'ConfirmDeleteAccountButton'
+ConfirmDeleteAccountButton.displayName = 'ConfirmDeleteAccountButton';
