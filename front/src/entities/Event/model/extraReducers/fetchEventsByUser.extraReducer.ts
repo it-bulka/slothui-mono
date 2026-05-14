@@ -2,6 +2,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { EventsState } from '../types/event.type.ts';
 import { fetchEventsByUserThunk } from '../thunk/fetchEventsByUser.thunk.ts';
 import { eventsAdapter } from '../slice/event.adapter.ts';
+import { addUniqueIds } from '@/shared/libs';
 
 export const fetchEventsByUserExtraReducer = (builder: ActionReducerMapBuilder<EventsState>) => {
   builder
@@ -21,7 +22,7 @@ export const fetchEventsByUserExtraReducer = (builder: ActionReducerMapBuilder<E
 
       eventsAdapter.upsertMany(state, events)
 
-      state.eventsByUser[userId].ids.push(...events.map(e => e.id))
+      state.eventsByUser[userId].ids = addUniqueIds(state.eventsByUser[userId].ids, events)
       state.eventsByUser[userId].isLoading = false
       state.eventsByUser[userId].hasMore = hasMore
       state.eventsByUser[userId].nextCursor = nextCursor
