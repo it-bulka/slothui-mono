@@ -56,12 +56,8 @@ const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
 
     <ScrollableBlock className="grow">
       <NavBar collapsed={collapsed} />
-      {!collapsed && (
-        <>
-          <Divider className="my-6" />
-          <UserAuth />
-        </>
-      )}
+      {!collapsed && <Divider className="my-6" />}
+      <UserAuth collapsed={collapsed} />
     </ScrollableBlock>
   </>
 );
