@@ -16,6 +16,7 @@ import {
   usePrefetchNextUserStories,
   useStoryBuffer
 } from '../../model';
+import { StoriesViewEmpty } from './StoriesViewEmpty.tsx';
 
 const PauseWhileMounted = ({ onMount, onUnmount, children }: { onMount: () => void; onUnmount: () => void; children: ReactNode }) => {
   const onMountRef = useRef(onMount);
@@ -95,74 +96,87 @@ export const StoriesView = memo(({ onStoriesEnd, allStories, startUserIndex }: S
   });
 
   const isAuthor = !!storyData && !!authUser && storyData.userId === authUser.id
+  const hasAnyStory = allStories.some(u => u.stories.length > 0)
 
   return (
     <div
       className="relative h-[80vh] max-w-[80vh] aspect-[3/4] mx-auto overflow-hidden rounded-2xl bg-black"
-      onClick={handleClick}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      onClick={hasAnyStory ? handleClick : undefined}
+      onMouseDown={hasAnyStory ? handleMouseDown : undefined}
+      onMouseUp={hasAnyStory ? handleMouseUp : undefined}
     >
-      {/* Even slot */}
-      <div className={`absolute inset-0 ${activeSlot !== 'even' ? 'invisible pointer-events-none' : ''}`}>
-        {evenStory && (
-          <Story
-            key={evenStory.id}
-            id={evenStory.id}
-            url={evenStory.url}
-            type={evenStory.type}
-            duration={evenStory.duration}
-            isPaused={activeSlot !== 'even' || isPaused}
-            onStart={activeSlot === 'even' ? () => markStoryViewedLocally(evenStory.id) : undefined}
-            onComplete={activeSlot === 'even' ? nextStory : undefined}
-            onReady={pendingSlot === 'even' ? handleReady : undefined}
-          >
-            {activeSlot === 'even' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
-          </Story>
-        )}
-      </div>
+      {hasAnyStory ? (
+        <>
+          {/* Even slot */}
+          <div className={`absolute inset-0 ${activeSlot !== 'even' ? 'invisible pointer-events-none' : ''}`}>
+            {evenStory && (
+              <Story
+                key={evenStory.id}
+                id={evenStory.id}
+                url={evenStory.url}
+                type={evenStory.type}
+                duration={evenStory.duration}
+                isPaused={activeSlot !== 'even' || isPaused}
+                onStart={activeSlot === 'even' ? () => markStoryViewedLocally(evenStory.id) : undefined}
+                onComplete={activeSlot === 'even' ? nextStory : undefined}
+                onReady={pendingSlot === 'even' ? handleReady : undefined}
+              >
+                {activeSlot === 'even' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
+              </Story>
+            )}
+          </div>
 
-      {/* Odd slot */}
-      <div className={`absolute inset-0 ${activeSlot !== 'odd' ? 'invisible pointer-events-none' : ''}`}>
-        {oddStory && (
-          <Story
-            key={oddStory.id}
-            id={oddStory.id}
-            url={oddStory.url}
-            type={oddStory.type}
-            duration={oddStory.duration}
-            isPaused={activeSlot !== 'odd' || isPaused}
-            onStart={activeSlot === 'odd' ? () => markStoryViewedLocally(oddStory.id) : undefined}
-            onComplete={activeSlot === 'odd' ? nextStory : undefined}
-            onReady={pendingSlot === 'odd' ? handleReady : undefined}
-          >
-            {activeSlot === 'odd' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
-          </Story>
-        )}
-      </div>
-
-      {isAuthor && (
-        <div className="absolute top-2 right-2 z-20" onClick={(e) => e.stopPropagation()}>
-          <MoreButton
-            moreBtnClass="text-gray-800 bg-white/25 rounded-md px-0.5 py-1.5 backdrop-blur-sm"
-            content={
-              <PauseWhileMounted onMount={() => setIsPaused(true)} onUnmount={() => setIsPaused(false)}>
-                <StoryActionsMenu onDelete={() => requestDelete(storyData!.id)} />
-              </PauseWhileMounted>
-            }
-          />
-        </div>
+          {/* Odd slot */}
+          <div className={`absolute inset-0 ${activeSlot !== 'odd' ? 'invisible pointer-events-none' : ''}`}>
+            {oddStory && (
+              <Story
+                key={oddStory.id}
+                id={oddStory.id}
+                url={oddStory.url}
+                type={oddStory.type}
+                duration={oddStory.duration}
+                isPaused={activeSlot !== 'odd' || isPaused}
+                onStart={activeSlot === 'odd' ? () => markStoryViewedLocally(oddStory.id) : undefined}
+                onComplete={activeSlot === 'odd' ? nextStory : undefined}
+                onReady={pendingSlot === 'odd' ? handleReady : undefined}
+              >
+                {activeSlot === 'odd' && !isAuthor && <CommentStory storyId={storyId} userId={userId} />}
+              </Story>
+            )}
+          </div>
+        </>
+      ) : (
+        <StoriesViewEmpty />
       )}
 
-      <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-20 flex items-center gap-2">
-        <Avatar src={allStories[currentUserIndex].avatar} />
-        <Typography variant="span" bold className="text-white mix-blend-difference">{allStories[currentUserIndex].username}</Typography>
-      </Link>
+      {allStories.length > 0 && (
+        <Link to={getUserPage(userId)} className="absolute top-2 left-2 z-20 flex items-center gap-2">
+          <Avatar src={allStories[currentUserIndex].avatar} />
+          <Typography variant="span" bold className="text-white mix-blend-difference">{allStories[currentUserIndex].username}</Typography>
+        </Link>
+      )}
 
-      <StoryProgress
-        amount={allStories[currentUserIndex].stories.length}
-        activeIndex={currentStoryIndex}
-      />
+      {hasAnyStory && (
+        <>
+          {isAuthor && (
+            <div className="absolute top-2 right-2 z-20" onClick={(e) => e.stopPropagation()}>
+              <MoreButton
+                moreBtnClass="text-gray-800 bg-white/25 rounded-md px-0.5 py-1.5 backdrop-blur-sm"
+                content={
+                  <PauseWhileMounted onMount={() => setIsPaused(true)} onUnmount={() => setIsPaused(false)}>
+                    <StoryActionsMenu onDelete={() => requestDelete(storyData!.id)} />
+                  </PauseWhileMounted>
+                }
+              />
+            </div>
+          )}
+
+          <StoryProgress
+            amount={allStories[currentUserIndex].stories.length}
+            activeIndex={currentStoryIndex}
+          />
+        </>
+      )}
 
       <DeleteStoryModal
         isOpen={!!confirmStoryId}
