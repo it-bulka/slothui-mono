@@ -3,9 +3,9 @@ import FeedSvg from '@/shared/assets/images/sidebar/1.feed.svg?react'
 import PostsSvg from '@/shared/assets/images/sidebar/2.posts.svg?react'
 import FriendsSvg from '@/shared/assets/images/sidebar/3.friends.svg?react'
 import ApiSvg from '@/shared/assets/images/sidebar/4.api.svg?react'
-import SubscrptionSvg from '@/shared/assets/images/sidebar/5.subscrption.svg?react'
+// import SubscrptionSvg from '@/shared/assets/images/sidebar/5.subscrption.svg?react'
 import SettingsSvg from '@/shared/assets/images/sidebar/6.settings.svg?react'
-import HelpSvg from '@/shared/assets/images/sidebar/7.help.svg?react'
+import ChatSvg from '@/shared/assets/images/sidebar/5.chat.svg?react'
 import ActivitySvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { twMerge } from 'tailwind-merge';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
@@ -14,13 +14,13 @@ import type { NavbarListType } from './model/types';
 
 const navLinks: NavbarListType = [
   { Icon: FeedSvg, title: 'Feed', key: 'feed', href: RoutePaths.home, end: true },
-  { Icon: SubscrptionSvg, title: 'Chats', key: 'chats', href: RoutePaths.chats },
+  { Icon: ChatSvg, title: 'Chats', key: 'chats', href: RoutePaths.chats },
   { Icon: PostsSvg, title: 'My Posts', key: 'posts', href: RoutePaths.my_posts },
   { Icon: ApiSvg, title: 'My Events', key: 'events', href: RoutePaths.my_events },
   { Icon: FriendsSvg, title: 'Friends', key: 'friends', href: `${RoutePaths.friends}?type=followers` },
   { Icon: ActivitySvg, title: 'Activity', key: 'activity', href: RoutePaths.activity },
   { Icon: SettingsSvg, title: 'Settings', key: 'settings', href: RoutePaths.settings },
-  { Icon: HelpSvg, title: 'Help & Support', key: 'help', href: RoutePaths.home }, // TODO: add path for support or change
+  // { Icon: SubscrptionSvg, title: 'Help & Support', key: 'help', href: RoutePaths.home }, //TODO: add feat
 ]
 
 interface NavBarProps {
