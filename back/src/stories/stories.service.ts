@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Story } from './entities/story.entity';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Express } from 'express';
@@ -177,11 +177,29 @@ export class StoriesService {
     if (cached) return cached;
 
     const stories = await this.storyRepo.find({
-      where: { userId },
+      where: { userId, expiresAt: MoreThan(new Date()) },
       order: { createdAt: 'ASC' },
     });
     await this.cache.set(key, stories, 120);
     return stories;
+  }
+
+  async deleteExpiredStories(): Promise<void> {
+    const expired = await this.storyRepo.find({
+      where: { expiresAt: LessThanOrEqual(new Date()) },
+      select: ['id', 'publicId', 'userId'],
+    });
+    if (!expired.length) return;
+
+    await Promise.allSettled(
+      expired.map((s) => this.cloudinaryService.deleteFile(s.publicId)),
+    );
+    await this.storyRepo.remove(expired);
+
+    const userIds = [...new Set(expired.map((s) => s.userId))];
+    await Promise.all(
+      userIds.map((uid) => this.cache.del(CACHE_KEYS.stories(uid))),
+    );
   }
 
   async getFormattedStoriesByUser(userId: string) {

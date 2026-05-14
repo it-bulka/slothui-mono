@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StoriesService } from './stories.service';
+import { StoriesCleanupService } from './stories-cleanup.service';
 import { StoriesController } from './stories.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Story } from './entities/story.entity';
@@ -13,7 +14,7 @@ import { User } from '../user/entities/user.entity';
     CloudinaryModule,
   ],
   controllers: [StoriesController],
-  providers: [StoriesService],
+  providers: [StoriesService, StoriesCleanupService],
   exports: [StoriesService],
 })
 export class StoriesModule {}

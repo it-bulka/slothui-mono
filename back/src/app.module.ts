@@ -36,6 +36,7 @@ import { GeoMessageModule } from './geo-message/geo-message.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { RedisModule } from './redis/redis.module';
 import { HealthModule } from './health/health.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { HealthModule } from './health/health.module';
       isGlobal: true,
     }),
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60000, limit: 60 }]),
+    ScheduleModule.forRoot(),
     RedisModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => {
