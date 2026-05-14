@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import { lazy, createElement } from 'react';
 import { withSuspense } from '@/shared/libs';
+import { RegisterPageLoader } from './RegisterPageLoader.tsx';
 
-const RegisterAsync = lazy(() => import('./Register.tsx'))
-export const RegisterPage = withSuspense(RegisterAsync);
+const RegisterAsync = lazy(() => import('./Register.tsx'));
+export const RegisterPage = withSuspense(RegisterAsync, createElement(RegisterPageLoader));

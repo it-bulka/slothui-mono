@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import { lazy, createElement } from 'react';
 import { withSuspense } from '@/shared/libs';
+import { LoginPageLoader } from './LoginPageLoader.tsx';
 
-const LoginAsync = lazy(() => import('./Login.tsx'))
-export const LoginPage = withSuspense(LoginAsync);
+const LoginAsync = lazy(() => import('./Login.tsx'));
+export const LoginPage = withSuspense(LoginAsync, createElement(LoginPageLoader));
