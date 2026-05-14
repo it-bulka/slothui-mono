@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useAppDispatch } from '@/shared/config/redux';
 import { initAuthUser, authUserActions, fetchNotificationsCountersThunk } from '@/entities';
 import { TokenManager } from '@/shared/libs/services/tokenManager/TokenManager.ts';
@@ -6,15 +7,17 @@ import { getServices } from '@/shared/libs/services';
 
 export const InitBootstrap = () => {
   const dispatch = useAppDispatch();
+  const { pathname, search } = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(search);
     const oauthToken = params.get('token');
+    const isVerifyEmailPage = pathname === '/auth/verify-email';
 
     const run = async () => {
-      if (oauthToken) {
+      if (oauthToken && !isVerifyEmailPage) {
         new TokenManager().setToken(oauthToken);
-        window.history.replaceState({}, '', window.location.pathname);
+        window.history.replaceState({}, '', pathname);
       }
 
       if (new TokenManager().getToken()) {
@@ -27,6 +30,7 @@ export const InitBootstrap = () => {
     };
 
     run();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return null;
