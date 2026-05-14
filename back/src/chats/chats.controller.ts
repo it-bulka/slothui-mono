@@ -9,6 +9,7 @@ import {
   Delete,
   Query,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { ChatsService } from './chats.service';
 import { CreateChatDtoWithOwner } from './dto/createChat.dto';
@@ -108,6 +109,7 @@ export class ChatsController {
   }
 
   @Post(':chatId/read')
+  @HttpCode(204)
   @ApiMarkChatRead()
   markAsRead(@Param('chatId') chatId: string, @Request() request: AuthRequest) {
     return this.chatsService.markChatAsRead(chatId, request.user.id);

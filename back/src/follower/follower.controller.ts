@@ -8,6 +8,7 @@ import {
   Query,
   Get,
   Param,
+  HttpCode,
 } from '@nestjs/common';
 import { FollowerService } from './follower.service';
 import { AuthRequest } from '../common/types/user.types';
@@ -71,6 +72,7 @@ export class FollowerController {
   }
 
   @Post('/confirmation')
+  @HttpCode(204)
   @ApiConfirmFollowRequest()
   async confirmFollowerReq(
     @Body() userId: string,
@@ -94,6 +96,7 @@ export class FollowerController {
   }
 
   @Delete('/confirmation')
+  @HttpCode(204)
   @ApiRejectFollowRequest()
   async rejectFollowerReq(@Body() userId: string, @Request() req: AuthRequest) {
     await this.followerService.deleteFollower(req.user.id, userId);

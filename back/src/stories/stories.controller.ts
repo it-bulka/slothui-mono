@@ -81,6 +81,7 @@ export class StoriesController {
   }
 
   @Delete(':storyId')
+  @HttpCode(204)
   @ApiDeleteStory()
   async deleteOne(
     @Param('storyId') storyId: string,
