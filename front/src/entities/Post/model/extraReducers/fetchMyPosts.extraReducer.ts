@@ -19,17 +19,16 @@ export const fetchMyPostsExtraReducer = (builder: ActionReducerMapBuilder<PostsS
     })
     .addCase(fetchMyPostsThunk.fulfilled, (state, action) => {
       const { items: posts, hasMore, nextCursor } = action.payload;
-      if(!posts?.length) return
+      const currentUserId = action.meta.arg.currentUserId;
 
-      postsAdapter.addMany(state, posts);
+      if (posts?.length) {
+        postsAdapter.addMany(state, posts);
+        state.profile[currentUserId].ids = addUniqueIds(state.profile[currentUserId].ids, posts);
+      }
 
-      const currentUserId = posts[0].author.id;
-      const feed = state.profile[currentUserId]
-
-      state.profile[currentUserId].ids = addUniqueIds(feed.ids, posts)
-      state.profile[currentUserId].isLoading = false
-      state.profile[currentUserId].hasMore = hasMore
-      state.profile[currentUserId].nextCursor = nextCursor
+      state.profile[currentUserId].isLoading = false;
+      state.profile[currentUserId].hasMore = hasMore;
+      state.profile[currentUserId].nextCursor = nextCursor;
     })
     .addCase(fetchMyPostsThunk.rejected, (state, action) => {
       const currentUserId = action.meta.arg.currentUserId;
