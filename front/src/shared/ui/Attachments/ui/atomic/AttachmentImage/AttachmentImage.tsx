@@ -24,7 +24,7 @@ export const AttachmentImage = ({ url, originalName, className, imgClass, onClic
           src={url}
           alt={originalName || 'image'}
           className={twMerge(classnames("max-w-full max-h-[200px] object-cover relative", [imgClass]))}
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchPriority}
           srcSet={buildCloudinarySrcSet(url, [200, 400, 600])}
           sizes="(max-width: 640px) 100vw, 400px"
         />

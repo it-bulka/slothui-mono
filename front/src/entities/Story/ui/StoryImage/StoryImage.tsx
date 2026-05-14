@@ -28,7 +28,7 @@ export const StoryImage = ({ url, onComplete, onStart, isPaused, onReady }: Stor
           src={url}
           alt="story"
           className={`object-cover w-full h-full transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-          fetchPriority="high"
+          fetchpriority="high"
           onLoad={() => { setLoaded(true); onReady?.(); }}
         />
       </div>

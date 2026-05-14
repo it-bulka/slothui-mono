@@ -21,7 +21,7 @@ export const AttachmentVideoPreview = ({ url, originalName, className, additiona
           src={url}
           alt={originalName || 'video'}
           className="w-full h-full object-cover"
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchPriority}
           srcSet={buildCloudinarySrcSet(url, [400, 800, 1200])}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 600px"
         />
