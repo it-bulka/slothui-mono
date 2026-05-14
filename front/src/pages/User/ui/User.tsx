@@ -15,7 +15,7 @@ const User = () => {
 
   const header = (
     <>
-      <ContactUserToolbar className="hidden md:block" />
+      <ContactUserToolbar className="hidden md:flex" userId={userId} />
       <UserMobileTopBar
         className="md:hidden"
         userId={userId}
