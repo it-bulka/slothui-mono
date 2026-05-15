@@ -5,7 +5,7 @@ import { useAuthUserSelector, useUpdateProfile } from '@/entities';
 import { useForm } from "react-hook-form"
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import type { ProfileFormValues } from './model';
-import { ProfileTextInput, ProfileAvatarInput } from './ui/components';
+import { ProfileTextInput, ProfileAvatarInput, ContactsForm } from './ui/components';
 import type { UpdateUserDto } from '@/shared/types';
 
 const ProfileSettings = () => {
@@ -91,6 +91,7 @@ const ProfileSettings = () => {
         </div>
 
       </form>
+      <ContactsForm />
     </SubSettingsWrapper>
   )
 }
