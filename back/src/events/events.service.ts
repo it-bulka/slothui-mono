@@ -203,6 +203,13 @@ export class EventsService {
     };
   }
 
+  async getLikedEvents(
+    userId: string,
+    { pageSize = 50, cursor }: { pageSize?: number; cursor?: string } = {},
+  ): Promise<PaginatedResponse<EventResponseDto>> {
+    return this.getSubscribedEvents(userId, { pageSize, cursor });
+  }
+
   async getOrganizedEvents(
     userId: string,
     {

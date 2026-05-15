@@ -84,6 +84,18 @@ export class EventsController {
     });
   }
 
+  @Get('liked')
+  async getLikedEvents(
+    @Query('cursor') cursor: string,
+    @Query('limit') limit: string,
+    @Request() req: AuthRequest,
+  ) {
+    return await this.eventsService.getLikedEvents(req.user.id, {
+      cursor,
+      pageSize: Number(limit) || 50,
+    });
+  }
+
   @Delete(':id')
   @ApiDeleteEvent()
   async deleteEvent(@Param('id') id: string, @Request() req: AuthRequest) {
