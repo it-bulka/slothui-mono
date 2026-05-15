@@ -391,4 +391,36 @@ export class FollowerService {
     await this.cache.set(key, result, 300);
     return result;
   }
+
+  async invalidateCachesOnUserDelete(userId: string) {
+    const relations = await this.followerRepo.find({
+      where: [{ followee: { id: userId } }, { follower: { id: userId } }],
+      relations: ['follower', 'followee'],
+      select: { id: true, follower: { id: true }, followee: { id: true } },
+    });
+
+    const followerIds: string[] = [];
+    const followeeIds: string[] = [];
+    for (const r of relations) {
+      if (r.followee?.id === userId) followerIds.push(r.follower.id);
+      if (r.follower?.id === userId) followeeIds.push(r.followee.id);
+    }
+
+    await Promise.all([
+      this.cache.del(CACHE_KEYS.followerCount(userId)),
+      this.cache.del(CACHE_KEYS.followeeCount(userId)),
+      this.cache.del(CACHE_KEYS.stats(userId)),
+      this.cache.del(CACHE_KEYS.suggestions(userId)),
+      ...followerIds.flatMap((id) => [
+        this.cache.del(CACHE_KEYS.followeeCount(id)),
+        this.cache.del(CACHE_KEYS.followRelation(userId, id)),
+      ]),
+      ...followeeIds.flatMap((id) => [
+        this.cache.del(CACHE_KEYS.followerCount(id)),
+        this.cache.del(CACHE_KEYS.followRelation(id, userId)),
+        this.cache.del(CACHE_KEYS.userProfile(id)),
+        this.cache.del(CACHE_KEYS.stats(id)),
+      ]),
+    ]);
+  }
 }

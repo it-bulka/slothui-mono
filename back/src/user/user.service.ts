@@ -485,6 +485,8 @@ export class UserService {
       await this.deleteAvatar(user.avatarPublicId);
     }
 
+    await this.followerService.invalidateCachesOnUserDelete(userId);
+
     await Promise.all([
       this.cache.del(CACHE_KEYS.userProfile(userId)),
       this.cache.del(CACHE_KEYS.userShort(userId)),
