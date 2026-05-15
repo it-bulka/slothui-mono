@@ -38,6 +38,7 @@ import {
   AppLayout
 } from '../../layouts';
 import { UserRightSidebar } from '@/widgets';
+import UserLayout from '@/pages/User/ui/UserLayout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -81,8 +82,13 @@ export const router = createBrowserRouter([
         ),
         errorElement: <ErrorBoundary />,
         children: [
-          { index: true, element: <UserPage /> },
-          { path: UserRelativePaths.friends, element: <UserFriendsPage /> }
+          {
+            element: <UserLayout />,
+            children: [
+              { index: true, element: <UserPage /> },
+              { path: UserRelativePaths.friends, element: <UserFriendsPage /> }
+            ]
+          }
         ]
       },
       {
