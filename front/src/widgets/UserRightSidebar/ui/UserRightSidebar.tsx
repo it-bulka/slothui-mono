@@ -7,9 +7,11 @@ import { ActionRow } from './ActionRow.tsx';
 import { UserStories } from './UserStories.tsx';
 import { SidebarInfoCard } from './SidebarInfoCard.tsx';
 import { MemberSince } from './MemberSince.tsx';
+import { useMediaQuery } from '@/shared/hooks';
 
 export const UserRightSidebar = () => {
   const { userId, isLoading, data, friend } = useUserRightSidebar();
+  const isTabletOrBelow = useMediaQuery('(max-width: 1023px)');
 
   if (!userId) return <Typography>User not found</Typography>;
   if (isLoading) return <p>Loading...</p>;
@@ -17,7 +19,7 @@ export const UserRightSidebar = () => {
 
   return (
     <aside className="px-sidebar py-sidebar border-style-l bg-underground-secondary">
-      <UserProfileData {...data} />
+      <UserProfileData {...data} twoColumn={isTabletOrBelow} />
 
       <Statistics
         followingCount={data.followeesCount}

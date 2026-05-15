@@ -5,19 +5,22 @@ interface UserProfileDataProps {
   avatarSrc?: string | null;
   username: string;
   nickname: string;
+  twoColumn?: boolean;
 }
 
 export const UserProfileData = memo(({
-  avatarSrc, nickname, username
+  avatarSrc, nickname, username, twoColumn
 }: UserProfileDataProps) => {
   // TODO: add websocket for online status
   const isOnline = true
 
   return (
-    <div>
-      <AvatarWithStatus src={avatarSrc} isOnline={isOnline} className="mb-4 ml-auto mr-auto"/>
-      <Typography className="text-center" bold type={TypographyTypes.P_SM}>{username}</Typography>
-      <Typography className="text-center" type={TypographyTypes.P_SM}>{nickname}</Typography>
+    <div className={twoColumn ? 'flex items-center gap-3' : ''}>
+      <AvatarWithStatus src={avatarSrc} isOnline={isOnline} className={twoColumn ? '' : 'mb-4 ml-auto mr-auto'}/>
+      <div className={twoColumn ? 'flex flex-col justify-center flex-1' : ''}>
+        <Typography bold type={TypographyTypes.P_SM} className={twoColumn ? '' : 'text-center'}>{username}</Typography>
+        <Typography type={TypographyTypes.P_SM} className={twoColumn ? '' : 'text-center'}>{nickname}</Typography>
+      </div>
     </div>
   )
 })

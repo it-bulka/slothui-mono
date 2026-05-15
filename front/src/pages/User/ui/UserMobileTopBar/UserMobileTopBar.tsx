@@ -22,6 +22,7 @@ export const UserMobileTopBar = ({ userId, onSeeMore, className }: UserMobileTop
         avatarSrc={data.avatarUrl}
         username={data.username}
         nickname={data.nickname}
+        twoColumn
       />
       <Statistics
         followingCount={data.followeesCount}
