@@ -29,7 +29,7 @@ export const UserMobileTopBar = ({ userId, onSeeMore, className }: UserMobileTop
         followersCount={data.followersCount}
         postsCount={data.postsCount}
         hrefs={{
-          posts: `/users/${userId}`,
+          posts: `/users/${userId}?type=posts`,
           followers: `/users/${userId}/friends?type=followers`,
           following: `/users/${userId}/friends?type=followings`,
         }}

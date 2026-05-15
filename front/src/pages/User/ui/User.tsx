@@ -1,13 +1,23 @@
 import { Feed, ContactUserToolbar } from '@/widgets';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { UserFeedContent } from './UserFeedContent/UserFeedContent.tsx';
 import { UserEventContent } from './UserEventContent/UserEventContent.tsx';
 import { Tab } from '@/shared/ui';
 
+const TYPE_TO_INDEX: Record<string, number> = { posts: 0, events: 1 };
+const INDEX_TO_TYPE = ['posts', 'events'];
+
 const User = () => {
   const { id: userId } = useParams<{ id: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   if (!userId) return <p>Not Found User Id</p>;
+
+  const activeTabIndex = TYPE_TO_INDEX[searchParams.get('type') ?? ''] ?? 0;
+
+  const handleTabChange = (index: number) => {
+    setSearchParams({ type: INDEX_TO_TYPE[index] }, { replace: true });
+  };
 
   return (
     <Feed header={<ContactUserToolbar className="hidden md:flex" userId={userId} />}>
@@ -20,6 +30,8 @@ const User = () => {
           <UserEventContent userId={userId} />,
         ]}
         contentClassName="space-y-4"
+        activeTabIndex={activeTabIndex}
+        onTabChange={handleTabChange}
       />
     </Feed>
   );
