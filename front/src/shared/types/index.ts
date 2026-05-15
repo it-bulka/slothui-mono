@@ -21,3 +21,10 @@ export type { FriendDto, NewFriendNotification } from './friends.type.ts';
 export type { EventsPayload } from './events.types.ts';
 export type { RegisterUserArgs, IAuthResponse } from './auth.types.ts';
 export type { UserSessionDto } from './sessions.types.ts';
+export type {
+  UserContact,
+  ContactType,
+  ContactPlatform,
+  CreateContactDto,
+  UpdateContactDto,
+} from './contacts.types.ts';

@@ -6,6 +6,11 @@ import type {
   UserShort,
   OtherUserWithStats, UpdateUserDto, IAuthResponse
 } from '../../../types';
+import type {
+  UserContact,
+  CreateContactDto,
+  UpdateContactDto as UpdateContactDtoType,
+} from '@/shared/types/contacts.types';
 
 const USERS_API = '/api/users';
 export class UserService {
@@ -96,5 +101,33 @@ export class UserService {
     return await this.http.request<ProfileAnalyticsDto>(
       `${USERS_API}/profile-analytics`,
     );
+  }
+
+  /** GET /api/users/:userId/contacts */
+  async getContacts(userId: string): Promise<UserContact[]> {
+    return await this.http.request<UserContact[]>(`${USERS_API}/${userId}/contacts`);
+  }
+
+  /** POST /api/users/me/contacts */
+  async createContact(dto: CreateContactDto): Promise<UserContact> {
+    return await this.http.request<UserContact>(`${USERS_API}/me/contacts`, {
+      method: 'POST',
+      body: dto,
+    });
+  }
+
+  /** PATCH /api/users/me/contacts/:id */
+  async updateContact(id: string, dto: UpdateContactDtoType): Promise<UserContact> {
+    return await this.http.request<UserContact>(`${USERS_API}/me/contacts/${id}`, {
+      method: 'PATCH',
+      body: dto,
+    });
+  }
+
+  /** DELETE /api/users/me/contacts/:id */
+  async deleteContact(id: string): Promise<void> {
+    await this.http.request<void>(`${USERS_API}/me/contacts/${id}`, {
+      method: 'DELETE',
+    });
   }
 }
