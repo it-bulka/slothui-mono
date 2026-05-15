@@ -5,7 +5,7 @@ import { ScrollableBlock, Logo, Divider, Overlay } from '@/shared/ui';
 import { NavigationSearchBar, NavBar } from '@/widgets';
 import { useMediaQuery } from '@/shared/hooks';
 import classnames from 'classnames';
-import LogoSvg from '@/shared/assets/images/logo.svg?react';
+import LogoSvg from '@/shared/assets/images/logo2.svg?react';
 import { SidebarCloseButton } from './SidebarCloseButton';
 import { useSidebarContext } from '../SidebarContext.ts';
 

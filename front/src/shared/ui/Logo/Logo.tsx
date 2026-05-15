@@ -1,4 +1,4 @@
-import LogoSvg from '@/shared/assets/images/logo.svg?react'
+import LogoSvg from '@/shared/assets/images/logo2.svg?react'
 
 export const Logo = () => {
   return (

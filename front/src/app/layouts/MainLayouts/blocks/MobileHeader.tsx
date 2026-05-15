@@ -4,7 +4,7 @@ import { AvatarWithStatus } from '@/shared/ui';
 import { useAuthUserSelector } from '@/entities';
 import { useSidebarContext } from '../SidebarContext.ts';
 import classnames from 'classnames';
-import LogoSvg from '@/shared/assets/images/logo.svg?react';
+import LogoSvg from '@/shared/assets/images/logo2.svg?react';
 
 interface MobileHeaderProps {
   className?: string;
