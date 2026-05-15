@@ -9,6 +9,7 @@ import { memo } from 'react';
 import { toast } from 'react-toastify';
 import { EventsLoader } from '../EventsLoader.tsx';
 import { NoMyEventsYet } from './NoMyEventsYet.tsx';
+import { NoEventsYet } from './NoEventsYet.tsx';
 
 interface EventCategoryContentProps {
   userId: string;
@@ -35,7 +36,7 @@ export const EventCategoryContent = memo(({ userId, type }: EventCategoryContent
 
   if (!events?.length) return (
     <>
-      {isLoading ? <EventsLoader /> : <NoMyEventsYet />}
+      {isLoading ? <EventsLoader /> : (type === 'your' ? <NoMyEventsYet /> : <NoEventsYet />)}
       <div ref={setTrigger} />
     </>
   );
