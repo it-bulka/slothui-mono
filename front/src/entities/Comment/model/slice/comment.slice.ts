@@ -50,11 +50,19 @@ export const commentsSlice = createSlice({
       const postId = realComment.postId
 
       if (parentId) {
-        state.replies[parentId]?.ids.unshift(tempId)
-        state.replies[parentId]?.ids.push(realComment.id)
+        const repliesIds = state.replies[parentId]?.ids
+        if (repliesIds) {
+          const idx = repliesIds.indexOf(tempId)
+          if (idx !== -1) repliesIds.splice(idx, 1, realComment.id)
+          else repliesIds.push(realComment.id)
+        }
       } else {
-        state.postComments[postId]?.ids.unshift(tempId)
-        state.postComments[postId]?.ids.push(realComment.id)
+        const postIds = state.postComments[postId]?.ids
+        if (postIds) {
+          const idx = postIds.indexOf(tempId)
+          if (idx !== -1) postIds.splice(idx, 1, realComment.id)
+          else postIds.push(realComment.id)
+        }
       }
     },
     markCommentFailed(state, action: PayloadAction<{ id: string, error: string, isLoading: boolean }>) {
