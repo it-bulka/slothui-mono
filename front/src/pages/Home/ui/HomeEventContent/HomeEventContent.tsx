@@ -2,8 +2,8 @@ import { useEventsHomeSelect } from '@/entities';
 import { SubscribeEventButton } from '@/features';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
 import { Skeleton } from '@/shared/ui/Skeleton';
-import { memo } from 'react';
-import { formatDate } from '@/shared/libs';
+import { memo, useMemo } from 'react';
+import { formatDate, startOfToday, isEventPast } from '@/shared/libs';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useHomeEventsFeed } from '../../model/hooks/useHomeEventsFeed.tsx';
@@ -13,6 +13,7 @@ export const HomeEventContent = memo(() => {
   const { items: events } = useEventsHomeSelect()
   const currentUserId = useAuthUserIdSelector()
   const { setTrigger, isLoading } = useHomeEventsFeed()
+  const today = useMemo(startOfToday, [])
 
   if(!events?.length && !isLoading) return <NoHomeEventsYet />
 
@@ -33,6 +34,7 @@ export const HomeEventContent = memo(() => {
           organizer={{ username: item.organizer.username, avatar: item.organizer.avatar }}
           participantsCount={item.participantsCount || 0}
           isOwner={currentUserId === item.organizer.id}
+          isPast={isEventPast(item.date, today)}
           actions={<SubscribeEventButton eventId={item.id} isSubscribed={item.isSubscribed} />}
         />
       ))}

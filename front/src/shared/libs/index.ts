@@ -11,3 +11,4 @@ export { prependUniqueIds } from './prependUniqueIds/prependUniqueIds.ts';
 export { getDeviceId } from './getDeviceId/getDeviceId.tsx';
 export { formatBadgeCount } from './formatBadgeCount/formatBadgeCount';
 export { pickRandom } from './pickRandom/pickRandom';
+export { startOfToday, isEventPast } from './isEventPast/isEventPast';

@@ -24,6 +24,7 @@ export interface EventCardProps {
   onClick?: (id: string) => void
   actions?: ReactNode
   menu?: ReactNode
+  isPast?: boolean
 }
 
 export const EventCard = memo(({
@@ -40,7 +41,8 @@ export const EventCard = memo(({
   onClick,
   actions,
   menu,
-  profileLink
+  profileLink,
+  isPast = false,
 }: EventCardProps) => {
   const navigate = useNavigate()
   const categoryConfig = getCategoryConfig(category)
@@ -78,7 +80,7 @@ export const EventCard = memo(({
         )}
 
         {/* Dark overlay for legibility */}
-        <div className="absolute inset-0 bg-black/45" />
+        <div className={`absolute inset-0 ${isPast ? 'bg-black/60' : 'bg-black/45'}`} />
 
         {/* Organizer — top left */}
         <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
@@ -109,6 +111,11 @@ export const EventCard = memo(({
 
         {/* Title + category emoji — bottom of hero */}
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-3 bg-gradient-to-t from-black/75 to-transparent z-10">
+          {isPast && (
+            <span className="inline-flex items-center mb-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300">
+              Past event
+            </span>
+          )}
           <Typography
             variant="h3"
             bold
@@ -171,7 +178,7 @@ export const EventCard = memo(({
 
         <div className="flex items-center justify-between">
           <AppLink to={getEventsDetailsPage(id)}>See details</AppLink>
-          {actions}
+          {!isPast && actions}
         </div>
       </Card.Body>
     </Card>

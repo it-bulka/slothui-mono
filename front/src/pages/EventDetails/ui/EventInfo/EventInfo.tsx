@@ -5,7 +5,7 @@ import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.
 import { useNavigate } from 'react-router';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { memo } from 'react';
-import { formatDate } from '@/shared/libs';
+import { formatDate, startOfToday, isEventPast } from '@/shared/libs';
 import { SubscribeEventButton } from '@/features';
 
 export const EventInfo = memo(({id, onSubscribedChange}: {id: string, onSubscribedChange?: () => void}) => {
@@ -37,6 +37,8 @@ export const EventInfo = memo(({id, onSubscribedChange}: {id: string, onSubscrib
 
   if (!eventData) return <p>Loading...</p>;
 
+  const isPast = isEventPast(eventData.date, startOfToday())
+
   const position: [number, number] | null =
     eventData.location
       ? [
@@ -62,6 +64,7 @@ export const EventInfo = memo(({id, onSubscribedChange}: {id: string, onSubscrib
       coverUrl={eventData.coverUrl}
       onlineUrl={eventData.onlineUrl}
       participantsCount={eventData.participantsCount}
+      isPast={isPast}
       actions={
         <SubscribeEventButton
           eventId={eventData.id}

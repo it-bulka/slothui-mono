@@ -21,6 +21,7 @@ interface EventDetailsProps {
     avatar?: string
   }
   actions?: ReactNode
+  isPast?: boolean
 }
 
 function MetaBadge({ icon, children }: { icon: ReactNode; children: ReactNode }) {
@@ -44,6 +45,7 @@ export const EventDetails = ({
   onlineUrl,
   participantsCount,
   actions,
+  isPast = false,
 }: EventDetailsProps) => {
   const categoryConfig = getCategoryConfig(category)
 
@@ -101,6 +103,14 @@ export const EventDetails = ({
 
           {/* Meta badges */}
           <div className="flex flex-wrap gap-2">
+            {isPast && (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-sm text-amber-600">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ fill: 'none' }}>
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span>Past event</span>
+              </div>
+            )}
             <MetaBadge
               icon={
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ fill: 'none' }}>
@@ -163,7 +173,7 @@ export const EventDetails = ({
                 Join Online
               </a>
             ) : <span />}
-            {actions}
+            {!isPast && actions}
           </div>
         </div>
       </section>
