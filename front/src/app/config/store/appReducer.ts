@@ -13,6 +13,7 @@ import {
 import { postComposerReducer } from '@/features/PostComposer';
 import { pollDetailsReducer } from '@/entities/Poll';
 import { notificationsReducer } from '@/entities/Notification';
+import { contactsReducer } from '@/entities/Contacts';
 
 export const appReducer = combineReducers({
   currentChat: currentChatReducer,
@@ -32,6 +33,7 @@ export const appReducer = combineReducers({
   analytics: analyticsReducer,
   pollDetails: pollDetailsReducer,
   notifications: notificationsReducer,
+  contacts: contactsReducer,
 });
 
 export const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: AnyAction) => {
