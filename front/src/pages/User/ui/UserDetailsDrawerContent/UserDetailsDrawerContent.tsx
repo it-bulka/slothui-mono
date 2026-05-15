@@ -27,9 +27,7 @@ export const UserDetailsDrawerContent = ({ userId }: UserDetailsDrawerContentPro
         </Typography>
       </SidebarInfoCard>
 
-      <UserContactInformation
-        contacts={[{ avatarSrc: data.avatarUrl, username: data.username, nickname: data.nickname }]}
-      />
+      <UserContactInformation userId={userId} />
 
       {data.createdAt && <MemberSince createdAt={data.createdAt} />}
     </div>
