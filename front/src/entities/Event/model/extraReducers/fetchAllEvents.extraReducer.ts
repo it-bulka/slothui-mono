@@ -14,7 +14,8 @@ export const fetchAllEventsExtraReducer = (builder: ActionReducerMapBuilder<Even
 
       eventsAdapter.upsertMany(state, events)
 
-      state.home.ids.push(...events.map(e => e.id))
+      const seen = new Set(state.home.ids)
+      state.home.ids.push(...events.map(e => e.id).filter(id => !seen.has(id)))
       state.home.isLoading = false
       state.home.hasMore = hasMore
       state.home.nextCursor = nextCursor
