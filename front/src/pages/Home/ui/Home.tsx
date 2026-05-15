@@ -5,6 +5,7 @@ import { HomeFeedContent } from './HomeFeedContent/HomeFeedContent.tsx';
 import { Tab } from '@/shared/ui';
 import { useInitHomePage } from '../model';
 import { useLocation } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
   useInitHomePage()
@@ -13,6 +14,7 @@ const Home = () => {
 
   return (
     <Feed header={<PostsToolbar />} >
+      <Helmet><title>Home — SlothUI</title></Helmet>
       <HomeStories />
       <Tab
         scrollableContent

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /settings
+Disallow: /messages
+Disallow: /notifications
+Disallow: /liked
+Disallow: /saved
+Disallow: /activity
+Sitemap: https://slothui.com/sitemap.xml

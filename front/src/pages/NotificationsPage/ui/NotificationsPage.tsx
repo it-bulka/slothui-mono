@@ -1,4 +1,5 @@
 import { memo, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import {
   selectNotifications,
@@ -59,6 +60,7 @@ const NotificationsPage = memo(() => {
 
   return (
     <div className="relative flex flex-col min-h-full">
+      <Helmet><title>Notifications — SlothUI</title></Helmet>
       <Typography
         variant="h1"
         type={TypographyTypes.BLOCK_TITLE}

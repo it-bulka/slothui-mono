@@ -5,12 +5,14 @@ import { EventsContent } from './EventsContetn/EventsContent.tsx';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Typography } from '@/shared/ui';
 import { CreateEvent } from '@/pages/MyEvents/ui/CreateEvent/CreateEvent.tsx';
+import { Helmet } from 'react-helmet-async';
 
 const MyEventsPage = () => {
   const id = useAuthUserIdSelector()
 
   return (
     <>
+      <Helmet><title>My Events — SlothUI</title></Helmet>
       <Feed
         header={(
           <div className={"toolbar flex justifyBetween"}>

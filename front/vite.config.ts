@@ -32,8 +32,11 @@ export default defineConfig({
           'vendor-react':    ['react', 'react-dom', 'react-router'],
           'vendor-redux':    ['@reduxjs/toolkit', 'react-redux'],
           'vendor-motion':   ['framer-motion'],
+          'vendor-leaflet':  ['leaflet', 'react-leaflet'],
+          'vendor-socket':   ['socket.io-client'],
           'chunk-datepicker': ['react-datepicker'],
           'chunk-swiper':    ['swiper'],
+          'chunk-select':    ['react-select'],
         }
       }
     }

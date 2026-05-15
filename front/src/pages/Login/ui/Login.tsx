@@ -1,6 +1,7 @@
 import { AuthForm, LoginForm } from '@/features';
 import { getForgotPasswordPage, getRegisterPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { LinkBlock } from '@/shared/ui';
+import { Helmet } from 'react-helmet-async';
 
 const links = [
   { to: getRegisterPage(), label: 'Register' },
@@ -8,12 +9,15 @@ const links = [
 ]
 const Login = () => {
   return (
-    <AuthForm
-      formTitle="Login by email and password"
-      oAuthTitle="OR by social media"
-      form={<LoginForm />}
-      additionalBlock={<LinkBlock links={links} noArrow />}
-    />
+    <>
+      <Helmet><title>Sign in — SlothUI</title></Helmet>
+      <AuthForm
+        formTitle="Login by email and password"
+        oAuthTitle="OR by social media"
+        form={<LoginForm />}
+        additionalBlock={<LinkBlock links={links} noArrow />}
+      />
+    </>
   )
 }
 

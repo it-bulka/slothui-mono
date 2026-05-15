@@ -1,4 +1,5 @@
 import { useParams, Navigate } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { usePostByIdSelect } from '@/entities/Post/model/hooks/usePostByIdSelect.ts';
 import { fetchPostByIdThunk } from '@/entities/Post/model/thunks/fetchPostById.thunk.ts';
@@ -27,6 +28,7 @@ const PostPage = () => {
 
   return (
     <div className="px-main py-main">
+      <Helmet><title>Post — SlothUI</title></Helmet>
       <PostCard
         postId={post.id}
         profileLink={getUserPage(post.author?.id)}
