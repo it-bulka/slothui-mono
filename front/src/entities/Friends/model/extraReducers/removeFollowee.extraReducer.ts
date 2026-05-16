@@ -18,5 +18,12 @@ export const removeFolloweeExtraReducer = (builder: ActionReducerMapBuilder<Frie
       }
 
       state.suggestions.ids = state.suggestions.ids.filter(id => id !== followeeId);
+
+      // Remove current user from the unfollowed user's followers list (if loaded)
+      const profileFollowers = state.followersByUser[followeeId];
+      if (profileFollowers) {
+        profileFollowers.ids = profileFollowers.ids.filter(id => id !== currentUserId);
+        profileFollowers.lastFetchedAt = null;
+      }
     });
 }

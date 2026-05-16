@@ -25,5 +25,26 @@ export const followUserExtraReducer = (builder: ActionReducerMapBuilder<FriendsS
       state.suggestions.ids = state.suggestions.ids.filter(
         id => id !== user.id
       )
+
+      // Add current user to the followed user's followers list (if already loaded)
+      const profileFollowers = state.followersByUser[user.id];
+      if (profileFollowers) {
+        const me = action.payload.currentUserProfile;
+        if (me) {
+          if (!state.entities[myId]) {
+            friendsAdapter.upsertOne(state, {
+              id: me.id,
+              src: me.avatarUrl ?? null,
+              username: me.username,
+              nickname: me.nickname,
+              isFollowee: false,
+              isFollower: true,
+              followedAt: Date.now(),
+            });
+          }
+          profileFollowers.ids = prependUniqueIds(profileFollowers.ids, [{ id: myId }]);
+          profileFollowers.lastFetchedAt = null;
+        }
+      }
     })
 }
