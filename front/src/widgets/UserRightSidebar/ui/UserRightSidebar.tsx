@@ -8,13 +8,14 @@ import { UserStories } from './UserStories.tsx';
 import { SidebarInfoCard } from './SidebarInfoCard.tsx';
 import { MemberSince } from './MemberSince.tsx';
 import { useMediaQuery } from '@/shared/hooks';
+import { UserRightSidebarLoader } from './UserRightSidebarLoader.tsx';
 
 export const UserRightSidebar = () => {
   const { userId, isLoading, data, friend } = useUserRightSidebar();
   const isTabletOrBelow = useMediaQuery('(max-width: 1023px)');
 
   if (!userId) return <Typography>User not found</Typography>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <UserRightSidebarLoader />;
   if (!data) return <Typography>User not found</Typography>;
 
   return (
