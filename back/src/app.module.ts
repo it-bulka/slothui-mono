@@ -37,6 +37,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { RedisModule } from './redis/redis.module';
 import { HealthModule } from './health/health.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     GeoMessageModule,
     NotificationsModule,
     HealthModule,
+    ContactsModule,
   ],
   controllers: [],
   providers: [AppService, { provide: APP_GUARD, useClass: AppThrottlerGuard }],
