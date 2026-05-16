@@ -1,9 +1,11 @@
-import { AvatarWithStatus } from '@/shared/ui';
+import { AvatarWithStatus, Typography, TypographyTypes } from '@/shared/ui';
 import { NotificationAction, MessageAction, SettingAction, ThemeToggleAction } from '@/features';
 import { FriendSuggestions } from '@/entities';
 import { ProfileActivity, UpcomingEvents, CurrentUserStories } from '@/widgets';
 import { CurrentUserStatistics } from './CurrentUserStatistics/CurrentUserStatistics.tsx';
 import { useAuthUserSelector } from '@/entities';
+import { SidebarInfoCard } from '@/widgets/UserRightSidebar/ui/SidebarInfoCard.tsx';
+import { UserContactInformation } from '@/widgets/UserRightSidebar/ui/UserContactInformation/UserContactInformation.tsx';
 
 interface RightSidebarProps {
   compact?: boolean;
@@ -37,6 +39,14 @@ export const RightSidebar = ({ compact = false }: RightSidebarProps) => {
       </div>
 
       <div className="p-6 flex flex-col gap-8">
+        <SidebarInfoCard title="About">
+          <Typography type={TypographyTypes.P_SM}>
+            {userData.bio || 'No information yet'}
+          </Typography>
+        </SidebarInfoCard>
+
+        <UserContactInformation userId={userData.id} />
+
         <FriendSuggestions />
         <ProfileActivity />
         <UpcomingEvents />
