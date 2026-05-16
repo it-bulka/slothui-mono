@@ -1,5 +1,5 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
-import { initMessageBatcher, initFriendsListeners, initLikeListeners, initCommentListeners, initChatsListeners } from './listeners';
+import { initMessageBatcher, initFriendsListeners, initLikeListeners, initCommentListeners, initChatsListeners, initContactsListeners } from './listeners';
 import type { AppStore } from '../config';
 
 export const initGlobalListeners = (services: ServicesFacade, store: AppStore) => {
@@ -8,4 +8,5 @@ export const initGlobalListeners = (services: ServicesFacade, store: AppStore) =
   initLikeListeners(services, store)
   initCommentListeners(services, store)
   initChatsListeners(services, store)
+  initContactsListeners(services, store)
 }

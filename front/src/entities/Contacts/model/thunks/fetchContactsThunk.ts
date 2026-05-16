@@ -16,4 +16,9 @@ export const fetchContactsThunk = createAsyncThunk<
       return rejectWithValue('Failed to load contacts');
     }
   },
+  {
+    condition: ({ userId }, { getState }) => {
+      return !getState().contacts.fetchedByUser[userId];
+    },
+  },
 );

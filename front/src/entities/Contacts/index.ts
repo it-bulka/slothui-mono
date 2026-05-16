@@ -1,5 +1,6 @@
 export {
   contactsReducer,
+  contactsActions,
   fetchContactsThunk,
   createContactThunk,
   updateContactThunk,

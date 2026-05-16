@@ -1,4 +1,7 @@
 import { HttpService } from '../httpService/http.service.ts';
+import { Subject, type Observable } from 'rxjs';
+import type { Socket } from 'socket.io-client';
+import { SocketService } from '../socketService/socket.service.ts';
 import type { UserDTO } from '@/shared/types/chat.types.ts';
 import type {
   PaginatedResponse,
@@ -15,7 +18,38 @@ import type {
 
 const USERS_API = '/api/users';
 export class UserService {
-  constructor(private readonly http: HttpService) {}
+  private socket: Socket | undefined;
+  private readonly contactsUpdated$ = new Subject<UserContact[]>();
+
+  constructor(
+    private readonly http: HttpService,
+    private readonly wsService: SocketService,
+  ) {
+    wsService.onConnected(() => {
+      this.socket = wsService.socket;
+      this.registerSocketEvents();
+
+      wsService.$reconnected.subscribe(() => {
+        this.socket = wsService.socket;
+        this.offSocketEvents();
+        this.registerSocketEvents();
+      });
+    });
+  }
+
+  private registerSocketEvents() {
+    this.socket!.on('contacts:updated', (data: UserContact[]) =>
+      this.contactsUpdated$.next(data),
+    );
+  }
+
+  private offSocketEvents() {
+    this.socket?.off('contacts:updated');
+  }
+
+  onContactsUpdated(): Observable<UserContact[]> {
+    return this.contactsUpdated$.asObservable();
+  }
 
   async listUsers(): Promise<UserDTO[]> {
     const res = await this.http.request<{ items: UserDTO[] }>(USERS_API);

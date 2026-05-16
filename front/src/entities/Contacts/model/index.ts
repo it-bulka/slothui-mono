@@ -1,4 +1,4 @@
-export { contactsReducer } from './slice/contacts.slice';
+export { contactsReducer, contactsActions } from './slice/contacts.slice';
 export { fetchContactsThunk } from './thunks/fetchContactsThunk';
 export { createContactThunk } from './thunks/createContactThunk';
 export { updateContactThunk } from './thunks/updateContactThunk';

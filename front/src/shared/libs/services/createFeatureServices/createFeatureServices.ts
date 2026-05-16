@@ -18,7 +18,7 @@ export const createFeatureServices = (core: CoreServices) => {
   const socketService = new SocketService(core.tokenManager);
   return {
     socket: socketService,
-    user: new UserService(core.http),
+    user: new UserService(core.http, socketService),
     chat: new ChatService(core.http, socketService),
     events: new EventsService(core.http),
     stories: new StoriesService(core.http),
