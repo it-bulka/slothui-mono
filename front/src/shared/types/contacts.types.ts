@@ -36,3 +36,10 @@ export interface UpdateContactDto {
   platform?: ContactPlatform | null;
   isPrimary?: boolean;
 }
+
+export interface SaveContactItem {
+  id?: string;
+  type: ContactType;
+  value: string;
+  platform?: ContactPlatform | null;
+}

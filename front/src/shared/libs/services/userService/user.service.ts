@@ -10,6 +10,7 @@ import type {
   UserContact,
   CreateContactDto,
   UpdateContactDto as UpdateContactDtoType,
+  SaveContactItem,
 } from '@/shared/types/contacts.types';
 
 const USERS_API = '/api/users';
@@ -128,6 +129,14 @@ export class UserService {
   async deleteContact(id: string): Promise<void> {
     await this.http.request<void>(`${USERS_API}/me/contacts/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  /** POST /api/users/me/contacts — replace-all array */
+  async saveContacts(items: SaveContactItem[]): Promise<UserContact[]> {
+    return this.http.request<UserContact[]>(`${USERS_API}/me/contacts`, {
+      method: 'POST',
+      body: items,
     });
   }
 }
