@@ -15,9 +15,10 @@ const indexToType = (index: number): FriendsTabType =>
 
 interface TabWithFriendsProps {
   userId: string;
+  isOwner?: boolean;
 }
 
-export const TabWithFriends = memo(({ userId }: TabWithFriendsProps) => {
+export const TabWithFriends = memo(({ userId, isOwner = true }: TabWithFriendsProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTabIndex = typeToIndex(searchParams.get('type'));
 
@@ -32,8 +33,8 @@ export const TabWithFriends = memo(({ userId }: TabWithFriendsProps) => {
       activeTabIndex={activeTabIndex}
       onTabChange={handleTabChange}
       contents={[
-        <FollowersTab userId={userId} />,
-        <FolloweeTab userId={userId} />,
+        <FollowersTab userId={userId} isOwner={isOwner} />,
+        <FolloweeTab userId={userId} isOwner={isOwner} />,
       ]}
     />
   );

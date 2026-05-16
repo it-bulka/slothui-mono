@@ -12,11 +12,13 @@ import { useFriendActions } from '@/features/friends';
 import { Typography } from '@/shared/ui';
 
 export const FolloweeTab = memo(({
-  userId
+  userId,
+  isOwner = true,
 }: {
-  userId: string,
+  userId: string;
+  isOwner?: boolean;
 }) => {
-  const { renderActions } = useFriendActions('followings');
+  const { renderActions } = useFriendActions('followings', isOwner);
 
   const followings = useFollowingsSelector(userId);
 

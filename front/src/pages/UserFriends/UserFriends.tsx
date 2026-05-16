@@ -1,15 +1,14 @@
+import { useParams } from 'react-router';
 import { TabWithFriends } from '@/features';
 import { useAuthUserSelector } from '@/entities/AuthUser';
 
-
 const UserFriends = () => {
-  const user = useAuthUserSelector()
+  const { id: profileUserId } = useParams<{ id: string }>();
+  const authUser = useAuthUserSelector();
 
-  if (!user) return null;
+  if (!profileUserId || !authUser) return null;
 
-  return (
-    <TabWithFriends userId={user.id} />
-  )
-}
+  return <TabWithFriends userId={profileUserId} isOwner={false} />;
+};
 
 export default UserFriends

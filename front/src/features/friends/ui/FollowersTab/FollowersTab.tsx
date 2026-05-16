@@ -16,10 +16,12 @@ import { Typography } from '@/shared/ui';
 
 export const FollowersTab = memo(({
   userId,
+  isOwner = true,
 }: {
-  userId: string
+  userId: string;
+  isOwner?: boolean;
 }) => {
-  const { renderActions } = useFriendActions('followers');
+  const { renderActions } = useFriendActions('followers', isOwner);
 
   const followers = useFollowersWithNewOnTopSelect(userId);
   const newFollowerIds = useNewFollowersIdsSelect(userId);
