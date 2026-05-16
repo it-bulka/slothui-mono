@@ -10,12 +10,14 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 import { SaveContactItem } from './dto/save-contacts.dto';
 import type { ContactResponseDto } from './dto/contact-response.dto';
 import { mapContact } from './contacts-mapper';
+import { EventEmitterContactsService } from '../event-emitter/event-emitter-contacts.service';
 
 @Injectable()
 export class ContactsService {
   constructor(
     @InjectRepository(Contact)
     private readonly contactRepo: Repository<Contact>,
+    private readonly contactsEmitter: EventEmitterContactsService,
   ) {}
 
   async getByUserId(userId: string): Promise<ContactResponseDto[]> {
@@ -84,6 +86,8 @@ export class ContactsService {
       }
     }
 
-    return this.getByUserId(userId);
+    const result = await this.getByUserId(userId);
+    this.contactsEmitter.onContactsUpdated(userId, result);
+    return result;
   }
 }

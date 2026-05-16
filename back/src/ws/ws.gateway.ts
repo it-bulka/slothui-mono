@@ -36,6 +36,9 @@ import { EventEmitterFollowersService } from '../event-emitter/event-emitter-fol
 import { FriendEmitterType } from '../event-emitter/type/followersEmitter.type';
 import { FollowersServerEvents } from './types/followers.events';
 import { EventEmitterChatService } from '../event-emitter/event-emitter-chat.service';
+import { EventEmitterContactsService } from '../event-emitter/event-emitter-contacts.service';
+import { ContactsEmitterType } from '../event-emitter/type/contactsEmitter.type';
+import { ContactsServerEvents } from './types/contacts.events';
 import { WsRateLimiterGuard } from './guards/ws-rate-limiter.guard';
 import { WsRateLimit } from './guards/ws-rate-limiter.decorator';
 
@@ -62,6 +65,7 @@ export class WsGateway
     chatId: string;
     memberIds: string[];
   }>;
+  private contactsEvent$: Observable<ContactsEmitterType>;
 
   private interval: NodeJS.Timeout;
 
@@ -73,6 +77,7 @@ export class WsGateway
     private readonly notificationEmitterService: EventEmitterNotificationService,
     private readonly followersEmitterService: EventEmitterFollowersService,
     private readonly chatEmitterService: EventEmitterChatService,
+    private readonly contactsEmitterService: EventEmitterContactsService,
     private readonly openedChatsTracker: OpenedChatsTracker,
     private readonly unreadBufferService: UnreadBufferService,
   ) {
@@ -80,6 +85,7 @@ export class WsGateway
     this.notificationEvent$ = notificationEmitterService.getEvent();
     this.followersEvent$ = followersEmitterService.getEvent();
     this.chatDeletedEvent$ = chatEmitterService.getDeletedEvent();
+    this.contactsEvent$ = contactsEmitterService.getEvent();
   }
 
   onModuleInit() {
@@ -137,6 +143,20 @@ export class WsGateway
               .emit(event.ev, event.data);
             this.server
               .to(this.wsService.configUserRoomName(event.data.targetId))
+              .emit(event.ev, event.data);
+            break;
+          default:
+            return;
+        }
+      });
+
+    this.contactsEvent$
+      .pipe(filter((e) => e.meta?.local))
+      .subscribe((event) => {
+        switch (event.ev) {
+          case ContactsServerEvents.UPDATED:
+            this.server
+              .to(this.wsService.configUserRoomName(event.meta.userId))
               .emit(event.ev, event.data);
             break;
           default:
