@@ -4,6 +4,7 @@ export {
   createContactThunk,
   updateContactThunk,
   deleteContactThunk,
+  saveContactsThunk,
   useContactsSelect,
   selectContactsByUserId,
   selectContactsLoadingByUser,

@@ -5,6 +5,7 @@ import { fetchContactsThunk } from '../thunks/fetchContactsThunk';
 import { createContactThunk } from '../thunks/createContactThunk';
 import { updateContactThunk } from '../thunks/updateContactThunk';
 import { deleteContactThunk } from '../thunks/deleteContactThunk';
+import { saveContactsThunk } from '../thunks/saveContactsThunk';
 
 const initialState = contactsAdapter.getInitialState<ContactsState>({
   ids: [],
@@ -45,6 +46,14 @@ const contactsSlice = createSlice({
       })
       .addCase(deleteContactThunk.fulfilled, (state, action) => {
         contactsAdapter.removeOne(state, action.payload);
+      })
+      .addCase(saveContactsThunk.fulfilled, (state, action) => {
+        const { contacts, userId } = action.payload;
+        const staleIds = Object.values(state.entities)
+          .filter((c) => c?.userId === userId)
+          .map((c) => c!.id);
+        contactsAdapter.removeMany(state, staleIds);
+        contactsAdapter.upsertMany(state, contacts);
       });
   },
 });

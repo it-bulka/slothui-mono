@@ -1,17 +1,15 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useBlocker } from 'react-router';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useAuthUserIdSelector } from '@/entities';
 import {
   useContactsSelect,
   fetchContactsThunk,
-  createContactThunk,
-  updateContactThunk,
-  deleteContactThunk,
+  saveContactsThunk,
 } from '@/entities/Contacts';
 import { Button, Typography, TypographyTypes } from '@/shared/ui';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl';
-import type { UserContact, ContactType, ContactPlatform } from '@/shared/types/contacts.types';
+import type { ContactType, ContactPlatform, UserContact } from '@/shared/types/contacts.types';
 import { ContactRow } from './ContactRow';
 import { ContactInput } from './ContactInput';
 import { UnsavedChangesModal } from './UnsavedChangesModal';
@@ -33,11 +31,12 @@ type PendingNew = { value: string; type: ContactType; platform: ContactPlatform 
 export const ContactsForm = () => {
   const dispatch = useAppDispatch();
   const userId = useAuthUserIdSelector();
-  const { contacts, isLoading } = useContactsSelect(userId ?? '');
+  const { contacts } = useContactsSelect(userId ?? '');
 
   const [drafts, setDrafts] = useState<ContactDraft[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const isSavingRef = useRef(false);
   const [pendingNew, setPendingNew] = useState<PendingNew | null>(null);
   // Key that forces ContactInput to remount on each new session
   const [inputKey, setInputKey] = useState(0);
@@ -45,15 +44,15 @@ export const ContactsForm = () => {
   const { isOpen: isWarningOpen, open: openWarning, close: closeWarning } = useModalControl();
 
   useEffect(() => {
-    if (userId) dispatch(fetchContactsThunk({ userId }));
+    if (!userId) return;
+    dispatch(fetchContactsThunk({ userId }))
+      .unwrap()
+      .then(({ contacts: loaded }) => {
+        setDrafts(mapToDrafts(loaded));
+        setInitialized(true);
+      })
+      .catch(() => setInitialized(true));
   }, [dispatch, userId]);
-
-  useEffect(() => {
-    if (!isLoading && !initialized) {
-      setDrafts(mapToDrafts(contacts));
-      setInitialized(true);
-    }
-  }, [contacts, isLoading, initialized]);
 
   const hasUnsavedChanges = useMemo(() => {
     const dirtyDrafts = drafts.some(
@@ -123,51 +122,32 @@ export const ContactsForm = () => {
   }, []);
 
   const handleSave = useCallback(async () => {
-    if (!userId) return;
+    if (!userId || isSavingRef.current) return;
+    isSavingRef.current = true;
     setIsSaving(true);
     try {
-      const ops: Promise<unknown>[] = [];
+      const items = [
+        ...drafts
+          .filter((d) => !d.isDeleted && d.value.trim().length > 0)
+          .map((d) => ({ id: d.id, type: d.type, value: d.value.trim(), platform: d.platform })),
+        ...(pendingNew && pendingNew.value.trim().length > 0
+          ? [{ type: pendingNew.type, value: pendingNew.value.trim(), platform: pendingNew.platform }]
+          : []),
+      ];
 
-      for (const draft of drafts) {
-        if (draft.isDeleted && draft.id) {
-          ops.push(dispatch(deleteContactThunk(draft.id)).unwrap());
-        } else if (!draft.id && !draft.isDeleted && draft.value.trim().length > 0) {
-          // New draft committed from the list (via second Add contact click)
-          ops.push(
-            dispatch(
-              createContactThunk({ type: draft.type, value: draft.value.trim(), platform: draft.platform }),
-            ).unwrap(),
-          );
-        } else if (draft.id && !draft.isDeleted && draft.value !== draft.originalValue) {
-          ops.push(
-            dispatch(
-              updateContactThunk({ id: draft.id, dto: { value: draft.value, type: draft.type, platform: draft.platform } }),
-            ).unwrap(),
-          );
-        }
-      }
-
-      if (pendingNew && pendingNew.value.trim().length > 0) {
-        ops.push(
-          dispatch(
-            createContactThunk({ type: pendingNew.type, value: pendingNew.value.trim(), platform: pendingNew.platform }),
-          ).unwrap(),
-        );
-      }
-
-      await Promise.all(ops);
-      await dispatch(fetchContactsThunk({ userId })).unwrap();
+      const { contacts: fresh } = await dispatch(saveContactsThunk({ items, userId })).unwrap();
       setPendingNew(null);
-      setInitialized(false);
+      setDrafts(mapToDrafts(fresh));
     } finally {
+      isSavingRef.current = false;
       setIsSaving(false);
     }
   }, [dispatch, drafts, pendingNew, userId]);
 
   const handleCancel = useCallback(() => {
     setPendingNew(null);
-    setInitialized(false);
-  }, []);
+    setDrafts(mapToDrafts(contacts));
+  }, [contacts]);
 
   const handleLeave = useCallback(() => {
     closeWarning();
@@ -185,17 +165,17 @@ export const ContactsForm = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <Typography bold type={TypographyTypes.H3}>
+      <Typography bold type={TypographyTypes.BLOCK_TITLE}>
         Contacts
       </Typography>
 
-      {isLoading && !initialized && (
+      {!initialized && (
         <Typography type={TypographyTypes.P_SM} className="text-gray-g2">
           Loading...
         </Typography>
       )}
 
-      {!isLoading && isEmpty && (
+      {initialized && isEmpty && (
         <Typography type={TypographyTypes.P_SM} className="text-gray-g2">
           No contacts added yet
         </Typography>
