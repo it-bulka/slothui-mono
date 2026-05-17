@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useAppSelector } from '@/shared/config/redux';
 import {
   selectContactsByUserId,
@@ -6,7 +7,8 @@ import {
 } from '../selectors/contacts.selectors';
 
 export const useContactsSelect = (userId: string) => {
-  const contacts = useAppSelector(selectContactsByUserId(userId));
+  const selectContacts = useMemo(() => selectContactsByUserId(userId), [userId]);
+  const contacts = useAppSelector(selectContacts);
   const isLoading = useAppSelector(selectContactsLoadingByUser(userId));
   const error = useAppSelector(selectContactsErrorByUser(userId));
   return { contacts, isLoading, error };
