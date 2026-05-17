@@ -70,11 +70,13 @@ export const PostCard = memo(({
         </Card.Body>
       </Card>
 
-      <CommentThreadDrawer
-        postId={postId}
-        isOpen={isCommentOpen}
-        onClose={() => setIsCommentOpen(false)}
-      />
+      {isCommentOpen && (
+        <CommentThreadDrawer
+          postId={postId}
+          isOpen={isCommentOpen}
+          onClose={() => setIsCommentOpen(false)}
+        />
+      )}
     </>
   )
 })
