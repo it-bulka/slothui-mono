@@ -1,5 +1,7 @@
 import { RoutePaths, UserRelativePaths, AuthRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
+import { lazy, Suspense } from 'react';
+import { RightSidebarSkeleton } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebarSkeleton.tsx';
 import {
   HomePage,
   MessagesPage,
@@ -30,15 +32,23 @@ import {
 import { ErrorBoundary } from '@/shared/ui';
 import {
   MainLayout,
-  RightSidebar,
-  //UserRightSidebar,
   AuthLayout,
   AuthRoute,
   PrivateRoute,
   AppLayout
 } from '../../layouts';
-import { UserRightSidebar } from '@/widgets';
+
 import UserLayout from '@/pages/User/ui/UserLayout.tsx';
+
+const RightSidebarLazy = lazy(() =>
+  import('../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebar')
+    .then(m => ({ default: m.RightSidebar }))
+);
+
+const UserRightSidebarLazy = lazy(() =>
+  import('@/widgets/UserRightSidebar/ui/UserRightSidebar')
+    .then(m => ({ default: m.UserRightSidebar }))
+);
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +58,18 @@ export const router = createBrowserRouter([
         path: RoutePaths.home,
         element: (
           <PrivateRoute>
-            <MainLayout rightSidebar={<RightSidebar />} mobileRightSidebar={<RightSidebar compact />} />
+            <MainLayout
+              rightSidebar={
+                <Suspense fallback={<RightSidebarSkeleton />}>
+                  <RightSidebarLazy />
+                </Suspense>
+              }
+              mobileRightSidebar={
+                <Suspense fallback={null}>
+                  <RightSidebarLazy compact />
+                </Suspense>
+              }
+            />
           </PrivateRoute>
         ),
         errorElement: <ErrorBoundary />,
@@ -77,7 +98,13 @@ export const router = createBrowserRouter([
         path: RoutePaths.user,
         element: (
           <PrivateRoute>
-            <MainLayout rightSidebar={<UserRightSidebar />} />
+            <MainLayout
+              rightSidebar={
+                <Suspense fallback={<RightSidebarSkeleton />}>
+                  <UserRightSidebarLazy />
+                </Suspense>
+              }
+            />
           </PrivateRoute>
         ),
         errorElement: <ErrorBoundary />,
