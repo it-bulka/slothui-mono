@@ -37,6 +37,7 @@ export default defineConfig({
           'chunk-datepicker': ['react-datepicker'],
           'chunk-swiper':    ['swiper'],
           'chunk-select':    ['react-select'],
+          'vendor-toast':    ['react-toastify'],
         }
       }
     }
