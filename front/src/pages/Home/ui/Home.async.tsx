@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import { withSuspense } from '@/shared/libs';
+﻿import { lazy } from 'react';
+import { withSuspense } from '@/shared/libs/withSuspense';
 import { HomeLoader } from './HomeLoader.tsx';
 
 const HomeAsync = lazy(() => import('./Home.tsx'));

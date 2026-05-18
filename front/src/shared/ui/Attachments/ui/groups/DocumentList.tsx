@@ -1,6 +1,6 @@
 import type { Attachment } from '../../../../types';
 import { AttachmentList, type AttachmentListProps } from './AttachmentList/AttachmentList.tsx';
-import { AttachmentDocument } from '@/shared/ui';
+import { AttachmentDocument } from '@/shared/ui/Attachments';
 
 type IDocument = Pick<Attachment, 'id' | 'url' | 'originalName' | 'metadata'>
 type DocumentsListProps = Omit<AttachmentListProps<IDocument>, 'renderItem'>

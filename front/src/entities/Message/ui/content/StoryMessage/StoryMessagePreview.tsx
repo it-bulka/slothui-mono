@@ -1,6 +1,6 @@
 import type { StoryDTO } from '@/shared/libs/services';
-import { Avatar } from '@/shared/ui';
-import { HStack } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
+import { HStack } from '@/shared/ui/Stack';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import { StoryMessageModal } from './StoryMessageModal.tsx';
 import type { UserShort } from '@/shared/types';

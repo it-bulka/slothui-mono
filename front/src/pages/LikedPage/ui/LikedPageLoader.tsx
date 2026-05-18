@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Skeleton } from '@/shared/ui';
+import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const LikedPageLoader = memo(() => {
   return (

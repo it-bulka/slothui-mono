@@ -1,5 +1,5 @@
-import { MapView } from '@/entities';
-import { Button } from '@/shared/ui';
+import { MapView } from '@/entities/Map';
+import { Button } from '@/shared/ui/Button/Button';
 import { useMyGeo } from '../../model/useMyGeo.tsx';
 import { MyGeoBtn } from '../MyGeoBtn/MyGeoBtn.tsx';
 import { useGeoDraft } from '../../model';

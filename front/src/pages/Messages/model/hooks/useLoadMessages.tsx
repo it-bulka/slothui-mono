@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useChatMetaSelect, useFetchMessagesByChat } from '@/entities';
+import { useChatMetaSelect, useFetchMessagesByChat } from '@/entities/Message';
 
 export const useLoadMessages = ({ chatId, isMessages }: { chatId: string, isMessages: boolean }) => {
   const { fetchMessagesByChat } = useFetchMessagesByChat()

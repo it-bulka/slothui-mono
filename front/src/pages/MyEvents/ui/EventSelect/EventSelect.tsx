@@ -1,4 +1,4 @@
-import { DropSelect } from '@/shared/ui';
+import { DropSelect } from '@/shared/ui/DropSelect/DropSelect';
 import { useSearchParams } from 'react-router';
 import type { EventOption } from '@/pages/MyEvents/model/types/eventOption.type.ts';
 import type { SingleValue } from 'react-select';

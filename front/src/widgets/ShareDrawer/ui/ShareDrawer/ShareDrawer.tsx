@@ -1,4 +1,7 @@
-import { Drawer, Divider, Typography, TypographyTypes } from '@/shared/ui';
+import { Drawer } from '@/shared/ui/Drawer'
+import { Divider } from '@/shared/ui/Divider/Divider'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { type SharePayload, sendShare, getSharableLink } from '../../model';
 import { ChatPicker } from '../../../ChatPicker';
 import { useMessagesService } from '@/shared/libs/services';

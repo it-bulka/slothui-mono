@@ -1,4 +1,6 @@
-import { AvatarWithStatus, Typography, TypographyTypes } from '@/shared/ui';
+import { AvatarWithStatus } from '@/shared/ui/Avatar/AvatarWithStatus'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { memo } from 'react';
 
 interface UserProfileDataProps {

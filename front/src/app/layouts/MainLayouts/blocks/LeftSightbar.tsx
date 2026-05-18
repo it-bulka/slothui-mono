@@ -1,8 +1,12 @@
 import { useState, memo, useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
-import { UserAuth } from '@/features';
-import { ScrollableBlock, Logo, Divider, Overlay } from '@/shared/ui';
-import { NavigationSearchBar, NavBar } from '@/widgets';
+import { UserAuth } from '@/features/UserAuth';
+import { ScrollableBlock } from '@/shared/ui/ScrollableBlock'
+import { Logo } from '@/shared/ui/Logo/Logo'
+import { Divider } from '@/shared/ui/Divider/Divider'
+import { Overlay } from '@/shared/ui/Overlay/Overlay';
+import { NavigationSearchBar } from '@/widgets/NavigationSearchBar';
+import { NavBar } from '@/widgets/NavBar';
 import { useMediaQuery } from '@/shared/hooks';
 import classnames from 'classnames';
 import LogoSvg from '@/shared/assets/images/logo2.svg?react';

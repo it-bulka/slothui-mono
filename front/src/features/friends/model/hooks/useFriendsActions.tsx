@@ -1,4 +1,5 @@
-import { type FriendEntity, useAuthUserIdSelector } from '@/entities';
+import { type FriendEntity } from '@/entities/Friends'
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { DeleteFollowerButton, UnfollowButton, FollowButton } from '../../ui';
 import { useAppSelector } from '@/shared/config/redux';
 

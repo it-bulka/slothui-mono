@@ -1,7 +1,8 @@
-import { Button, AvatarWithInfo } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo';
 import ExitSvg from '@/shared/assets/images/general/exit.svg?react'
 import { memo } from 'react';
-import { useLogout } from '@/entities';
+import { useLogout } from '@/entities/AuthUser';
 import { useAuthUserSelector } from '@/entities/AuthUser';
 
 export const UserAuth = memo(({ collapsed }: { collapsed?: boolean }) => {

@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types.ts';
 
 export const StoriesViewEmpty = () => {

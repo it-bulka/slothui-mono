@@ -23,7 +23,7 @@ export class UserService {
 
   constructor(
     private readonly http: HttpService,
-    private readonly wsService: SocketService,
+    wsService: SocketService,
   ) {
     wsService.onConnected(() => {
       this.socket = wsService.socket;

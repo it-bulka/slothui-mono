@@ -1,4 +1,5 @@
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { useDraftMessageExtras } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
 

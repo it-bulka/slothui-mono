@@ -1,4 +1,4 @@
-import { UploadButton } from '@/shared/ui';
+import { UploadButton } from '@/shared/ui/UploadButton';
 import DocumentSvg from '@/shared/assets/images/actions/document.svg?react'
 import { memo } from 'react';
 

@@ -1,6 +1,6 @@
-import { ChatSearchProvider, SearchChatInput, ChatSearchResult } from '@/features';
+import { ChatSearchProvider, SearchChatInput, ChatSearchResult } from '@/features/search-chat';
 import { useAuthUserSelector } from '@/entities/AuthUser';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { AllChats } from './Chats/AllChats.tsx';
 import { useChatSearchDebouncedText } from '@/features/search-chat/model/context/useChatSearchDebouncedText.tsx';
 

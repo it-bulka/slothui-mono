@@ -1,8 +1,8 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { postsAdapter } from '../adapter/postsAdapter.ts';
 import type { PostsState } from '../types/posts.type.ts';
 import { createPostThunk } from '../thunks/createPost.thunk.ts';
-import { prependUniqueIds } from '@/shared/libs';
+import { prependUniqueIds } from '@/shared/libs/prependUniqueIds';
 
 export const createPostExtraReducer = (builder: ActionReducerMapBuilder<PostsState>) => {
   builder.addCase(createPostThunk.fulfilled, (state, action) => {

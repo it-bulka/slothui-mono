@@ -1,5 +1,7 @@
 import { Card } from '../../../Card/Card.tsx';
-import { CloseButton, Typography, TypographyTypes } from '@/shared/ui';
+import { CloseButton } from '@/shared/ui/CloseButton'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import type { PropsWithChildren } from 'react';
 import { useModalContext } from '../Modal.tsx';
 

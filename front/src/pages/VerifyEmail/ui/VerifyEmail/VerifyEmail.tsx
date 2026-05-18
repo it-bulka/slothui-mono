@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { AuthForm } from '@/features';
-import { LinkBlock } from '@/shared/ui';
+import { AuthForm } from '@/features/authUser';
+import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useAuthService } from '@/shared/libs/services';
 

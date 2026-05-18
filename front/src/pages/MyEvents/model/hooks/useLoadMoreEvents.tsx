@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import type { EventsContentType } from '@/pages/MyEvents/model/types/eventOption.type.ts';
-import { useFetchUpcomingEvents, useFetchSubscribedEvents, useFetchEventsByUser } from '@/entities';
+import { useFetchUpcomingEvents, useFetchSubscribedEvents, useFetchEventsByUser } from '@/entities/Event';
 
 export const useLoadMoreEvents = () => {
   const { fetchUpcomingEvents } = useFetchUpcomingEvents()

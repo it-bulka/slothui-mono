@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selectReplyTarget } from '@/entities';
+import { selectReplyTarget } from '@/entities/ReplyTarget';
 import type { RootState } from '@/app/config';
 import { useAppSelector } from '@/shared/config/redux';
 import type { UserShort } from '@/shared/types';

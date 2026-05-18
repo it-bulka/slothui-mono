@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router';
-import { AuthForm, ResetPasswordForm } from '@/features';
+import { AuthForm } from '@/features/authUser';
+import { ResetPasswordForm } from '@/features/ResetPassword';
 import { getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useState } from 'react';
 import { ReplaceLink } from '../ReplaceLink/ReplaceLink.tsx';

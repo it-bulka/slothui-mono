@@ -1,4 +1,4 @@
-import { BlockTitle } from '@/widgets';
+import { BlockTitle } from '@/widgets/BlockTitle';
 import type { PropsWithChildren } from 'react';
 
 export const Section = ({ title, children }: PropsWithChildren<{ title: string }>) => (

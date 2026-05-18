@@ -1,6 +1,6 @@
-import { AuthForm, LoginForm } from '@/features';
+import { AuthForm, LoginForm } from '@/features/authUser';
 import { getForgotPasswordPage, getRegisterPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { LinkBlock } from '@/shared/ui';
+import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { Helmet } from 'react-helmet-async';
 
 const links = [

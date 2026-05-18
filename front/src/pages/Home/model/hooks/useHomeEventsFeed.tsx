@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@/shared/config/redux';
-import { useSelectHomeEventsMeta } from '@/entities';
+import { useSelectHomeEventsMeta } from '@/entities/Event';
 import { useCallback } from 'react';
-import { fetchAllEventsThunk } from '@/entities';
+import { fetchAllEventsThunk } from '@/entities/Event';
 import { useInfiniteScroll } from '@/shared/hooks';
 
 export const useHomeEventsFeed = () => {

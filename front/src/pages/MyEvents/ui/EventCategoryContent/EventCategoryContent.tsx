@@ -1,5 +1,5 @@
-import { Typography } from '@/shared/ui';
-import { EventsList } from '@/widgets';
+import { Typography } from '@/shared/ui/Typography/Typography';
+import { EventsList } from '@/widgets/EventsList';
 import type { EventsContentType } from '../../model/types/eventOption.type.ts';
 import { useEventsByTypeSelect } from '../../model/hooks/useEventsByTypeSelect.tsx';
 import { useInfiniteScroll } from '@/shared/hooks';

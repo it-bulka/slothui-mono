@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
-import {
-  useFetchUserProfileStats,
-  useUserProfileSelect,
-  useFriendByIdSelect,
-} from '@/entities';
+import { useFetchUserProfileStats, useUserProfileSelect } from '@/entities/UsersProfiles'
+import { useFriendByIdSelect } from '@/entities/Friends';
 
 export const useUserRightSidebar = () => {
   const { id: userId } = useParams<{ id: string }>();

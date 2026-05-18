@@ -1,6 +1,6 @@
 import type { MessageNotification, Author } from '../../../../types';
 import { useNavigate } from 'react-router';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const MessageToast = ({ msg, author }: { msg: MessageNotification, author: Author }) => {
   const navigate = useNavigate();

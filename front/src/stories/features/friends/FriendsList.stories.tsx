@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MemoryRouter } from 'react-router'
 import { FriendsList } from '@/features/friends/ui/FriendsList/FriendsList'
-import type { FriendEntity } from '@/entities'
+import { FriendEntity } from '@/entities/Friends'
 
 const mockFriends: FriendEntity[] = [
   { id: '1', username: 'alice_dev', nickname: 'Alice Johnson', src: 'https://i.pravatar.cc/150?img=1' },

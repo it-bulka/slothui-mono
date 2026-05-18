@@ -1,8 +1,10 @@
-import { Avatar, Modal } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { Modal } from '@/shared/ui/Modal';
 import { Story, type StoryProps } from '../../../../Story';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Link } from 'react-router';
-import { Typography, CloseButton } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { CloseButton } from '@/shared/ui/CloseButton';
 
 type StoryMessageModal = StoryProps & {
   isOpen: boolean

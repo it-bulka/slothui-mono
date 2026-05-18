@@ -1,0 +1,1 @@
+export { shortenMiddle } from './shortenMiddle';

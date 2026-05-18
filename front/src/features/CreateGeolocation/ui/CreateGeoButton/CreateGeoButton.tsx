@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import GeoSvg from '@/shared/assets/images/actions/geo.svg?react'
 import { CreateGeoModal } from '../CreateGeoModal/CreateGeoModal.tsx';
 import { memo } from 'react';

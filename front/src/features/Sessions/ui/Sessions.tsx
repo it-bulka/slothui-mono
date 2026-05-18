@@ -1,4 +1,5 @@
-import { List, Typography } from '@/shared/ui';
+import { List } from '@/shared/ui/List/List'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { useSessionsService } from '@/shared/libs/services';
 import { useState, useEffect, memo, useCallback } from 'react';
 import type { UserSessionDto } from '@/shared/types';

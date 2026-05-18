@@ -1,4 +1,4 @@
-import { AppLink } from '@/shared/ui';
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { twMerge } from 'tailwind-merge';
 
 interface LinkBlockProps {

@@ -1,7 +1,4 @@
-import {
-  useUnreadMessagesTotalSelect,
-  useNewFollowersCountSelect,
-} from '@/entities';
+import { useUnreadMessagesTotalSelect, useNewFollowersCountSelect } from '@/entities/NotificationsCounters';
 import type { NavbarLinkType } from '../types';
 
 export const useNavbarCounts = (): Partial<Record<NavbarLinkType, number>> => {

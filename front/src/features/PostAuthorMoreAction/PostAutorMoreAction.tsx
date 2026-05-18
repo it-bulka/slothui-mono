@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import MoreSvg from '@/shared/assets/images/general/more.svg?react'
 
 export const PostAuthorMoreAction = () => {

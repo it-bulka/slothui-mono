@@ -1,11 +1,13 @@
-import { Input, Avatar } from '@/shared/ui';
-import { SendAction, EmojiAction } from '@/features';
+import { Input } from '@/shared/ui/Input/Input'
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
+import { SendAction } from '@/features/SendAction';
+import { EmojiAction } from '@/features/EmojiAction';
 import { useState, useCallback, memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useSelectReplyTargetAuthor } from './model/hooks/useSelectReplyTargetAuthor.ts';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction/model';
 import { useSendComment } from './model/hooks/useSendComment.tsx';
-import { useGetReplyTarget } from '@/entities';
+import { useGetReplyTarget } from '@/entities/ReplyTarget';
 
 export const CommentActions = memo(({ className }: { className?: string }) => {
   const author = useSelectReplyTargetAuthor()

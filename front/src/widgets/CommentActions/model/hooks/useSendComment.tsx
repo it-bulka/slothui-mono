@@ -1,4 +1,5 @@
-import { useAddOptimisticReply, useReplyTarget } from '@/entities';
+import { useAddOptimisticReply } from '@/entities/Comment'
+import { useReplyTarget } from '@/entities/ReplyTarget';
 import type { CreateCommentDTO } from '@/shared/libs/services/commentsService/comments.type.ts';
 import { toast } from 'react-toastify'
 import { useCallback } from 'react';

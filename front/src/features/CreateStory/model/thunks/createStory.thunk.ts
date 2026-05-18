@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ThunkAPI } from '@/shared/config/redux';
 import type { Story } from '@/entities/Story/model/types/types.tsx';
-import { storiesActions } from '@/entities';
+import { storiesActions } from '@/entities/Story';
 
 export const createStoryThunk = createAsyncThunk<Story, File, ThunkAPI>(
   'stories/create',

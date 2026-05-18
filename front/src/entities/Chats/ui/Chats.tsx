@@ -1,4 +1,4 @@
-import { List } from '@/shared/ui';
+import { List } from '@/shared/ui/List/List';
 import { type Chat } from '../model/types/chat.type.ts';
 import { ChatRow } from './ChatRow.tsx';
 import { useGoToChat } from '@/entities/Chats/model/hooks/useGoToChat.tsx';

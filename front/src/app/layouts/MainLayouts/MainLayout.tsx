@@ -2,7 +2,10 @@ import { type ReactNode, memo, useState, useMemo } from 'react';
 import { LeftSidebar, LeftSidebarContent } from './blocks/LeftSightbar.tsx';
 import { MobileHeader } from './blocks/MobileHeader.tsx';
 import { Outlet } from 'react-router';
-import { ScrollableBlock, InlineErrorBoundary, SideDrawer, Drawer } from '@/shared/ui';
+import { ScrollableBlock } from '@/shared/ui/ScrollableBlock'
+import { InlineErrorBoundary } from '@/shared/ui/ErrorBoundary/InlineErrorBoundary'
+import { SideDrawer } from '@/shared/ui/SideDrawer'
+import { Drawer } from '@/shared/ui/Drawer';
 import { SidebarContext, type SidebarState } from './SidebarContext.ts';
 
 interface MainLayoutProps {

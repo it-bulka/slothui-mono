@@ -1,6 +1,6 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { postsAdapter } from '../adapter/postsAdapter.ts';
-import { addUniqueIds } from '@/shared/libs';
+import { addUniqueIds } from '@/shared/libs/addUniqueIds';
 import type { PostsState } from '../types/posts.type.ts';
 import { fetchMyPostsThunk } from '../thunks/fetchMyPosts.thunk.ts';
 

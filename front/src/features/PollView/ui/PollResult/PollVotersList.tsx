@@ -1,4 +1,5 @@
-import { List, AvatarWithInfo } from '@/shared/ui';
+import { List } from '@/shared/ui/List/List'
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo';
 import type { VoterDetails } from '@/shared/types';
 
 type Props = {

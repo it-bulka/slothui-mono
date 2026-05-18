@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { SearchBar, SearchSuggestionsList } from '@/shared/ui';
+import { SearchBar } from '@/shared/ui/SearchBar/SearchBar'
+import { SearchSuggestionsList } from '@/shared/ui/SearchSuggestionsList';
 import {
   useNavigationSearchSuggestions
 } from '../../model/hooks/useNavigationSearchSuggestions.ts';

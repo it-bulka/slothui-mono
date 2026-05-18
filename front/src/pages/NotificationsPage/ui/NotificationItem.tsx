@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Avatar } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import type { Notification, NotificationType } from '@/entities/Notification';
 import { NotificationPostPreview } from './NotificationPostPreview.tsx';
 

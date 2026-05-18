@@ -1,4 +1,4 @@
-import { MapView } from '@/entities';
+import { MapView } from '@/entities/Map';
 import { MessageTime } from '@/entities/Message/ui/MessageTime/MessageTime.tsx';
 import type { MessageWithGeoDto } from '@/shared/types/message.dto.ts';
 import type { MessageComponent } from '@/entities/Message/model';

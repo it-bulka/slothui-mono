@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import MessageSvg from '@/shared/assets/images/sidebar/message.svg?react'
 import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig/routeConfig';
 

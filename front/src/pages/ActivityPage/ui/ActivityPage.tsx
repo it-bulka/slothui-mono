@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Typography, AppLink } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { getLikedPage, getSavedPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 

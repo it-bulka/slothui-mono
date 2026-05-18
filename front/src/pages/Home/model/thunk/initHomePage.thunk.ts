@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchFeedPostsThunk, fetchAllEventsThunk } from '@/entities';
+import { fetchFeedPostsThunk } from '@/entities/Post'
+import { fetchAllEventsThunk } from '@/entities/Event';
 import type { ThunkAPI } from '@/shared/config/redux';
 
 export const initHomePageThunk = createAsyncThunk<

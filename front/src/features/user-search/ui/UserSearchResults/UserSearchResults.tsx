@@ -1,4 +1,5 @@
-import { AvatarWithInfo, List } from '@/shared/ui';
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo'
+import { List } from '@/shared/ui/List/List';
 import type { UserShort } from '@/shared/types';
 import ArrowUpSvg from '@/shared/assets/images/general/arrow-up-right.svg?react'
 import { useNavigate } from 'react-router';

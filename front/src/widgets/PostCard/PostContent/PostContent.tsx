@@ -1,10 +1,14 @@
-import { Typography, TypographyTypes, AudioList, DocumentsList, MediaGrid } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { AudioList } from '@/shared/ui/Attachments/ui/groups/AudioList';
+import { DocumentsList } from '@/shared/ui/Attachments/ui/groups/DocumentList';
+import { MediaGrid } from '@/shared/ui/Attachments/ui/groups/MediaGrid/MediaGrid';
 import type { Attachment } from '@/shared/types';
 import type { PollResultDto } from '@/shared/types/poll.dto.ts';
 import { splitTextToParagraphs } from '@/widgets/PostCard/model';
 import { useMemo } from 'react';
-import { PollView } from '@/features/PollView';
-import { getPollMode } from '@/entities/Poll';
+import { PollView } from '@/features/PollView/ui/PollView';
+import { getPollMode } from '@/entities/Poll/model/helpers/getPollMode/getPollMode';
 
 const TextBlock = ({ paragraphs }: {paragraphs: string[]}) => {
   return (

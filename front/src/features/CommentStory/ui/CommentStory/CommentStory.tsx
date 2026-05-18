@@ -1,5 +1,6 @@
-import { Input } from '@/shared/ui';
-import { EmojiAction, SendAction } from '@/features';
+import { Input } from '@/shared/ui/Input/Input';
+import { EmojiAction } from '@/features/EmojiAction';
+import { SendAction } from '@/features/SendAction';
 import { useMessagesService } from '@/shared/libs/services';
 import { useState, useEffect } from 'react';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction/model';

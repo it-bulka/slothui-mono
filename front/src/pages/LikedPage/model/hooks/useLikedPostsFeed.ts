@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
-import { fetchLikedPostsThunk, useSelectLikedPostsMeta } from '@/entities';
+import { fetchLikedPostsThunk, useSelectLikedPostsMeta } from '@/entities/Post';
 
 export const useLikedPostsFeed = () => {
   const dispatch = useAppDispatch();

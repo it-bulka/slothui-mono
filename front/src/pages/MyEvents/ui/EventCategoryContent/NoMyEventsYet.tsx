@@ -1,9 +1,9 @@
-import { NoDataYet } from '@/shared/ui'
+import { NoDataYet } from '@/shared/ui/NoDataYet/NoDataYet'
 import noEventsImage from '@/shared/assets/images/general/no_events_2.png'
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx'
 import { CreateEventModal } from '@/features/CreateEvent/ui/CreateEventModal/CreateEventModal.tsx'
-import { DraftEventProvider, type DraftEvent } from '@/features'
-import { useCreateEvent } from '@/entities'
+import { DraftEventProvider, type DraftEvent } from '@/features/CreateEvent'
+import { useCreateEvent } from '@/entities/Event'
 import { useCallback } from 'react'
 
 const NoMyEventsYetInner = () => {

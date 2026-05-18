@@ -1,7 +1,9 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useCallback, memo } from 'react';
 import { OptionLabel } from '../OptionLabel.tsx';
-import { RadioInput, TypographyTypes, Typography } from '@/shared/ui';
+import { RadioInput } from '@/shared/ui/RadioInput/RadioInput'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import cls from '../common/styles.module.css';
 import { AnonymousTitle } from '../common/AnonymousTitle.tsx';
 import type { SingleChoicePollDto } from '@/shared/types/poll.dto.ts';

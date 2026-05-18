@@ -1,9 +1,9 @@
-import { memo, useEffect } from 'react';
+﻿import { memo, useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useSelectLikedEvents, fetchLikedEventsThunk } from '@/entities';
-import { SubscribeEventButton } from '@/features';
+import { useSelectLikedEvents, fetchLikedEventsThunk } from '@/entities/Event';
+import { SubscribeEventButton } from '@/features/subscribeToEvent';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
-import { formatDate } from '@/shared/libs';
+import { formatDate } from '@/shared/libs/formatDate';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getUserPage, getMyEventsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { NoLikedEventsYet } from './NoLikedEventsYet.tsx';

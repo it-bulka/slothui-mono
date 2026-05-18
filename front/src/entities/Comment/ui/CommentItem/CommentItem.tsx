@@ -1,9 +1,9 @@
-import type { PropsWithChildren } from 'react';
+﻿import type { PropsWithChildren } from 'react';
 import { useGetComment } from '../../model/hooks';
-import { Avatar } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
-import { formatDate } from '@/shared/libs';
+import { formatDate } from '@/shared/libs/formatDate';
 
 type Props = {
   commentId: string

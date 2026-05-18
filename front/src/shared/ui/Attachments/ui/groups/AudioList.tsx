@@ -1,6 +1,6 @@
 import type { Attachment } from '../../../../types';
 import { AttachmentList, type AttachmentListProps } from './AttachmentList/AttachmentList.tsx';
-import { AttachmentAudio } from '@/shared/ui';
+import { AttachmentAudio } from '@/shared/ui/Attachments';
 
 type IAudio = Pick<Attachment, 'id' | 'url' | 'originalName' | 'metadata'>
 type AudioListProps = Omit<AttachmentListProps<IAudio>, 'renderItem'>

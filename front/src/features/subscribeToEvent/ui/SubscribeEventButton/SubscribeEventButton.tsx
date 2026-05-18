@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import { type MouseEvent, memo } from 'react';
 import { useSubscribeToEvent } from '../../model/hooks/useSubscribeToEvent.ts';
 

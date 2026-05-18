@@ -1,10 +1,10 @@
 import type { MessageWithPollDto } from "@/shared/types";
-import { getPollMode } from '../../../../Poll';
+import { getPollMode } from '../../../../Poll/model/helpers/getPollMode/getPollMode';
 import { type MessageComponent, useUpdatePollInMessage } from '../../../model';
-import { PollView } from '@/features/PollView';
+import { PollView } from '@/features/PollView/ui/PollView';
 import { MessageTime } from '../../MessageTime/MessageTime.tsx';
 import { MessageWrapper } from '../../MessageWrapper/MessageWrapper.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const PollMessage = ({
   msg, time, isAuthor, isFirst

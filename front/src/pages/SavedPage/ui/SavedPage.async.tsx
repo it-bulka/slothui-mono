@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import { withSuspense } from '@/shared/libs';
+﻿import { lazy } from 'react';
+import { withSuspense } from '@/shared/libs/withSuspense';
 import { SavedPageLoader } from './SavedPageLoader';
 
 const SavedPageAsync = lazy(() => import('./SavedPage'));

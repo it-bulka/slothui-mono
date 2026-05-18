@@ -1,9 +1,10 @@
-import { useEventsHomeSelect } from '@/entities';
-import { SubscribeEventButton } from '@/features';
+import { useEventsHomeSelect } from '@/entities/Event';
+import { SubscribeEventButton } from '@/features/subscribeToEvent';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { memo, useMemo } from 'react';
-import { formatDate, startOfToday, isEventPast } from '@/shared/libs';
+import { formatDate } from '@/shared/libs/formatDate';
+import { startOfToday, isEventPast } from '@/shared/libs/isEventPast';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useHomeEventsFeed } from '../../model/hooks/useHomeEventsFeed.tsx';

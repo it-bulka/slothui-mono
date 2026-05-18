@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ThunkAPI } from '@/shared/config/redux';
-import { storiesActions } from '@/entities';
+import { storiesActions } from '@/entities/Story';
 
 export const deleteStoryThunk = createAsyncThunk<string, string, ThunkAPI>(
   'stories/delete',

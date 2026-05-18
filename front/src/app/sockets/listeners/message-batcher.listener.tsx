@@ -1,9 +1,11 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '../../config';
-import { selectActiveChatId, messagesAction, chatsActions, notificationsCountersActions } from '@/entities';
+import { selectActiveChatId, chatsActions } from '@/entities/Chats';
+import { messagesAction } from '@/entities/Message';
+import { notificationsCountersActions } from '@/entities/NotificationsCounters';
 import { selectChatById } from '@/entities/Chats/model/chat.adapter.ts';
 import { toast } from 'react-toastify'
-import { MessageToast } from '@/shared/ui';
+import { MessageToast } from '@/shared/ui/Toast';
 import { msgToNotification } from '@/shared/mappers';
 import type { MessageDto } from '@/shared/types';
 

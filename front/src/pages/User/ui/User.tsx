@@ -1,10 +1,11 @@
-import { Feed, ContactUserToolbar } from '@/widgets';
+import { Feed } from '@/widgets/Feed';
+import { ContactUserToolbar } from '@/widgets/ContactUserToolbar';
 import { useParams, useSearchParams } from 'react-router';
 import { UserFeedContent } from './UserFeedContent/UserFeedContent.tsx';
 import { UserEventContent } from './UserEventContent/UserEventContent.tsx';
-import { Tab } from '@/shared/ui';
+import { Tab } from '@/shared/ui/Tab/Tab';
 import { Helmet } from 'react-helmet-async';
-import { useUserProfileSelect } from '@/entities';
+import { useUserProfileSelect } from '@/entities/UsersProfiles';
 
 const TYPE_TO_INDEX: Record<string, number> = { posts: 0, events: 1 };
 const INDEX_TO_TYPE = ['posts', 'events'];

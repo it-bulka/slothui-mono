@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import { useTheme } from '@/shared/hooks';
 import SunSvg from '@/shared/assets/images/theme/sun.svg?react';
 import MoonSvg from '@/shared/assets/images/theme/moon.svg?react';

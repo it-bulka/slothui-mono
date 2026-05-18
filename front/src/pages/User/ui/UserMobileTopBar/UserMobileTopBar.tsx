@@ -1,5 +1,5 @@
-import { Statistics } from '@/entities';
-import { Button } from '@/shared/ui';
+import { Statistics } from '@/entities/UsersProfiles';
+import { Button } from '@/shared/ui/Button/Button';
 import { ActionRow } from '@/widgets/UserRightSidebar/ui/ActionRow.tsx';
 import { UserProfileData } from '@/widgets/UserRightSidebar/ui/UserProfileData/UserProfileData.tsx';
 import { useUserRightSidebar } from '@/widgets/UserRightSidebar/model/hooks/useUserRightSidebar.tsx';

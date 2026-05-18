@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useBlocker } from 'react-router';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useAuthUserIdSelector } from '@/entities';
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import {
   useContactsSelect,
   fetchContactsThunk,
@@ -18,6 +18,8 @@ export const useContactsForm = () => {
   const dispatch = useAppDispatch();
   const userId = useAuthUserIdSelector();
   const { contacts } = useContactsSelect(userId ?? '');
+  const contactsRef = useRef(contacts);
+  contactsRef.current = contacts;
 
   const [drafts, setDrafts] = useState<ContactDraft[]>([]);
   const [initialized, setInitialized] = useState(false);
@@ -34,7 +36,7 @@ export const useContactsForm = () => {
       if (fetchContactsThunk.fulfilled.match(action)) {
         setDrafts(mapToDrafts(action.payload.contacts));
       } else {
-        setDrafts(mapToDrafts(contacts));
+        setDrafts(mapToDrafts(contactsRef.current));
       }
       setInitialized(true);
     });

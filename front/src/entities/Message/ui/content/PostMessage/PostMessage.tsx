@@ -3,7 +3,7 @@ import type { MessageWithPostDto } from '@/shared/types/message.dto.ts';
 import type { MessageComponent } from '../../../model';
 import { getPostPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Link } from 'react-router';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import ArrowSide from '@/shared/assets/images/general/arrow-up-right.svg?react';
 import { SharedInfo } from '../../SharedInfo/SharedInfo.tsx';
 

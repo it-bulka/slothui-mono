@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import PollSvg from '@/shared/assets/images/actions/poll.svg?react'
 import { memo } from 'react';
 import { CreatePollModal } from '../CreatePollModal/CreatePollModal.tsx';

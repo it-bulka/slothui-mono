@@ -1,16 +1,12 @@
 import ContactsSvg from '@/shared/assets/images/actions/contacts.svg?react'
 import CameraSvg from '@/shared/assets/images/actions/camera.svg?react'
-import {
-  CreateGeoButton,
-  CreatePollButton,
-  UploadDocumentButton,
-  UploadPhotosButton,
-  UploadAudioButton,
-  PollDraftProvider,
-  type PollDraft,
-} from '@/features';
+import { CreateGeoButton } from '@/features/CreateGeolocation';
+import { CreatePollButton, PollDraftProvider, type PollDraft } from '@/features/CreatePoll';
+import { UploadDocumentButton } from '@/features/UploadDocument';
+import { UploadPhotosButton } from '@/features/UploadPhotos';
+import { UploadAudioButton } from '@/features/UploadAudio';
 
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import { useDraftMessageExtras } from '@/features/DraftMessage';
 import React, { useCallback } from 'react';
 import type { DraftAttachmentType } from 'src/features/DraftMessage/model/types';

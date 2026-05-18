@@ -1,7 +1,7 @@
 import { useGetPostCommentsIds } from '@/entities/Comment';
 import { CommentThread } from '../CommentThread/CommentThread.tsx';
 import { memo } from 'react';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const PostComments = memo(({ postId }: { postId: string }) => {
   const commentIds = useGetPostCommentsIds(postId);

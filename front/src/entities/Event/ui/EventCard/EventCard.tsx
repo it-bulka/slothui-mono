@@ -1,5 +1,9 @@
 import { memo, useCallback, type ReactNode, type MouseEventHandler } from 'react'
-import { Avatar, Card, Typography, TypographyTypes, AppLink } from '@/shared/ui'
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { Card } from '@/shared/ui/Card/Card'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { AppLink } from '@/shared/ui/AppLink/AppLink'
 import AvatarDefault from '@/shared/assets/images/default/avatar-default.png'
 import { getEventsDetailsPage } from '@/shared/config';
 import { useNavigate, Link } from 'react-router';

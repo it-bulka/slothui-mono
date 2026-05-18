@@ -3,7 +3,7 @@ import type { FriendDto } from '@/shared/types';
 import type { ThunkAPI } from '@/shared/config/redux';
 import { selectAuthUser } from '../../../AuthUser';
 import type { UserState } from '../../../AuthUser/model/types';
-import { resentFriendsActions } from '@/entities';
+import { resentFriendsActions } from '@/entities/Friends';
 
 export const followUserThunk = createAsyncThunk<
   { profile: FriendDto; currentUserId: string; currentUserProfile: UserState | null },

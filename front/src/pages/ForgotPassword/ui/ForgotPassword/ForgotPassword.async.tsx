@@ -1,4 +1,4 @@
-import { withSuspense } from '@/shared/libs';
+﻿import { withSuspense } from '@/shared/libs/withSuspense';
 import { lazy } from 'react';
 import { ForgotPasswordPageLoader } from './ForgotPasswordPageLoader.tsx';
 

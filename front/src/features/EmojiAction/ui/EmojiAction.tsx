@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import SmileSvg from '@/shared/assets/images/message/smile.svg?react'
 import { lazy, memo, Suspense, useLayoutEffect } from 'react';
 import { useRef } from 'react';

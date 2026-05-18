@@ -1,4 +1,5 @@
-import { Card, AvatarWithInfo, } from '@/shared/ui';
+import { Card } from '@/shared/ui/Card/Card'
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo';
 import { PostActions } from './PostActions/PostActions.tsx';
 import { PostContent } from './PostContent/PostContent.tsx';
 import { CommentThreadDrawer } from '../PostCommentsThread';

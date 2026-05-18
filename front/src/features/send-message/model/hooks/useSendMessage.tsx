@@ -2,7 +2,7 @@ import type { Message } from '@/shared/types';
 import { sendMessage } from '@/entities/Message/model';
 import { useDraftMessageExtras, useDraftMessageText } from '@/features/DraftMessage';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useActiveChatId } from '@/entities';
+import { useActiveChatId } from '@/entities/Chats';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify'
 

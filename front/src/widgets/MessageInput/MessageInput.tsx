@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { DraftExtras } from '@/features';
+import { DraftExtras } from '@/features/DraftMessage';
 import { withDraftMessageProvider } from '@/features/DraftMessage';
 import { MessageInputText } from './ui/MessageInputText/MessageInputText.tsx';
 import { MessageActions } from './ui/MessageActions/MessageActions.tsx';

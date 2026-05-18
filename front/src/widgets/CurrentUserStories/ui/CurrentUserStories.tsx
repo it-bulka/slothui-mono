@@ -1,11 +1,7 @@
 import { useEffect, memo } from 'react';
-import {
-  useAuthUserSelector,
-  useGroupedStoriesByUserSelect,
-  useFetchStoriesByUser,
-  useFlushStoriesViewed,
-} from '@/entities';
-import { ImageWithFallback } from '@/shared/ui';
+import { useAuthUserSelector } from '@/entities/AuthUser'
+import { useGroupedStoriesByUserSelect, useFetchStoriesByUser, useFlushStoriesViewed } from '@/entities/Story';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import { StoryModal } from '@/features/ShowStories';

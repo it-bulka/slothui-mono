@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/shared/config/redux';
-import { replyTargetActions, type ReplyTargetState } from '@/entities';
+import { replyTargetActions, type ReplyTargetState } from '@/entities/ReplyTarget';
 import { useCallback } from 'react';
 
 export const useReplyTarget = () => {

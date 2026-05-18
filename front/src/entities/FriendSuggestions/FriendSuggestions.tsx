@@ -1,12 +1,12 @@
-import { AppLink } from '@/shared/ui';
+﻿import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
 import { getFriendsSuggestionsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { FriendsListWithActions } from '@/features';
+import { FriendsListWithActions } from '@/features/friends/ui/FriendsListWithActions/FriendsListWithActions';
 import { useLocation } from 'react-router';
 import { memo, useEffect } from 'react';
 import { useFetchFriendsSuggestions, useSuggestedFriendsSelect } from '../Friends';
 import { useAuthUserSelector } from '../AuthUser';
-import { pickRandom } from '@/shared/libs';
+import { pickRandom } from '@/shared/libs/pickRandom';
 
 export const FriendSuggestions = memo(() => {
   const location = useLocation()

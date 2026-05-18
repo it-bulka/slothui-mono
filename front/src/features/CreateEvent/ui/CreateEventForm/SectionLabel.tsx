@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/Typography/Typography'
 
 interface SectionLabelProps {
   children: ReactNode

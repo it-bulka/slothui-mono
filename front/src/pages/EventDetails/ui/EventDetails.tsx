@@ -3,7 +3,7 @@ import { useParams, Navigate } from 'react-router';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { EventInfo } from './EventInfo/EventInfo.tsx';
 import { useState, useCallback } from 'react';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 
 const EventDetailsPage = () => {

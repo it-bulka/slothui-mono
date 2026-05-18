@@ -1,7 +1,7 @@
-import {
+﻿import {
   useCallback, useEffect, useRef, useState
 } from 'react'
-import { disableBodyScroll, enableBodyScroll } from '@/shared/libs'
+import { disableBodyScroll, enableBodyScroll } from '@/shared/libs/bodyScrollHelpers'
 
 /**
  * Custom hook to manage modal open, close, and animation states.

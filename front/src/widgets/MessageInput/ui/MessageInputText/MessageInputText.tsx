@@ -1,9 +1,10 @@
-import { Textarea } from '@/shared/ui';
+import { Textarea } from '@/shared/ui/Textarea';
 import { useDraftMessageText } from '@/features/DraftMessage';
 import { useSendMessage } from '@/features/send-message/model';
 import { type RefObject, memo, useCallback, useRef, useEffect } from 'react';
 import { useMessagesService } from '@/shared/libs/services';
-import { useActiveChatId, useSelectIsMessageSending } from '@/entities';
+import { useActiveChatId } from '@/entities/Chats'
+import { useSelectIsMessageSending } from '@/entities/Message';
 
 const TYPING_STOP_DELAY = 2000;
 

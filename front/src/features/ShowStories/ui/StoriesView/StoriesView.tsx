@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState, memo, type ReactNode } from 'react';
 import type { UserStories } from '@/shared/libs/services';
-import { Story, useMarkStoriesViewedLocally, useAuthUserSelector } from '@/entities';
-import { Avatar, MoreButton } from '@/shared/ui';
+import { Story, useMarkStoriesViewedLocally } from '@/entities/Story'
+import { useAuthUserSelector } from '@/entities/AuthUser';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { MoreButton } from '@/shared/ui/MoreButton';
 import { StoryProgress } from '../StoryProgress/StoryProgress.tsx';
 import { CommentStory } from '@/features/CommentStory';
 import { useDeleteStory, DeleteStoryModal, StoryActionsMenu } from '@/features/DeleteStory';
 import { Link } from 'react-router';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import {
   useSwitchStories,
   useSelectStoryData,

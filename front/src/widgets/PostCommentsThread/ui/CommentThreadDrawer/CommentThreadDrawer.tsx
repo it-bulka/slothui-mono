@@ -1,4 +1,4 @@
-import { Drawer } from '@/shared/ui';
+import { Drawer } from '@/shared/ui/Drawer';
 import { PostComments } from '../PostComments/PostComments.tsx';
 import { CommentActions } from '../../../CommentActions/CommentActions.tsx';
 import { useFetchPostComments } from '@/entities/Comment';

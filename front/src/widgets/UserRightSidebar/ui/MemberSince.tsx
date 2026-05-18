@@ -1,6 +1,7 @@
-import { CalendarIcon } from '@/shared/assets/icons/CalendarIcon'
-import { formatDate } from '@/shared/libs'
-import { Typography, TypographyTypes } from '@/shared/ui'
+﻿import { CalendarIcon } from '@/shared/assets/icons/CalendarIcon'
+import { formatDate } from '@/shared/libs/formatDate'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
 
 export const MemberSince = ({ createdAt }: { createdAt: string }) => {
   const formatted = formatDate(createdAt, {

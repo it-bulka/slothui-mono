@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { MediaAttachmentsModal } from '@/shared/ui';
+import { MediaAttachmentsModal } from '@/shared/ui/Attachments';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import type { Attachment } from '@/shared/types';
 import cls from './MediaStack.module.css'

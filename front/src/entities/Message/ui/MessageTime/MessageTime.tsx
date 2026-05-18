@@ -1,4 +1,5 @@
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
 import cls from './MessageTime.module.css'

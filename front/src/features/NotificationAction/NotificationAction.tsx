@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { ActionButton, OverlayBadge } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton'
+import { OverlayBadge } from '@/shared/ui/OverlayBadge/OverlayBadge';
 import NotificationSvg from '@/shared/assets/images/sidebar/notification.svg?react';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import { selectUnreadCount, selectIsInitialized, fetchUnreadCountThunk } from '@/entities/Notification';
 import { getNotificationsPage } from '@/shared/config/routeConfig/routeConfig';
-import { formatBadgeCount } from '@/shared/libs';
+import { formatBadgeCount } from '@/shared/libs/formatBadgeCount';
 
 export const NotificationAction = () => {
   const navigate = useNavigate();

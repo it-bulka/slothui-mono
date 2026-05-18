@@ -3,7 +3,7 @@ import { useChatService } from '@/shared/libs/services';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { getMessagesWithUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { chatsActions } from '@/entities';
+import { chatsActions } from '@/entities/Chats';
 import { useAppDispatch } from '@/shared/config/redux';
 
 export const useOpenChatWithUser = (userId: string) => {

@@ -6,7 +6,7 @@ import {
   getMessagesWithUserPage,
   getLoginPage
 } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { useAuthUserSelector } from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 const GhostWithEyes = () => (
   <div className="relative inline-block">
     <Ghost size={96} className="text-gray-400" />

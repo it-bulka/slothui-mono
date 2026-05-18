@@ -1,4 +1,4 @@
-import { useResendComment } from '@/entities';
+import { useResendComment } from '@/entities/Comment';
 import { useGetComment } from '@/entities/Comment';
 
 export const ResendUnsentComment = ({ commentId }: { commentId: string }) => {

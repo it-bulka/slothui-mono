@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import { HStack, CopyButton } from '@/shared/ui'
+import { HStack } from '@/shared/ui/Stack'
+import { CopyButton } from '@/shared/ui/CopyButton'
 import { ShareOnInstagram } from '../ShareOnInstagramButton/ShareOnInstagramButton.tsx'
 import { withShareLib, useShareLib } from '../../model/hooks/useShareLibs/useShareLib.tsx'
 

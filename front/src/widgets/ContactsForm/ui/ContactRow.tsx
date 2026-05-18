@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { twMerge } from 'tailwind-merge';
 import classNames from 'classnames';
 import { ContactPlatformIcon } from '@/shared/ui/ContactPlatformIcon/ContactPlatformIcon';
-import { CopyButton } from '@/shared/ui';
+import { CopyButton } from '@/shared/ui/CopyButton';
 import { detectContactMeta } from '@/shared/utils/contacts/detectPlatform';
 import type { ContactDraft } from '../model/types/contactDraft.types';
 import type { ContactType, ContactPlatform } from '@/shared/types/contacts.types';

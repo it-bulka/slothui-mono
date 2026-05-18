@@ -1,5 +1,5 @@
 import { memo, useRef, type ReactNode, type ChangeEvent } from 'react';
-import { ActionButton, type ActionButtonProps } from '@/shared/ui';
+import { ActionButton, type ActionButtonProps } from '@/shared/ui/ActionButton';
 
 interface UploadButtonProps extends ActionButtonProps {
   accept: string

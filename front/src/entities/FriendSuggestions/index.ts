@@ -1,0 +1,1 @@
+export { FriendSuggestions } from './FriendSuggestions';

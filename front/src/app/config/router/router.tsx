@@ -2,34 +2,32 @@ import { RoutePaths, UserRelativePaths, AuthRelativePaths } from '@/shared/confi
 import { createBrowserRouter } from 'react-router'
 import { lazy, Suspense } from 'react';
 import { RightSidebarSkeleton } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebarSkeleton.tsx';
-import {
-  HomePage,
-  MessagesPage,
-  FriendsPage,
-  UserPage,
-  UserFriendsPage,
-  MePage,
-  SettingsPage,
-  ProfileSettingsPage,
-  AccountSettingsPage,
-  PrivacySettingsPage,
-  LoginPage,
-  RegisterPage,
-  EventDetailsPage,
-  ChatsPage,
-  MyFriendsSuggestionsPage,
-  MyEventsPage,
-  ForgotPasswordPage,
-  ResetPasswordPage,
-  VerifyEmailPage,
-  NotificationsPage,
-  ActivityPage,
-  LikedPage,
-  SavedPage,
-  NotFound,
-  PostPage
-} from '@/pages';
-import { ErrorBoundary } from '@/shared/ui';
+import { HomePage } from '@/pages/Home';
+import { MessagesPage } from '@/pages/Messages';
+import { FriendsPage } from '@/pages/Friends';
+import { UserPage } from '@/pages/User';
+import { UserFriendsPage } from '@/pages/UserFriends';
+import { MePage } from '@/pages/Me';
+import { SettingsPage } from '@/pages/Settings';
+import { ProfileSettingsPage } from '@/pages/ProfileSettings';
+import { AccountSettingsPage } from '@/pages/AccountSettings';
+import { PrivacySettingsPage } from '@/pages/PrivacySettings';
+import { LoginPage } from '@/pages/Login';
+import { RegisterPage } from '@/pages/Register';
+import { EventDetailsPage } from '@/pages/EventDetails';
+import { ChatsPage } from '@/pages/Chats';
+import { MyFriendsSuggestionsPage } from '@/pages/MyFriendsSuggestions';
+import { MyEventsPage } from '@/pages/MyEvents';
+import { ForgotPasswordPage } from '@/pages/ForgotPassword';
+import { ResetPasswordPage } from '@/pages/ResetPassword';
+import { VerifyEmailPage } from '@/pages/VerifyEmail';
+import { NotificationsPage } from '@/pages/NotificationsPage';
+import { ActivityPage } from '@/pages/ActivityPage';
+import { LikedPage } from '@/pages/LikedPage';
+import { SavedPage } from '@/pages/SavedPage';
+import { NotFound } from '@/pages/NotFound';
+import { PostPage } from '@/pages/PostPage';
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary/ErrorBoundary';
 import {
   MainLayout,
   AuthLayout,

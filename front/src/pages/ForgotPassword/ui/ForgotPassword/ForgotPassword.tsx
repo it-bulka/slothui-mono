@@ -1,6 +1,7 @@
-import { AuthForm, ForgotPasswordForm } from '@/features';
+import { AuthForm } from '@/features/authUser';
+import { ForgotPasswordForm } from '@/features/forgotPassword';
 import { useState } from 'react';
-import { LinkBlock } from '@/shared/ui';
+import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { getLoginPage, getRegisterPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 const links = [

@@ -1,9 +1,9 @@
-import { Feed } from '@/widgets';
-import { AppLink } from '@/shared/ui';
+import { Feed } from '@/widgets/Feed';
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { EventsContent } from './EventsContetn/EventsContent.tsx';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { CreateEvent } from '@/pages/MyEvents/ui/CreateEvent/CreateEvent.tsx';
 import { Helmet } from 'react-helmet-async';
 

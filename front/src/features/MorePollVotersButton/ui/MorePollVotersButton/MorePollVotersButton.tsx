@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import { useFetchMorePollVoters, selectAnswerVoters } from '@/entities/Poll';
 import { useAppSelector } from '@/shared/config/redux';
 import { memo, useCallback } from 'react';

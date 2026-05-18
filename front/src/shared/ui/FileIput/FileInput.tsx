@@ -1,5 +1,6 @@
 import { useState, useEffect, type FormEvent, type HTMLAttributes } from 'react'
-import { Button, Typography } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 interface FileInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?: (files: FileList | null) => void

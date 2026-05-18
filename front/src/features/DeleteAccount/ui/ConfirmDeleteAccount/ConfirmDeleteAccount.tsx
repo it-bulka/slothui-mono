@@ -1,4 +1,5 @@
-import { Button, ModalCard } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { ModalCard } from '@/shared/ui/Modal';
 import { useDeleteProfile } from '@/entities/AuthUser';
 import { memo } from 'react';
 

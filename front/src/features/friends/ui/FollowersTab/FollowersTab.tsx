@@ -1,18 +1,11 @@
-import {
-  useFollowersWithNewOnTopSelect,
-  useFollowersStateSelect,
-  fetchFollowersThunk,
-  fetchFollowingsThunk,
-  useNewFollowersIdsSelect,
-  useMarkNewFollowersSeen,
-} from '@/entities';
+import { useFollowersWithNewOnTopSelect, useFollowersStateSelect, fetchFollowersThunk, fetchFollowingsThunk, useNewFollowersIdsSelect, useMarkNewFollowersSeen } from '@/entities/Friends';
 import { FriendsList } from '../FriendsList/FriendsList.tsx';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useCallback, useEffect } from 'react';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { memo } from 'react';
 import { useFriendActions } from '@/features/friends';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const FollowersTab = memo(({
   userId,

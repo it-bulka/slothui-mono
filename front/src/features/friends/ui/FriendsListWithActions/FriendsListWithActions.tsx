@@ -1,7 +1,7 @@
 import { useFriendActions } from '../../model/hooks/useFriendsActions.tsx';
 import { FriendsList } from '../FriendsList/FriendsList.tsx';
 import { memo } from 'react';
-import type { FriendEntity } from '@/entities';
+import type { FriendEntity } from '@/entities/Friends';
 
 interface FriendsListWithActionsProps {
   friends: FriendEntity[];

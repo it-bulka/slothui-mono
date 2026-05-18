@@ -1,6 +1,8 @@
-import { TabWithFriends, UserSearchToolbar } from '@/features';
-import { useAuthUserSelector } from '@/entities';
-import { ToolbarWrapper, Typography } from '@/shared/ui';
+import { TabWithFriends } from '@/features/friends/ui/TabWithFriends/TabWithFriends';
+import { UserSearchToolbar } from '@/features/user-search/ui/UserSearchToolbar/UserSearchToolbar';
+import { useAuthUserSelector } from '@/entities/AuthUser';
+import { ToolbarWrapper } from '@/shared/ui/ToolbarWrapper'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 

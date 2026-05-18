@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import PostsSvg from '@/shared/assets/images/sidebar/2.posts.svg?react';
 
 interface AddPostBtnProps {

@@ -1,4 +1,4 @@
-import { Modal } from '@/shared/ui';
+import { Modal } from '@/shared/ui/Modal';
 import type { Attachment } from '@/shared/types';
 import 'swiper/css';
 import 'swiper/css/thumbs';
@@ -14,7 +14,7 @@ import {
   renderMediaItemWithPlay
 } from '@/shared/ui/Attachments/ui/atomic/renderMediaItem/renderMediaItamWithPlay.tsx';
 import { Swiper as SwiperType } from 'swiper';
-import { CloseButton } from '@/shared/ui';
+import { CloseButton } from '@/shared/ui/CloseButton';
 import css from './MediaAttachmentsModal.module.css';
 
 interface MediaAttachmentsModalProps {

@@ -1,8 +1,8 @@
-import type { Attachment } from '../../../../../types';
+﻿import type { Attachment } from '../../../../../types';
 import { type ReactNode, useCallback } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import { shortenMiddle } from '@/shared/libs';
+import { shortenMiddle } from '@/shared/libs/shortenMiddle';
 
 type AttachmentAudioProps = Pick<Attachment, 'url' | 'originalName'> & {
   size?: number;

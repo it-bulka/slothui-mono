@@ -1,8 +1,8 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import CommentSvg from '@/shared/assets/images/post/comment.svg?react'
 import CloseSvg from '@/shared/assets/images/actions/close.svg?react'
 import { useSelectReplyTargetAuthor } from '@/widgets/CommentActions/model/hooks/useSelectReplyTargetAuthor.ts';
-import { useGetReplyTarget, useReplyTarget } from '@/entities';
+import { useGetReplyTarget, useReplyTarget } from '@/entities/ReplyTarget';
 import { useGetComment } from '@/entities/Comment';
 
 export const ReplyComment = ({ commentId, postId }: { commentId: string, postId: string }) => {

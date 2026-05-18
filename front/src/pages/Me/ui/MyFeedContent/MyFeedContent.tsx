@@ -1,11 +1,7 @@
-import {
-  useProfileFeedStateSelector,
-  useProfilePostsSelector,
-  useFetchMyPosts
-} from '@/entities';
-import { Typography } from '@/shared/ui';
+import { useProfileFeedStateSelector, useProfilePostsSelector, useFetchMyPosts } from '@/entities/Post';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { memo, useEffect, useCallback } from 'react';
-import { useAuthUserSelector } from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useIsPostCreating } from '@/features/PostComposer';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';

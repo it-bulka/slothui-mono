@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import classnames from 'classnames';
 import type { MouseEvent } from 'react';
 

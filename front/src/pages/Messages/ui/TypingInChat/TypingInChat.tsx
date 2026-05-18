@@ -1,4 +1,4 @@
-import { Typing } from '@/entities';
+import { Typing } from '@/entities/Typing';
 import { memo } from 'react';
 
 interface TypingInChatProps {

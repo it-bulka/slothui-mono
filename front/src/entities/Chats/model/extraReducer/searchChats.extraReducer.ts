@@ -1,7 +1,7 @@
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { ChatState } from '../types/chat.type.ts';
 import { chatAdapter } from '../chat.adapter.ts';
-import { createPrivateChatThunk, searchChatsThunk } from '@/entities';
+import { createPrivateChatThunk, searchChatsThunk } from '@/entities/Chats';
 
 export const searchChatsExtraReducer = (builder: ActionReducerMapBuilder<ChatState>) => {
   builder.addCase(searchChatsThunk.fulfilled, (state, action) => {

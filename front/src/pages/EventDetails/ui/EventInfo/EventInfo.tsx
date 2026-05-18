@@ -5,8 +5,9 @@ import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.
 import { useNavigate } from 'react-router';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { memo } from 'react';
-import { formatDate, startOfToday, isEventPast } from '@/shared/libs';
-import { SubscribeEventButton } from '@/features';
+import { formatDate } from '@/shared/libs/formatDate';
+import { startOfToday, isEventPast } from '@/shared/libs/isEventPast';
+import { SubscribeEventButton } from '@/features/subscribeToEvent';
 
 export const EventInfo = memo(({id, onSubscribedChange}: {id: string, onSubscribedChange?: () => void}) => {
   const eventsService = useEventsService();

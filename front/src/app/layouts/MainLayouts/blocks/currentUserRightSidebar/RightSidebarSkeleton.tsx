@@ -1,4 +1,4 @@
-import { Skeleton } from '@/shared/ui';
+import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const RightSidebarSkeleton = () => (
   <div className="border-style-l bg-light-l2 h-full px-6 py-5 flex flex-col gap-4">

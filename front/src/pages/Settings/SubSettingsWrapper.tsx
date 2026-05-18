@@ -1,5 +1,6 @@
 import { type PropsWithChildren, memo } from 'react';
-import { Typography, AppLink } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 interface SubSettingsWrapperProps {

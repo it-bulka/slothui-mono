@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Outlet } from 'react-router';
-import { Logo } from '@/shared/ui';
+import { Logo } from '@/shared/ui/Logo/Logo';
 
 export const AuthLayout = memo(() => {
   return (

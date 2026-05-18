@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { ProgressBar } from '@/shared/ui';
+import { ProgressBar } from '@/shared/ui/ProgressBar';
 import { useVideoProgress } from '@/shared/hooks/useProgress/useVideoProgress.tsx';
 
 type StoryVideoProps = {

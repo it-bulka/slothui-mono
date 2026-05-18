@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { ThunkAPI } from '@/shared/config/redux';
 import { selectAuthUser } from '../../../AuthUser';
-import { resentFriendsActions } from '@/entities';
+import { resentFriendsActions } from '@/entities/Friends';
 
 export const unfollowThunk = createAsyncThunk<
   { followeeId: string; currentUserId: string },

@@ -1,4 +1,4 @@
-import { NoDataYet } from '@/shared/ui'
+import { NoDataYet } from '@/shared/ui/NoDataYet/NoDataYet'
 import noEventsImage from '@/shared/assets/images/general/no_events_2.png'
 
 export const NoHomeEventsYet = () => (

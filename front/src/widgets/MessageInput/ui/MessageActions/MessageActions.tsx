@@ -1,7 +1,7 @@
 import { AttachAction } from '@/widgets/AttachAction';
 import { MessageEmojiAction } from './MessageEmojiAction.tsx';
 import { memo } from 'react';
-import { SendMessageBtn } from '@/features';
+import { SendMessageBtn } from '@/features/send-message';
 
 export const MessageActions = memo(() => {
   return (

@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 export { commentsReducer } from './model';
+export { CommentItem } from './ui';
 export {
   useGetReplies,
   useGetRepliesIds,

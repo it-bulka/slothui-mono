@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useSelectLikedPosts } from '@/entities/Post';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { useLikedPostsFeed } from '../model/hooks/useLikedPostsFeed.ts';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';

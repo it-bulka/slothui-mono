@@ -1,6 +1,6 @@
 import { EventCreateForm } from '../CreateEventForm/CreateEventForm.tsx';
 import { memo, useCallback } from 'react';
-import { Modal, ModalCard } from '@/shared/ui';
+import { Modal, ModalCard } from '@/shared/ui/Modal';
 import { useDraftEvent } from '../../model/DraftEventContext/useDraftEvent.tsx';
 import type { DraftEvent } from '../../model/types/event.type.ts';
 import { toast } from 'react-toastify';

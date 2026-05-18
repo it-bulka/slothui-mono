@@ -1,4 +1,4 @@
-import { AttachmentImage, AttachmentVideoPreview } from '@/shared/ui';
+import { AttachmentImage, AttachmentVideoPreview } from '@/shared/ui/Attachments';
 import type { DraftAttachment } from '../../model/types';
 import { DeleteMediaBtn } from './DeleteMediaBtn.tsx';
 

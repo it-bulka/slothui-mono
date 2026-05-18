@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { DropSelect, Typography } from '@/shared/ui';
+import { DropSelect } from '@/shared/ui/DropSelect/DropSelect'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { ThemeOption } from './ThemeOption.tsx';
 import { useTheme } from '@/shared/hooks';
 import SunSvg from "@/shared/assets/images/theme/sun.svg?react"

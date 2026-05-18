@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import SendSvg from '@/shared/assets/images/message/send.svg?react'
 
 export const SendAction = ({ onClick, disabled }: { onClick?: () => void, disabled?: boolean }) => {

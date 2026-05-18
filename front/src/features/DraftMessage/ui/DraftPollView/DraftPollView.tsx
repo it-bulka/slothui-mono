@@ -1,8 +1,8 @@
-import { PollView } from '@/features/PollView';
+import { PollView } from '@/features/PollView/ui/PollView';
 import { PollMode } from '@/features/PollView/model/types';
 import { useDraftMessageExtras } from '@/features/DraftMessage';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const DraftPollView = () => {
   const { poll, clearPoll } = useDraftMessageExtras();

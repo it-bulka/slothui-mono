@@ -14,7 +14,7 @@ import {
   useMarkReadNotifications,
 } from '@/entities/Notification';
 import { useInfiniteScroll } from '@/shared/hooks';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { NotificationItem } from './NotificationItem';
 

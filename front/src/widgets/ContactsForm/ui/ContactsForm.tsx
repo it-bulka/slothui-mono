@@ -1,4 +1,6 @@
-import { Button, Typography, TypographyTypes } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { useContactsForm } from '../model/hooks/useContactsForm';
 import { ContactRow } from './ContactRow';
 import { ContactInput } from './ContactInput';

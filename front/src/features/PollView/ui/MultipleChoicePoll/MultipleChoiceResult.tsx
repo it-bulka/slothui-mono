@@ -1,5 +1,7 @@
 import { memo, useId } from 'react';
-import { CheckboxInput, Typography, TypographyTypes } from '@/shared/ui';
+import { CheckboxInput } from '@/shared/ui/CheckboxInput/CheckboxInput'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { OptionLabel } from '@/features/PollView/ui/OptionLabel.tsx';
 import { PollResultWrapper } from '../PollResult/PollResultWrapper.tsx';
 import cls from '../common/styles.module.css';

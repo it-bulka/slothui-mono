@@ -1,6 +1,6 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import SaveSvg from '@/shared/assets/images/post/store.svg?react'
-import { usePostSaveSelect, useToggleSavePost } from '@/entities';
+import { usePostSaveSelect, useToggleSavePost } from '@/entities/Post';
 import { memo, useCallback } from 'react';
 
 export const SavePost = memo(({ className, postId }: { className: string, postId: string }) => {

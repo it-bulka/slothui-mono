@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from 'react';
 import { Navigate } from 'react-router';
 import { getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { useAuthUserSelector } from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { useAppSelector } from '@/shared/config/redux';
-import { InitPageLoader } from '@/shared/ui';
+import { InitPageLoader } from '@/shared/ui/Skeleton';
 
 export const PrivateRoute = ({ children }: PropsWithChildren) => {
   const isAuthenticated = useAuthUserSelector();

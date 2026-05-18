@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import type { MessageDto } from '@/shared/types';
-import { Typography, TypographyTypes } from '@/shared/ui';
-import { MessageComposer } from '@/entities';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
+import { MessageComposer } from '@/entities/Message';
 
 export interface MessagesVirtuosoContext {
   msgs: MessageDto[]

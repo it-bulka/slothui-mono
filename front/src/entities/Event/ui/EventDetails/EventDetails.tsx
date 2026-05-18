@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react'
-import { Avatar, Typography, TypographyTypes } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import AvatarDefault from '@/shared/assets/images/default/avatar-default.png';
-import { MapView } from '@/entities';
+import { MapView } from '@/entities/Map';
 import { getCategoryConfig } from '../../lib/categoryConfig'
 import type { EventCategory } from '@/shared/libs/services/eventsService/events.type'
 

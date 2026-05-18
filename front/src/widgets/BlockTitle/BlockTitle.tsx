@@ -1,5 +1,6 @@
 import  { type ReactNode, type SVGProps, type FunctionComponent } from 'react';
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import MoreSvg from '@/shared/assets/images/general/more.svg?react'
 
 type BlockTitleProps = {

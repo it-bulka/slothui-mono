@@ -1,4 +1,4 @@
-import { Modal, ModalCard } from '@/shared/ui';
+import { Modal, ModalCard } from '@/shared/ui/Modal';
 import { ShareContent } from '../ShareContent/ShareContent.async.tsx';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';

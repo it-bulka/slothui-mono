@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/app/config';
-import { selectSortedChats } from '@/entities';
+import { selectSortedChats } from '@/entities/Chats';
 
 export const selectFilteredChats = (search: string) =>
   createSelector(

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, type ReactEventHandler, useCallback } from 'react';
 import AvatarDefaultImg from '@/shared/assets/images/default/avatar-default.png'
 import cls from './Avatar.module.css'
 import { twMerge } from 'tailwind-merge';
@@ -14,6 +14,11 @@ const SIZE_PX = { sm: 24, md: 40, lg: 48 } as const;
 
 export const Avatar = memo(({ src, name, size = 'md', className }: AvatarProps) => {
   const px = SIZE_PX[size];
+  const handleError: ReactEventHandler<HTMLImageElement> = useCallback((e) => {
+    const target = e.currentTarget as HTMLImageElement;
+    if (target.src !== AvatarDefaultImg) target.src = AvatarDefaultImg;
+  }, [])
+
   return (
     <img
       className={twMerge(`block rounded-full aspect-square ${cls[size]}`, className)}
@@ -21,10 +26,7 @@ export const Avatar = memo(({ src, name, size = 'md', className }: AvatarProps) 
       alt={`${name || ''} avatar`}
       width={px}
       height={px}
-      onError={(e) => {
-        const target = e.currentTarget as HTMLImageElement;
-        if (target.src !== AvatarDefaultImg) target.src = AvatarDefaultImg;
-      }}
+      onError={handleError}
     />
   )
 })

@@ -1,4 +1,4 @@
-import { Modal } from '@/shared/ui';
+import { Modal } from '@/shared/ui/Modal';
 import { StoriesView } from '../StoriesView/StoriesView.tsx';
 import type { UserStories } from '@/shared/libs/services';
 import { memo } from 'react';

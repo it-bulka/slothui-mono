@@ -1,7 +1,9 @@
 import { memo } from 'react';
-import { NotificationAction, MessageAction, ThemeToggleAction } from '@/features';
-import { AvatarWithStatus } from '@/shared/ui';
-import { useAuthUserSelector } from '@/entities';
+import { NotificationAction } from '@/features/NotificationAction';
+import { MessageAction } from '@/features/MessageAction';
+import { ThemeToggleAction } from '@/features/ThemeToggleAction';
+import { AvatarWithStatus } from '@/shared/ui/Avatar/AvatarWithStatus';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { useSidebarContext } from '../SidebarContext.ts';
 import classnames from 'classnames';
 import LogoSvg from '@/shared/assets/images/logo2.svg?react';

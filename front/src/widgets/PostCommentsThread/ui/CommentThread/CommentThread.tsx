@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { CommentItem } from '@/entities';
+import { CommentItem } from '@/entities/Comment';
 import { RepliesList } from '../RepliesList/RepliesList.tsx';
 import { ViewsRepliesButton } from '../ViewsRepliesButton/ViewsRepliesButton.tsx';
-import { ReplyComment } from '@/shared/ui';
-import { UnsentCommentActions } from '@/features';
+import { ReplyComment } from '@/shared/ui/ReplyComment';
+import { UnsentCommentActions } from '@/features/UnsentCommentActions';
 
 type Props = {
   commentIds: string[]

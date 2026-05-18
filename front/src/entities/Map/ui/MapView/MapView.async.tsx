@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import { withSuspense } from '@/shared/libs';
+﻿import { lazy } from 'react';
+import { withSuspense } from '@/shared/libs/withSuspense';
 
 const MapViewLazy = lazy(() => import('./MapView').then(m => ({ default: m.MapView })));
 

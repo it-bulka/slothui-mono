@@ -1,10 +1,10 @@
-import { useEventsByUserSelect, useFetchEventsByUser } from '@/entities';
-import { SubscribeEventButton } from '@/features';
+﻿import { useEventsByUserSelect, useFetchEventsByUser } from '@/entities/Event';
+import { SubscribeEventButton } from '@/features/subscribeToEvent';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useEffect } from 'react';
-import { formatDate } from '@/shared/libs';
+import { formatDate } from '@/shared/libs/formatDate';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { NoUserEventsYet } from './NoUserEventsYet.tsx';

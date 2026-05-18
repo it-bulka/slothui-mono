@@ -1,5 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Input } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { Input } from '@/shared/ui/Input/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ForgotPasswordFormData, forgotPasswordSchema } from '../../modal';
 import { useAuthService } from '@/shared/libs/services';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { useFlushStoriesViewed } from '@/entities';
+import { useFlushStoriesViewed } from '@/entities/Story';
 
 export const useMarkNewFollowersSeenOnExit = () => {
   const location = useLocation();

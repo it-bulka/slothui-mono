@@ -1,7 +1,8 @@
-import { Input, Button } from '@/shared/ui';
+import { Input } from '@/shared/ui/Input/Input'
+import { Button } from '@/shared/ui/Button/Button';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png'
-import { useAuthUserSelector, useUpdateProfile } from '@/entities';
+import { useAuthUserSelector, useUpdateProfile } from '@/entities/AuthUser';
 import { useForm } from "react-hook-form"
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import type { ProfileFormValues } from './model';

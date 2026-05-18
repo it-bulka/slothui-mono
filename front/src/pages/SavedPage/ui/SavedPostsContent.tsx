@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { useSavedPostsFeed } from '../model/hooks/useSavedPostsFeed.ts';
 import { PostFeedItem } from '@/widgets/PostCard/PostFeedItem/PostFeedItem.tsx';
 import { NoSavedPostsYet } from './NoSavedPostsYet.tsx';

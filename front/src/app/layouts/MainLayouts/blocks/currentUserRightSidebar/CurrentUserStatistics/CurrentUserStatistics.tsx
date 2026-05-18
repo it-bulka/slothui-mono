@@ -1,11 +1,7 @@
-import {
-  useFetchUserProfileStats,
-  useAuthUserSelector,
-  Statistics,
-  StatisticsSkeleton
-} from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
+import { useFetchUserProfileStats, Statistics, StatisticsSkeleton } from '@/entities/UsersProfiles';
 import { useEffect, memo } from 'react';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { toast } from 'react-toastify'
 import { useAuthUserLoadingSelector, useAuthUserErrorSelector } from '@/entities/AuthUser';
 

@@ -1,4 +1,6 @@
-import { AvatarWithInfo, Badge, List } from '@/shared/ui';
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo'
+import { Badge } from '@/shared/ui/Badge/Badge'
+import { List } from '@/shared/ui/List/List';
 import Arrow from '@/shared/assets/images/general/arrow-up-right.svg?react'
 
 export interface ChatRowProps {

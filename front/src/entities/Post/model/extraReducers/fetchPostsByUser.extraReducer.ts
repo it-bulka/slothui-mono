@@ -1,7 +1,7 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { fetchPostsByUserThunk } from '../thunks/fetchPostsByUser.thunk.ts';
 import { postsAdapter } from '../adapter/postsAdapter.ts';
-import { addUniqueIds } from '@/shared/libs';
+import { addUniqueIds } from '@/shared/libs/addUniqueIds';
 import type { PostsState } from '../types/posts.type.ts';
 
 export const fetchPostsByUserExtraReducer = (builder: ActionReducerMapBuilder<PostsState>) => {

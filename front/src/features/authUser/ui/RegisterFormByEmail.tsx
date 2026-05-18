@@ -1,9 +1,10 @@
-import { Button, FileInput } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { FileInput } from '@/shared/ui/FileIput/FileInput';
 import { registerSchema, type RegisterFormData } from '../model/validation-register.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { useCallback } from 'react';
-import { useRegisterUser } from '@/entities';
+import { useRegisterUser } from '@/entities/AuthUser';
 import { AuthInput } from '@/features/authUser/ui/AuthInput.tsx';
 
 const inputs = [

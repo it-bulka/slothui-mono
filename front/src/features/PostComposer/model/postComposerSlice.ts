@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createPostThunk } from '@/entities';
+import { createPostThunk } from '@/entities/Post';
 
 interface PostComposerState {
   isCreating: boolean;

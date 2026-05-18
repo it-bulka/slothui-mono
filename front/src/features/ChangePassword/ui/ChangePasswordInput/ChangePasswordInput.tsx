@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form'
-import { Input } from '@/shared/ui'
+import { Input } from '@/shared/ui/Input/Input'
 import type { Control } from 'react-hook-form'
 import type { ChangePasswordFormData } from '../../module'
 

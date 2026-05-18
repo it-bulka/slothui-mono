@@ -1,4 +1,4 @@
-import { MessageInput } from '@/widgets';
+import { MessageInput } from '@/widgets/MessageInput';
 import { useManageActiveChatId, useCurrentChat } from './model';
 import { useParams } from 'react-router';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
@@ -8,7 +8,7 @@ import { MessageList } from './ui/MessageList/MessageList.tsx';
 import { useEffect } from 'react';
 import { useChatService } from '@/shared/libs/services';
 import { useAppDispatch } from '@/shared/config/redux';
-import { notificationsCountersActions } from '@/entities';
+import { notificationsCountersActions } from '@/entities/NotificationsCounters';
 
 const Messages = () => {
   const { id: chatId } = useParams<{ id: string }>()

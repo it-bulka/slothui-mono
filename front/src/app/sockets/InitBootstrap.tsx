@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useAppDispatch } from '@/shared/config/redux';
-import { initAuthUser, authUserActions, fetchNotificationsCountersThunk } from '@/entities';
+import { initAuthUser, authUserActions } from '@/entities/AuthUser';
+import { fetchNotificationsCountersThunk } from '@/entities/NotificationsCounters';
 import { TokenManager } from '@/shared/libs/services/tokenManager/TokenManager.ts';
 import { getServices } from '@/shared/libs/services';
 

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { Link } from 'react-router';
 
 interface StatisticsHrefs {

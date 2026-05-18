@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import { withSuspense } from '@/shared/libs';
+﻿import { lazy } from 'react';
+import { withSuspense } from '@/shared/libs/withSuspense';
 import { NotificationsPageLoader } from './NotificationsPageLoader';
 
 const NotificationsPageAsync = lazy(() => import('./NotificationsPage'));

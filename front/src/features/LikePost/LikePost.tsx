@@ -1,6 +1,6 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import LikeSvg from '@/shared/assets/images/post/like.svg?react'
-import { useToggleLikePost, usePostLikeSelect } from '@/entities';
+import { useToggleLikePost, usePostLikeSelect } from '@/entities/Post';
 import { memo, useCallback } from 'react';
 
 export const LikePost = memo(({ postId, showText = true, className }: { postId: string; showText?: boolean, className?: string }) => {

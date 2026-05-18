@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SidebarInfoCard } from '@/widgets/UserRightSidebar/ui/SidebarInfoCard'
-import { Typography, TypographyTypes } from '@/shared/ui'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
 
 const meta: Meta<typeof SidebarInfoCard> = {
   title: 'Widgets/UserRightSidebar/SidebarInfoCard',

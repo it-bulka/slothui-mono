@@ -1,4 +1,4 @@
-import { Skeleton } from "@/shared/ui";
+import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const ChatsPageLoader = () => {
   return (

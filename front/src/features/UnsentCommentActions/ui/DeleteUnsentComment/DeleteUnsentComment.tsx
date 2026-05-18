@@ -1,5 +1,5 @@
-import { useDeleteUnsentComment } from '@/entities';
-import { ActionButton } from '@/shared/ui';
+import { useDeleteUnsentComment } from '@/entities/Comment';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import DeleteIcon from '@/shared/assets/images/actions/delete.svg?react'
 
 export const DeleteUnsentComment = ({ commentId }: { commentId: string }) => {

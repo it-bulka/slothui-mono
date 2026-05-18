@@ -1,7 +1,6 @@
-import { CreateEventButton, DraftEventProvider } from '@/features';
+import { CreateEventButton, DraftEventProvider, type DraftEvent } from '@/features/CreateEvent';
 import { useCallback } from 'react';
-import type { DraftEvent } from '@/features';
-import { useCreateEvent } from '@/entities';
+import { useCreateEvent } from '@/entities/Event';
 import { memo } from 'react';
 
 export const CreateEvent = memo(() => {

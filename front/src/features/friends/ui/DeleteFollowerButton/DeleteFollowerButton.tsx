@@ -1,5 +1,5 @@
-import { ActionButton } from '@/shared/ui';
-import { useRemoveFollower } from '@/entities';
+import { ActionButton } from '@/shared/ui/ActionButton';
+import { useRemoveFollower } from '@/entities/Friends';
 import DeleteIcon from '@/shared/assets/images/actions/delete.svg?react'
 import { memo } from 'react';
 

@@ -1,6 +1,7 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '@/app/config';
-import { authUserActions, friendsActions, selectAuthUserId, resentFriendsActions } from '@/entities';
+import { authUserActions, selectAuthUserId } from '@/entities/AuthUser';
+import { friendsActions, resentFriendsActions } from '@/entities/Friends';
 
 export function handleFollowersUpdateListener(
   services: ServicesFacade,

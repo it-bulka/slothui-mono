@@ -3,7 +3,7 @@ import { SocketBootstrap } from '../../sockets/SocketBootstrap.tsx';
 import { InitBootstrap } from '../../sockets/InitBootstrap.tsx';
 import { store } from '../../config/store/config.ts';
 import { memo } from 'react';
-import { CustomToastContainer } from '@/shared/ui';
+import { CustomToastContainer } from '@/shared/ui/CustomToastContainer';
 
 export const AppLayout = memo(()=> {
   return (

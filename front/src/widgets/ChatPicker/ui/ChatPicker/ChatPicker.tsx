@@ -1,5 +1,6 @@
-import { useUserChatSelect, useFetchMyChats, useUserChatStateSelect } from '@/entities';
-import { Avatar, Skeleton } from '@/shared/ui';
+import { useUserChatSelect, useFetchMyChats, useUserChatStateSelect } from '@/entities/Chats';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { Skeleton } from '@/shared/ui/Skeleton';
 import { memo, useEffect } from 'react';
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
 

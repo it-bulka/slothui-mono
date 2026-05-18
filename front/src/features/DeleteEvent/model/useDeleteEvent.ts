@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useEventsService } from '@/shared/libs/services/context';
 import { useAppDispatch } from '@/shared/config/redux';
-import { eventsActions } from '@/entities';
+import { eventsActions } from '@/entities/Event';
 
 export const useDeleteEvent = () => {
   const eventsService = useEventsService();

@@ -1,4 +1,4 @@
-import { Chats } from '@/entities';
+import { Chats } from '@/entities/Chats/ui/Chats';
 import { useLocalChatsSearch } from '../../model/hooks/useLocalChatsSearch.tsx';
 import { memo } from 'react';
 

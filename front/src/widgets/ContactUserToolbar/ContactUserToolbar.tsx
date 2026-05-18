@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import ChatSvg from '@/shared/assets/images/sidebar/5.chat.svg?react';
 import { twMerge } from 'tailwind-merge';
 import { useOpenChatWithUser } from '@/features/OpenChatWithUser';

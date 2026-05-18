@@ -1,4 +1,5 @@
-import { Input, PasswordInput } from '@/shared/ui';
+import { Input } from '@/shared/ui/Input/Input'
+import { PasswordInput } from '@/shared/ui/PasswordInput';
 import { Controller } from 'react-hook-form';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 

@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { ResendUnsentComment } from '../ResendUnsentComment/ResendUnsentComment.tsx';
 import { DeleteUnsentComment } from '../DeleteUnsentComment/DeleteUnsentComment.tsx';
 import { useGetComment } from '@/entities/Comment';

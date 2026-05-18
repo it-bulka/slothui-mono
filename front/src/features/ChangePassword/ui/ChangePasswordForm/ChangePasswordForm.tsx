@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ChangePasswordFormData, changePasswordSchema } from '../../module';
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import { ChangePasswordInput } from '../ChangePasswordInput/ChangePasswordInput.tsx';
 import { useCallback, memo } from 'react';
 import { useUserService } from '@/shared/libs/services';

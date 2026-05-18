@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { UserSearchToolbar } from '@/features';
+import { UserSearchToolbar } from '@/features/user-search/ui/UserSearchToolbar/UserSearchToolbar';
 import { AddPostPanel } from '../AddPostPanel';
-import { ToolbarWrapper } from '@/shared/ui';
+import { ToolbarWrapper } from '@/shared/ui/ToolbarWrapper';
 
 export const PostsToolbar = memo(() => {
   return (

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
-import { deletePostThunk } from '@/entities';
+import { deletePostThunk } from '@/entities/Post';
 
 export const useDeletePost = () => {
   const dispatch = useAppDispatch();

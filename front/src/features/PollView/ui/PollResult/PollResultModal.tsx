@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux'
 import { fetchPollDetailsThunk } from '@/entities/Poll/model/thunk';
 import { selectPollOptions, selectPollAnonymous, selectPollLoading } from '@/entities/Poll/model/selectors/pollSelectors.ts';
-import { Modal, Card, ActionButton   } from '@/shared/ui';
+import { Modal } from '@/shared/ui/Modal'
+import { Card } from '@/shared/ui/Card/Card'
+import { ActionButton } from '@/shared/ui/ActionButton';
 import CloseImg from '@/shared/assets/images/actions/close.svg?react'
 import { PollResultFull } from './PollResulFull.tsx';
 

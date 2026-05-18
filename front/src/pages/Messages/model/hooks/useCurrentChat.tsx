@@ -1,7 +1,8 @@
 import { useMessagesService, useChatService } from '@/shared/libs/services';
 import { useAppDispatch } from '@/shared/config/redux';
 import { useEffect, useState } from 'react';
-import { useActiveChatId, useMessagesByChatSelect, useActiveChatDataSelector } from '@/entities';
+import { useActiveChatId, useActiveChatDataSelector } from '@/entities/Chats'
+import { useMessagesByChatSelect } from '@/entities/Message';
 
 export const useCurrentChat = () => {
   const messagesService = useMessagesService()

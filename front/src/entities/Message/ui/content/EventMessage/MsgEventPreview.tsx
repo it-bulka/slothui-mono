@@ -1,4 +1,5 @@
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { Link } from 'react-router';
 import { getEventsDetailsPage } from '@/shared/config';
 import ArrowSide from '@/shared/assets/images/general/arrow-up-right.svg?react'

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import type { NominatimPlace } from '../../type';
-import { Input, Button } from '@/shared/ui';
+import { Input } from '@/shared/ui/Input/Input'
+import { Button } from '@/shared/ui/Button/Button';
 
 type Props = {
   onSelect: (coords: [number, number], displayName: string) => void

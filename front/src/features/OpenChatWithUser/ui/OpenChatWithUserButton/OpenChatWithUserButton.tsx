@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import MessageIcon from '@/shared/assets/images/sidebar/message.svg?react';
 import { useOpenChatWithUser } from '../../model';
 

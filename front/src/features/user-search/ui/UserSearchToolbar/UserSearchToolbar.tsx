@@ -1,5 +1,5 @@
 import { useUserSearch } from '../../model/hooks/useUserSearch/useUserSearch.ts';
-import { SearchBar } from '@/shared/ui';
+import { SearchBar } from '@/shared/ui/SearchBar/SearchBar';
 import { UserSearchResults } from '@/features/user-search';
 import { memo } from 'react';
 

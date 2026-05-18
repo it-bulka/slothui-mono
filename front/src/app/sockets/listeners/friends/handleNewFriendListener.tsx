@@ -1,7 +1,9 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '@/app/config';
-import { NewFriendToast } from '@/shared/ui';
-import { authUserActions, friendsActions, selectAuthUserId, notificationsCountersActions } from '@/entities';
+import { NewFriendToast } from '@/shared/ui/NewFriendToast';
+import { authUserActions, selectAuthUserId } from '@/entities/AuthUser';
+import { friendsActions } from '@/entities/Friends';
+import { notificationsCountersActions } from '@/entities/NotificationsCounters';
 import { NotificationsMapper } from '@/entities/Notification';
 import { toast } from 'react-toastify'
 

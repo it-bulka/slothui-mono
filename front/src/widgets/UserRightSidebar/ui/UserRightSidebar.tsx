@@ -1,5 +1,6 @@
-import { Typography, TypographyTypes } from '@/shared/ui';
-import { Statistics } from '@/entities';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
+import { Statistics } from '@/entities/UsersProfiles';
 import { UserProfileData } from './UserProfileData/UserProfileData.tsx';
 import { UserContactInformation } from './UserContactInformation/UserContactInformation.tsx';
 import { useUserRightSidebar } from '../model/hooks/useUserRightSidebar.tsx';

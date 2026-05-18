@@ -1,4 +1,5 @@
-import { OpenChatWithUserButton, FollowButton, UnfollowButton } from '@/features';
+import { OpenChatWithUserButton } from '@/features/OpenChatWithUser';
+import { FollowButton, UnfollowButton } from '@/features/friends';
 
 export const ActionRow = ({
   userId,

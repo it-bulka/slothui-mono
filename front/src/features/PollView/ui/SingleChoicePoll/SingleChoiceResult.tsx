@@ -1,6 +1,8 @@
 import { memo, useId } from 'react';
 import { OptionLabel } from '../OptionLabel.tsx';
-import { Typography, TypographyTypes, RadioInput } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { RadioInput } from '@/shared/ui/RadioInput/RadioInput';
 import { PollResultWrapper } from '../PollResult/PollResultWrapper.tsx';
 import cls from '../common/styles.module.css';
 import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';

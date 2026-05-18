@@ -1,4 +1,4 @@
-import { CloseButton } from '@/shared/ui';
+import { CloseButton } from '@/shared/ui/CloseButton';
 
 export const ClearDraftButton = ({ onClick }: { onClick: () => void }) => {
   return (

@@ -1,4 +1,4 @@
-import { Modal, ModalCard } from '@/shared/ui';
+import { Modal, ModalCard } from '@/shared/ui/Modal';
 import { CreateGeoFormLazy } from '../CreateGeoForm/CreateGeoForm.async.tsx';
 
 export interface GeoModalProps {

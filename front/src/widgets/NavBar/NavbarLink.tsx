@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { Badge } from '@/shared/ui';
+import { Badge } from '@/shared/ui/Badge/Badge';
 import * as React from 'react';
 
 interface NavLinkProps {

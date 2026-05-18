@@ -1,4 +1,4 @@
-import { ActionButton } from '@/shared/ui';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import AttachSvg from '@/shared/assets/images/message/attach.svg?react'
 import { useBtnPopup } from '@/shared/hooks';
 import { memo, useLayoutEffect, useRef } from 'react';

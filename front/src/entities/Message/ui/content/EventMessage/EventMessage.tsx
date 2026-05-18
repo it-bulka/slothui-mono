@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { SharedInfo } from '../../SharedInfo/SharedInfo.tsx';
 import { MsgEventPreview } from './MsgEventPreview.tsx';
 import type { MessageWithEventDto } from '@/shared/types/message.dto.ts';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { AuthForm, RegisterForm } from '@/features';
-import { LinkBlock } from '@/shared/ui';
+import { AuthForm, RegisterForm } from '@/features/authUser';
+import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { getForgotPasswordPage, getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Helmet } from 'react-helmet-async';
 

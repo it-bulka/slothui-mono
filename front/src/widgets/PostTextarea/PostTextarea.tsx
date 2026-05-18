@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import AttachSvg from '@/shared/assets/images/message/attach.svg?react'
-import { DraftExtras, EmojiAction, SendAction } from '@/features';
+import { DraftExtras } from '@/features/DraftMessage';
+import { EmojiAction } from '@/features/EmojiAction';
+import { SendAction } from '@/features/SendAction';
 import { twMerge } from 'tailwind-merge';
 import { useAddEmojiIntoInput } from '@/features/EmojiAction';
 import { AttachAction } from '../AttachAction';
@@ -9,7 +11,7 @@ import {
   useDraftMessageText,
   withDraftMessageProvider
 } from '@/features/DraftMessage';
-import { useCreatePost } from '@/entities';
+import { useCreatePost } from '@/entities/Post';
 import { toast } from 'react-toastify';
 import { mapDraftToCreatePost } from './model';
 import { useIsPostCreating } from '@/features/PostComposer';

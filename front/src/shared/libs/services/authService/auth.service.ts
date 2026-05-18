@@ -1,7 +1,7 @@
 import { HttpService } from '../httpService/http.service.ts';
 import { API_BASE } from '@/shared/constants';
 import type { RegisterUserArgs, IAuthResponse } from '../../../types/auth.types.ts';
-import { getDeviceId } from '../../../libs';
+import { getDeviceId } from '@/shared/libs/getDeviceId';
 
 const AUTH_PATH = '/api/auth';
 export class AuthService {

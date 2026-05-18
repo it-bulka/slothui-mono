@@ -1,4 +1,4 @@
-import { AddPostBtn } from '@/features';
+import { AddPostBtn } from '@/features/AddPostBtn';
 import { PostTextarea } from '../../../PostTextarea/PostTextarea.tsx';
 import { useState, memo } from 'react';
 

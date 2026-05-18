@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/shared/config/redux';
 import { useEffect } from 'react';
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { usePostGroupedAttachments } from '@/entities/Post';
 
 const PostPage = () => {

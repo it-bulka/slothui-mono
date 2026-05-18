@@ -1,9 +1,9 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { FriendsState } from '../type/friends.type.ts';
 import { fetchFollowers } from '../thunk/fetchFollowers.thunk.ts';
 import { friendsAdapter } from '../adapter/friends.adapter.ts';
 import { mapFollowerDtoToEntity } from '../utils';
-import { addUniqueIds } from '@/shared/libs';
+import { addUniqueIds } from '@/shared/libs/addUniqueIds';
 
 export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<FriendsState>)=> {
   builder

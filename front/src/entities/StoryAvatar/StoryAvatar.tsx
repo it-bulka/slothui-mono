@@ -1,4 +1,4 @@
-import { ImageWithFallback } from '@/shared/ui';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png'
 interface StoryAvatarProps {
   avatarSrc: string;

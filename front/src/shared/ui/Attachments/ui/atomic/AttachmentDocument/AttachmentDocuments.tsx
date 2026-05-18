@@ -1,5 +1,5 @@
-import type { Attachment } from '../../../../../types';
-import { shortenMiddle } from '@/shared/libs';
+﻿import type { Attachment } from '../../../../../types';
+import { shortenMiddle } from '@/shared/libs/shortenMiddle';
 import type { ReactNode } from 'react';
 
 type AttachmentDocumentProps = Pick<Attachment, 'url' | 'originalName'> & {

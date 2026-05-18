@@ -1,8 +1,9 @@
-import { Feed } from '@/widgets';
-import { useSuggestedFriendsSelect } from '@/entities';
-import { FriendsList } from '@/features';
+import { Feed } from '@/widgets/Feed';
+import { useSuggestedFriendsSelect } from '@/entities/Friends';
+import { FriendsList } from '@/features/friends';
 import { useFriendActions } from '@/features/friends';
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 
 const MyFriendsSuggestions = () => {
   const friends = useSuggestedFriendsSelect();

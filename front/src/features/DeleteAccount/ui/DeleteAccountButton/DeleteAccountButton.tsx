@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import { DeleteAccountModal } from '../DeleteAccountModal/DeleteAccountModal.tsx';
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import { memo } from 'react';

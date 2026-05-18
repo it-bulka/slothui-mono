@@ -1,4 +1,4 @@
-import { Avatar, type AvatarProps } from '@/shared/ui';
+import { Avatar, type AvatarProps } from '@/shared/ui/Avatar/Avatar';
 import { twMerge } from 'tailwind-merge';
 
 

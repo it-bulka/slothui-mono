@@ -1,7 +1,9 @@
-import { Avatar, Typography, TypographyTypes } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import TrendUpSvg from '@/shared/assets/images/activity/trend-up.svg?react'
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
-import { useProfileAnalyticsSelect, useFetchProfileAnalytics } from '@/entities';
+import { useProfileAnalyticsSelect, useFetchProfileAnalytics } from '@/entities/ProfileAnalytics';
 import { useEffect, memo } from 'react';
 import classnames from 'classnames';
 

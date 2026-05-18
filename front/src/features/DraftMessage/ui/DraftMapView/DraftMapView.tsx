@@ -1,7 +1,7 @@
-import { MapView } from '@/entities';
+import { MapView } from '@/entities/Map';
 import { useDraftMessageExtras } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
 import { ClearDraftButton } from '../ClearDraftButton/ClearDraftButton.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const DraftMapView = () => {
   const { geo, clearGeo } = useDraftMessageExtras()

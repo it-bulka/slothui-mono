@@ -1,8 +1,10 @@
 import { type ReactNode, memo } from 'react';
-import { AvatarWithInfo, List, Typography } from '@/shared/ui';
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo'
+import { List } from '@/shared/ui/List/List'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
-import type { FriendEntity } from '@/entities';
+import type { FriendEntity } from '@/entities/Friends';
 import { Link } from 'react-router';
 import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 

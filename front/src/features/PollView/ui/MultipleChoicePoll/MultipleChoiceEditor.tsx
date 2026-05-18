@@ -1,11 +1,14 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useCallback, memo } from 'react';
-import { CheckboxInput, Typography, TypographyTypes, Button } from '@/shared/ui';
+import { CheckboxInput } from '@/shared/ui/CheckboxInput/CheckboxInput'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { Button } from '@/shared/ui/Button/Button';
 import { OptionLabel } from '@/features/PollView/ui/OptionLabel.tsx';
 import cls from '../common/styles.module.css'
 import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';
 import type { MultipleChoicePollDto } from '@/shared/types/poll.dto.ts';
-import type { PollDraft } from '@/features';
+import type { PollDraft } from '@/features/CreatePoll';
 
 const FORM_FIELD = 'answerIds'
 type FormValues = {

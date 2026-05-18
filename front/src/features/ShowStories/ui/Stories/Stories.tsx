@@ -1,11 +1,11 @@
-import { StoryAvatar } from '@/entities';
+import { StoryAvatar } from '@/entities/StoryAvatar';
 import ArrowRightSvg from '@/shared/assets/images/general/arrow-right.svg?react'
 import { useModalControl } from '@/shared/ui/Modal/model/useModuleControl.tsx';
 import { StoryModal } from '../StoriesModal/StoriesModal.tsx';
 import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import type { UserStories } from '@/shared/libs/services';
 import { usePrefetchStories } from '../../model/hooks/usePrefetchStories.tsx';
-import { useFlushStoriesViewed, useFlushStoriesOnExit } from '@/entities';
+import { useFlushStoriesViewed, useFlushStoriesOnExit } from '@/entities/Story';
 
 const StoryScrollButton = memo(({ onClick }: { onClick: () => void }) => {
   return (

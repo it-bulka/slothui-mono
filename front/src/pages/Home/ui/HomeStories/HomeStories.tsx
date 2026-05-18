@@ -1,5 +1,6 @@
-import { Stories } from '@/features';
-import { useFetchAllStories, useGroupedStoriesExcludingUser, useAuthUserSelector } from '@/entities';
+import { Stories } from '@/features/ShowStories';
+import { useFetchAllStories, useGroupedStoriesExcludingUser } from '@/entities/Story';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { useEffect, memo } from 'react';
 import { Skeleton } from '@/shared/ui/Skeleton';
 

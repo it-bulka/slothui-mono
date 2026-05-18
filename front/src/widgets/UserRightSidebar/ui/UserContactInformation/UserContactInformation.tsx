@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/shared/config/redux';
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { SidebarInfoCard } from '../SidebarInfoCard.tsx';
 import { ContactPlatformIcon } from '@/shared/ui/ContactPlatformIcon/ContactPlatformIcon';
 import {

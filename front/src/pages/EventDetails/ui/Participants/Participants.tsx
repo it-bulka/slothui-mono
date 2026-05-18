@@ -1,4 +1,9 @@
-import { Avatar, AvatarWithInfo, Button, List, Typography, TypographyTypes } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar'
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo'
+import { Button } from '@/shared/ui/Button/Button'
+import { List } from '@/shared/ui/List/List'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import ArrowUpRightSvg from '@/shared/assets/images/general/arrow-up-right.svg?react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useEventsService } from '@/shared/libs/services';

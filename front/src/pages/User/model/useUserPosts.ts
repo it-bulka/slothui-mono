@@ -1,4 +1,4 @@
-import { useFetchPostsByUser, useProfileFeedStateSelector, useProfilePostsSelector } from '@/entities';
+import { useFetchPostsByUser, useProfileFeedStateSelector, useProfilePostsSelector } from '@/entities/Post';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import type { PostWithAttachmentsDto } from '@/shared/types';
 import { usePostsService } from '@/shared/libs/services/context';

@@ -1,7 +1,7 @@
 import type { PollDto } from '@/shared/types/poll.dto.ts';
 import { MultipleChoiceEditor } from '../MultipleChoicePoll/MultipleChoiceEditor.tsx';
 import { SingleChoiceEditor } from '../SingleChoicePoll/SingleChoiceEditor.tsx';
-import type { PollDraft } from '@/features';
+import type { PollDraft } from '@/features/CreatePoll';
 
 type PollEditorProps = {
   poll: PollDto | PollDraft

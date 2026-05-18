@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { getPostPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import ArrowSide from '@/shared/assets/images/general/arrow-up-right.svg?react';
 

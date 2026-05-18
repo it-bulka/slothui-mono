@@ -1,15 +1,19 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import type { AnyAction } from '@reduxjs/toolkit';
-import {
-  analyticsReducer,
-  authUserReducer,
-  chatsReducer,
-  commentsReducer,
-  currentChatReducer, eventsReducer, friendsReducer,
-  messageReducer, notificationsCountersReducer, postsReducer, replyTargetReducer, storiesReducer, usersProfilesReducer,
-  usersSuggestionsReducer,
-  deleteProfileThunk
-} from '@/entities';
+import { analyticsReducer } from '@/entities/ProfileAnalytics';
+import { authUserReducer, deleteProfileThunk } from '@/entities/AuthUser';
+import { chatsReducer } from '@/entities/Chats';
+import { commentsReducer } from '@/entities/Comment';
+import { currentChatReducer } from '@/entities/CurrentChat';
+import { eventsReducer } from '@/entities/Event';
+import { friendsReducer } from '@/entities/Friends';
+import { messageReducer } from '@/entities/Message';
+import { notificationsCountersReducer } from '@/entities/NotificationsCounters';
+import { postsReducer } from '@/entities/Post';
+import { replyTargetReducer } from '@/entities/ReplyTarget';
+import { storiesReducer } from '@/entities/Story';
+import { usersProfilesReducer } from '@/entities/UsersProfiles';
+import { usersSuggestionsReducer } from '@/entities/UsersSugestions';
 import { postComposerReducer } from '@/features/PostComposer';
 import { pollDetailsReducer } from '@/entities/Poll';
 import { notificationsReducer } from '@/entities/Notification';

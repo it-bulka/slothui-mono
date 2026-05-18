@@ -1,5 +1,5 @@
-import { Button } from '@/shared/ui';
-import { useFollowUser } from '@/entities';
+import { Button } from '@/shared/ui/Button/Button';
+import { useFollowUser } from '@/entities/Friends';
 import { memo } from 'react';
 
 export const FollowButton = memo(({ userId }: { userId: string }) => {

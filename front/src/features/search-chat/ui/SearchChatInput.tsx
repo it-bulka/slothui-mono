@@ -1,4 +1,4 @@
-import { SearchBar } from '@/shared/ui';
+import { SearchBar } from '@/shared/ui/SearchBar/SearchBar';
 import { useChatSearchDebouncedText } from '@/features/search-chat/model/context/useChatSearchDebouncedText.tsx';
 import { useState, useCallback } from 'react';
 

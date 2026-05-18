@@ -1,4 +1,5 @@
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { SidebarInfoCard } from '@/widgets/UserRightSidebar/ui/SidebarInfoCard.tsx';
 import { UserContactInformation } from '@/widgets/UserRightSidebar/ui/UserContactInformation/UserContactInformation.tsx';
 import { MemberSince } from '@/widgets/UserRightSidebar/ui/MemberSince.tsx';

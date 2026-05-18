@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { PollVotersList } from './PollVotersList.tsx';
 import type { PollAnswerEntity } from '@/entities/Poll/model/type/pollDetails.state.ts';
 import { MorePollVotersButton } from '../../../MorePollVotersButton';

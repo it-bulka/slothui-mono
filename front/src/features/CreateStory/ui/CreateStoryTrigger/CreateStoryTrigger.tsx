@@ -1,7 +1,7 @@
 import { useRef, useCallback, memo } from 'react';
 import { useCreateStory } from '../../model/hooks/useCreateStory.ts';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png';
-import { ImageWithFallback } from '@/shared/ui';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 
 interface CreateStoryTriggerProps {
   variant: 'add-first' | 'add-more';

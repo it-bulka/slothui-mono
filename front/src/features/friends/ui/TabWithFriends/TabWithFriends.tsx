@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 import { useSearchParams } from 'react-router';
-import { Tab } from '@/shared/ui';
+import { Tab } from '@/shared/ui/Tab/Tab';
 import { FollowersTab } from '../FollowersTab/FollowersTab.tsx';
 import { FolloweeTab } from '../FolloweeTab/FolloweeTab.tsx';
 

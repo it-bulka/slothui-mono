@@ -1,4 +1,5 @@
-import { Typography, LineRange } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { LineRange } from '@/shared/ui/LineRange';
 import { memo } from 'react';
 interface Voter {
   id: string;
@@ -6,7 +7,7 @@ interface Voter {
   avatarUrl?: string | null;
 }
 import AvatarDefaultImg from '@/shared/assets/images/general/avatar-default.png'
-import { ImageWithFallback } from '@/shared/ui';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 
 interface OptionLableProps {
   value: string;

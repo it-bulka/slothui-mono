@@ -1,5 +1,5 @@
-import { AppLink } from '@/shared/ui';
-import { ThemeSelect } from '@/widgets';
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
+import { ThemeSelect } from '@/widgets/ThemeSelect';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { Helmet } from 'react-helmet-async';
 

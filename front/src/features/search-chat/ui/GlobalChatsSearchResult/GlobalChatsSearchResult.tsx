@@ -1,7 +1,9 @@
 import { useGlobalChatsSearch } from '../../model/hooks/useGlobalChatsSearch.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { memo, useCallback } from 'react';
-import { ChatRow, createPrivateChatThunk, useGoToChat } from '@/entities';
+import { ChatRow } from '@/entities/Chats/ui/ChatRow';
+import { createPrivateChatThunk } from '@/entities/Chats/model/thunk/createPrivateChat.thunk';
+import { useGoToChat } from '@/entities/Chats/model/hooks/useGoToChat';
 import { useAppDispatch } from '@/shared/config/redux';
 
 interface UserRowProps {

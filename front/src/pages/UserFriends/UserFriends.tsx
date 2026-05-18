@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { TabWithFriends } from '@/features';
+import { TabWithFriends } from '@/features/friends/ui/TabWithFriends/TabWithFriends';
 import { useAuthUserSelector } from '@/entities/AuthUser';
 
 const UserFriends = () => {

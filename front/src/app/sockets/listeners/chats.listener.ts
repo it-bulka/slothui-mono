@@ -1,6 +1,7 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '../../config';
-import { chatsActions, notificationsCountersActions } from '@/entities';
+import { chatsActions } from '@/entities/Chats';
+import { notificationsCountersActions } from '@/entities/NotificationsCounters';
 
 export const initChatsListeners = (services: ServicesFacade, store: AppStore) => {
   services.chat.onChatCreated().subscribe((chat) => {

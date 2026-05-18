@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { Button, Input } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { Input } from '@/shared/ui/Input/Input';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
-import { useAuthUserSelector } from '@/entities';
-import { ChangePasswordFormLazy, Sessions, DeleteAccountButton } from '@/features';
+import { useAuthUserSelector } from '@/entities/AuthUser';
+import { ChangePasswordFormLazy } from '@/features/ChangePassword';
+import { Sessions } from '@/features/Sessions';
+import { DeleteAccountButton } from '@/features/DeleteAccount';
 
 const AccountSettings = () => {
   const [isChangePassOpen, setChangePassOpen] = useState(false)

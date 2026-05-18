@@ -1,4 +1,4 @@
-import { SearchBar } from '@/shared/ui';
+import { SearchBar } from '@/shared/ui/SearchBar/SearchBar';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { debounce } from 'lodash';
 

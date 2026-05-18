@@ -1,7 +1,8 @@
 import { memo } from 'react';
-import { Typography, Tab } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { Tab } from '@/shared/ui/Tab/Tab';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
-import { Feed } from '@/widgets';
+import { Feed } from '@/widgets/Feed';
 import { useTypeTab } from '@/shared/hooks';
 import { LikedPostsContent } from './LikedPostsContent.tsx';
 import { LikedEventsContent } from './LikedEventsContent.tsx';

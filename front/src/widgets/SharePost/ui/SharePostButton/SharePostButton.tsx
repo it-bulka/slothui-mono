@@ -1,4 +1,4 @@
-import { ShareButton } from '@/shared/ui';
+import { ShareButton } from '@/shared/ui/ShareButton';
 
 interface SharePostButtonProps {
   onClick: () => void;

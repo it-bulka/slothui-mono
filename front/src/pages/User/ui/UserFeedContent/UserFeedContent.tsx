@@ -1,5 +1,5 @@
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/Typography/Typography'
 import { NoUserPostsYet } from './NoUserPostsYet.tsx';
 import { getMyPostsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';

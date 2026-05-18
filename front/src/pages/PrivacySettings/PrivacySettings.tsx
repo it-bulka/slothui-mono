@@ -1,5 +1,7 @@
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
-import { Typography, DropSelect, Button } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { DropSelect } from '@/shared/ui/DropSelect/DropSelect'
+import { Button } from '@/shared/ui/Button/Button';
 
 const visibility = [
   { value: 'all', label: 'All users' },

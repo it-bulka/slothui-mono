@@ -1,10 +1,6 @@
-import {
-  Chats,
-  useUserChatSelect,
-  useFetchMyChats,
-  useUserChatStateSelect,
-  chatsActions
-} from '@/entities';
+import { Chats } from '@/entities/Chats/ui/Chats';
+import { useUserChatSelect, useFetchMyChats, useUserChatStateSelect } from '@/entities/Chats/model/hooks';
+import { chatsActions } from '@/entities/Chats/model/slice';
 import { memo, useCallback, useEffect } from 'react';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useAppDispatch } from '@/shared/config/redux';

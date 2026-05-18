@@ -1,5 +1,7 @@
 import { memo } from 'react';
-import { LikePost, CommentPost, SavePost } from '@/features';
+import { LikePost } from '@/features/LikePost';
+import { CommentPost } from '@/features/CommentPost';
+import { SavePost } from '@/features/SavePost';
 import { SharePost } from '../../SharePost';
 import { useMediaQuery } from '@/shared/hooks';
 

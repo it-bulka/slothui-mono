@@ -1,4 +1,4 @@
-import { Badge } from '@/shared/ui'
+import { Badge } from '@/shared/ui/Badge/Badge'
 import DownArrow from '@/shared/assets/images/message/down-arrow.svg?react'
 import cls from './NewMsgAmountBadge.module.css'
 import classnames from 'classnames'

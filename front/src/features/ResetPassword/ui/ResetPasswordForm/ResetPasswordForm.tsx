@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button';
 import { type ResetPasswordFormData, resetPasswordSchema } from '../../model';
 import { useForm } from 'react-hook-form';
 import { useCallback } from 'react';

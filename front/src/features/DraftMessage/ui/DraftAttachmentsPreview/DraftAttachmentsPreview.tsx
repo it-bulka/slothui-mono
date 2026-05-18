@@ -4,7 +4,7 @@ import { MediaGrid } from '../MediaGrid/MediaGrid.tsx';
 import {
   useDraftMessageExtras
 } from '../../model/context/DraftMessageExtrasProvider/useDraftMessageExtras.tsx';
-import { Typography } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography';
 
 export const DraftAttachmentsPreview = () => {
   const { attachments, groupedDraftAttachments, removeAttachment } = useDraftMessageExtras()

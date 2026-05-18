@@ -1,6 +1,7 @@
-import { AvatarWithInfo, MoreButton } from '@/shared/ui';
+import { AvatarWithInfo } from '@/shared/ui/Avatar/AvatarWithInfo'
+import { MoreButton } from '@/shared/ui/MoreButton';
 import { Link, useNavigate } from 'react-router';
-import { useActiveChatDataSelector } from '@/entities';
+import { useActiveChatDataSelector } from '@/entities/Chats';
 import { memo, useCallback } from 'react';
 import { getUserPage, RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useDeleteChat, DeleteChatModal, ChatActionsMenu } from '@/features/DeleteChat';

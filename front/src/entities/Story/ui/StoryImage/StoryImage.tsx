@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ProgressBar } from '@/shared/ui';
+import { ProgressBar } from '@/shared/ui/ProgressBar';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { useProgressOnDuration } from '@/shared/hooks/useProgress/useProgressOnDuration.tsx';
 

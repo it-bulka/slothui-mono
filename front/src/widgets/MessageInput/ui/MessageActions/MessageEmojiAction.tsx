@@ -1,4 +1,4 @@
-import { EmojiAction } from '@/features';
+import { EmojiAction } from '@/features/EmojiAction';
 import { useDraftMessageText } from '@/features/DraftMessage';
 
 export const MessageEmojiAction = () => {

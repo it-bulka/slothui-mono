@@ -1,5 +1,5 @@
-import { Stories } from '@/features';
-import { useFetchStoriesByUser, useGroupedStoriesByUserSelect } from '@/entities';
+import { Stories } from '@/features/ShowStories';
+import { useFetchStoriesByUser, useGroupedStoriesByUserSelect } from '@/entities/Story';
 import { useEffect } from 'react';
 import { BlockTitle } from '@/widgets/BlockTitle/BlockTitle.tsx';
 

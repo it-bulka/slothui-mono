@@ -1,4 +1,4 @@
-import { Modal } from '@/shared/ui';
+import { Modal } from '@/shared/ui/Modal';
 import { ConfirmDeleteAccountButton } from '../ConfirmDeleteAccount/ConfirmDeleteAccount.tsx';
 
 interface DeleteAccountModalProps {

@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { useGetRepliesIds } from '@/entities/Comment';
-import { CommentItem } from '@/entities';
+import { CommentItem } from '@/entities/Comment';
 import { ViewsRepliesButton } from '../ViewsRepliesButton/ViewsRepliesButton.tsx';
-import { UnsentCommentActions } from '@/features';
+import { UnsentCommentActions } from '@/features/UnsentCommentActions';
 
 const INDENT_CLASSES = ['pl-0', 'pl-2', 'pl-4', 'pl-6', 'pl-8', 'pl-10', 'pl-12', 'pl-14', 'pl-16'] as const;
 

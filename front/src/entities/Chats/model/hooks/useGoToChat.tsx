@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useCallback } from 'react';
 import { getMessagesWithUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import { chatsActions } from '@/entities';
+import { chatsActions } from '@/entities/Chats';
 import { useAppDispatch } from '@/shared/config/redux';
 
 export const useGoToChat = () => {

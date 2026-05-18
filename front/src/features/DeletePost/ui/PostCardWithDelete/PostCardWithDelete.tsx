@@ -1,4 +1,4 @@
-import { MoreButton } from '@/shared/ui';
+import { MoreButton } from '@/shared/ui/MoreButton';
 import { PostCard, type PostCardProps } from '@/widgets/PostCard/PostCard.tsx';
 import { useDeletePost } from '../../model/useDeletePost.ts';
 import { PostActionsMenu } from '../PostActionsMenu/PostActionsMenu.tsx';

@@ -1,9 +1,16 @@
-import { AvatarWithStatus, Typography, TypographyTypes } from '@/shared/ui';
-import { NotificationAction, MessageAction, SettingAction, ThemeToggleAction } from '@/features';
-import { FriendSuggestions } from '@/entities';
-import { ProfileActivity, UpcomingEvents, CurrentUserStories } from '@/widgets';
+import { AvatarWithStatus } from '@/shared/ui/Avatar/AvatarWithStatus'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
+import { NotificationAction } from '@/features/NotificationAction';
+import { MessageAction } from '@/features/MessageAction';
+import { SettingAction } from '@/features/SettingAction';
+import { ThemeToggleAction } from '@/features/ThemeToggleAction';
+import { FriendSuggestions } from '@/entities/FriendSuggestions';
+import { ProfileActivity } from '@/widgets/ProfileActitvity';
+import { UpcomingEvents } from '@/widgets/UpcomingEvents';
+import { CurrentUserStories } from '@/widgets/CurrentUserStories';
 import { CurrentUserStatistics } from './CurrentUserStatistics/CurrentUserStatistics.tsx';
-import { useAuthUserSelector } from '@/entities';
+import { useAuthUserSelector } from '@/entities/AuthUser';
 import { SidebarInfoCard } from '@/widgets/UserRightSidebar/ui/SidebarInfoCard.tsx';
 import { UserContactInformation } from '@/widgets/UserRightSidebar/ui/UserContactInformation/UserContactInformation.tsx';
 

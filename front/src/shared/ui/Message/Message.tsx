@@ -2,7 +2,8 @@ import { type PropsWithChildren, memo } from 'react';
 import cls from './Message.module.css'
 import classnames from 'classnames';
 import { twMerge } from 'tailwind-merge';
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 
 
 export interface MessageProps {

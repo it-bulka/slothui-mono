@@ -1,8 +1,8 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { EventsState } from '../types/event.type.ts';
 import { fetchMyEventsThunk } from '../thunk';
 import { eventsAdapter } from '../slice/event.adapter.ts';
-import { addUniqueIds } from '@/shared/libs';
+import { addUniqueIds } from '@/shared/libs/addUniqueIds';
 
 export const fetchMyEventsExtraReducer = (builder: ActionReducerMapBuilder<EventsState>) => {
   builder.addCase(fetchMyEventsThunk.fulfilled, (state, action) => {

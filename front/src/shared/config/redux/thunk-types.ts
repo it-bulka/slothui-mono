@@ -1,4 +1,4 @@
-import type { ErrorHelper } from '../../libs';
+import type { ErrorHelper } from '@/shared/libs/errorHelper';
 import type { getServices } from '@/shared/libs/services';
 import type { RootState } from '@/app/config';
 

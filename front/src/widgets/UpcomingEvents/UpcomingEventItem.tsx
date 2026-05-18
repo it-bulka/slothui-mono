@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router';
-import { Avatar } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { getCategoryConfig } from '@/entities/Event/lib/categoryConfig';
 import { getEventsDetailsPage } from '@/shared/config';
 import type { EventDTO } from '@/shared/libs/services/eventsService/events.type';

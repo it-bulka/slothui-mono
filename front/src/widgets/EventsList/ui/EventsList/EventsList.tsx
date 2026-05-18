@@ -1,7 +1,8 @@
-import { SubscribeEventButton } from '@/features';
+import { SubscribeEventButton } from '@/features/subscribeToEvent';
 import { EventCardWithDelete } from '@/features/DeleteEvent';
 import type { EventDTO } from '@/shared/libs/services/eventsService/events.type.ts';
-import { formatDate, startOfToday, isEventPast } from '@/shared/libs';
+import { formatDate } from '@/shared/libs/formatDate';
+import { startOfToday, isEventPast } from '@/shared/libs/isEventPast';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { getMyEventsPage, getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useMemo } from 'react';

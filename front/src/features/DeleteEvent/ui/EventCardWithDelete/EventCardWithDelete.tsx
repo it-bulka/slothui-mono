@@ -1,4 +1,4 @@
-import { MoreButton } from '@/shared/ui';
+import { MoreButton } from '@/shared/ui/MoreButton';
 import { EventCard, type EventCardProps } from '@/entities/Event/ui/EventCard/EventCard.tsx';
 import { useDeleteEvent } from '../../model/useDeleteEvent.ts';
 import { EventActionsMenu } from '../EventActionsMenu/EventActionsMenu.tsx';

@@ -1,6 +1,6 @@
 import type { ChatDTO } from '@/shared/types/chat.types.ts';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { searchChatsThunk, selectSortedChats } from '@/entities';
+import { searchChatsThunk, selectSortedChats } from '@/entities/Chats';
 import { debounce } from 'lodash';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import { useChatSearchDebouncedText } from '@/features/search-chat/model/context/useChatSearchDebouncedText.tsx';

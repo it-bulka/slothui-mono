@@ -1,6 +1,9 @@
 import { lazy, memo, Suspense, useState } from 'react'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
-import { Typography, TypographyTypes, Input, CheckboxInput } from '@/shared/ui'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
+import { Input } from '@/shared/ui/Input/Input'
+import { CheckboxInput } from '@/shared/ui/CheckboxInput/CheckboxInput'
 import type { DraftEvent } from '../../model/types/event.type'
 import { SectionLabel } from './SectionLabel'
 

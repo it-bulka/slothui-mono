@@ -1,7 +1,11 @@
-import { Button, Typography, Input, ModalCard, Modal } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button/Button'
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { Input } from '@/shared/ui/Input/Input'
+import { ModalCard, Modal } from '@/shared/ui/Modal';
 import { memo } from 'react';
 import DeleteSvg from '@/shared/assets/images/actions/delete.svg?react'
-import { Toggler, Error } from '@/shared/ui';
+import { Toggler } from '@/shared/ui/Toggler'
+import { Error } from '@/shared/ui/Error';
 import { Controller } from 'react-hook-form';
 import { usePollForm } from '../../model/libs';
 import type { PollDraft } from '../../model/types/poll.types.tsx';

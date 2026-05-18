@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { getServices } from '@/shared/libs/services';
-import { authUserActions } from '@/entities';
-import { deleteTokenToLocalStorage, ErrorHelper } from '@/shared/libs';
+import { authUserActions } from '@/entities/AuthUser';
+import { deleteTokenToLocalStorage } from '@/shared/libs/token/deleteTokenLocalStorage/deleteTokenLocalStorage';
+import { ErrorHelper } from '@/shared/libs/errorHelper';
 import { rootReducer } from './appReducer.ts';
 
 const services = getServices();

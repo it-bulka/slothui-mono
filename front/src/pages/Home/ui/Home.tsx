@@ -1,8 +1,9 @@
-import { Feed, PostsToolbar } from '@/widgets';
+import { Feed } from '@/widgets/Feed';
+import { PostsToolbar } from '@/widgets/PostsToolbar';
 import { HomeEventContent } from './HomeEventContent/HomeEventContent.tsx';
 import { HomeStories } from './HomeStories/HomeStories.tsx';
 import { HomeFeedContent } from './HomeFeedContent/HomeFeedContent.tsx';
-import { Tab } from '@/shared/ui';
+import { Tab } from '@/shared/ui/Tab/Tab';
 import { useInitHomePage } from '../model';
 import { useLocation } from 'react-router';
 import { Helmet } from 'react-helmet-async';

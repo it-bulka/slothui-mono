@@ -1,4 +1,5 @@
-import { Modal, ModalCard, Button } from '@/shared/ui';
+import { Modal, ModalCard } from '@/shared/ui/Modal'
+import { Button } from '@/shared/ui/Button/Button';
 
 interface DeleteStoryModalProps {
   isOpen: boolean;

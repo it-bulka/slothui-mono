@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useChatService } from '@/shared/libs/services/context';
 import { useAppDispatch } from '@/shared/config/redux';
-import { chatsActions } from '@/entities';
+import { chatsActions } from '@/entities/Chats/model/slice';
 
 export const useDeleteChat = () => {
   const chatService = useChatService();

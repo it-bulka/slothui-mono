@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NoDataYet } from '@/shared/ui'
+import { NoDataYet } from '@/shared/ui/NoDataYet/NoDataYet'
 import noPostsImage from '@/shared/assets/images/general/no_posts_2.png'
 import { PostTextarea } from '@/widgets/PostTextarea/PostTextarea.tsx'
 

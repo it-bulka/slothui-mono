@@ -1,6 +1,7 @@
-import { Feed, AddPostPanel } from '@/widgets';
+import { Feed } from '@/widgets/Feed';
+import { AddPostPanel } from '@/widgets/AddPostPanel';
 import { MyFeedContent } from './ui/MyFeedContent/MyFeedContent.tsx';
-import { AppLink } from '@/shared/ui';
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 
 const Me = () => {

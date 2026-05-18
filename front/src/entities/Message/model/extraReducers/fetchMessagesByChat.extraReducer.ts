@@ -1,6 +1,6 @@
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
+﻿import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type { MessagesState } from '../type/messageState.type.ts';
-import { addUniqueIds } from '@/shared/libs';
+import { addUniqueIds } from '@/shared/libs/addUniqueIds';
 import { fetchMessagesByChatThunk } from '../thunk/fetchMessagesByChat.tsx';
 import { messagesAdapter } from '../adapter/messages.adapter.ts';
 

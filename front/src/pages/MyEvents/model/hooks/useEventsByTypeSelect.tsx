@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { EventsContentType } from '@/pages/MyEvents/model/types/eventOption.type';
-import { useEventsByUserSelect, useSubscribedEventsSelect, useUpcomingEventsSelect } from '@/entities';
+import { useEventsByUserSelect, useSubscribedEventsSelect, useUpcomingEventsSelect } from '@/entities/Event';
 
 export const useEventsByTypeSelect = (userId: string, type: EventsContentType) => {
   const userEvents = useEventsByUserSelect(userId);

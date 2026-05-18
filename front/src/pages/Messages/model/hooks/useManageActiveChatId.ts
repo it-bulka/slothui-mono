@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSetActiveChatId, useFetchMyChats, useActiveChatDataSelector } from '@/entities';
+import { useSetActiveChatId, useFetchMyChats, useActiveChatDataSelector } from '@/entities/Chats';
 
 export const useManageActiveChatId = (chatId?: string) => {
   const { setActiveChatId }  = useSetActiveChatId()

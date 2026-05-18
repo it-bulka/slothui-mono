@@ -1,7 +1,7 @@
 import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/ServicesFacade.ts';
 import type { AppStore } from '../../config';
 import { NotificationsMapper } from '@/entities/Notification';
-import { NotificationToast } from '@/shared/ui';
+import { NotificationToast } from '@/shared/ui/NotificationToast/NotificationToast';
 import { CommentSocketEvents } from '@/shared/libs/services/commentsService/comments.events.ts';
 import { toast } from 'react-toastify';
 

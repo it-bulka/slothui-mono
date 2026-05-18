@@ -1,6 +1,6 @@
 import { Virtuoso, type ListRange } from 'react-virtuoso'
-import { useChatMetaSelect } from '@/entities'
-import { Typography } from '@/shared/ui'
+import { useChatMetaSelect } from '@/entities/Message'
+import { Typography } from '@/shared/ui/Typography/Typography'
 import { useRef, useMemo, memo, useCallback } from 'react'
 import type { VirtuosoHandle } from 'react-virtuoso'
 import {

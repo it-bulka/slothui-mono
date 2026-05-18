@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form'
-import { FileInput } from '@/shared/ui'
+import { FileInput } from '@/shared/ui/FileIput/FileInput'
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png'
 import type { Control } from 'react-hook-form'
 import type { ProfileFormValues } from '../../model'

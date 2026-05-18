@@ -1,5 +1,6 @@
-import { SocialBtnsOauth } from '@/features';
-import { Typography, TypographyTypes } from '@/shared/ui';
+import { SocialBtnsOauth } from './SocialBtnsOauth.tsx';
+import { Typography } from '@/shared/ui/Typography/Typography'
+import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import type { ReactNode } from 'react';
 import { useAuthUserErrorSelector, useAuthUserLoadingSelector } from '@/entities/AuthUser';
 import { twMerge } from 'tailwind-merge';
