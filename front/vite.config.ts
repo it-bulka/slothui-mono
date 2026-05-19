@@ -58,6 +58,9 @@ export default defineConfig({
           'chunk-swiper':    ['swiper'],
           'chunk-select':    ['react-select'],
           'vendor-toast':    ['react-toastify'],
+          'chunk-tw-merge':  ['tailwind-merge'],
+          'chunk-rhf':       ['react-hook-form'],
+          'chunk-helmet':    ['react-helmet-async'],
         }
       }
     }
