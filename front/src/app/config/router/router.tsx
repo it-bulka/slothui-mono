@@ -1,7 +1,9 @@
 import { RoutePaths, UserRelativePaths, AuthRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
+import { RightSidebarLazy } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebar.async';
 import { RightSidebarSkeleton } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebarSkeleton.tsx';
+import { UserRightSidebarLazy } from '@/widgets/UserRightSidebar/ui/UserRightSidebar.async';
 import { HomePage } from '@/pages/Home';
 import { MessagesPage } from '@/pages/Messages';
 import { FriendsPage } from '@/pages/Friends';
@@ -36,17 +38,7 @@ import {
   AppLayout
 } from '../../layouts';
 
-import UserLayout from '@/pages/User/ui/UserLayout.tsx';
-
-const RightSidebarLazy = lazy(() =>
-  import('../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebar')
-    .then(m => ({ default: m.RightSidebar }))
-);
-
-const UserRightSidebarLazy = lazy(() =>
-  import('@/widgets/UserRightSidebar/ui/UserRightSidebar')
-    .then(m => ({ default: m.UserRightSidebar }))
-);
+import { UserLayoutLazy } from '../../layouts/UserLayout/UserLayout.async';
 
 export const router = createBrowserRouter([
   {
@@ -108,7 +100,7 @@ export const router = createBrowserRouter([
         errorElement: <ErrorBoundary />,
         children: [
           {
-            element: <UserLayout />,
+            element: <UserLayoutLazy />,
             children: [
               { index: true, element: <UserPage /> },
               { path: UserRelativePaths.friends, element: <UserFriendsPage /> }

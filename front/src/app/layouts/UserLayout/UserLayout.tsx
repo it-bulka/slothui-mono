@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useParams, Outlet } from 'react-router';
 import { Drawer } from '@/shared/ui/Drawer';
-import { UserMobileTopBar } from './UserMobileTopBar/UserMobileTopBar.tsx';
-import { UserDetailsDrawerContent } from './UserDetailsDrawerContent/UserDetailsDrawerContent.tsx';
+import { UserMobileTopBar } from '@/pages/User/ui/UserMobileTopBar/UserMobileTopBar.tsx';
+import { UserDetailsDrawerContent } from '@/pages/User/ui/UserDetailsDrawerContent/UserDetailsDrawerContent.tsx';
 
 const UserLayout = () => {
   const { id: userId } = useParams<{ id: string }>();
