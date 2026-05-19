@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "ignoreCommand": "[ \"$VERCEL_FORCE_NO_BUILD_CACHE\" != \"1\" ] && [ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && [ \"$VERCEL_GIT_PREVIOUS_SHA\" != \"$VERCEL_GIT_COMMIT_SHA\" ] && ! git diff $VERCEL_GIT_PREVIOUS_SHA HEAD --name-only | grep -q '^front/'",
+  "ignoreCommand": "git fetch --deepen=2 2>/dev/null; ! git diff HEAD~1 HEAD --name-only 2>/dev/null | grep -q '^front/'",
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
