@@ -3,7 +3,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import svgr from 'vite-plugin-svgr';
-// import { visualizer } from 'rollup-plugin-visualizer'; // розкоментувати для аналізу бандлу
+import svgo from 'vite-plugin-svgo';
+import viteImagemin from 'vite-plugin-imagemin';
+//import { visualizer } from 'rollup-plugin-visualizer'; // розкоментувати для аналізу бандлу
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,7 +18,25 @@ export default defineConfig({
     react(),
     tailwindcss(),
     svgr(),
-    // visualizer({ open: true, gzipSize: true, filename: 'dist/stats.html' }),
+    svgo({
+      multipass: true,
+      plugins: [
+        {
+          name: 'preset-default',
+          params: {
+            overrides: {
+              removeViewBox: false,
+            },
+          },
+        },
+      ],
+    }),
+    viteImagemin({
+      mozjpeg: { quality: 75 },
+      pngquant: { quality: [0.65, 0.8] },
+      svgo: false,
+    }),
+    //visualizer({ open: true, gzipSize: true, filename: 'dist/stats.html' }),
   ],
   resolve: {
     alias: [{

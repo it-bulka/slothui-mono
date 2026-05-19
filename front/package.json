@@ -81,6 +81,8 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-svgo": "^2.0.0",
     "vitest": "^4.1.5"
   }
 }
