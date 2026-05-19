@@ -2,12 +2,12 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-COPY front/package.json ./front/
 COPY back/package.json ./back/
 COPY back/nest-cli.json back/tsconfig.json back/tsconfig.build.json ./back/
 COPY back/src ./back/src
 
-RUN npm ci
+RUN mkdir -p front && printf '{"name":"front","private":true}' > front/package.json
+RUN npm ci --workspace=back
 RUN npm run build --workspace=back
 RUN mkdir -p back/dist/docs/ws && cp back/src/docs/ws/*.yaml back/dist/docs/ws/
 
