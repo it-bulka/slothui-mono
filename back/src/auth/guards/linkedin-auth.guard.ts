@@ -1,8 +1,9 @@
 import { AuthGuard } from '@nestjs/passport';
 import { LinkedInConfig } from '../config';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
+@Injectable()
 export class LinkedInAuthGuard extends AuthGuard('linkedin') {
   constructor(private readonly config: LinkedInConfig) {
     super();

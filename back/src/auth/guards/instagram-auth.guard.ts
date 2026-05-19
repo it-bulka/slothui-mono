@@ -1,8 +1,9 @@
 import { AuthGuard } from '@nestjs/passport';
 import { InstagramConfig } from '../config';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
+@Injectable()
 export class InstagramAuthGuard extends AuthGuard('instagram') {
   constructor(private readonly instaConfig: InstagramConfig) {
     super();

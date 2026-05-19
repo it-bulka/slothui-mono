@@ -1,8 +1,9 @@
 import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { FacebookConfig } from '../config';
 
+@Injectable()
 export class FacebookAuthGuard extends AuthGuard('facebook') {
   constructor(private readonly fBConfig: FacebookConfig) {
     super();

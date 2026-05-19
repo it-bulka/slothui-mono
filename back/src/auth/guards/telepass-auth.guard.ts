@@ -1,8 +1,9 @@
 import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { TelepassConfig } from '../config';
 
+@Injectable()
 export class TelepassAuthGuard extends AuthGuard('telegram') {
   constructor(private readonly config: TelepassConfig) {
     super();
