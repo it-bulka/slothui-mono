@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { buildAsyncApiDocs } from './docs/ws/config';
@@ -25,6 +26,14 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
+  app.use(
+    session({
+      secret: config.getOrThrow<string>('SESSION_SECRET'),
+      resave: false,
+      saveUninitialized: false,
+      cookie: { secure: false, maxAge: 5 * 60 * 1000 },
+    }),
+  );
 
   app.useGlobalFilters(new GlobalExceptionFilter());
 
