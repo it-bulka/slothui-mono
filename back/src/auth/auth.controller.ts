@@ -27,8 +27,9 @@ import {
   TwitterAuthGuard,
   LinkedInAuthGuard,
   GithubAuthGuard,
-  TelepassAuthGuard,
+  TelegramHashGuard,
 } from './guards';
+import { TelegramLoginDto } from './dto/telegram-login.dto';
 import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -239,22 +240,20 @@ export class AuthController {
   }
 
   @ApiTags('OAuth')
-  @UseGuards(TelepassAuthGuard)
-  @Get('telegram/login')
-  @ApiOperation({ summary: 'Initiate Telegram login via Telepass' })
-  telegramLogin() {}
-
-  @ApiTags('OAuth')
-  @UseGuards(TelepassAuthGuard)
-  @Get('telegram/callback')
-  @ApiOAuthCallback('Telegram')
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @UseGuards(TelegramHashGuard)
+  @Post('telegram/callback')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Authenticate via Telegram Login Widget' })
   async telegramCallback(
-    @Query('state') state: string,
-    @Query('deviceId') deviceId: string,
-    @Request() req: AuthRequest,
-    @Response() res: ExpressResponse,
+    @Body() dto: TelegramLoginDto,
+    @Request() req: ExpressRequest,
+    @Response({ passthrough: true }) res: ExpressResponse,
   ) {
-    await this._handleOAuthRedirect({ req, res, state, deviceId });
+    const { accessToken, refreshToken, profile, linkedProviders } =
+      await this.authService.loginWithTelegram(dto, req);
+    this.authService.attachRefreshTokenToCookie(res, refreshToken);
+    return { profile, token: accessToken, linkedProviders };
   }
 
   async _handleOAuthRedirect({

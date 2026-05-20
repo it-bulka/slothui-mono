@@ -7,4 +7,3 @@ export { InstagramStrategy } from './instagram.strategy';
 export { TwitterStrategy } from './twitter.strategy';
 export { LinkedInStrategy } from './linkedIn.strategy';
 export { GithubStrategy } from './github.strategy';
-export { TelegramStrategy } from './telegram.strategy';

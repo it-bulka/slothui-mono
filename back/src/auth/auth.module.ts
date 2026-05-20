@@ -16,7 +16,7 @@ import {
   TwitterConfig,
   LinkedInConfig,
   GithubConfig,
-  TelepassConfig,
+  TelegramConfig,
 } from './config';
 import {
   FacebookStrategy,
@@ -28,7 +28,6 @@ import {
   TwitterStrategy,
   LinkedInStrategy,
   GithubStrategy,
-  TelegramStrategy,
 } from './strategies';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailerModule } from '../mailer/mailer.module';
@@ -58,7 +57,7 @@ import { EmailVerificationModule } from '../email-verification/email-verificatio
     TwitterConfig,
     LinkedInConfig,
     GithubConfig,
-    TelepassConfig,
+    TelegramConfig,
     // OAUTH STRATEGIES
     LocalStrategy,
     JwtStrategy,
@@ -69,7 +68,6 @@ import { EmailVerificationModule } from '../email-verification/email-verificatio
     TwitterStrategy,
     LinkedInStrategy,
     GithubStrategy,
-    TelegramStrategy,
   ],
   exports: [AuthService],
 })

@@ -7,4 +7,4 @@ export { InstagramAuthGuard } from './instagram-auth.guard';
 export { TwitterAuthGuard } from './twitter-auth.guard';
 export { LinkedInAuthGuard } from './linkedin-auth.guard';
 export { GithubAuthGuard } from './github-auth.guard';
-export { TelepassAuthGuard } from './telepass-auth.guard';
+export { TelegramHashGuard } from './telegram-auth.guard';

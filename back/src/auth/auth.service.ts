@@ -26,6 +26,7 @@ import { MailService } from '../mailer/mailer.service';
 import { SessionService } from '../session/session.service';
 import { getReqIP } from '../common/utils/getReqIP';
 import { EmailVerificationService } from '../email-verification/email-verification.service';
+import { TelegramLoginDto } from './dto/telegram-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -247,6 +248,23 @@ export class AuthService {
       avatarUrl,
       email,
     });
+  }
+
+  async loginWithTelegram(dto: TelegramLoginDto, req: Request) {
+    const user = await this.validateOAuthUser({
+      provider: AuthProvider.TELEGRAM,
+      providerId: String(dto.id),
+      nickname:
+        [dto.first_name, dto.last_name].filter(Boolean).join(' ') ||
+        String(dto.id),
+      username: dto.username || dto.first_name || String(dto.id),
+      avatarUrl: dto.photo_url ?? undefined,
+    });
+    return this.login(
+      { id: user.id, role: user.role },
+      dto.deviceId ?? '',
+      req,
+    );
   }
 
   buildRedirectUrl(rawUrl: string | undefined, accessToken: string): string {
