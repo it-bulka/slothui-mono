@@ -16,7 +16,7 @@ export const TelegramLoginWidget = () => {
   useEffect(() => {
     if (!ref.current || !BOT_USERNAME) return;
 
-    (window as Record<string, unknown>).onTelegramAuth = (user: TelegramWidgetUser) => {
+    (window as unknown as Record<string, unknown>).onTelegramAuth = (user: TelegramWidgetUser) => {
       dispatch(loginWithTelegramWidget(user))
         .unwrap()
         .then((res) => {
@@ -37,7 +37,7 @@ export const TelegramLoginWidget = () => {
     ref.current.appendChild(script);
 
     return () => {
-      delete (window as Record<string, unknown>).onTelegramAuth;
+      delete (window as unknown as Record<string, unknown>).onTelegramAuth;
     };
   }, [dispatch, navigate, updateToken]);
 

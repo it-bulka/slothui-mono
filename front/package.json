@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:analyze": "vite build --mode production && open dist/stats.html",
+    " ": "vite build --mode production && open dist/stats.html",
     "lint": "eslint .",
     "preview": "vite preview",
     "madge": "madge src --extensions ts,tsx --ts-config tsconfig.json --circular",
