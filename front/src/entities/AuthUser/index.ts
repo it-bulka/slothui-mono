@@ -1,6 +1,8 @@
 export { authUserReducer } from './model/slice.ts';
 export type { IUser } from './types/User.ts';
 export { loginUser } from './model/login/loginUser.thunk.ts';
+export { loginWithTelegramWidget } from './model/login/loginWithTelegramWidget.thunk.ts';
+export type { TelegramWidgetUser } from './model/login/loginWithTelegramWidget.thunk.ts';
 export {
   useAuthUserSelector,
   useAuthUserLoadingSelector,

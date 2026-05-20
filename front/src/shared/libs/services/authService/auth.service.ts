@@ -68,8 +68,12 @@ export class AuthService {
     window.location.href = `${API_BASE}${AUTH_PATH}/github/login?deviceId=${this.deviceId}`
   }
 
-  async loginWithTelegram(){
-    window.location.href = `${API_BASE}${AUTH_PATH}/telegram/login?deviceId=${this.deviceId}`
+  async loginWithTelegram(data: Record<string, unknown>): Promise<IAuthResponse> {
+    return await this.http.request(`${AUTH_PATH}/telegram/callback`, {
+      method: 'POST',
+      body: { ...data, deviceId: this.deviceId },
+      credentials: 'include',
+    });
   }
 
   async forgotPassword({ email }: { email: string }) {
