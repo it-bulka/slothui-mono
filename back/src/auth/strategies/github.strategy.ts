@@ -21,9 +21,10 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     profile: Profile,
   ): Promise<any> {
     const name =
-      profile.username || profile.name
-        ? `${profile.name!.givenName} ${profile.name!.familyName}`
-        : null;
+      profile.username ||
+      (profile.name
+        ? `${profile.name.givenName} ${profile.name.familyName}`
+        : null);
 
     if (!name) {
       throw new UnprocessableEntityException(
