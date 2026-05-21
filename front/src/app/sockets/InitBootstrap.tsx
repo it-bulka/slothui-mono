@@ -6,6 +6,13 @@ import { fetchNotificationsCountersThunk } from '@/entities/NotificationsCounter
 import { TokenManager } from '@/shared/libs/services/tokenManager/TokenManager.ts';
 import { getServices } from '@/shared/libs/services';
 
+/**
+ * Runs once on mount to bootstrap the authenticated session.
+ *
+ * Reads `search`/`pathname` from the initial URL at mount time only —
+ * intentionally NOT in the deps array to avoid re-running on every navigation.
+ * `dispatch` is stable and listed only to satisfy the linter for the thunk calls.
+ */
 export const InitBootstrap = () => {
   const dispatch = useAppDispatch();
   const { pathname, search } = useLocation();
@@ -17,6 +24,10 @@ export const InitBootstrap = () => {
 
     const run = async () => {
       if (oauthToken && !isVerifyEmailPage) {
+        // Backend appends ?token= after a successful OAuth redirect.
+        // Store the token, then strip the query string from the URL bar
+        // using the native History API — avoids triggering a React Router
+        // navigation event that could cause re-renders or re-run effects.
         new TokenManager().setToken(oauthToken);
         window.history.replaceState({}, '', pathname);
       }
@@ -31,6 +42,8 @@ export const InitBootstrap = () => {
     };
 
     run();
+  // deps: intentionally omitting `search` and `pathname` — this effect must run
+  // only once on mount (app bootstrap), not on every navigation.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
