@@ -27,7 +27,10 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       );
     }
 
-    const name = profile.username;
+    const name =
+      profile.name?.givenName ||
+      profile.displayName?.split(' ')[0] ||
+      email.split('@')[0];
     if (!name) {
       throw new UnprocessableEntityException(
         'Facebook OAuth failed. No name found.',

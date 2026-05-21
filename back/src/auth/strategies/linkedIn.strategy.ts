@@ -27,7 +27,10 @@ export class LinkedInStrategy extends PassportStrategy(Strategy, 'linkedin') {
       );
     }
 
-    const name = profile.username;
+    const name =
+      profile.name?.givenName ||
+      profile.displayName?.split(' ')[0] ||
+      email.split('@')[0];
     if (!name) {
       throw new UnprocessableEntityException(
         'LinkedIn OAuth failed. No name found.',
