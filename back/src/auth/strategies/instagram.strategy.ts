@@ -30,7 +30,7 @@ export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
       .profile_picture_url;
 
     const user = await this.authService.validateOAuthUser({
-      nickname: profile.displayName,
+      nickname: profile.displayName || name,
       username: name,
       avatarUrl,
       provider: AuthProvider.INSTAGRAM,
