@@ -22,9 +22,12 @@ export const CommentThreadDrawer = ({ postId, isOpen, onClose }: Props) => {
     }
   }, [isOpen, postId, fetchComments, isInitialized])
 
+  const dvhSupported = typeof CSS !== 'undefined' && CSS.supports('height', '1dvh')
+  const contentHeight = dvhSupported ? 'calc(100dvh - 160px)' : 'calc(100vh - 160px)'
+
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col h-[calc(100vh-160px)]">
+      <div className="flex flex-col" style={{ height: contentHeight }}>
         <div className="overflow-y-auto flex-1 scrollbar-themed pb-4">
           <PostComments postId={postId} />
         </div>

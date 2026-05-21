@@ -13,6 +13,7 @@
     @apply fixed left-[2vw] w-[96vw] touch-none;
     padding: 0 15px 15px;
     height: calc(100vh + 100px);
+    height: calc(100dvh + 100px);
     border-radius: 12px 12px 0;
     z-index: var(--z-index-modal);
     background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l2) 0%, var(--color-blue-b3) 100%);

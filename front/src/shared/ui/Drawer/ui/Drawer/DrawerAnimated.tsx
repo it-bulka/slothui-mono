@@ -14,9 +14,13 @@ interface DrawerProps {
   onClose?: () => void
 }
 
-const height = window.innerHeight - 100
+const dvhSupported = typeof CSS !== 'undefined' && CSS.supports('height', '1dvh')
+const vhUnit = dvhSupported ? '100dvh' : '100vh'
 
 const DrawerAnimated = memo(({ className, onClose, children }: PropsWithChildren<DrawerProps>) => {
+  // Capture at mount (not module load) so it reflects the actual viewport when drawer opens
+  const height = window.innerHeight - 100
+
   // Spring starts at open position: this component only mounts when isOpen=true
   const [{ y, bgOpacity }, api] = useSpring(() => ({ y: 0, bgOpacity: 1 }))
 
@@ -61,7 +65,7 @@ const DrawerAnimated = memo(({ className, onClose, children }: PropsWithChildren
         <Overlay onClick={() => close()} />
         <SpringDiv
           className={cls.sheet}
-          style={{ bottom: `calc(-100vh + ${height - 100}px)`, y }}
+          style={{ bottom: `calc(-${vhUnit} + ${height - 100}px)`, y }}
           {...bind()}
         >
           <div className={cls.handle} />
