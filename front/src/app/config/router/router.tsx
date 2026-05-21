@@ -28,6 +28,7 @@ import { ActivityPage } from '@/pages/ActivityPage';
 import { LikedPage } from '@/pages/LikedPage';
 import { SavedPage } from '@/pages/SavedPage';
 import { NotFound } from '@/pages/NotFound';
+import { OAuthErrorPage } from '@/pages/OAuthError';
 import { PostPage } from '@/pages/PostPage';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary/ErrorBoundary';
 import {
@@ -121,7 +122,8 @@ export const router = createBrowserRouter([
           { path: AuthRelativePaths.register, element: <RegisterPage /> },
           { path: RoutePaths.forgot_password, element: <ForgotPasswordPage /> },
           { path: RoutePaths.reset_password, element: <ResetPasswordPage /> },
-          { path: RoutePaths.verify_email, element: <VerifyEmailPage /> }
+          { path: RoutePaths.verify_email, element: <VerifyEmailPage /> },
+          { path: AuthRelativePaths.oauth_error, element: <OAuthErrorPage /> }
         ]
       },
       { path: RoutePaths.not_found, element: <NotFound /> },

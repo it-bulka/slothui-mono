@@ -47,6 +47,8 @@ import {
   ApiResetPassword,
 } from './decorators/api-auth.decorator';
 import { Throttle } from '@nestjs/throttler';
+import { UseFilters } from '@nestjs/common';
+import { OAuthExceptionFilter } from './filters/oauth-exception.filter';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -132,6 +134,7 @@ export class AuthController {
   googleLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   @ApiOAuthCallback('Google')
@@ -151,6 +154,7 @@ export class AuthController {
   facebookLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(FacebookAuthGuard)
   @Get('facebook/callback')
   @ApiOAuthCallback('Facebook')
@@ -170,6 +174,7 @@ export class AuthController {
   instagramLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(InstagramAuthGuard)
   @Get('instagram/callback')
   @ApiOAuthCallback('Instagram')
@@ -189,6 +194,7 @@ export class AuthController {
   twitterLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(TwitterAuthGuard)
   @Get('twitter/callback')
   @ApiOAuthCallback('Twitter')
@@ -208,6 +214,7 @@ export class AuthController {
   linkedInLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(LinkedInAuthGuard)
   @Get('linkedin/callback')
   @ApiOAuthCallback('LinkedIn')
@@ -227,6 +234,7 @@ export class AuthController {
   githubLogin() {}
 
   @ApiTags('OAuth')
+  @UseFilters(OAuthExceptionFilter)
   @UseGuards(GithubAuthGuard)
   @Get('github/callback')
   @ApiOAuthCallback('GitHub')
