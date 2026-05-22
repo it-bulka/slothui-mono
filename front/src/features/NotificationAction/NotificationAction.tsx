@@ -1,5 +1,5 @@
-﻿import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+﻿import { useEffect, useCallback, memo } from 'react';
+import { useNavigate, useMatch } from 'react-router';
 import { ActionButton } from '@/shared/ui/ActionButton'
 import { OverlayBadge } from '@/shared/ui/OverlayBadge/OverlayBadge';
 import NotificationSvg from '@/shared/assets/images/sidebar/notification.svg?react';
@@ -8,11 +8,12 @@ import { selectUnreadCount, selectIsInitialized, fetchUnreadCountThunk } from '@
 import { getNotificationsPage } from '@/shared/config/routeConfig/routeConfig';
 import { formatBadgeCount } from '@/shared/libs/formatBadgeCount';
 
-export const NotificationAction = () => {
+export const NotificationAction = memo(() => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const unreadCount = useAppSelector(selectUnreadCount);
   const isInitialized = useAppSelector(selectIsInitialized);
+  const isOnNotificationsPage = !!useMatch(getNotificationsPage());
 
   useEffect(() => {
     if (!isInitialized) {
@@ -21,13 +22,19 @@ export const NotificationAction = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const badgeCount = isOnNotificationsPage ? 0 : unreadCount;
+
+  const handleClick = useCallback(() => navigate(getNotificationsPage()), [navigate]);
+
   return (
-    <OverlayBadge content={formatBadgeCount(unreadCount)} show={unreadCount > 0}>
+    <OverlayBadge content={formatBadgeCount(badgeCount)} show={badgeCount > 0}>
       <ActionButton
         variant="secondary"
         Icon={NotificationSvg}
-        onClick={() => navigate(getNotificationsPage())}
+        onClick={handleClick}
       />
     </OverlayBadge>
   );
-};
+});
+
+NotificationAction.displayName = 'NotificationAction';
