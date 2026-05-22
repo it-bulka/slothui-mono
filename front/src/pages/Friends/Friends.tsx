@@ -16,7 +16,9 @@ const Friends = memo(() => {
       <ToolbarWrapper>
         <UserSearchToolbar />
       </ToolbarWrapper>
-      <TabWithFriends userId={user.id} />
+      <div className="px-main">
+        <TabWithFriends userId={user.id}/>
+      </div>
     </>
   )
 })
