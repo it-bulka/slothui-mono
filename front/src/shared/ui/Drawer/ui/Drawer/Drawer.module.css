@@ -10,7 +10,7 @@
 }
 
 .sheet {
-    @apply fixed left-[2vw] w-[96vw] touch-none;
+    @apply fixed left-[2vw] w-[96vw];
     padding: 0 15px 15px;
     height: calc(100vh + 100px);
     height: calc(100dvh + 100px);
@@ -23,7 +23,7 @@
 }
 
 .handle {
-    @apply w-10 h-1 rounded-full mx-auto;
+    @apply w-10 h-1 rounded-full mx-auto touch-none cursor-grab;
     background-color: var(--color-gray-g3);
     flex-shrink: 0;
     margin-block: 12px;
