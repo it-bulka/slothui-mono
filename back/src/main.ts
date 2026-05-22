@@ -20,7 +20,13 @@ async function bootstrap() {
   setLoggering(app);
 
   app.set('trust proxy', true);
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginOpenerPolicy: {
+        policy: 'same-origin-allow-popups',
+      },
+    }),
+  );
   app.enableCors({
     origin: config.getOrThrow<string>('FRONT_ORIGIN'),
     credentials: true,
