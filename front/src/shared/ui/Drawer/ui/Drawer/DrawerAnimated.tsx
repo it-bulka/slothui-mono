@@ -67,7 +67,9 @@ const DrawerAnimated = memo(({ className, onClose, children }: PropsWithChildren
           className={cls.sheet}
           style={{ bottom: `calc(-${vhUnit} + ${height - 100}px)`, y }}
         >
-          <div className={cls.handle} {...bind()} />
+          <div className={cls.handle} {...bind()}>
+            <div className={cls.handlePill} />
+          </div>
           {children}
         </SpringDiv>
       </SpringDiv>
