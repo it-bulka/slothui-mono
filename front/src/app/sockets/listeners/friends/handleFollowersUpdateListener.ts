@@ -2,6 +2,7 @@ import type { ServicesFacade } from '@/shared/libs/services/ServicesFacade/Servi
 import type { AppStore } from '@/app/config';
 import { authUserActions, selectAuthUserId } from '@/entities/AuthUser';
 import { friendsActions, resentFriendsActions } from '@/entities/Friends';
+import { notificationsCountersActions } from '@/entities/NotificationsCounters';
 
 export function handleFollowersUpdateListener(
   services: ServicesFacade,
@@ -32,7 +33,7 @@ function removeFollowerFromState(
     store.dispatch(friendsActions.removeFollower({ userId: targetId, followerToRemoveId: currentUserId }))
     store.dispatch(friendsActions.removeFollowee({ userId: currentUserId, followeeToRemoveId: targetId }))
     store.dispatch(authUserActions.decreaseFollowersCount())
-
+    store.dispatch(notificationsCountersActions.decrementNewFollowers())
   }
 
   resentFriendsActions.markUnfollow(actorId, targetId)

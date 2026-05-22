@@ -51,6 +51,9 @@ export const notificationsCountersSlice = createSlice({
     incrementNewFollowers: (state) => {
       state.newFollowers += 1;
     },
+    decrementNewFollowers: (state) => {
+      state.newFollowers = Math.max(0, state.newFollowers - 1);
+    },
   },
 
   extraReducers: (builder) => {
