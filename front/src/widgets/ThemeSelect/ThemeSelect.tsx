@@ -25,7 +25,7 @@ export const ThemeSelect = memo(() => {
   return (
     <>
       <Typography bold>Theme:</Typography>
-      <DropSelect options={options} value={currentOption} onChange={handleChange} />
+      <DropSelect options={options} value={currentOption} onChange={handleChange} isSearchable={false} />
     </>
   )
 })
