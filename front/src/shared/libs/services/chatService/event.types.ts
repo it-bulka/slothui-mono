@@ -4,6 +4,7 @@ export enum ChatRequestEvents {
   LEAVE = 'chat:leave',
   JOIN = 'chat:join',
   DELETE = 'chat:delete',
+  ENTER = 'chat:enter',
 }
 
 export enum ChatServerEvents {
@@ -15,5 +16,6 @@ export enum ChatServerEvents {
   REMOVED_FROM_CHAT = 'chat:removedFromChat', // current user is forced removed
   LEFT = 'chat:left', // current user left by its own
   UNREAD_BATCH = 'chat:unread:batch', // unread msgs by chat
+  UNREAD_SYNC = 'chat:unread:sync',  // reset unread for a specific chat
 }
 

@@ -12,6 +12,7 @@ export class ChatService {
   private readonly chatDeleted$ = new Subject<{ chatId: string }>();
   private readonly unreadMessagesByChat$ = new Subject<ChatUnreadUpdate>();
   private readonly membersUpdated$ = new Subject<{ chatId: string; members: string[] }>();
+  private readonly unreadSync$ = new Subject<{ chatId: string }>();
   private socket: Socket | undefined;
 
   constructor(
@@ -113,6 +114,7 @@ export class ChatService {
     socket.on(ChatServerEvents.DELETED,        (d: { chatId: string }) => this.chatDeleted$.next(d));
     socket.on(ChatServerEvents.MEMBERS_UPDATED, (u) => this.membersUpdated$.next(u));
     socket.on(ChatServerEvents.UNREAD_BATCH,    (u) => this.unreadMessagesByChat$.next(u));
+    socket.on(ChatServerEvents.UNREAD_SYNC,     (u: { chatId: string }) => this.unreadSync$.next(u));
   }
 
   private offEvents() {
@@ -122,6 +124,7 @@ export class ChatService {
     socket.off(ChatServerEvents.DELETED)
     socket.off(ChatServerEvents.MEMBERS_UPDATED)
     socket.off(ChatServerEvents.UNREAD_BATCH)
+    socket.off(ChatServerEvents.UNREAD_SYNC)
   }
 
   private readonly joinedChats = new Set<string>();
@@ -145,6 +148,10 @@ export class ChatService {
     this.socket?.emit(ChatRequestEvents.LEAVE, { chatId });
   }
 
+  enterChat(chatId: string) {
+    this.socket?.emit(ChatRequestEvents.ENTER, { chatId });
+  }
+
   /* ------------------------------------------------------------------ */
   /*                         ---- Observables ----                      */
   /* ------------------------------------------------------------------ */
@@ -163,5 +170,9 @@ export class ChatService {
 
   onUnreadMessageByChat() {
     return this.unreadMessagesByChat$.asObservable();
+  }
+
+  onUnreadSync() {
+    return this.unreadSync$.asObservable();
   }
 }

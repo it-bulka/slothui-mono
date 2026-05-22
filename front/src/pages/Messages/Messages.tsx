@@ -24,6 +24,7 @@ const Messages = () => {
   useEffect(() => {
     if (!chatId) return
     chatService.markAsRead(chatId)
+    chatService.enterChat(chatId)
     dispatch(notificationsCountersActions.resetChatUnread({ chatId }))
   }, [chatId, chatService, dispatch])
 
