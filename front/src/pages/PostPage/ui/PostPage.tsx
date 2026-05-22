@@ -6,7 +6,8 @@ import { fetchPostByIdThunk } from '@/entities/Post/model/thunks/fetchPostById.t
 import { useAppDispatch } from '@/shared/config/redux';
 import { useEffect } from 'react';
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
-import { getUserPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { getUserPage, getMyPostsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { Typography } from '@/shared/ui/Typography/Typography';
 import { usePostGroupedAttachments } from '@/entities/Post';
 
@@ -22,6 +23,9 @@ const PostPage = () => {
     dispatch(fetchPostByIdThunk({ postId }));
   }, [dispatch, postId, post]);
 
+  const currentUserId = useAuthUserIdSelector();
+  const isOwner = currentUserId === post?.author?.id;
+
   if (!postId) return <Navigate to={RoutePaths.not_found} />;
 
   if (!post) return <Typography bold>Loading...</Typography>;
@@ -31,7 +35,7 @@ const PostPage = () => {
       <Helmet><title>Post — SlothUI</title></Helmet>
       <PostCard
         postId={post.id}
-        profileLink={getUserPage(post.author?.id)}
+        profileLink={isOwner ? getMyPostsPage() : getUserPage(post.author?.id)}
         userId={post.author?.id}
         userName={post.author?.nickname}
         userPosition={post.author?.nickname}
