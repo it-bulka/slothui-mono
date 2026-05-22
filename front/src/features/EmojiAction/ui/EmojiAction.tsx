@@ -8,7 +8,7 @@ import { FloatingPortal } from '@floating-ui/react';
 
 const EmojiPicker = lazy(() => import('emoji-picker-react'))
 
-export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmojiClick?: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean}) => {
+export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false, autoFocusSearch = false }: {onEmojiClick?: (emojiData: EmojiClickData) => void, isEmojiShown?: boolean, autoFocusSearch?: boolean}) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const { refs, x, y, strategy, getReferenceProps, getFloatingProps, context } = useBtnPopup({ defaultState: isEmojiShown })
@@ -36,7 +36,7 @@ export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false }: {onEmoji
           <FloatingPortal>
             <div ref={setWrapperRef} {...getFloatingProps()} style={{ position: strategy, top: y ?? 0, left: x ?? 0 }} className="z-[999999999999999]">
               <Suspense fallback={<div className="w-[350px] h-[450px] animate-pulse rounded-lg bg-gray-100 dark:bg-slate-800" />}>
-                <EmojiPicker onEmojiClick={onEmojiClick}/>
+                <EmojiPicker onEmojiClick={onEmojiClick} autoFocusSearch={autoFocusSearch} />
               </Suspense>
             </div>
           </FloatingPortal>
