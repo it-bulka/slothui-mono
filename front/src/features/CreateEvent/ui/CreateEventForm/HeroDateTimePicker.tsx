@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react'
+import 'react-datepicker/dist/react-datepicker.css'
 
 interface HeroDateTimePickerProps {
   value: Date;
@@ -52,6 +53,7 @@ export const HeroDateTimePicker = memo(({ value, onChange, minDate }: HeroDateTi
         minDate={minDate}
         customInput={<HeroPill icon={CalendarIcon} />}
         popperProps={{ strategy: 'fixed' }}
+        popperClassName="hero-picker"
       />
       <DatePicker
         selected={timeOnly}
@@ -63,6 +65,7 @@ export const HeroDateTimePicker = memo(({ value, onChange, minDate }: HeroDateTi
         dateFormat="HH:mm"
         customInput={<HeroPill icon={ClockIcon} />}
         popperProps={{ strategy: 'fixed' }}
+        popperClassName="hero-picker"
       />
     </div>
   )

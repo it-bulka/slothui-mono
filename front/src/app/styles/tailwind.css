@@ -590,3 +590,41 @@
     }
 }
 
+.hero-picker .react-datepicker {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-picker .react-datepicker__day,
+.hero-picker .react-datepicker__time-list-item {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.hero-picker .react-datepicker__day--disabled,
+.hero-picker .react-datepicker__day--outside-month {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.hero-picker .react-datepicker__day:hover,
+.hero-picker .react-datepicker__time-list-item:hover {
+    color: #1a1a1a;
+}
+
+.hero-picker .react-datepicker__time-container .react-datepicker__time {
+    background: transparent;
+}
+
+.hero-picker .react-datepicker__header {
+    background: rgba(0, 0, 0, 0.45);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-picker .react-datepicker__current-month,
+.hero-picker .react-datepicker-time__header,
+.hero-picker .react-datepicker__day-name {
+    color: white;
+}
+
