@@ -2,7 +2,7 @@
 
 /* ─── Base ───────────────────────────────────────────── */
 .btn {
-  @apply rounded-2xl px-5 py-2.5 font-medium w-max block;
+  @apply rounded-2xl px-5 py-2.5 font-medium w-fit max-w-full block;
   @apply transition-all duration-200;
   @apply border border-transparent;
   box-shadow: 0 1px 3px var(--shadow-color);
