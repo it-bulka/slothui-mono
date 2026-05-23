@@ -36,7 +36,9 @@ export const fetchFollowersExtraReducer = (builder: ActionReducerMapBuilder<Frie
       page.hasMore = hasMore ?? false
       page.isLoading = false
       page.nextCursor = nextCursor
-      page.followersLastSeenAt = followersLastViewedAt
+      if (followersLastViewedAt > (page.followersLastSeenAt ?? 0)) {
+        page.followersLastSeenAt = followersLastViewedAt
+      }
       page.lastFetchedAt = Date.now()
     })
 
