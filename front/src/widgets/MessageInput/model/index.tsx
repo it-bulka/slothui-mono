@@ -1,1 +1,1 @@
-export { useMessageInputPopup } from './hooks/useMessageInputPopup/useMessageInputPopup.tsx';
+export { useAutoSendOnDraftExtras } from './hooks/useAutoSendOnDraftExtras/useAutoSendOnDraftExtras';
