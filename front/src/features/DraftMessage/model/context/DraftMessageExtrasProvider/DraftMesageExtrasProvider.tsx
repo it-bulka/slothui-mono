@@ -20,103 +20,86 @@ export const DraftMessageProvider = ({ children }: { children: ReactNode }) => {
   const [poll, setPoll] = useState<MessageDraft['poll']>(null)
   const [event, setEvent] = useState<MessageDraft['event']>(null)
 
-  const addAttachments = useCallback((
-    type: DraftAttachmentType,
-    files: File[],
-  ) => {
+  const addAttachments = useCallback((type: DraftAttachmentType, files: File[]) => {
     const error = validateAddAttachments(attachments, files, type);
     if (error) return error;
-
-    setAttachments(prev => ([
+    setAttachments(prev => [
       ...prev,
-      ...files.map(file => ({
-        id: nanoid(),
-        file,
-        type,
-        tempUrl: createTempUrl(file)
-      }))
-    ]));
-    return null
+      ...files.map(file => ({ id: nanoid(), file, type, tempUrl: createTempUrl(file) }))
+    ]);
+    return null;
   }, [attachments]);
 
-  const removeAttachment = (id: string) => {
-    setAttachments(prevAttachments => {
-      const target = prevAttachments?.find(a => a.id === id);
+  const removeAttachment = useCallback((id: string) => {
+    setAttachments(prev => {
+      const target = prev.find(a => a.id === id);
       if (target) deleteTempUrl(target.tempUrl);
-
-      return prevAttachments.filter(a => a.id !== id);
+      return prev.filter(a => a.id !== id);
     });
-  };
+  }, []);
 
-  const addGeo = (geo: DraftGeo) => setGeo(geo);
-  const clearGeo = () => setGeo(null);
+  const addGeo = useCallback((geo: DraftGeo) => setGeo(geo), []);
+  const clearGeo = useCallback(() => setGeo(null), []);
 
-  const addPoll = (poll: PollDraft) => setPoll(poll);
-  const clearPoll = () => setPoll(null);
+  const addPoll = useCallback((poll: PollDraft) => setPoll(poll), []);
+  const clearPoll = useCallback(() => setPoll(null), []);
 
-  const addEvent = (event: DraftEvent) => setEvent(event)
-  const clearEvent = () => setEvent(null)
+  const addEvent = useCallback((event: DraftEvent) => setEvent(event), []);
+  const clearEvent = useCallback(() => setEvent(null), []);
 
-  const submit = () => {
-    if (!attachments.length && !geo && !poll) {
-      return;
-    }
-
-    const draft = { attachments, geo, poll }
-    return draftToPayload(draft);
-  };
+  const submit = useCallback(() => {
+    if (!attachments.length && !geo && !poll) return;
+    return draftToPayload({ attachments, geo, poll });
+  }, [attachments, geo, poll]);
 
   const clearExtras = useCallback(() => {
-    setAttachments([])
-    setGeo(null)
-    setPoll(null)
-    setEvent(null)
-  }, [setAttachments, setGeo, setEvent, setPoll])
+    setAttachments([]);
+    setGeo(null);
+    setPoll(null);
+    setEvent(null);
+  }, []);
 
-  const groupedDraftAttachments = useMemo(() => {
-    return attachments?.reduce((acc, file) => {
-      switch (file.type) {
-        case "images":
-          acc.images.push(file);
-          break;
-        case "video":
-          acc.video.push(file);
-          break;
-        case "audio":
-          acc.audio.push(file);
-          break;
-        case "file":
-          acc.file.push(file);
-          break;
-      }
-
+  const groupedDraftAttachments = useMemo(() =>
+    attachments.reduce((acc, file) => {
+      acc[file.type].push(file);
       return acc;
-    }, { images: [], file: [], audio: [], video: [] } as DraftGroupedAttachments)
-  }, [attachments]);
+    }, { images: [], file: [], audio: [], video: [] } as DraftGroupedAttachments),
+  [attachments]);
 
-  const hasDraftExtras = useMemo(() => {
-    return Boolean(attachments.length || geo || poll || event)
-  }, [attachments, geo, poll, event])
+  const hasDraftExtras = useMemo(
+    () => Boolean(attachments.length || geo || poll || event),
+    [attachments, geo, poll, event]
+  );
+
+  const value = useMemo(() => ({
+    attachments,
+    poll,
+    geo,
+    event,
+    addAttachments,
+    removeAttachment,
+    setGeo: addGeo,
+    clearGeo,
+    setPoll: addPoll,
+    clearPoll,
+    setEvent: addEvent,
+    clearEvent,
+    submit,
+    clearExtras,
+    groupedDraftAttachments,
+    hasDraftExtras,
+  }), [
+    attachments, poll, geo, event,
+    addAttachments, removeAttachment,
+    addGeo, clearGeo,
+    addPoll, clearPoll,
+    addEvent, clearEvent,
+    submit, clearExtras,
+    groupedDraftAttachments, hasDraftExtras,
+  ]);
 
   return (
-    <DraftMessageExtrasContext.Provider value={{
-      attachments,
-      poll,
-      geo,
-      event,
-      addAttachments,
-      removeAttachment,
-      setGeo: addGeo,
-      clearGeo,
-      setPoll: addPoll,
-      clearPoll,
-      setEvent: addEvent,
-      clearEvent,
-      submit,
-      clearExtras,
-      groupedDraftAttachments,
-      hasDraftExtras
-    }}>
+    <DraftMessageExtrasContext.Provider value={value}>
       {children}
     </DraftMessageExtrasContext.Provider>
   );
