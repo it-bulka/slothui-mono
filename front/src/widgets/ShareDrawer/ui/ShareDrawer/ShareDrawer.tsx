@@ -6,6 +6,9 @@ import { type SharePayload, sendShare, getSharableLink } from '../../model';
 import { ChatPicker } from '../../../ChatPicker';
 import { useMessagesService } from '@/shared/libs/services';
 import { ShareContent } from '@/features/ShareOnSocialMedia/ui/ShareContent/ShareContent.async.tsx';
+import { useAppDispatch } from '@/shared/config/redux';
+import { messagesAction } from '@/entities/Message';
+import { useActiveChatId } from '@/entities/Chats';
 
 interface ShareDrawerProps {
   payload: SharePayload
@@ -16,9 +19,14 @@ interface ShareDrawerProps {
 
 export const ShareDrawer = ({ payload, isOpen, onClose, titleToShare }: ShareDrawerProps) => {
   const messagesService = useMessagesService();
+  const dispatch = useAppDispatch();
+  const activeChatId = useActiveChatId();
 
   const handleSend = async (chatId: string) => {
     await sendShare(messagesService, chatId, payload)
+    if (chatId !== activeChatId) {
+      dispatch(messagesAction.clearMessagesByChat(chatId))
+    }
     onClose()
   }
 
