@@ -25,7 +25,7 @@ export const AuthForm = ({
   const isLoading = useAuthUserLoadingSelector()
 
   return (
-    <div className={twMerge(classnames("md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 p-10 bg-auth-form mx-auto", {'opacity-20 pointer-none:': isLoading}))}>
+    <div className={twMerge(classnames("md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 px-4 py-10 md:p-10 bg-auth-form mx-auto", {'opacity-20 pointer-none:': isLoading}))}>
       <Typography className="text-center" bold type={TypographyTypes.TITLE} variant="h1">
         {formTitle}
       </Typography>
