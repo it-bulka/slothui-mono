@@ -153,11 +153,18 @@ export function FileInput({
           {title || 'Upload file'}
         </Button>
 
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200">
-          {previews.length ? `Chosen ${previews.length} files` : 'File not chosen'}
-        </span>
       </div>
-      {error && <Typography color='error'>{error}</Typography>}
+      {error ? (
+        <Typography color="error">
+          {error}
+        </Typography>
+      ) : (
+        <span className="text-gray-200 text-sm truncate">
+          {previews.length
+            ? `Chosen ${previews.length} files`
+            : 'File not chosen'}
+        </span>
+      )}
       {previews.length > 0 && <p className="text-gray-200 truncate w-full">{fileNames}</p>}
 
       {errors.length > 0 && (
