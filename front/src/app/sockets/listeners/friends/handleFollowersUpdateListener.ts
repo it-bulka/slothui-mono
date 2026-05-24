@@ -26,12 +26,16 @@ function removeFollowerFromState(
   if(resentFriendsActions.isUnfollowRecent(actorId, targetId)) return
 
   if (actorId === currentUserId) {
-    store.dispatch(friendsActions.removeFollower({ userId: currentUserId, followerToRemoveId: targetId }))
-    store.dispatch(friendsActions.removeFollowee({ userId: targetId, followeeToRemoveId: currentUserId }))
+    // I unfollowed targetId: remove targetId from MY followings, remove ME from targetId's followers
+    store.dispatch(friendsActions.removeFollowee({ userId: currentUserId, followeeToRemoveId: targetId }))
+    store.dispatch(friendsActions.removeFollower({ userId: targetId, followerToRemoveId: currentUserId }))
     store.dispatch(authUserActions.decreaseFolloweesCount())
   } else {
-    store.dispatch(friendsActions.removeFollower({ userId: targetId, followerToRemoveId: currentUserId }))
-    store.dispatch(friendsActions.removeFollowee({ userId: currentUserId, followeeToRemoveId: targetId }))
+    // actorId unfollowed targetId; only update state when I am the target
+    if (currentUserId !== targetId) return
+    // Remove actorId from MY followers, remove ME from actorId's followings
+    store.dispatch(friendsActions.removeFollower({ userId: currentUserId, followerToRemoveId: actorId }))
+    store.dispatch(friendsActions.removeFollowee({ userId: actorId, followeeToRemoveId: currentUserId }))
     store.dispatch(authUserActions.decreaseFollowersCount())
     store.dispatch(notificationsCountersActions.decrementNewFollowers())
   }
