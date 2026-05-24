@@ -9,7 +9,7 @@ interface AddPostBtnProps {
 
 export const AddPostBtn = ({ onClick, active, className }: AddPostBtnProps) => {
   return (
-    <ActionButton Icon={PostsSvg} column onClick={onClick} className={className}>
+    <ActionButton Icon={PostsSvg} onClick={onClick} className={className}>
       {active ? 'Add New Post' : 'Hide Post Input'}
     </ActionButton>
   );
