@@ -2,12 +2,12 @@ import { AddPostBtn } from '@/features/AddPostBtn';
 import { PostTextarea } from '../../../PostTextarea/PostTextarea.tsx';
 import { useState, memo } from 'react';
 
-export const AddPostPanel = memo(() => {
+export const AddPostPanel = memo(({ btnClassName }: { btnClassName?: string }) => {
   const [isPostTextarea, setPostTextarea] = useState(false);
 
   return (
     <>
-      <AddPostBtn onClick={() => setPostTextarea(prev => !prev)} active={!isPostTextarea} />
+      <AddPostBtn onClick={() => setPostTextarea(prev => !prev)} active={!isPostTextarea} className={btnClassName} />
       {isPostTextarea && (
         <div className="absolute top-full left-0 right-0 z-[var(--z-index-modal)] bg-underground-primary border-b border-gray-g3 px-8 py-4 shadow-theme">
           <PostTextarea />

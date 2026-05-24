@@ -5,9 +5,9 @@ import { ToolbarWrapper } from '@/shared/ui/ToolbarWrapper';
 
 export const PostsToolbar = memo(() => {
   return (
-    <ToolbarWrapper className="flex items-stretch gap-4">
+    <ToolbarWrapper className="flex flex-col sm:flex-row items-stretch gap-4">
       <UserSearchToolbar className="flex-1 min-w-0" />
-      <AddPostPanel />
+      <AddPostPanel btnClassName="flex justify-center" />
     </ToolbarWrapper>
   )
 })
