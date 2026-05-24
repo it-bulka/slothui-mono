@@ -42,7 +42,7 @@ export const SearchBar = forwardRef(
     return (
       <div
         className={twMerge(classnames(
-          `flex items-center rounded-3xl border border-gray-g4 wrapper ${cls[size]}`,
+          `flex items-center overflow-hidden rounded-3xl border border-gray-g4 ${cls[size]}`,
           [className]))}
       >
         {iconPosition === 'left' && <Search />}
@@ -52,7 +52,7 @@ export const SearchBar = forwardRef(
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
           onKeyDown={onKeyDown}
-          className={'grow font-medium placeholder:text-gray-g1'}
+          className={`grow min-w-0 font-medium placeholder:text-gray-g1 ${cls.input}`}
           placeholder={placeholder}
           name={name}
         />
