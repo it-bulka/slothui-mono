@@ -32,6 +32,7 @@ export const TabWithFriends = memo(({ userId, isOwner = true }: TabWithFriendsPr
       tabs={TABS}
       activeTabIndex={activeTabIndex}
       onTabChange={handleTabChange}
+      bordered
       contents={[
         <FollowersTab userId={userId} isOwner={isOwner} />,
         <FolloweeTab userId={userId} isOwner={isOwner} />,

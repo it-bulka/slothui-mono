@@ -10,6 +10,7 @@ interface TabProps {
   contents: ReactNode[];
   activeTabIndex?: ActiveTabIndex;
   contentClassName?: string;
+  bordered?: boolean;
   tabClassName?: string;
   onTabChange?: (index: ActiveTabIndex) => void;
   animated?: boolean;
@@ -23,6 +24,7 @@ export const Tab = memo(({
   contents,
   activeTabIndex,
   contentClassName,
+  bordered = false,
   tabClassName,
   onTabChange,
   animated = true,
@@ -141,7 +143,10 @@ export const Tab = memo(({
     <div className="sticky top-0 z-10 bg-white">{tabNavInner}</div>
   ) : tabNavInner;
 
-  const contentContainerClass = scrollableContent ? 'relative overflow-hidden' : 'grid overflow-hidden';
+  const contentContainerClass = twMerge(
+    scrollableContent ? 'relative overflow-hidden' : 'grid overflow-hidden',
+    bordered && 'card-rounded border border-gray-g3'
+  );
   const contentItemClass = scrollableContent
     ? `bg-white ${cls.content} ${cls.scrollable} ${cls.active} ${cls.inactive}`
     : `bg-white ${cls.content} ${cls.active} ${cls.inactive}`;

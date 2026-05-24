@@ -588,6 +588,10 @@
     .bg-stories-empty {
         background: radial-gradient(ellipse at center, var(--color-light-l3) 0%, var(--color-white) 100%);
     }
+
+    .card-rounded {
+        @apply rounded-xl;
+    }
 }
 
 .hero-picker .react-datepicker {
