@@ -55,25 +55,26 @@ export const MediaAttachmentsModal = ({
           </Swiper>
         </div>
 
-        {/* Thumbs swiper */}
-        <div className="flex-shrink-0 h-20">
-          <Swiper
-            modules={[Thumbs, FreeMode, Scrollbar]}
-            onSwiper={setThumbsSwiper}
-            watchSlidesProgress
-            freeMode
-            spaceBetween={4}
-            slidesPerView={4}
-            scrollbar={{ draggable: true }}
-            className="h-full"
-          >
-            {list.map((item) => (
-              <SwiperSlide key={item.id}>
-                {renderMediaItem(item, css.thumbItem)}
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+        {list.length >= 2 && (
+          <div className="flex-shrink-0 h-20">
+            <Swiper
+              modules={[Thumbs, FreeMode, Scrollbar]}
+              onSwiper={setThumbsSwiper}
+              watchSlidesProgress
+              freeMode
+              spaceBetween={4}
+              slidesPerView={4}
+              scrollbar={{ draggable: true }}
+              className="h-full"
+            >
+              {list.map((item) => (
+                <SwiperSlide key={item.id}>
+                  {renderMediaItem(item, css.thumbItem)}
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        )}
       </div>
     </Modal>
   );
