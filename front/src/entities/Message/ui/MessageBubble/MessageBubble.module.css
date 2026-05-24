@@ -1,10 +1,10 @@
 @reference "tailwindcss";
 .message {
-  @apply max-w-[60%] w-[fit-content] min-w-[80px] py-1;
+  @apply max-w-[60%] w-[fit-content] min-w-[80px] py-1 overflow-hidden;
 }
 
 .message.max {
-  @apply w-[60%];
+  @apply w-[80%] sm:w-[60%];
 }
 
 .message.self {

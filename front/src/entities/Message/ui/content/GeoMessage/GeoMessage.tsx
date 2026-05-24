@@ -6,11 +6,11 @@ import type { MessageComponent } from '@/entities/Message/model';
 export const GeoMessage = ({ msg, time }: MessageComponent<MessageWithGeoDto>) => {
   if(!msg.geo) return null;
   return (
-    <div className="relative inline-block">
+    <div className="relative block w-full">
       <MapView
         position={msg.geo.position}
         locationName={msg.geo.locationName}
-        className="h-[180px] w-[340px]"
+        className="h-[180px] w-full"
       />
       <MessageTime time={time} position="absolute" variant="onMedia" />
     </div>
