@@ -3,31 +3,26 @@ import { memo } from 'react';
 
 export const EventsLoader = memo(() => {
   return (
-    <div className="flex flex-col gap-4 px-main py-6">
-
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="p-4 rounded-2xl bg-light-l3 shadow flex flex-col gap-3"
-        >
-          {/* Title row */}
-          <div className="flex items-center gap-3">
-            <Skeleton width={50} height={50} border="12px" />
-            <div className="flex flex-col gap-2 grow">
-              <Skeleton width="60%" height={16} />
-              <Skeleton width="40%" height={14} />
+    <div className="flex flex-col min-h-full">
+      <div className="toolbar justify-between">
+        <Skeleton className="w-32 h-9 rounded-2xl" />
+        <Skeleton className="w-24 h-4 rounded" />
+      </div>
+      <div className="bg-white px-main py-6 grow flex flex-col gap-4">
+        {[1, 2].map((i) => (
+          <div key={i} className="p-4 rounded-2xl bg-light-l3 shadow flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <Skeleton width={46} height={46} border="12px" />
+              <div className="flex flex-col gap-2 grow">
+                <Skeleton width="55%" height={14} />
+                <Skeleton width="35%" height={12} />
+              </div>
             </div>
+            <Skeleton height={12} width="85%" />
+            <Skeleton height={12} width="65%" />
           </div>
-
-          {/* description rows */}
-          <Skeleton height={12} width="90%" />
-          <Skeleton height={12} width="75%" />
-
-          {/* optional image */}
-          <Skeleton height={140} border="16px" />
-        </div>
-      ))}
-
+        ))}
+      </div>
     </div>
   );
 });

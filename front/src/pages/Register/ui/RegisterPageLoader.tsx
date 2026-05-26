@@ -3,30 +3,28 @@ import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const RegisterPageLoader = memo(() => {
   return (
-    <div className="md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-4 p-10 bg-auth-form mx-auto">
+    <div className="md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 px-4 py-10 md:p-10 bg-auth-form mx-auto">
 
       {/* Title */}
       <Skeleton className="h-7 w-3/4 rounded mx-auto" />
 
-      {/* Avatar upload */}
-      <div className="flex justify-center">
-        <Skeleton className="h-14 w-14 rounded-full" />
-      </div>
+      {/* FileInput (avatar upload) — full-width */}
+      <Skeleton className="h-10 w-full rounded" />
 
       {/* 5 text inputs */}
       {Array.from({ length: 5 }).map((_, i) => (
         <Skeleton key={i} className="h-10 w-full rounded" />
       ))}
 
-      {/* Submit button */}
-      <Skeleton className="h-10 w-full rounded" />
+      {/* Submit button — half-width, right-aligned */}
+      <Skeleton className="h-10 w-1/2 rounded ml-auto" />
 
       {/* OAuth divider */}
       <Skeleton className="h-4 w-36 rounded mx-auto my-2" />
 
-      {/* OAuth buttons */}
+      {/* OAuth buttons (4 social) */}
       <div className="flex gap-2 justify-center">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton key={i} className="h-10 w-10 rounded-full" />
         ))}
       </div>

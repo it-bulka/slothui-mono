@@ -3,7 +3,7 @@ import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const ForgotPasswordPageLoader = memo(() => {
   return (
-    <div className="md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-4 p-10 bg-auth-form mx-auto">
+    <div className="md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 px-4 py-10 md:p-10 bg-auth-form mx-auto">
 
       {/* Title */}
       <Skeleton className="h-7 w-3/4 rounded mx-auto" />
@@ -11,8 +11,8 @@ export const ForgotPasswordPageLoader = memo(() => {
       {/* Email input */}
       <Skeleton className="h-10 w-full rounded" />
 
-      {/* Submit button */}
-      <Skeleton className="h-10 w-full rounded" />
+      {/* Submit button — half-width, right-aligned */}
+      <Skeleton className="h-10 w-1/2 rounded ml-auto" />
 
       {/* Links */}
       <div className="flex justify-center gap-6 mt-1">

@@ -14,19 +14,17 @@ export const UserLoader = memo(() => {
       </div>
 
       <div className="flex flex-col gap-4 px-main py-6">
-        {[1, 2, 3].map((i) => (
+        {[1, 2].map((i) => (
           <div key={i} className="flex flex-col gap-3 p-4 rounded-2xl bg-light-l3 shadow">
             <div className="flex items-center gap-3">
-              <Skeleton width={50} height={50} border="50%" />
+              <Skeleton width={46} height={46} border="50%" />
               <div className="flex flex-col gap-2 grow">
                 <Skeleton width="40%" height={14} />
                 <Skeleton width="30%" height={12} />
               </div>
             </div>
             <Skeleton height={12} width="90%" />
-            <Skeleton height={12} width="80%" />
-            <Skeleton height={12} width="70%" />
-            <Skeleton height={180} border="16px" />
+            <Skeleton height={12} width="75%" />
           </div>
         ))}
       </div>

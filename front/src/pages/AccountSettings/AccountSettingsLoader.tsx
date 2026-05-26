@@ -5,13 +5,12 @@ export const AccountSettingsLoader = memo(() => {
   return (
     <div className="min-h-full bg-underground-secondary">
 
-      {/* Header */}
-      <div className="px-main py-4 border-style-b flex justify-between items-center">
+      <div className="toolbar">
         <Skeleton className="w-44 h-4 rounded" />
         <Skeleton className="w-32 h-4 rounded" />
       </div>
 
-      <div className="px-main py-main flex flex-col gap-6">
+      <div className="px-main py-main flex flex-col gap-4">
 
         {/* Email */}
         <div className="flex flex-col gap-2">

@@ -3,16 +3,14 @@ import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const ActivityPageLoader = memo(() => {
   return (
-    <div className="px-main py-main flex flex-col gap-3">
-      {Array.from({ length: 2 }).map((_, i) => (
-        <div
-          key={i}
-          className="flex items-center gap-3 p-3 rounded-xl bg-gray-g4/20 animate-pulse"
-        >
-          <Skeleton className="w-5 h-5 rounded shrink-0" />
-          <Skeleton className="w-32 h-4 rounded" />
-        </div>
-      ))}
+    <div className="relative flex flex-col min-h-full">
+      <div className="toolbar">
+        <Skeleton className="w-24 h-5 rounded" />
+      </div>
+      <div className="px-main py-main flex flex-col gap-3">
+        <Skeleton className="w-16 h-4 rounded" />
+        <Skeleton className="w-14 h-4 rounded" />
+      </div>
     </div>
   );
 });

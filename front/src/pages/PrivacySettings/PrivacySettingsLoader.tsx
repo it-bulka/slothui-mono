@@ -5,14 +5,12 @@ export const PrivacySettingsLoader = memo(() => {
   return (
     <div className="min-h-full bg-underground-secondary">
 
-      {/* Header skeleton */}
-      <div className="px-main py-4 border-style-b flex justify-between items-center">
+      <div className="toolbar">
         <Skeleton className="w-40 h-4 rounded" />
         <Skeleton className="w-32 h-4 rounded" />
       </div>
 
-      {/* Content */}
-      <div className="px-main py-main flex flex-col gap-6">
+      <div className="px-main py-main flex flex-col gap-4">
 
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
