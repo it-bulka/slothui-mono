@@ -10,3 +10,7 @@
 .message.self {
   @apply ml-auto;
 }
+
+.message.editing {
+  overflow: visible;
+}

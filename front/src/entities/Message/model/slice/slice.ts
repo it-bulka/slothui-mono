@@ -6,7 +6,8 @@ import { messagesAdapter } from '../adapter/messages.adapter.ts';
 import {
   fetchMessagesByChatExtraReducer,
   sendMessageExtraReducer,
-  updateMessagePollExtraReducer
+  updateMessagePollExtraReducer,
+  editMessageExtraReducer,
 } from '../extraReducers';
 
 const initialState = messagesAdapter.getInitialState<MessagesState>({
@@ -18,6 +19,7 @@ const initialState = messagesAdapter.getInitialState<MessagesState>({
   errorByChat: {},
   hasMoreByChat: {},
   cursorByChat: {},
+  editingMessageId: null,
 });
 
 const messageSlice = createSlice({
@@ -70,12 +72,21 @@ const messageSlice = createSlice({
       delete state.idsByChat[chatId];
       delete state.loadingByChat[chatId];
       delete state.hasMoreByChat[chatId];
-    }
+    },
+
+    setEditingMessage: (state, action: PayloadAction<string | null>) => {
+      state.editingMessageId = action.payload;
+    },
+
+    updateMessage: (state, action: PayloadAction<MessageDto>) => {
+      messagesAdapter.upsertOne(state, action.payload);
+    },
   },
   extraReducers: (builder) => {
     fetchMessagesByChatExtraReducer(builder)
     sendMessageExtraReducer(builder)
     updateMessagePollExtraReducer(builder)
+    editMessageExtraReducer(builder)
   }
 });
 

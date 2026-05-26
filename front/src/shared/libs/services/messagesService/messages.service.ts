@@ -12,6 +12,7 @@ import { filter } from 'rxjs';
 
 export class MessagesService {
   private readonly message$ = new Subject<MessageDto>();
+  private readonly messageUpdated$ = new Subject<MessageDto>();
   private readonly typing$ = new Subject<{ chatId: string; user: { id: string; role: string }; isTyping: boolean }>();
 
   private socket: Socket | undefined;
@@ -41,6 +42,7 @@ export class MessagesService {
     const socket = this.socket
     if(!socket) throw this.wsService.callNoConnectionError()
     socket.on(MessageServerEvents.NEW,         (m: MessageDto) => this.message$.next(m));
+    socket.on(MessageServerEvents.UPDATED,     (m: MessageDto) => this.messageUpdated$.next(m));
     socket.on(MessageServerEvents.TYPING,      (t) => this.typing$.next(t));
 
   }
@@ -49,6 +51,7 @@ export class MessagesService {
     const socket = this.socket
     if(!socket) return;
     socket.off(MessageServerEvents.NEW)
+    socket.off(MessageServerEvents.UPDATED)
     socket.off(MessageServerEvents.TYPING)
   }
 
@@ -101,6 +104,13 @@ export class MessagesService {
     );
   }
 
+  async editMessage(chatId: string, messageId: string, text: string): Promise<MessageDto> {
+    return await this.http.request<MessageDto>(
+      `/api/chats/${chatId}/messages/${messageId}`,
+      { method: 'PATCH', body: { text } },
+    );
+  }
+
   async fetchMessagesByChat({ chatId, cursor, limit }: { chatId: string, cursor?: string | null, limit?: number }) {
     return await this.http.request<PaginatedResponse<MessageDto>>(
       `/api/chats/${chatId}/messages`,
@@ -114,6 +124,10 @@ export class MessagesService {
 
   onNewMessage(): Observable<MessageDto> {
     return this.message$.asObservable()
+  }
+
+  onMessageUpdated(): Observable<MessageDto> {
+    return this.messageUpdated$.asObservable()
   }
 
   onTyping(chatId: string | null): Observable<{ chatId: string; user: { id: string; role: string }; isTyping: boolean }> {

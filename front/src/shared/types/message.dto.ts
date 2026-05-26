@@ -10,6 +10,7 @@ export type MessageBaseDto = {
   text: string;
   authorId: string;
   createdAt: string; // ISOString
+  editedAt?: string | null;
 };
 
 export type MessageWithAttachmentsDto = MessageBaseDto & {

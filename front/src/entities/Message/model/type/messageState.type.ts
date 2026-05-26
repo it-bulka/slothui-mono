@@ -9,4 +9,5 @@ export interface MessagesState extends EntityState<MessageDto, string> {
   errorByChat: Record<ChatId, string | undefined>;
   hasMoreByChat: Record<ChatId, boolean>;
   cursorByChat: Record<ChatId, string | null | undefined>;
+  editingMessageId: string | null;
 }

@@ -1,0 +1,24 @@
+@reference "../../../../app/styles/tailwind.css";
+
+.overlay {
+    @apply absolute z-10 flex flex-row items-stretch rounded-2xl -top-[10px] -bottom-[10px] py-[10px] px-[14px];
+    width: var(--edit-overlay-w, calc(100% + 28px));
+    box-shadow:
+        0 2px 8px var(--shadow-color),
+        0 8px 30px var(--shadow-color),
+        0 20px 50px var(--shadow-color);
+}
+
+.self {
+    background-color: var(--color-msg-self);
+    @apply -right-[14px];
+}
+
+.other {
+    background-color: var(--color-msg-other);
+    @apply -left-[14px];
+}
+
+.content {
+    @apply flex-1 min-w-0 overflow-y-auto outline-none text-sm leading-relaxed text-inherit whitespace-pre-wrap break-words;
+}

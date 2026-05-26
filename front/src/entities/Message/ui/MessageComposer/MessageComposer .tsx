@@ -14,7 +14,7 @@ import {
 
 import { getMessageType } from '../../model';
 import type { MessageRegistry, MessageComponent } from '../../model';
-
+import { useAppSelector } from '@/shared/config/redux';
 
 const messageConfig: MessageRegistry  = {
   media: { component: MediaMessage, fullWidth: false },
@@ -33,9 +33,10 @@ export const MessageComposer = ({
 }: MessageComponent<MessageDto>) => {
   const type = getMessageType(msg);
   const { component: Component, fullWidth } = messageConfig[type];
+  const isEditing = useAppSelector((s) => s.messages.editingMessageId === msg.id);
 
   return (
-    <MessageBubble isAuthor={isAuthor} maxWidth={fullWidth}>
+    <MessageBubble isAuthor={isAuthor} maxWidth={fullWidth} overflowVisible={isEditing}>
       <Component
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         msg={msg as any}

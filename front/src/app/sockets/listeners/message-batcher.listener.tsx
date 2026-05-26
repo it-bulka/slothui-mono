@@ -22,6 +22,11 @@ export const initMessageBatcher = (services: ServicesFacade, store: AppStore) =>
           .catch(err => console.error(err));
       }
     });
+
+  services.messages.onMessageUpdated()
+    .subscribe((m) => {
+      store.dispatch(messagesAction.updateMessage(m));
+    });
 };
 
 

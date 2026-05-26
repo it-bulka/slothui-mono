@@ -1,6 +1,7 @@
 export { messagesAction, messageReducer } from './slice/slice.ts';
 export { useMessagesByChatSelect } from './hooks';
 export { sendMessage } from './thunk/sendMessage.tsx';
+export { editMessageThunk } from './thunk/editMessage.thunk.ts';
 export { useSelectIsMessageSending } from './selectors/selectIsMessageSending.tsx';
 export { useFetchMessagesByChat, useChatMetaSelect, useUpdatePollInMessage } from './hooks';
 export { getMessageType } from './helpers/getMessageType.tsx';
