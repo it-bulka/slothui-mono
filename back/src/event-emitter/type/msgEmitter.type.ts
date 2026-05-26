@@ -7,4 +7,11 @@ type NewMsg = {
   data: MessageResponseDto;
   meta: Meta;
 };
-export type MsgEmitterType = NewMsg;
+
+type UpdatedMsg = {
+  ev: MessageServerEvents.UPDATED;
+  data: MessageResponseDto;
+  meta: Meta;
+};
+
+export type MsgEmitterType = NewMsg | UpdatedMsg;

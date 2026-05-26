@@ -2,6 +2,7 @@ import {
   Controller,
   UseGuards,
   Post,
+  Patch,
   Get,
   Request,
   UseInterceptors,
@@ -21,6 +22,7 @@ import { GetMessagesQuery } from './dto/getMessages.dto';
 import { CreateGeoMessageDto } from '../geo-message/dto/createGeoMessage.dto';
 import { ParseCreateMsgPipe } from './pipe/parseCreateMsg.pipe';
 import { CreateMessageDto } from './dto/createMessage.dto';
+import { UpdateMessageDto } from './dto/updateMessage.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiAuth } from '../docs/swagger/api-auth.decorator';
 import {
@@ -87,5 +89,21 @@ export class MessagesController {
 
     this.msgEmitterService.onNewMessage(msg);
     return msg;
+  }
+
+  @Patch(':messageId')
+  async updateMessage(
+    @Param('chatId') chatId: string,
+    @Param('messageId') messageId: string,
+    @Body() dto: UpdateMessageDto,
+    @Request() req: AuthRequest,
+  ) {
+    const updated = await this.messagesService.updateMessage(
+      messageId,
+      req.user.id,
+      dto.text,
+    );
+    this.msgEmitterService.onMessageUpdated(updated);
+    return updated;
   }
 }

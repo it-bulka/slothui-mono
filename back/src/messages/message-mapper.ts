@@ -18,6 +18,7 @@ export class MessageMapper {
       authorId: msg.authorId,
       text: msg.text,
       createdAt: msg.createdAt.toISOString(),
+      editedAt: msg.editedAt?.toISOString() ?? null,
     };
 
     if (msg.attachments) {

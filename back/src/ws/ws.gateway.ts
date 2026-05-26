@@ -96,6 +96,7 @@ export class WsGateway
         switch (event.ev) {
           // MESSAGES SERVER
           case MessageServerEvents.NEW:
+          case MessageServerEvents.UPDATED:
             this.server.to(event.data.chatId).emit(event.ev, event.data);
             break;
           default:

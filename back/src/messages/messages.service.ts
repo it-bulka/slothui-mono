@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
@@ -412,6 +413,23 @@ export class MessagesService {
 
       this.unreadBufferService.increment(userId, chatId, chatLastMsg);
     }
+  }
+
+  async updateMessage(
+    messageId: string,
+    authorId: string,
+    text: string,
+  ): Promise<MessageResponseDto> {
+    const msg = await this.messageRepo.findOne({ where: { id: messageId } });
+    if (!msg) throw new NotFoundException('Message not found');
+    if (msg.authorId !== authorId) throw new ForbiddenException();
+    if (!msg.text)
+      throw new BadRequestException('Only text messages can be edited');
+
+    msg.text = text;
+    msg.editedAt = new Date();
+    const saved = await this.messageRepo.save(msg);
+    return MessageMapper.toResponce(saved);
   }
 
   async sendMessageOnStory({

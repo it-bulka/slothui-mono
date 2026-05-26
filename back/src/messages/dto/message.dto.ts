@@ -9,6 +9,7 @@ export type MessageBaseResponseDto = {
   text: string;
   authorId: string;
   createdAt: string; // ISO
+  editedAt: string | null;
 };
 
 export type MessageWithAttachmentsResponseDto = MessageBaseResponseDto & {

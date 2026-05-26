@@ -21,4 +21,12 @@ export class EventEmitterMessageService {
       meta: { local: true },
     });
   }
+
+  onMessageUpdated(msg: MessageResponseDto) {
+    this.msgEvent$.next({
+      ev: MessageServerEvents.UPDATED,
+      data: msg,
+      meta: { local: true },
+    });
+  }
 }
