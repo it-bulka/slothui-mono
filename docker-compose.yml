@@ -46,3 +46,7 @@ services:
 volumes:
   pgdata:
   redisdata:
+
+networks:
+  shared-proxy:
+    external: true
