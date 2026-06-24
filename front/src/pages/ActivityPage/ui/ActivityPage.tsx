@@ -1,32 +1,28 @@
 import { memo } from 'react';
 import { Typography } from '@/shared/ui/Typography/Typography'
-import { AppLink } from '@/shared/ui/AppLink/AppLink';
-import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
+import { NavCardLink } from '@/shared/ui/NavCardLink';
 import { getLikedPage, getSavedPage } from '@/shared/config/routeConfig/routeConfig.tsx';
+
+const links = [
+  { title: 'Liked', description: 'Posts and events you liked', to: getLikedPage() },
+  { title: 'Saved', description: 'Posts and events you saved', to: getSavedPage() },
+]
 
 const ActivityPage = memo(() => {
   return (
     <main className="relative flex flex-col min-h-full">
       <Typography
         variant="h1"
-        type={TypographyTypes.BLOCK_TITLE}
         bold
-        className="toolbar sticky top-0 z-10"
+        className="toolbar header-glass sticky top-0 z-10"
       >
         Activity
       </Typography>
 
-      <section className="px-main py-main flex flex-col gap-4">
-        <nav aria-label="Activity sections">
-          <ul className="flex flex-col gap-3">
-            <li>
-              <AppLink to={getLikedPage()}>Liked</AppLink>
-            </li>
-            <li>
-              <AppLink to={getSavedPage()}>Saved</AppLink>
-            </li>
-          </ul>
-        </nav>
+      <section className="px-main py-main bg-underground-secondary flex flex-col gap-4 grow">
+        {links.map((link) => (
+          <NavCardLink key={link.to} {...link} />
+        ))}
       </section>
     </main>
   );
