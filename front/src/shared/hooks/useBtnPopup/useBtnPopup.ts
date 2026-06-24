@@ -9,7 +9,7 @@ import {
   autoUpdate,
   size
 } from '@floating-ui/react';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export interface UseBtnPopupOptions {
   defaultState?: boolean
@@ -53,16 +53,26 @@ export const useBtnPopup = ({
     whileElementsMounted: autoUpdate
   });
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = () => setIsOpen(false);
+    window.addEventListener('scroll', handleScroll, { capture: true, passive: true });
+    return () => window.removeEventListener('scroll', handleScroll, { capture: true });
+  }, [isOpen]);
 
   const click = useClick(context, {
     enabled: trigger === 'click',
   });
   const dismiss = useDismiss(context, {
-    outsidePressEvent: 'pointerdown', // listen to pointerdown instead of click
-    bubbles: false,                   // not to duplicate click after closing popup
+    outsidePressEvent: 'pointerdown',
+    bubbles: false,
   });
 
   const { getFloatingProps, getReferenceProps } = useInteractions([click, dismiss]);
+
+  const close = useCallback(() => setIsOpen(false), []);
+  const open = useCallback(() => setIsOpen(true), []);
+  const toggle = useCallback(() => setIsOpen(v => !v), []);
 
   return {
     x,
@@ -72,8 +82,8 @@ export const useBtnPopup = ({
     refs,
     getFloatingProps,
     getReferenceProps,
-    open: () => setIsOpen(true),
-    close: () => setIsOpen(false),
-    toggle: () => setIsOpen(v => !v),
+    open,
+    close,
+    toggle,
   };
 }
