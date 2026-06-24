@@ -63,7 +63,7 @@ export const EventCard = memo(({
   return (
     <Card
       onClick={handleCardClick}
-      className="cursor-pointer overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+      className="cursor-pointer overflow-hidden group transition-shadow duration-300 hover:shadow-2xl"
     >
       {/* Hero section */}
       <div className="relative h-36 overflow-hidden">
