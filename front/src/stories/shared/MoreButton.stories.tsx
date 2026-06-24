@@ -12,9 +12,9 @@ type Story = StoryObj<typeof MoreButton>
 export const Default: Story = {
   args: {
     content: (
-      <div className="bg-underground-primary border border-gray-g3 rounded-xl shadow-theme p-2 flex flex-col gap-1">
-        <button className="btn-ghost px-3 py-2 text-sm text-left w-full">Edit</button>
-        <button className="btn-ghost px-3 py-2 text-sm text-left w-full">Delete</button>
+      <div className="popup-menu min-w-[160px]">
+        <button className="popup-menu-item">Edit</button>
+        <button className="popup-menu-item text-red-600 dark:text-red-400">Delete</button>
       </div>
     ),
   },

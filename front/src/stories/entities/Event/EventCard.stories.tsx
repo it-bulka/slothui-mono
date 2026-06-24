@@ -64,8 +64,8 @@ export const WithMenu: Story = {
   args: {
     ...baseArgs,
     menu: (
-      <div className="card-premium rounded-xl py-1 min-w-[160px] shadow-lg overflow-hidden">
-        <button className="flex items-center gap-3 w-full px-4 py-3 text-left text-red-500 hover:bg-gray-50 transition-colors text-sm font-medium">
+      <div className="popup-menu min-w-[160px]">
+        <button className="popup-menu-item text-red-600 dark:text-red-400">
           Delete event
         </button>
       </div>
