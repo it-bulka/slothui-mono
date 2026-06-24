@@ -42,7 +42,7 @@ export const SearchBar = forwardRef(
     return (
       <div
         className={twMerge(classnames(
-          `flex items-center overflow-hidden rounded-3xl border border-gray-g4 ${cls[size]}`,
+          `flex items-center overflow-hidden rounded-[1.125rem] border border-gray-g4 ${cls[size]}`,
           [className]))}
       >
         {iconPosition === 'left' && <Search />}
