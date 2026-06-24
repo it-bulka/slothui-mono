@@ -8,6 +8,7 @@ import { ActionRow } from './ActionRow.tsx';
 import { UserStories } from './UserStories.tsx';
 import { SidebarInfoCard } from './SidebarInfoCard.tsx';
 import { MemberSince } from './MemberSince.tsx';
+import { SidebarHeader } from '@/widgets/SidebarHeader';
 import { useMediaQuery } from '@/shared/hooks';
 import { UserRightSidebarLoader } from './UserRightSidebarLoader.tsx';
 
@@ -21,6 +22,7 @@ export const UserRightSidebar = () => {
 
   return (
     <aside className="px-sidebar py-sidebar border-style-l bg-underground-secondary">
+      <SidebarHeader />
       <div className="profile-hero mb-4 p-4">
         <UserProfileData {...data} twoColumn={isTabletOrBelow} />
 
