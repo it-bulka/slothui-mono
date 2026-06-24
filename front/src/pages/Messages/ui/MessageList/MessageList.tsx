@@ -69,7 +69,7 @@ export const MessageList = memo(({
   }, [isAtBottom])
 
   return (
-    <div className="relative bg-underground-secondary grow min-h-0">
+    <div className="relative bg-white grow min-h-0">
       <Virtuoso<MessageDto, MessagesVirtuosoContext>
         ref={virtuosoRef}
         data={reversedMsgs}

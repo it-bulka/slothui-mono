@@ -7,7 +7,7 @@ export const Feed = ({ header, children }: { header?: ReactNode, children: React
           {header}
         </div>
       )}
-      <div className="bg-white px-main py-6 grow flex flex-col gap-4">
+      <div className="bg-light-l2 px-main py-6 grow flex flex-col gap-4">
         {children}
       </div>
     </div>

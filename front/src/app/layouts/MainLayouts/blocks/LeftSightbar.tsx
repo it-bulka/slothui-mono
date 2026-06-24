@@ -75,7 +75,7 @@ export const LeftSidebar = memo(() => {
 
   if (!isTablet) {
     return (
-      <aside className="px-4 py-8 flex flex-col gap-4 border-style-r bg-light-l2 h-screen overflow-y-auto scrollbar-hide">
+      <aside className="px-4 py-8 flex flex-col gap-4 border-style-r bg-white h-screen overflow-y-auto scrollbar-hide">
         <Logo />
         <NavigationSearchBar />
         <ScrollableBlock className="grow">
@@ -105,7 +105,7 @@ export const LeftSidebar = memo(() => {
       >
         <button
           onClick={() => setIsExpanded(v => !v)}
-          className="absolute top-4 right-0 translate-x-1/2 z-10 bg-light-l2 border border-gray-g3 rounded-full w-6 h-6 flex items-center justify-center shadow-sm text-gray-g1 hover:text-blue-b1 transition-colors"
+          className="absolute top-4 right-0 translate-x-1/2 z-10 bg-white border border-gray-g3 rounded-full w-6 h-6 flex items-center justify-center shadow-sm text-gray-g1 hover:text-blue-b1 transition-colors"
           aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
           <svg
@@ -120,7 +120,7 @@ export const LeftSidebar = memo(() => {
         </button>
 
         <aside
-          className="w-full h-full bg-light-l2 border-style-r flex flex-col gap-4 py-8 overflow-y-auto scrollbar-hide"
+          className="w-full h-full bg-white border-style-r flex flex-col gap-4 py-8 overflow-y-auto scrollbar-hide"
           style={{
             paddingLeft: isExpanded ? '1rem' : '0.75rem',
             paddingRight: isExpanded ? '1rem' : '0.75rem',

@@ -19,7 +19,7 @@ export const RightSidebar = ({ compact = false }: RightSidebarProps) => {
   if (!userData) return <p>No auth user</p>;
 
   return (
-    <div className="border-style-l bg-light-l2 h-full">
+    <div className="border-style-l bg-white h-full">
       {!compact && <SidebarHeader />}
 
       <div className="profile-hero mx-4 mb-4">
