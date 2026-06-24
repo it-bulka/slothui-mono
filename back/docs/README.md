@@ -11,10 +11,6 @@ SlothUI is a full-stack social networking monorepo with real-time messaging, pos
 | Real-time | Socket.io |
 | Auth | JWT + 7 OAuth2 providers |
 
-## Getting Started
-
-→ [Setup Guide](./guides/setup.md)
-
 ## API Documentation
 
 ### Interactive (live server required)
@@ -48,21 +44,11 @@ SlothUI is a full-stack social networking monorepo with real-time messaging, pos
 - [Overview](./architecture/overview.md) — tech stack, auth flow, WebSocket rooms, request lifecycle
 - [Modules](./architecture/modules.md) — all backend modules with responsibilities and dependencies
 
-## Guides
-
-- [Setup](./guides/setup.md) — local development setup
-- [Deployment](./guides/deployment.md) — PM2, Docker, Nginx, production env
-
-## Repository Structure
+## Directory Structure
 
 ```
-back/      — NestJS backend
-front/     — React frontend
 docs/
-  api/            — REST API reference (1 file per module)
-  websocket/      — WebSocket event reference
-  architecture/   — System architecture docs
-  guides/         — Setup and deployment guides
-  backend/        — Backend feature analysis and decisions
-  frontend/       — Frontend feature analysis and decisions
+├── api/            — REST API reference (1 file per module)
+├── websocket/      — WebSocket event reference
+└── architecture/   — System architecture docs
 ```
