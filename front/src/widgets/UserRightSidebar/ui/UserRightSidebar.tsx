@@ -21,24 +21,25 @@ export const UserRightSidebar = () => {
 
   return (
     <aside className="px-sidebar py-sidebar border-style-l bg-underground-secondary">
-      <div className="profile-cover mb-4" />
-      <UserProfileData {...data} twoColumn={isTabletOrBelow} />
+      <div className="profile-hero mb-4 p-4">
+        <UserProfileData {...data} twoColumn={isTabletOrBelow} />
 
-      <Statistics
-        followingCount={data.followeesCount}
-        followersCount={data.followersCount}
-        postsCount={data.postsCount}
-        hrefs={{
-          posts: `/users/${userId}`,
-          followers: `/users/${userId}/friends?type=followers`,
-          following: `/users/${userId}/friends?type=followings`,
-        }}
-      />
+        <Statistics
+          followingCount={data.followeesCount}
+          followersCount={data.followersCount}
+          postsCount={data.postsCount}
+          hrefs={{
+            posts: `/users/${userId}`,
+            followers: `/users/${userId}/friends?type=followers`,
+            following: `/users/${userId}/friends?type=followings`,
+          }}
+        />
 
-      <ActionRow userId={userId} isFollowee={friend?.isFollowee} />
+        <ActionRow userId={userId} isFollowee={friend?.isFollowee} />
 
-      <div className="mb-4">
-        <UserStories userId={userId} />
+        <div>
+          <UserStories userId={userId} />
+        </div>
       </div>
 
       <SidebarInfoCard title="About">

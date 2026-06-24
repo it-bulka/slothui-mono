@@ -39,12 +39,12 @@ export const RightSidebar = ({ compact = false }: RightSidebarProps) => {
         </div>
       )}
 
-      <div className="profile-cover" />
+      <div className="profile-hero mx-4 mb-4">
+        <CurrentUserStatistics />
 
-      <CurrentUserStatistics />
-
-      <div className="px-6 py-3 flex justify-center">
-        <CurrentUserStories />
+        <div className="px-6 py-3 flex justify-center">
+          <CurrentUserStories />
+        </div>
       </div>
 
       <div className="p-6 flex flex-col gap-8">
