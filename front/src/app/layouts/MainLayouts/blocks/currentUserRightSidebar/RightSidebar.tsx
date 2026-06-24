@@ -39,6 +39,8 @@ export const RightSidebar = ({ compact = false }: RightSidebarProps) => {
         </div>
       )}
 
+      <div className="profile-cover" />
+
       <CurrentUserStatistics />
 
       <div className="px-6 py-3 flex justify-center">

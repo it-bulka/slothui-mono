@@ -43,7 +43,9 @@ export const LeftSidebarContent = () => {
       <ScrollableBlock className="grow">
         <NavBar />
         <Divider className="my-6" />
-        <UserAuth />
+        <div className="sidebar-user-glow p-2">
+          <UserAuth />
+        </div>
       </ScrollableBlock>
     </aside>
   );
@@ -79,7 +81,9 @@ export const LeftSidebar = memo(() => {
         <ScrollableBlock className="grow">
           <NavBar />
           <Divider className="my-6" />
-          <UserAuth />
+          <div className="sidebar-user-glow p-2">
+            <UserAuth />
+          </div>
         </ScrollableBlock>
       </aside>
     );

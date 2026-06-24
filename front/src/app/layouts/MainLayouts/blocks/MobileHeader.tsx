@@ -17,7 +17,7 @@ export const MobileHeader = memo(({ className }: MobileHeaderProps) => {
   const userData = useAuthUserSelector();
 
   return (
-    <header className={classnames('flex items-center justify-between px-4 py-3 bg-light-l2 border-style-b', className)}>
+    <header className={classnames('flex items-center justify-between px-4 py-3 header-glass border-style-b', className)}>
       <button
         onClick={openLeft}
         aria-label="Open navigation menu"
