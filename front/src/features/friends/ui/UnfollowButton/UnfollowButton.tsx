@@ -7,7 +7,8 @@ export const UnfollowButton = memo(({ userId }: { userId: string }) => {
   return (
     <Button
       onClick={() => unfollow(userId)}
-      variant="link"
+      variant="soft"
+      size="md"
     >
       Unfollow
     </Button>

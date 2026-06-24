@@ -7,7 +7,8 @@ export const FollowButton = memo(({ userId }: { userId: string }) => {
   return (
     <Button
       onClick={() => followUser(userId)}
-      variant="link"
+      variant="soft"
+      size="md"
     >
       Follow
     </Button>

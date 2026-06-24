@@ -46,6 +46,19 @@
   box-shadow: none;
 }
 
+.soft {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(99, 102, 241, 0.06));
+  border-color: rgba(124, 92, 255, 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: var(--color-blue-b1);
+}
+
+.btn.soft:not(.disabled):hover {
+  background: var(--color-blue-b1);
+  color: #fff;
+  border-color: var(--color-blue-b1);
+}
+
 .btn.outlined:not(.disabled):hover {
   background-color: var(--color-light-l3);
   border-color: var(--color-blue-b2);
