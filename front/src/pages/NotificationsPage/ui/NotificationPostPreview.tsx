@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Link } from 'react-router';
 import { Typography } from '@/shared/ui/Typography/Typography';
 import { getPostPage } from '@/shared/config/routeConfig/routeConfig.tsx';
-import ArrowSide from '@/shared/assets/images/general/arrow-up-right.svg?react';
+import cls from './NotificationPostPreview.module.css';
 
 interface NotificationPostPreviewProps {
   entityId: string;
@@ -17,11 +17,10 @@ export const NotificationPostPreview = memo(({
 }: NotificationPostPreviewProps) => (
   <Link
     to={getPostPage(entityId)}
-    className="block mt-2"
-    style={{ textDecoration: 'none' }}
+    className="block mt-2 no-underline"
     onClick={(e) => e.stopPropagation()}
   >
-    <div className="card-premium overflow-hidden">
+    <div className={cls.card}>
       <div className="px-3 pt-2.5 pb-3 flex flex-col gap-1">
         {entityTitle && (
           <Typography color="secondary" className="text-sm leading-snug line-clamp-2">
@@ -32,19 +31,17 @@ export const NotificationPostPreview = memo(({
         {commentText && (
           <Typography
             color="secondary"
-            className="text-sm leading-snug line-clamp-2 pt-1.5 mt-0.5"
-            style={{ borderTop: '1px solid var(--color-gray-g4)' }}
+            className={`text-sm leading-snug line-clamp-2 pt-1.5 mt-0.5 ${cls.commentDivider}`}
           >
             💬 {commentText}
           </Typography>
         )}
 
-        <div
-          className="flex items-center gap-0.5 mt-1"
-          style={{ color: 'var(--color-blue-b1)' }}
-        >
+        <div className="flex items-center gap-0.5 mt-1 text-blue-b1">
           <span className="text-xs font-semibold">Open post</span>
-          <ArrowSide className="w-3 h-3" />
+          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </div>

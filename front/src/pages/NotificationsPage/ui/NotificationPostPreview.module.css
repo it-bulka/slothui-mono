@@ -1,0 +1,23 @@
+@reference "../../../app/styles/tailwind.css";
+
+.card {
+  @apply overflow-hidden;
+  background: linear-gradient(to top, var(--color-light-l2), transparent);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border: 1px solid var(--color-gray-g3);
+  border-top: none;
+  box-shadow: 0 1px 2px var(--shadow-color);
+  clip-path: inset(-1px -4px -4px -4px);
+}
+
+[data-theme="dark"] .card {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.03), transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: none;
+}
+
+.commentDivider {
+  border-top: 1px solid var(--color-gray-g4);
+}
