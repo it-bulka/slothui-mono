@@ -18,7 +18,7 @@ export const MessagesLoader = memo(() => {
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 min-h-0 bg-underground-secondary px-6 py-4 flex flex-col gap-3">
+      <div className="flex-1 min-h-0 bg-white px-6 py-4 flex flex-col gap-3">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className={`flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
             <Skeleton height={40} width={i % 2 === 0 ? 192 : 144} border="16px" />

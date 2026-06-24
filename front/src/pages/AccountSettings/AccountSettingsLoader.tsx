@@ -5,7 +5,7 @@ export const AccountSettingsLoader = memo(() => {
   return (
     <div className="min-h-full bg-underground-secondary">
 
-      <div className="toolbar">
+      <div className="toolbar header-glass">
         <Skeleton className="w-44 h-4 rounded" />
         <Skeleton className="w-32 h-4 rounded" />
       </div>
@@ -15,11 +15,11 @@ export const AccountSettingsLoader = memo(() => {
         {/* Email */}
         <div className="flex flex-col gap-2">
           <Skeleton className="w-24 h-4 rounded" />
-          <div className="w-full h-11 rounded-2xl bg-gray-g4/30 animate-pulse" />
+          <div className="w-full h-11 rounded-[1.125rem] bg-gray-g4/30 animate-pulse" />
         </div>
 
         {/* Change password button */}
-        <div className="w-full h-11 rounded-2xl bg-gray-g4/30 animate-pulse" />
+        <div className="w-full h-11 rounded-[1.125rem] bg-gray-g4/30 animate-pulse" />
 
         {/* Sessions block */}
         <div className="flex flex-col gap-3">
@@ -28,7 +28,7 @@ export const AccountSettingsLoader = memo(() => {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center justify-between w-full h-11 px-4 rounded-2xl bg-gray-g4/20 animate-pulse"
+              className="flex items-center justify-between w-full h-11 px-4 rounded-[1.125rem] bg-gray-g4/20 animate-pulse"
             >
               <Skeleton className="w-56 h-3 rounded" />
               <Skeleton className="w-6 h-6 rounded" />
@@ -37,7 +37,7 @@ export const AccountSettingsLoader = memo(() => {
         </div>
 
         {/* Delete account button */}
-        <div className="w-full h-11 rounded-2xl bg-red-100/30 animate-pulse" />
+        <div className="w-full h-11 rounded-[var(--radius-sm)] bg-red-100/30 animate-pulse" />
 
       </div>
     </div>

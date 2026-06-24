@@ -30,7 +30,7 @@ export const UserFriendsLoader = memo(() => {
             </div>
 
             {/* action button */}
-            <Skeleton className="w-16 h-8 rounded-2xl" />
+            <Skeleton className="w-16 h-8 rounded-[var(--radius-sm)]" />
           </div>
         ))}
       </div>

@@ -2,7 +2,7 @@ import { Skeleton } from '@/shared/ui/Skeleton';
 
 export const PostPageSkeleton = () => (
   <div className="px-main py-main">
-    <div className="rounded-xl border-style-l bg-light-l2 p-5 flex flex-col gap-4">
+    <div className="rounded-[var(--radius-lg)] bg-light-l2 border border-gray-g3 p-5 flex flex-col gap-4">
       <div className="flex gap-3 items-center">
         <Skeleton width={44} height={44} border="50%" />
         <div className="flex flex-col gap-2">

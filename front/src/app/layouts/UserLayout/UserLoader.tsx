@@ -13,9 +13,9 @@ export const UserLoader = memo(() => {
         <Skeleton className="w-14 h-4 rounded" />
       </div>
 
-      <div className="flex flex-col gap-4 px-main py-6">
+      <div className="flex flex-col gap-4 px-main py-6 bg-light-l2 grow">
         {[1, 2].map((i) => (
-          <div key={i} className="flex flex-col gap-3 p-4 rounded-2xl bg-light-l3 shadow">
+          <div key={i} className="flex flex-col gap-3 p-4 rounded-[var(--radius-xl)] bg-light-l3 shadow">
             <div className="flex items-center gap-3">
               <Skeleton width={46} height={46} border="50%" />
               <div className="flex flex-col gap-2 grow">

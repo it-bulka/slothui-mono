@@ -9,10 +9,10 @@ export const ForgotPasswordPageLoader = memo(() => {
       <Skeleton className="h-7 w-3/4 rounded mx-auto" />
 
       {/* Email input */}
-      <Skeleton className="h-10 w-full rounded" />
+      <Skeleton className="h-10 w-full rounded-[1.125rem]" />
 
       {/* Submit button — half-width, right-aligned */}
-      <Skeleton className="h-10 w-1/2 rounded ml-auto" />
+      <Skeleton className="h-10 w-1/2 rounded-[var(--radius-sm)] ml-auto" />
 
       {/* Links */}
       <div className="flex justify-center gap-6 mt-1">

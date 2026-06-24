@@ -5,7 +5,7 @@ export const PrivacySettingsLoader = memo(() => {
   return (
     <div className="min-h-full bg-underground-secondary">
 
-      <div className="toolbar">
+      <div className="toolbar header-glass">
         <Skeleton className="w-40 h-4 rounded" />
         <Skeleton className="w-32 h-4 rounded" />
       </div>
@@ -19,13 +19,13 @@ export const PrivacySettingsLoader = memo(() => {
             <Skeleton className="w-48 h-4 rounded" />
 
             {/* dropdown */}
-            <div className="w-full h-11 rounded-2xl bg-gray-g4/30 animate-pulse" />
+            <div className="w-full h-11 rounded-[1.125rem] bg-gray-g4/30 animate-pulse" />
           </div>
         ))}
 
         {/* button */}
         <div className="flex justify-end mt-2">
-          <Skeleton className="w-32 h-10 rounded-2xl" />
+          <Skeleton className="w-32 h-10 rounded-[var(--radius-sm)]" />
         </div>
 
       </div>

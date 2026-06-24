@@ -9,15 +9,15 @@ export const RegisterPageLoader = memo(() => {
       <Skeleton className="h-7 w-3/4 rounded mx-auto" />
 
       {/* FileInput (avatar upload) — full-width */}
-      <Skeleton className="h-10 w-full rounded" />
+      <Skeleton className="h-10 w-full rounded-[1.125rem]" />
 
       {/* 5 text inputs */}
       {Array.from({ length: 5 }).map((_, i) => (
-        <Skeleton key={i} className="h-10 w-full rounded" />
+        <Skeleton key={i} className="h-10 w-full rounded-[1.125rem]" />
       ))}
 
       {/* Submit button — half-width, right-aligned */}
-      <Skeleton className="h-10 w-1/2 rounded ml-auto" />
+      <Skeleton className="h-10 w-1/2 rounded-[var(--radius-sm)] ml-auto" />
 
       {/* OAuth divider */}
       <Skeleton className="h-4 w-36 rounded mx-auto my-2" />

@@ -7,11 +7,11 @@ export const HomeLoader = memo(() => {
 
       {/* PostsToolbar: search + add post button */}
       <div className="toolbar gap-4">
-        <Skeleton className="flex-1 h-10 rounded-3xl" />
-        <Skeleton className="w-10 h-10 rounded-full sm:w-32 sm:rounded-2xl shrink-0" />
+        <Skeleton className="flex-1 h-10 rounded-[1.125rem]" />
+        <Skeleton className="w-10 h-10 rounded-[var(--radius-sm)] sm:w-32 shrink-0" />
       </div>
 
-      <div className="bg-white px-main py-6 grow flex flex-col gap-4">
+      <div className="bg-light-l2 px-main py-6 grow flex flex-col gap-4">
 
         {/* Stories */}
         <div className="flex gap-3 overflow-hidden">
@@ -31,7 +31,7 @@ export const HomeLoader = memo(() => {
 
         {/* Posts */}
         {[1, 2].map(i => (
-          <div key={i} className="p-4 rounded-2xl bg-light-l3 shadow flex flex-col gap-3">
+          <div key={i} className="p-4 rounded-[var(--radius-xl)] bg-light-l3 shadow flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <Skeleton width={46} height={46} border="50%" />
               <div className="flex flex-col gap-2 grow">
