@@ -14,19 +14,19 @@ export const SearchSuggestionsList = ({
 
   if(!items.length) {
     return (
-      <p className={twMerge(classnames("p-2 w-full bg-white mt-1 rounded shadow", [className]))}>
+      <p className={twMerge(classnames("p-4 w-full text-gray-g1", [className]))}>
         No results found.
       </p>
     )
   }
   return (
     <ul
-      className={twMerge(classnames("w-full bg-white mt-1 rounded shadow", [className]))}
+      className={twMerge(classnames("w-full", [className]))}
     >
       {items?.map(s => (
         <li
           key={s.id}
-          className="p-2 cursor-pointer hover:bg-gray-100"
+          className="px-4 py-3 cursor-pointer hover:bg-blue-b4 transition-colors rounded-[var(--radius-sm)]"
           onClick={() => {
             navigate(s.path);
             onItemClick?.(s);

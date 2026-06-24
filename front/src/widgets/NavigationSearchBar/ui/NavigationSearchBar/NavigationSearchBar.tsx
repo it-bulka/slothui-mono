@@ -27,7 +27,7 @@ export const NavigationSearchBar = () => {
         <SearchSuggestionsList
           items={results}
           onItemClick={() => setValue('')}
-          className="absolute top-full left-0 z-100"
+          className="absolute top-full left-0 z-100 w-full bg-light-l2 backdrop-blur-[12px] border border-gray-g3 rounded-b-[var(--radius-lg)] shadow-theme-lg overflow-hidden"
         />
       )}
     </div>

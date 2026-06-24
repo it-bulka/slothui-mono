@@ -20,7 +20,7 @@ export const UserSearchToolbar = memo(({ className }: { className?: string }) =>
         <UserSearchResults
           isLoading={isLoading}
           list={results}
-          className="absolute top-full left-0 w-full shadow bg-white px-main m-h-[50vh] overflow-auto z-50"
+          className="absolute top-full left-0 w-full bg-light-l2 backdrop-blur-[12px] border border-gray-g3 rounded-b-[var(--radius-lg)] px-main max-h-[50vh] overflow-auto z-50 shadow-theme-lg"
         />
       )}
     </>
