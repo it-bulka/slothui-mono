@@ -12,8 +12,9 @@
 /* ─── Variants ───────────────────────────────────────── */
 .primary {
   @apply text-white;
-  background: linear-gradient(135deg, var(--color-blue-b1), #8B5CF6);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A78BFA 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .secondary {
@@ -76,7 +77,8 @@
 }
 
 .btn.primary:not(.disabled):hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(135deg, #7C7FF8 0%, #9B7AFA 50%, #B49BFF 100%);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .btn.secondary:not(.disabled):hover {
