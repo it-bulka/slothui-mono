@@ -11,12 +11,12 @@
 
 .sheet {
     @apply fixed left-[2vw] w-[96vw];
-    padding: 0 15px 15px;
+    padding: 0 1rem 1rem;
     height: calc(100vh + 100px);
     height: calc(100dvh + 100px);
-    border-radius: 12px 12px 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     z-index: var(--z-index-modal);
-    background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l2) 0%, var(--color-blue-b3) 100%);
+    background: var(--color-light-l2);
     border: 1px solid var(--color-gray-g3);
     box-shadow: 0 8px 24px var(--shadow-color);
     overflow-y: auto;
@@ -37,5 +37,8 @@
 }
 
 [data-theme="dark"] .sheet {
-    background: radial-gradient(ellipse 50% 60% at 75% 22%, var(--color-light-l3) 0%, var(--color-light-l2) 100%);
+    background: rgba(17, 24, 39, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }

@@ -54,9 +54,9 @@ export const Card = ({ children, className, max = false, onClick }: PropsWithChi
 }
 
 const cls = {
-  body: ({hasFooter, hasHeader}: CardBodyContextProps) => `px-5 ${hasHeader ? `pt-4` : 'pt-5'} ${hasFooter ? `pb-4` : 'pb-5'}`,
-  header: 'p-5 border-style-b',
-  footer: 'p-5 border-style-t'
+  body: ({hasFooter, hasHeader}: CardBodyContextProps) => `px-7 ${hasHeader ? 'pt-5' : 'pt-6'} ${hasFooter ? 'pb-5' : 'pb-6'}`,
+  header: 'px-7 py-5 border-style-b',
+  footer: 'px-7 py-5 border-style-t'
 }
 const CardBody = ({children, className }: PropsWithChildren<{ className?: string}>) => {
   const { hasHeader, hasFooter } = useContext(CardContext);
