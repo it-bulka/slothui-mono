@@ -4,16 +4,11 @@ interface PostActionsMenuProps {
   onDelete: () => void;
 }
 
-export const PostActionsMenu = ({ onDelete }: PostActionsMenuProps) => {
-  return (
-    <div className="card-premium rounded-xl py-1 min-w-[160px] shadow-lg overflow-hidden">
-      <button
-        onClick={onDelete}
-        className="flex items-center gap-3 w-full px-4 py-3 text-left text-red-500 hover:bg-gray-50 transition-colors"
-      >
-        <DeleteIcon className="w-5 h-5 shrink-0" />
-        <span className="text-sm font-medium">Delete post</span>
-      </button>
-    </div>
-  );
-};
+export const PostActionsMenu = ({ onDelete }: PostActionsMenuProps) => (
+  <div className="popup-menu min-w-[160px]">
+    <button onClick={onDelete} className="popup-menu-item text-red-600 dark:text-red-400">
+      <DeleteIcon className="w-4 h-4 shrink-0" />
+      Delete post
+    </button>
+  </div>
+);

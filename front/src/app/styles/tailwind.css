@@ -472,6 +472,40 @@
     }
 
     /* ======================================
+       POPUP MENU
+       ====================================== */
+
+    .popup-menu {
+        background: var(--color-light-l2);
+        border: 1px solid var(--color-gray-g3);
+        border-radius: var(--radius-sm);
+        box-shadow: 0 4px 16px var(--shadow-color);
+        overflow: hidden;
+    }
+
+    [data-theme="dark"] .popup-menu {
+        background: var(--color-light-l2);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .popup-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        transition: background 0.15s;
+    }
+
+    .popup-menu-item:hover {
+        background: var(--color-light-l3);
+    }
+
+    /* ======================================
        NAV LINKS
        ====================================== */
 
