@@ -47,7 +47,7 @@ export const ProfileActivity = memo(() => {
         withMargin
       />
 
-      <div className="bg-light-l1 border-blue-b3 rounded-3xl py-6 px-4 flex flex-col gap-5">
+      <div className="bg-light-l1 border-blue-b3 rounded-[1.25rem] py-6 px-4 flex flex-col gap-5">
         <div className="flex">
           {data.lastFollowers.map((user, index) => (
             <Avatar

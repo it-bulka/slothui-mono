@@ -7,7 +7,7 @@ interface SidebarInfoCardProps {
 }
 
 export const SidebarInfoCard = ({ title, children }: SidebarInfoCardProps) => (
-  <div className="bg-white rounded-xl border border-gray-g3 mb-4 overflow-hidden">
+  <div className="bg-white rounded-[1.25rem] border border-gray-g3 mb-4 overflow-hidden">
     <div className="px-4 pt-4 pb-3">
       <BlockTitle title={title} withoutBtn />
     </div>

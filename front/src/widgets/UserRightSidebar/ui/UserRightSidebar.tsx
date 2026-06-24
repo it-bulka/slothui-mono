@@ -21,6 +21,7 @@ export const UserRightSidebar = () => {
 
   return (
     <aside className="px-sidebar py-sidebar border-style-l bg-underground-secondary">
+      <div className="profile-cover mb-4" />
       <UserProfileData {...data} twoColumn={isTabletOrBelow} />
 
       <Statistics
