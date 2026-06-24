@@ -1,0 +1,17 @@
+@reference "../../../../app/styles/tailwind.css";
+
+.bar {
+  @apply absolute top-0 left-0 w-full h-[3px] overflow-hidden rounded-full;
+  z-index: 1;
+}
+
+.inner {
+  @apply absolute inset-0;
+  background: linear-gradient(90deg, transparent, var(--color-blue-b1), transparent);
+  animation: slide 1.2s ease-in-out infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
