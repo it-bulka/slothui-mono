@@ -21,7 +21,7 @@ export const HomeFeedContent = memo(() => {
         <PostFeedItem key={post.id} post={post} />
       ))}
       {isLoading && (
-        <div className="p-4 rounded-2xl bg-light-l3 shadow flex flex-col gap-3">
+        <div className="p-4 rounded-[var(--radius-xl)] bg-light-l3 shadow flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Skeleton width={46} height={46} border="50%" />
             <div className="flex flex-col gap-2 grow">

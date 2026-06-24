@@ -40,7 +40,7 @@ export const HomeEventContent = memo(() => {
         />
       ))}
       {isLoading && (
-        <div className="p-4 rounded-2xl bg-light-l3 shadow flex flex-col gap-3">
+        <div className="p-4 rounded-[var(--radius-xl)] bg-light-l3 shadow flex flex-col gap-3">
           <Skeleton height={144} border="16px" />
           <div className="flex flex-col gap-2">
             <Skeleton height={16} width="70%" />

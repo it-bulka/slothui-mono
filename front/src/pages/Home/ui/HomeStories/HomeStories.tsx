@@ -14,7 +14,7 @@ export const HomeStories = memo(() => {
   }, [fetchAllStories]);
 
   if (isLoading) return (
-    <div className="flex gap-3 overflow-hidden px-main py-2">
+    <div className="flex gap-3 overflow-hidden py-2">
       {[1, 2, 3, 4, 5].map(i => (
         <div key={i} className="flex flex-col items-center gap-2 shrink-0">
           <Skeleton width={56} height={56} border="50%" />
