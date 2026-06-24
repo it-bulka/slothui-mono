@@ -9,7 +9,7 @@ interface SubSettingsWrapperProps {
 export const SubSettingsWrapper = memo(({ title, children }: PropsWithChildren<SubSettingsWrapperProps>) => {
   return (
     <div className="min-h-full bg-underground-secondary">
-      <Typography className="toolbar" bold>
+      <Typography className="toolbar header-glass" bold>
         <span>{title}</span>
         <AppLink to={RoutePaths.settings}>Back to Settings</AppLink>
       </Typography>
