@@ -150,7 +150,7 @@ export const EventCreateForm = memo(({
         }}
       />
 
-      <Button type="submit" className="form-btn w-full" disabled={isSubmitted && hasErrors}>
+      <Button type="submit" className="form-btn w-full rounded-[1.125rem]" disabled={isSubmitted && hasErrors}>
         Create event
       </Button>
     </form>

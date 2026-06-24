@@ -114,7 +114,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
             htmlFor={id + name}
             className={twMerge(
               classnames('absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-500 pl-5 text-blue-b1', {
-                'top-0 px-2 text-sm -translate-y-1/2 bg-white rounded-3xl backdrop-blur-sm': !!value || isFieldFocused || !!placeholder,
+                'top-0 px-2 text-sm -translate-y-1/2 bg-underground-primary rounded-[1.125rem] backdrop-blur-sm': !!value || isFieldFocused || !!placeholder,
               }, [labelClass])
             )}
           >

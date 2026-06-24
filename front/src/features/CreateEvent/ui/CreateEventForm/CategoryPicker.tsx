@@ -24,7 +24,7 @@ const CategoryTile = memo(({ category, selected, onSelect }: CategoryTileProps) 
       aria-pressed={selected}
       title={config.label}
       className={[
-        'relative overflow-hidden rounded-xl py-1.5 px-1',
+        'relative overflow-hidden rounded-[1rem] py-1.5 px-1',
         'flex flex-col items-center gap-1 cursor-pointer',
         'transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60',
         selected
