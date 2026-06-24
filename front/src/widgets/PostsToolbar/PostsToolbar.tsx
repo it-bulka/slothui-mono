@@ -7,7 +7,7 @@ export const PostsToolbar = memo(() => {
   return (
     <ToolbarWrapper className="flex flex-col sm:flex-row items-stretch gap-4">
       <UserSearchToolbar className="flex-1 min-w-0" />
-      <AddPostPanel btnClassName="flex justify-center sm:flex-col" />
+      <AddPostPanel btnClassName="flex justify-center" />
     </ToolbarWrapper>
   )
 })

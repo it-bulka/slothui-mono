@@ -50,7 +50,7 @@ const PostTextareaRaw = memo(({ className }: PostTextarea) => {
   }
 
   return (
-    <div className={twMerge("flex flex-wrap bg-white rounded", className)}>
+    <div className={twMerge("flex flex-wrap bg-underground-primary rounded-[1.125rem] p-4 gap-3", className)}>
       <button className="w-6 h-6 text-svg-primary">
         <AttachSvg className="w-5 h-5"/>
       </button>

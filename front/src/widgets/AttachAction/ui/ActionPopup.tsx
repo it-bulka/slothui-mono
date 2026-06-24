@@ -80,7 +80,7 @@ export const AttachActionsPopup = ({ onBtnClick, actions = ALL_ACTIONS as Attach
   };
 
   return (
-    <div className="grid grid-cols-4 gap-2 bg-white px-2 py-4 rounded-lg border-gray-g2 shadow">
+    <div className="grid grid-cols-4 gap-2 bg-light-l2 px-3 py-4 rounded-[1.25rem] border border-gray-g3 shadow-theme">
       {actions.map((key) => (
         <React.Fragment key={key}>{actionMap[key]}</React.Fragment>
       ))}
