@@ -51,7 +51,7 @@ export const Participants = memo(({ id, refreshKey }: { id: string; refreshKey?:
 
       {/* Header */}
       <header className="flex items-center justify-between">
-        <Typography variant="h3" bold>Participants</Typography>
+        <Typography variant="h2" bold>Participants</Typography>
         {participantsMeta.totalCount > 0 && (
           <Typography type={TypographyTypes.P_SM} className="text-gray-g1">
             {participantsMeta.totalCount} joined
