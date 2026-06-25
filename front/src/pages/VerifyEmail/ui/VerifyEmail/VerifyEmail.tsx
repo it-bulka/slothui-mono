@@ -4,10 +4,17 @@ import { AuthForm } from '@/features/authUser';
 import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useAuthService } from '@/shared/libs/services';
+import { Helmet } from 'react-helmet-async';
 
 type Status = 'loading' | 'success' | 'error';
 
 const loginLinks = [{ to: getLoginPage(), label: 'Go to Login' }];
+
+const TITLES: Record<Status, string> = {
+  loading: 'Verifying your email…',
+  success: 'Email verified!',
+  error: 'Link is invalid or expired',
+}
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -27,34 +34,21 @@ const VerifyEmail = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (status === 'loading') {
-    return (
-      <AuthForm
-        formTitle="Verifying your email…"
-        withOAuth={false}
-        form={null}
-      />
-    );
-  }
-
-  if (status === 'success') {
-    return (
-      <AuthForm
-        formTitle="Email verified!"
-        withOAuth={false}
-        form={null}
-        additionalBlock={<LinkBlock links={loginLinks} noArrow />}
-      />
-    );
-  }
-
   return (
-    <AuthForm
-      formTitle="Link is invalid or expired"
-      withOAuth={false}
-      form={null}
-      additionalBlock={<LinkBlock links={loginLinks} noArrow />}
-    />
+    <>
+      <Helmet>
+        <title>Verify email — SlothUI</title>
+        <meta name="description" content="Verify your email address to complete SlothUI registration." />
+        <meta property="og:title" content="Verify email — SlothUI" />
+        <meta property="og:description" content="Verify your email address to complete SlothUI registration." />
+      </Helmet>
+      <AuthForm
+        formTitle={TITLES[status]}
+        withOAuth={false}
+        form={null}
+        additionalBlock={status !== 'loading' ? <LinkBlock links={loginLinks} noArrow /> : null}
+      />
+    </>
   );
 };
 

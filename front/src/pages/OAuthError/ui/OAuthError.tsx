@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
+import { AuthForm } from '@/features/authUser';
 import { Typography } from '@/shared/ui/Typography/Typography';
-import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
 import { LinkBlock } from '@/shared/ui/LinkBlock';
 import { getLoginPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 
@@ -13,16 +13,22 @@ const OAuthError = () => {
 
   return (
     <>
-      <Helmet><title>Authentication Error — SlothUI</title></Helmet>
-      <div className="md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-4 p-10 bg-auth-form mx-auto">
-        <Typography className="text-center" bold type={TypographyTypes.TITLE} variant="h1">
-          Authentication Failed
-        </Typography>
-        <Typography className="text-center" color="error">
-          {error}
-        </Typography>
-        <LinkBlock links={links} noArrow />
-      </div>
+      <Helmet>
+        <title>Authentication Error — SlothUI</title>
+        <meta name="description" content="An error occurred during authentication. Please try again." />
+        <meta property="og:title" content="Authentication Error — SlothUI" />
+        <meta property="og:description" content="An error occurred during authentication. Please try again." />
+      </Helmet>
+      <AuthForm
+        formTitle="Authentication Failed"
+        withOAuth={false}
+        form={
+          <Typography className="text-center" color="error" role="alert" aria-live="polite">
+            {error}
+          </Typography>
+        }
+        additionalBlock={<LinkBlock links={links} noArrow />}
+      />
     </>
   );
 };
