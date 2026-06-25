@@ -1,14 +1,14 @@
+import { memo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/Button/Button';
 import { Input } from '@/shared/ui/Input/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ForgotPasswordFormData, forgotPasswordSchema } from '../../modal';
 import { useAuthService } from '@/shared/libs/services';
-import { toast } from 'react-toastify'
-import { useCallback } from 'react';
+import { toast } from 'react-toastify';
 
-export const ForgotPasswordForm = ({ onSuccess }:{ onSuccess?: () => void}) => {
-  const { control, handleSubmit, formState } = useForm<ForgotPasswordFormData>({
+export const ForgotPasswordForm = memo(({ onSuccess }: { onSuccess?: () => void }) => {
+  const { control, handleSubmit, formState: { isDirty, isSubmitting } } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema)
   })
   const authService = useAuthService();
@@ -21,23 +21,27 @@ export const ForgotPasswordForm = ({ onSuccess }:{ onSuccess?: () => void}) => {
       toast.error((err as Error)?.message || 'Failed to reset password');
     }
   }, [authService, onSuccess])
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
       <Controller
         control={control}
         name="email"
-        render={({ field, formState }) => (
+        render={({ field, fieldState }) => (
           <Input
-            placeholder={"Enter email"}
+            label="Email"
+            placeholder="your@email.com"
             {...field}
-            error={formState.errors[field.name]?.message}
+            error={fieldState.error?.message}
           />
         )}
       />
 
-      <Button type="submit" className="min-w-[50%] ml-auto" disabled={!formState.isDirty}>
-        Confirm
+      <Button type="submit" className="min-w-[50%] ml-auto" disabled={!isDirty || isSubmitting}>
+        Send reset link
       </Button>
     </form>
   )
-}
+})
+
+ForgotPasswordForm.displayName = 'ForgotPasswordForm'
