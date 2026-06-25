@@ -29,8 +29,8 @@ export const MobileHeader = memo(({ className }: MobileHeaderProps) => {
       </button>
 
       <div className="flex items-center font-extrabold text-xl">
-        <LogoSvg className="w-7 h-7" />
-        <p>slothui</p>
+        <LogoSvg aria-hidden="true" className="w-7 h-7" />
+        <span>slothui</span>
       </div>
 
       <div className="flex items-center gap-1 text-svg-secondary">

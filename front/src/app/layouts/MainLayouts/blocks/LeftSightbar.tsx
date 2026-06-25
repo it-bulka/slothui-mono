@@ -54,7 +54,7 @@ export const LeftSidebarContent = () => {
 const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
   <>
     <div className={classnames('flex items-center font-extrabold text-3xl overflow-hidden', collapsed ? 'justify-center' : '')}>
-      <LogoSvg className="shrink-0" />
+      <LogoSvg aria-hidden="true" className="shrink-0" />
       {!collapsed && <p className="whitespace-nowrap">slothui</p>}
     </div>
 
