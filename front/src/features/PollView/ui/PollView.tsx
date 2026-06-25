@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PollEditor } from './PollEditor/PollEditor.tsx';
 import { PollReadOnly } from './PollReadOnly/PollReadOnly.tsx';
 import type { PollDto, PollResultDto } from '@/shared/types/poll.dto.ts';
@@ -9,12 +10,12 @@ interface PollProps {
   poll: PollDraft | PollDto | PollResultDto
   onEditPollSubmit?: (arg: {pollId: string, answerIds: string[]}) => void
 }
-export const PollView = ({ poll, mode, onEditPollSubmit }: PollProps) => {
+export const PollView = memo(({ poll, mode, onEditPollSubmit }: PollProps) => {
   if (mode === PollMode.EDIT) {
     return <PollEditor poll={poll as PollDto | PollDraft} onSubmit={onEditPollSubmit}/>
   }
 
   return <PollReadOnly poll={poll as PollResultDto} />
-}
+})
 
 PollView.displayName = 'PollView'

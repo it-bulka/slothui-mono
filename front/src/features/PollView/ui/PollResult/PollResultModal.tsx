@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/config/redux';
 import { fetchPollDetailsThunk } from '@/entities/Poll/model/thunk';
 import {
@@ -25,7 +25,7 @@ type Props = {
   pollId: string
 }
 
-export const PollResultModal = ({ pollId, isOpen, onClose }: Props) => {
+export const PollResultModal = memo(({ pollId, isOpen, onClose }: Props) => {
   const dispatch = useAppDispatch()
 
   const options = useAppSelector((s) => selectPollOptions(s, pollId))
@@ -73,4 +73,6 @@ export const PollResultModal = ({ pollId, isOpen, onClose }: Props) => {
       </Card>
     </Modal>
   )
-}
+})
+
+PollResultModal.displayName = 'PollResultModal'
