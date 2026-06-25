@@ -19,6 +19,16 @@ export const selectPollAnonymous = createSelector(
   (poll) => poll?.anonymous ?? false
 )
 
+export const selectPollQuestion = createSelector(
+  selectPollById,
+  (poll) => poll?.question ?? ''
+)
+
+export const selectPollUserVote = createSelector(
+  selectPollById,
+  (poll) => poll?.userVote ?? null
+)
+
 export const selectPollLoading = (state: RootState, pollId: string) =>
   state.pollDetails.loading[pollId]
 

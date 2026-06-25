@@ -1,45 +1,51 @@
-import { Typography } from '@/shared/ui/Typography/Typography';
-import { PollVotersList } from './PollVotersList.tsx';
+import { memo } from 'react';
+import { PollOptionCard } from '../common/PollOptionCard.tsx';
+import { LineRange } from '@/shared/ui/LineRange';
+import { PollVotersRow } from './PollVotersRow.tsx';
 import type { PollAnswerEntity } from '@/entities/Poll/model/type/pollDetails.state.ts';
-import { MorePollVotersButton } from '../../../MorePollVotersButton';
+import commonCls from '../common/styles.module.css';
+import cls from './PollResultModal.module.css';
 
-type Props = {
+interface PollOptionResultProps {
   option: PollAnswerEntity
   anonymous: boolean
   pollId: string
-  answerId: string
+  isSelected: boolean
+  isWinner: boolean
 }
 
-export const PollOptionResult = ({
-  option, anonymous, pollId, answerId
-}: Props) => {
+export const PollOptionResult = memo(({
+  option,
+  anonymous,
+  pollId,
+  isSelected,
+  isWinner
+}: PollOptionResultProps) => {
   const moreCount = option.votes - option.voters.items.length
 
   return (
-    <div>
-      <Typography bold className="border-b-2 border-gray-g1 bg-gray-g2">
-        {option.value}
-      </Typography>
+    <PollOptionCard isSelected={isSelected} isWinner={isWinner}>
+      <div className={cls.optionHeader}>
+        <span className={cls.optionName}>{option.value}</span>
+        <span className={cls.percentage}>{option.percentage}%</span>
+      </div>
 
-      <Typography className="flex justify-between">
-        <span>{option.voters.items.length} votes</span>
-        <span>{option.percentage}%</span>
-      </Typography>
+      <LineRange
+        percentage={option.percentage}
+        className={commonCls.progressTrack}
+        barClassName={commonCls.progressGradient}
+      />
 
       {!anonymous && (
-        <div>
-          <PollVotersList voters={option.voters.items} />
-          {moreCount > 0 && (
-            <MorePollVotersButton
-              moreCount={moreCount}
-              pollId={pollId}
-              answerId={answerId}
-              className={"mx-auto"}
-            />
-          )}
-        </div>
+        <PollVotersRow
+          voters={option.voters.items}
+          moreCount={moreCount}
+          pollId={pollId}
+          answerId={option.id}
+        />
       )}
-
-    </div>
+    </PollOptionCard>
   )
-}
+})
+
+PollOptionResult.displayName = 'PollOptionResult'

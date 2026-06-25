@@ -1,0 +1,34 @@
+@reference "../../../../app/styles/tailwind.css";
+
+.header {
+    @apply flex items-center justify-between sticky top-0 z-10;
+    background: inherit;
+}
+
+.headerInfo {
+    @apply flex flex-col gap-1 min-w-0;
+}
+
+.optionsList {
+    @apply flex flex-col gap-3;
+}
+
+.optionHeader {
+    @apply flex items-center justify-between gap-2;
+}
+
+.optionName {
+    @apply text-sm font-semibold truncate;
+}
+
+.percentage {
+    @apply text-blue-b1 text-xs font-bold tabular-nums shrink-0;
+}
+
+.votersList {
+    @apply flex flex-col gap-2 mt-3 pl-1;
+}
+
+.skeletonOption {
+    @apply flex flex-col gap-2 py-3;
+}
