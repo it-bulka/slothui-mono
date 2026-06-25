@@ -1,7 +1,7 @@
 @reference "../../../app/styles/tailwind.css";
 
 .btn {
-    @apply block w-[24px] h-[24px] rounded-full border border-b-gray-g2
+    @apply block w-[12px] h-[12px] rounded-full border border-b-gray-g2
     transition duration-100;
 }
 

@@ -1,7 +1,7 @@
 @reference "../../../app/styles/tailwind.css";
 
 .btn {
-    @apply block w-[24px] h-[24px] rounded-md border border-gray-300 transition duration-100 relative;
+    @apply block w-[12px] h-[12px] rounded-md border border-transparent transition duration-100 relative;
 }
 
 .btn.active {
