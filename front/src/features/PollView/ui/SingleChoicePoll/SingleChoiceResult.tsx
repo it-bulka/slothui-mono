@@ -1,43 +1,13 @@
-import { memo, useId } from 'react';
-import { OptionLabel } from '../OptionLabel.tsx';
-import { Typography } from '@/shared/ui/Typography/Typography'
-import { TypographyTypes } from '@/shared/ui/Typography/typography.types'
-import { RadioInput } from '@/shared/ui/RadioInput/RadioInput';
-import { PollResultWrapper } from '../PollResult/PollResultWrapper.tsx';
-import cls from '../common/styles.module.css';
-import { AnonymousTitle } from '@/features/PollView/ui/common/AnonymousTitle.tsx';
+import { memo } from 'react';
+import { PollResultContent } from '../common/PollResultContent.tsx';
 import type { SingleChoicePollResultDto } from '@/shared/types/poll.dto.ts';
 
 export type SingleChoiceResultProps = {
   poll: SingleChoicePollResultDto
 }
-export const SingleChoiceResult = memo(({
-  poll
-}: SingleChoiceResultProps) => {
-  const id = useId()
-  return (
-    <PollResultWrapper pollId={poll.id}>
-      <form className={cls.form}>
-        {poll.anonymous && <AnonymousTitle />}
-        <Typography bold type={TypographyTypes.BLOCK_TITLE}>{poll.question}</Typography>
-        {poll.answers.map((option, index) => (
-          <RadioInput
-            name={id}
-            key={index}
-            disabled={true}
-            selected={Boolean(poll.userVote && option.id === poll.userVote[0])}
-          >
-            <OptionLabel
-              value={option.value}
-              percentage={option.percentage}
-              voters={poll.anonymous ? [] : option.voters}
-              votes={option.votes}
-            />
-          </RadioInput>
-        ))}
-      </form>
-    </PollResultWrapper>
-  )
-})
+
+export const SingleChoiceResult = memo(({ poll }: SingleChoiceResultProps) => (
+  <PollResultContent poll={poll} />
+))
 
 SingleChoiceResult.displayName = 'SingleChoiceResult'

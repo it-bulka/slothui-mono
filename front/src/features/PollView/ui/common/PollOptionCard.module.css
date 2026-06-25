@@ -1,0 +1,15 @@
+@reference "../../../../app/styles/tailwind.css";
+
+.card {
+    position: relative;
+    padding: 0.25rem 0;
+    overflow: hidden;
+}
+
+.selected {
+    color: var(--color-blue-b1);
+}
+
+.winner {
+    color: var(--color-blue-b1);
+}

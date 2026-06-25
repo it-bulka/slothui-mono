@@ -3,3 +3,24 @@
 .form {
     @apply flex flex-col gap-y-2;
 }
+
+.resultSection {
+    @apply flex flex-col gap-y-4;
+}
+
+.optionsList {
+    @apply flex flex-col gap-y-1;
+}
+
+.progressGradient {
+    background: linear-gradient(90deg, var(--color-blue-b1), #818CF8);
+}
+
+[data-theme="dark"] .progressGradient {
+    background: linear-gradient(90deg, var(--color-blue-b1), #C4B5FD);
+}
+
+.progressTrack {
+    @apply bg-gray-g3 border-0 rounded-xl;
+    height: 6px;
+}

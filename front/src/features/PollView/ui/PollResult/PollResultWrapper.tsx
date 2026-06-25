@@ -16,11 +16,12 @@ export const PollResultWrapper = ({
       {children}
 
       <Button
-        className="w-full mt-3 mx-auto"
+        className="rounded-full w-fit mx-auto mt-4"
         onClick={open}
-        variant="link"
+        variant="soft"
+        size="md"
       >
-        Result Details
+        View Results →
       </Button>
 
       <PollResultModal
