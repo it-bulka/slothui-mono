@@ -4,10 +4,14 @@ import { Logo } from '@/shared/ui/Logo/Logo';
 
 export const AuthLayout = memo(() => {
   return (
-    <main className="min-h-screen bg-underground-secondary">
-      <Logo />
-      <Outlet />
-    </main>
+    <div className="min-h-screen bg-underground-secondary">
+      <header className="px-6 py-4">
+        <Logo />
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </div>
   )
 })
 

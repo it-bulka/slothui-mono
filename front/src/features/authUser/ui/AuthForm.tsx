@@ -1,7 +1,7 @@
+import { memo, type ReactNode } from 'react';
 import { SocialBtnsOauth } from './SocialBtnsOauth.tsx';
-import { Typography } from '@/shared/ui/Typography/Typography'
+import { Typography } from '@/shared/ui/Typography/Typography';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
-import type { ReactNode } from 'react';
 import { useAuthUserErrorSelector, useAuthUserLoadingSelector } from '@/entities/AuthUser';
 import { twMerge } from 'tailwind-merge';
 import classnames from 'classnames';
@@ -14,7 +14,7 @@ interface AuthFormProps {
   additionalBlock?: ReactNode;
 }
 
-export const AuthForm = ({
+export const AuthForm = memo(({
   formTitle,
   oAuthTitle,
   form,
@@ -25,21 +25,30 @@ export const AuthForm = ({
   const isLoading = useAuthUserLoadingSelector()
 
   return (
-    <div className={twMerge(classnames("md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 px-4 py-10 md:p-10 bg-auth-form mx-auto", {'opacity-20 pointer-none:': isLoading}))}>
-      <Typography className="text-center" bold type={TypographyTypes.TITLE} variant="h1">
+    <section
+      aria-labelledby="auth-form-title"
+      className={twMerge(classnames("md:max-w-1/3 max-w-[80%] min-w-[300px] flex flex-col gap-2 px-4 py-10 md:p-10 bg-auth-form mx-auto", { 'opacity-20 pointer-events-none': isLoading }))}
+    >
+      <Typography id="auth-form-title" className="text-center" bold type={TypographyTypes.TITLE} variant="h1">
         {formTitle}
       </Typography>
       {form}
-      {error && <Typography color='error'>{error}</Typography>}
+      {error && (
+        <Typography color="error" role="alert" aria-live="polite">
+          {error}
+        </Typography>
+      )}
       {withOAuth && (
         <>
-          <Typography className="my-4 text-center" bold type={TypographyTypes.SUBTITLE} variant="h4">
+          <Typography className="my-4 text-center" bold type={TypographyTypes.SUBTITLE} variant="h2">
             {oAuthTitle || 'OR by social media'}
           </Typography>
           <SocialBtnsOauth />
         </>
       )}
       {additionalBlock || null}
-    </div>
+    </section>
   )
-}
+})
+
+AuthForm.displayName = 'AuthForm'

@@ -30,6 +30,7 @@ export const SocialBtnsOauth = () => {
             key={id}
             onClick={async () => await authService[cb]()}
             text=""
+            aria-label={`Sign in with ${id}`}
             className={socialBtnCls}
           />
         ))}

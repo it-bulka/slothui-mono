@@ -1,8 +1,8 @@
-import { Button } from '@/shared/ui/Button/Button';
+import { memo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/shared/ui/Button/Button';
 import { loginSchema, type LoginFormData } from '../model/validation-login.ts';
-import { useCallback } from 'react';
 import { loginUser } from '@/entities/AuthUser';
 import { useAppDispatch } from '@/shared/config/redux';
 import { AuthInput } from './AuthInput.tsx';
@@ -15,8 +15,8 @@ const inputs = [
   { name: 'password', placeholder: 'password', type: 'password' },
 ] as const
 
-export const LoginForm = () => {
-  const { handleSubmit, control } = useForm<LoginFormData>({
+export const LoginForm = memo(() => {
+  const { handleSubmit, control, formState: { isSubmitting } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
   const dispatch = useAppDispatch()
@@ -47,9 +47,11 @@ export const LoginForm = () => {
           type={type}
         />
       ))}
-      <Button type="submit" className="min-w-[50%] ml-auto">
-        Submit
+      <Button type="submit" className="min-w-[50%] ml-auto" disabled={isSubmitting}>
+        Sign in
       </Button>
     </form>
   )
-}
+})
+
+LoginForm.displayName = 'LoginForm'
