@@ -31,6 +31,7 @@ export interface InputProps<T extends FieldValues | undefined = undefined>
   onChange?: InputSetter
   addendum?: ReactNode
   onAddendumClick?: InputSetter
+  addendumAriaLabel?: string
   addendumLeft?: boolean
   addendumFull?: boolean
   error?: string
@@ -54,6 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
   onChange,
   addendum,
   onAddendumClick,
+  addendumAriaLabel,
   addendumLeft,
   addendumFull,
   accept,
@@ -142,7 +144,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<FieldValues>>(({
           readOnly={readOnly}
           onKeyDown={onKeyDownHandler}
         />
-        {addendum && <button type="button" onClick={addendumClickHandler} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
+        {addendum && <button type="button" onClick={addendumClickHandler} aria-label={addendumAriaLabel} className="h-[24px] min-w-[24px] flex items-center justify-center">{addendum}</button>}
       </div>
       {error && (
         <p role="alert" className={'px-3 text-red-500 text-[0.7em]'}>
