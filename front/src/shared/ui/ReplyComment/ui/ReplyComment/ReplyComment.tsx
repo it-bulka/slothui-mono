@@ -17,9 +17,9 @@ export const ReplyComment = ({ commentId, postId }: { commentId: string, postId:
     return (
       <div className="flex justifyBetween text-[75%] text-blue gap-2 py-2 text-blue-500">
         <p>Replying to <b>@{author.nickname}...</b></p>
-        <ActionButton Icon={CloseSvg} onClick={() => clearReplyTargetForComment()}/>
+        <ActionButton Icon={CloseSvg} onClick={() => clearReplyTargetForComment()} aria-label="Cancel reply"/>
       </div>
     )
   }
-  return <ActionButton Icon={CommentSvg}  onClick={() => setReplyTarget({ type: 'comment', parentId: commentId, postId })}/>
+  return <ActionButton Icon={CommentSvg} onClick={() => setReplyTarget({ type: 'comment', parentId: commentId, postId })} aria-label="Reply"/>
 }

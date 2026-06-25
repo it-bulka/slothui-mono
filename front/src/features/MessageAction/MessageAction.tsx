@@ -6,5 +6,5 @@ import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig/routeConfig';
 export const MessageAction = () => {
   const navigate = useNavigate();
 
-  return <ActionButton variant="secondary" Icon={MessageSvg} onClick={() => navigate(RoutePaths[AppRoutes.CHATS])}/>
+  return <ActionButton variant="secondary" Icon={MessageSvg} onClick={() => navigate(RoutePaths[AppRoutes.CHATS])} aria-label="Messages"/>
 }

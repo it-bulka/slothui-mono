@@ -14,7 +14,7 @@ export const CommentPost = memo(({ postId, onCommentClick, showText = true, clas
   }, [onCommentClick, setReplyTarget, postId]);
 
   return (
-    <ActionButton Icon={CommentSvg} onClick={handleClick} className={className}>
+    <ActionButton Icon={CommentSvg} onClick={handleClick} className={className} aria-label="Comment">
       {post.commentsCount}{showText && ' Comments'}
     </ActionButton>
   )

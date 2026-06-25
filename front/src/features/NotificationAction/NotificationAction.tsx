@@ -32,6 +32,7 @@ export const NotificationAction = memo(() => {
         variant="secondary"
         Icon={NotificationSvg}
         onClick={handleClick}
+        aria-label="Notifications"
       />
     </OverlayBadge>
   );

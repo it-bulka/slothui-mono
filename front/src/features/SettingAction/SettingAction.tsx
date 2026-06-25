@@ -6,5 +6,5 @@ import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig/routeConfig';
 export const SettingAction = () => {
   const navigate = useNavigate();
 
-  return <ActionButton variant="secondary" Icon={SettingSvg} onClick={() => navigate(RoutePaths[AppRoutes.SETTINGS])}/>
+  return <ActionButton variant="secondary" Icon={SettingSvg} onClick={() => navigate(RoutePaths[AppRoutes.SETTINGS])} aria-label="Settings"/>
 }

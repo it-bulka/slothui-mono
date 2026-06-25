@@ -24,7 +24,7 @@ const AttachActionBase = ({ actions }: Props) => {
   }, [refs])
   return (
     <>
-      <ActionButton ref={btnRef} variant="secondary" Icon={AttachSvg} {...getReferenceProps()}/>
+      <ActionButton ref={btnRef} variant="secondary" Icon={AttachSvg} aria-label="Attach file" {...getReferenceProps()}/>
       {
         context.open && (
           <div

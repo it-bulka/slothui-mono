@@ -10,6 +10,7 @@ export const DeleteFollowerButton = memo(({ userId }: { userId: string }) => {
     <ActionButton
       Icon={DeleteIcon}
       onClick={() => removeFollower(userId)}
+      aria-label="Remove follower"
     />
   )
 })

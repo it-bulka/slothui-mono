@@ -8,7 +8,7 @@ interface SharePostProps {
 }
 export const ShareButton = ({ onClick, children, className }: PropsWithChildren<SharePostProps>) => {
   return (
-    <ActionButton Icon={ShareSvg} onClick={onClick} className={className}>
+    <ActionButton Icon={ShareSvg} onClick={onClick} className={className} aria-label="Share">
       {children}
     </ActionButton>
   )

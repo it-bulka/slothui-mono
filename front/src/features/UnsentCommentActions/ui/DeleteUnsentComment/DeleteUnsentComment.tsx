@@ -6,6 +6,6 @@ export const DeleteUnsentComment = ({ commentId }: { commentId: string }) => {
   const { deleteUnsentComment } = useDeleteUnsentComment()
 
   return (
-    <ActionButton Icon={DeleteIcon} onClick={() => deleteUnsentComment(commentId)}/>
+    <ActionButton Icon={DeleteIcon} onClick={() => deleteUnsentComment(commentId)} aria-label="Delete unsent comment"/>
   )
 }

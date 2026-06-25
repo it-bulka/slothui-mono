@@ -12,7 +12,7 @@ export const SavePost = memo(({ className, postId }: { className: string, postId
   }, [toggleSavePost, postId, isSaved]);
 
   return (
-    <ActionButton Icon={SaveSvg} className={className} isActive={isSaved} onClick={handleToggle}/>
+    <ActionButton Icon={SaveSvg} className={className} isActive={isSaved} onClick={handleToggle} aria-label={isSaved ? 'Unsave' : 'Save'}/>
   )
 })
 

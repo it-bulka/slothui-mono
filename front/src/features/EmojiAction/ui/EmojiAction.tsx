@@ -29,6 +29,7 @@ export const EmojiAction = memo(({onEmojiClick, isEmojiShown = false, autoFocusS
         ref={btnRef}
         variant="secondary"
         Icon={SmileSvg}
+        aria-label="Emoji"
         {...getReferenceProps()}
       />
       {

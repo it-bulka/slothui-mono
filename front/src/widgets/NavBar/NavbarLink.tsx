@@ -17,6 +17,7 @@ export const NavbarLink = ({ title, href, Icon, count, end, collapsed }: NavLink
       <NavLink
         to={href}
         end={end}
+        aria-label={collapsed ? title : undefined}
         className={({ isActive }) =>
           `nav-link${isActive ? ' nav-link-active' : ''}${collapsed ? ' nav-link-collapsed' : ''}`
         }

@@ -12,7 +12,7 @@ export const LikePost = memo(({ postId, showText = true, className }: { postId: 
   }, [toggleLikePost, postId, isLiked]);
 
   return (
-    <ActionButton Icon={LikeSvg} isActive={isLiked} onClick={handleToggle} className={className}>
+    <ActionButton Icon={LikeSvg} isActive={isLiked} onClick={handleToggle} className={className} aria-label={isLiked ? 'Unlike' : 'Like'}>
       {likesCount}{showText && ' Likes'}
     </ActionButton>
   )
