@@ -1,3 +1,5 @@
+import { memo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
 import { Typography } from '@/shared/ui/Typography/Typography'
 import { DropSelect } from '@/shared/ui/DropSelect/DropSelect'
@@ -14,9 +16,13 @@ const profileStatus = [
   { value: 'private', label: 'Private' }
 ]
 
-const PrivacySettings = () => {
+const PrivacySettings = memo(() => {
   return (
     <SubSettingsWrapper title="Privacy Settings">
+      <Helmet>
+        <title>Privacy Settings — SlothUI</title>
+        <meta name="description" content="Control your privacy settings on SlothUI." />
+      </Helmet>
       <Typography bold>
         Profile status:
       </Typography>
@@ -35,6 +41,7 @@ const PrivacySettings = () => {
       <Button className="ml-auto" disabled={true}>Save changes</Button>
     </SubSettingsWrapper>
   )
-}
+})
 
+PrivacySettings.displayName = 'PrivacySettings'
 export default PrivacySettings

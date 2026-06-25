@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '@/shared/ui/Button/Button'
 import { Input } from '@/shared/ui/Input/Input';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
@@ -7,7 +8,7 @@ import { ChangePasswordFormLazy } from '@/features/ChangePassword';
 import { Sessions } from '@/features/Sessions';
 import { DeleteAccountButton } from '@/features/DeleteAccount';
 
-const AccountSettings = () => {
+const AccountSettings = memo(() => {
   const [isChangePassOpen, setChangePassOpen] = useState(false)
   const authUser = useAuthUserSelector()
 
@@ -16,6 +17,10 @@ const AccountSettings = () => {
   const isLocalProvider = authUser?.linkedProviders.find(item => item.provider === 'local')
   return (
     <SubSettingsWrapper title="Account Settings">
+      <Helmet>
+        <title>Account Settings — SlothUI</title>
+        <meta name="description" content="Manage your SlothUI account settings." />
+      </Helmet>
       <>
         {authUser.email && <Input name="email" label="Email" value={authUser.email} readOnly />}
         {isLocalProvider && (
@@ -33,6 +38,7 @@ const AccountSettings = () => {
       </>
     </SubSettingsWrapper>
   )
-}
+})
 
+AccountSettings.displayName = 'AccountSettings'
 export default AccountSettings

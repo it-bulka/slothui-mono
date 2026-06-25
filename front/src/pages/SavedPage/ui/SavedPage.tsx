@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Typography } from '@/shared/ui/Typography/Typography'
 import { Tab } from '@/shared/ui/Tab/Tab';
 import { TypographyTypes } from '@/shared/ui/Typography/typography.types';
@@ -13,6 +14,11 @@ const SavedPage = memo(() => {
   const { activeIndex, onTabChange } = useTypeTab(TABS);
 
   return (
+    <>
+    <Helmet>
+      <title>Saved — SlothUI</title>
+      <meta name="description" content="Posts and events you saved on SlothUI." />
+    </Helmet>
     <Feed header={(
       <Typography
         variant="h1"
@@ -37,6 +43,7 @@ const SavedPage = memo(() => {
         contentClassName="space-y-4 px-main py-main"
       />
     </Feed>
+    </>
   );
 });
 

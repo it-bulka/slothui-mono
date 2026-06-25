@@ -1,15 +1,16 @@
+import { memo, useEffect, useMemo, useState, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Input } from '@/shared/ui/Input/Input'
 import { Button } from '@/shared/ui/Button/Button';
 import { SubSettingsWrapper } from '../Settings/SubSettingsWrapper.tsx';
 import DefaultAvatar from '@/shared/assets/images/default/avatar-default.png'
 import { useAuthUserSelector, useUpdateProfile } from '@/entities/AuthUser';
 import { useForm } from "react-hook-form"
-import { useEffect, useMemo, useState, useCallback } from 'react';
 import type { ProfileFormValues } from './model';
 import { ProfileTextInput, ProfileAvatarInput, ContactsForm } from './ui/components';
 import type { UpdateUserDto } from '@/shared/types';
 
-const ProfileSettings = () => {
+const ProfileSettings = memo(() => {
   const authUser = useAuthUserSelector()
   const { updateProfile } = useUpdateProfile()
 
@@ -64,6 +65,10 @@ const ProfileSettings = () => {
   if(!authUser) return <p>No authorized user</p>;
   return (
     <SubSettingsWrapper title="Profile Settings">
+      <Helmet>
+        <title>Profile Settings — SlothUI</title>
+        <meta name="description" content="Edit your profile information on SlothUI." />
+      </Helmet>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <ProfileAvatarInput control={control} avatarUrl={authUser.avatarUrl} resetKey={avatarKey} />
         <ProfileTextInput control={control} name="username" label="Username" />
@@ -95,6 +100,7 @@ const ProfileSettings = () => {
       <ContactsForm />
     </SubSettingsWrapper>
   )
-}
+})
 
+ProfileSettings.displayName = 'ProfileSettings'
 export default ProfileSettings

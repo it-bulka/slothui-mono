@@ -1,17 +1,17 @@
+import { memo, useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { usePostByIdSelect } from '@/entities/Post/model/hooks/usePostByIdSelect.ts';
 import { fetchPostByIdThunk } from '@/entities/Post/model/thunks/fetchPostById.thunk.ts';
 import { useAppDispatch } from '@/shared/config/redux';
-import { useEffect, useState } from 'react';
 import { PostCard } from '@/widgets/PostCard/PostCard.tsx';
 import { getUserPage, getMyPostsPage } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
 import { usePostGroupedAttachments } from '@/entities/Post';
 import { PostPageSkeleton } from './PostPageSkeleton';
 
-const PostPage = () => {
+const PostPage = memo(() => {
   const { postId } = useParams<{ postId: string }>();
   const dispatch = useAppDispatch();
   const post = usePostByIdSelect(postId ?? '');
@@ -35,7 +35,10 @@ const PostPage = () => {
 
   return (
     <div className="px-main py-main">
-      <Helmet><title>Post — SlothUI</title></Helmet>
+      <Helmet>
+        <title>Post — SlothUI</title>
+        <meta name="description" content="View post on SlothUI." />
+      </Helmet>
       <PostCard
         postId={post.id}
         profileLink={isOwner ? getMyPostsPage() : getUserPage(post.author?.id)}
@@ -52,6 +55,7 @@ const PostPage = () => {
       />
     </div>
   );
-};
+})
 
-export default PostPage;
+PostPage.displayName = 'PostPage'
+export default PostPage

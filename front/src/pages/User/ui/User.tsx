@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Feed } from '@/widgets/Feed';
 import { ContactUserToolbar } from '@/widgets/ContactUserToolbar';
 import { useParams, useSearchParams } from 'react-router';
@@ -10,7 +11,7 @@ import { useUserProfileSelect } from '@/entities/UsersProfiles';
 const TYPE_TO_INDEX: Record<string, number> = { posts: 0, events: 1 };
 const INDEX_TO_TYPE = ['posts', 'events'];
 
-const User = () => {
+const User = memo(() => {
   const { id: userId } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: profile } = useUserProfileSelect(userId);
@@ -42,6 +43,7 @@ const User = () => {
       />
     </Feed>
   );
-};
+})
 
-export default User;
+User.displayName = 'User'
+export default User

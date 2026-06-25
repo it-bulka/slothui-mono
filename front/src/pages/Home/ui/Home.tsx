@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Feed } from '@/widgets/Feed';
 import { PostsToolbar } from '@/widgets/PostsToolbar';
 import { HomeEventContent } from './HomeEventContent/HomeEventContent.tsx';
@@ -8,14 +9,17 @@ import { useInitHomePage } from '../model';
 import { useLocation } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 
-const Home = () => {
+const Home = memo(() => {
   useInitHomePage()
   const location = useLocation()
   const initialTab: number = (location.state as { activeTab?: number } | null)?.activeTab ?? 0
 
   return (
     <Feed header={<PostsToolbar />} >
-      <Helmet><title>Home — SlothUI</title></Helmet>
+      <Helmet>
+        <title>Home — SlothUI</title>
+        <meta name="description" content="Your feed on SlothUI — posts, events and stories from friends." />
+      </Helmet>
       <HomeStories />
       <Tab
         scrollableContent
@@ -29,6 +33,7 @@ const Home = () => {
       />
     </Feed>
   )
-}
+})
 
+Home.displayName = 'Home'
 export default Home

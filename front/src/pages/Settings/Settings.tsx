@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { NavCardLink } from '@/shared/ui/NavCardLink';
 import { ThemeSelect } from '@/widgets/ThemeSelect';
 import { RoutePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
@@ -9,10 +10,13 @@ const links = [
   { title: 'Privacy settings', description: 'Control your privacy', to: RoutePaths.settings_privacy },
 ]
 
-const Settings = () => {
+const Settings = memo(() => {
   return (
     <>
-      <Helmet><title>Settings — SlothUI</title></Helmet>
+      <Helmet>
+        <title>Settings — SlothUI</title>
+        <meta name="description" content="Manage your SlothUI settings." />
+      </Helmet>
       <div className="px-main py-main bg-underground-secondary min-h-full flex flex-col gap-4">
         <ThemeSelect />
         {links.map((link) => (
@@ -21,6 +25,7 @@ const Settings = () => {
       </div>
     </>
   )
-}
+})
 
+Settings.displayName = 'Settings'
 export default Settings

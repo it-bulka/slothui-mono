@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Feed } from '@/widgets/Feed';
 import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { useAuthUserIdSelector } from '@/entities/AuthUser';
@@ -7,12 +8,15 @@ import { Typography } from '@/shared/ui/Typography/Typography';
 import { CreateEvent } from '@/pages/MyEvents/ui/CreateEvent/CreateEvent.tsx';
 import { Helmet } from 'react-helmet-async';
 
-const MyEventsPage = () => {
+const MyEventsPage = memo(() => {
   const id = useAuthUserIdSelector()
 
   return (
     <>
-      <Helmet><title>My Events — SlothUI</title></Helmet>
+      <Helmet>
+        <title>My Events — SlothUI</title>
+        <meta name="description" content="View and manage your events on SlothUI." />
+      </Helmet>
       <Feed
         header={(
           <div className={"toolbar flex justifyBetween"}>
@@ -30,6 +34,7 @@ const MyEventsPage = () => {
     </>
 
   )
-}
+})
 
-export default MyEventsPage;
+MyEventsPage.displayName = 'MyEventsPage'
+export default MyEventsPage
