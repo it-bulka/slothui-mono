@@ -1,6 +1,6 @@
 import { RoutePaths, UserRelativePaths, AuthRelativePaths } from '@/shared/config/routeConfig/routeConfig.tsx';
 import { createBrowserRouter } from 'react-router'
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { RightSidebarLazy } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebar.async';
 import { RightSidebarSkeleton } from '../../layouts/MainLayouts/blocks/currentUserRightSidebar/RightSidebarSkeleton.tsx';
 import { UserRightSidebarLazy } from '@/widgets/UserRightSidebar/ui/UserRightSidebar.async';
@@ -27,7 +27,7 @@ import { NotificationsPage } from '@/pages/NotificationsPage';
 import { ActivityPage } from '@/pages/ActivityPage';
 import { LikedPage } from '@/pages/LikedPage';
 import { SavedPage } from '@/pages/SavedPage';
-import { NotFound } from '@/pages/NotFound';
+const NotFound = lazy(() => import('@/pages/NotFound/NotFound').then(m => ({ default: m.NotFound })));
 import { OAuthErrorPage } from '@/pages/OAuthError';
 import { PostPage } from '@/pages/PostPage';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary/ErrorBoundary';
@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
           { path: RoutePaths.liked, element: <LikedPage /> },
           { path: RoutePaths.saved, element: <SavedPage /> },
           { path: RoutePaths.post, element: <PostPage /> },
-          { path: RoutePaths.not_found, element: <NotFound /> }
+          { path: RoutePaths.not_found, element: <Suspense><NotFound /></Suspense> }
         ]
       },
       {
@@ -126,8 +126,8 @@ export const router = createBrowserRouter([
           { path: AuthRelativePaths.oauth_error, element: <OAuthErrorPage /> }
         ]
       },
-      { path: RoutePaths.not_found, element: <NotFound /> },
-      { path: '*', element: <NotFound /> }
+      { path: RoutePaths.not_found, element: <Suspense><NotFound /></Suspense> },
+      { path: '*', element: <Suspense><NotFound /></Suspense> }
     ]
   }
 ]);
