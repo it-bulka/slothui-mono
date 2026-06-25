@@ -19,7 +19,12 @@ const Register = () => {
   if (isSuccess) {
     return (
       <>
-        <Helmet><title>Create account — SlothUI</title></Helmet>
+        <Helmet>
+          <title>Create account — SlothUI</title>
+          <meta name="description" content="Create your SlothUI account — connect with friends, share posts, events and stories." />
+          <meta property="og:title" content="Create account — SlothUI" />
+          <meta property="og:description" content="Create your SlothUI account — connect with friends, share posts, events and stories." />
+        </Helmet>
         <AuthForm
           formTitle="Check your email"
           withOAuth={false}
@@ -39,7 +44,12 @@ const Register = () => {
 
   return (
     <>
-      <Helmet><title>Create account — SlothUI</title></Helmet>
+      <Helmet>
+        <title>Create account — SlothUI</title>
+        <meta name="description" content="Create your SlothUI account — connect with friends, share posts, events and stories." />
+        <meta property="og:title" content="Create account — SlothUI" />
+        <meta property="og:description" content="Create your SlothUI account — connect with friends, share posts, events and stories." />
+      </Helmet>
       <AuthForm
         formTitle="Register by email and password"
         oAuthTitle="OR by social media"

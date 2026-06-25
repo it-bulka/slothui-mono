@@ -10,7 +10,12 @@ const links = [
 const Login = () => {
   return (
     <>
-      <Helmet><title>Sign in — SlothUI</title></Helmet>
+      <Helmet>
+        <title>Sign in — SlothUI</title>
+        <meta name="description" content="Sign in to SlothUI — connect with friends, share posts, events and stories." />
+        <meta property="og:title" content="Sign in — SlothUI" />
+        <meta property="og:description" content="Sign in to SlothUI — connect with friends, share posts, events and stories." />
+      </Helmet>
       <AuthForm
         formTitle="Login by email and password"
         oAuthTitle="OR by social media"
